@@ -21,6 +21,11 @@
 #define FILE_MAX_SIZE (10*1024*1024) 
 #define PIC_MAX_LENTH (10*1024*1024)
 #define MAX_CAR_COUNT 10  //缓存最大车辆数
+#define MAX_VIDEO_CHANNEL_COUNT 16  //最多通道数
+
+
+#define SUCCESS 0             //成功
+#define ERROR_VIDEO_COUNT  -1//超过最大视频通道数
 typedef struct tagNVRInfo
 {
 	char *IpAddress;        

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPManager", "SPManager\SPMa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HCNetSDK", "HCNetSDK\HCNetSDK.vcxproj", "{139F6D8A-D1DF-48D1-9936-0A0C7C57F589}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIT_Demo", "DIT_Demo\DIT_Demo.csproj", "{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,18 @@ Global
 		{139F6D8A-D1DF-48D1-9936-0A0C7C57F589}.Release|x64.Build.0 = Release|x64
 		{139F6D8A-D1DF-48D1-9936-0A0C7C57F589}.Release|x86.ActiveCfg = Release|Win32
 		{139F6D8A-D1DF-48D1-9936-0A0C7C57F589}.Release|x86.Build.0 = Release|Win32
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Debug|x64.Build.0 = Debug|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Debug|x86.Build.0 = Debug|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Release|x64.Build.0 = Release|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Release|x86.ActiveCfg = Release|Any CPU
+		{FF3EE0E2-2BF4-4942-A815-D9F3DB19DBD5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

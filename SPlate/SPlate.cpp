@@ -22,17 +22,23 @@ LONG nPort = -1;
 int nCurGetIndex = 0;
 int nCurPutIndex = 0;
 CarInfoOut carInfoOut[MAX_CAR_COUNT];
-unsigned char *videoChan;
+unsigned char *videoChan = new unsigned char[MAX_VIDEO_CHANNEL_COUNT];
 int nVideoChanCount;
 int nCurVideoChan = 0;
+int nLogLevel = 0;
+char *debugInfo = NULL;
 
 
 
 SPLATE_API int SP_InitRunParam(unsigned char *pChan, int lenth)
 {
+	if (lenth > MAX_VIDEO_CHANNEL_COUNT)
+	{
+		return ERROR_VIDEO_COUNT;
+	}
 	memcpy(videoChan, pChan, lenth);
 	nVideoChanCount = lenth;
-	return 0;
+	return SUCCESS;
 }
 
 SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPassword)
@@ -53,7 +59,7 @@ SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPass
 	{
 		return NET_DVR_GetLastError();
 	}
-	return nvrInfo.m_lServerID;
+	return SUCCESS;
 }
 
 SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo)
@@ -139,7 +145,7 @@ void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameIn
 {
 
 	long lFrameType = pFrameInfo->nType;
-	char *debugInfo = NULL;
+	
 	if (lFrameType == T_YV12)
 	{
 		//PlayM4_SetDecCallBack(nPort, NULL);
@@ -150,17 +156,30 @@ void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameIn
 		int ret = TH_RecogImage(pp, pFrameInfo->nWidth, pFrameInfo->nHeight, recogResult, &nCarNum, &th_RECT, &th_PlateIDCfg);
 		if (nCarNum > 0)
 		{
-			unsigned char *bmpImage = NULL;
-			debugInfo = "start save image \n";
-			write_log_file("Debug.txt", FILE_MAX_SIZE, debugInfo, strlen(debugInfo));
-			if (YV12_to_RGB24((unsigned char *)pBuf, bmpImage, pFrameInfo->nWidth, pFrameInfo->nHeight))
+			for (int i =0;i<nCarNum;i++)
 			{
-
-				save_image_file("test01.bmp", (char *)bmpImage, nSize * 2);
+				memcpy(carInfoOut[nCurPutIndex].license,recogResult[i].license,16);
+				memcpy(carInfoOut[nCurPutIndex].color, recogResult[i].color, 16);
+				memcpy(carInfoOut[nCurPutIndex].pic, pBuf, nSize);
+				carInfoOut[nCurPutIndex].nCarColor = recogResult[i].nCarColor;
+				carInfoOut[nCurPutIndex].nCarLogo = recogResult[i].nCarLogo;
+				carInfoOut[nCurPutIndex].nCarType = recogResult[i].nCarType;
+				carInfoOut[nCurPutIndex].nColor = recogResult[i].nColor;
+				carInfoOut[nCurPutIndex].nConfidence = recogResult[i].nConfidence;
+				carInfoOut[nCurPutIndex].nPicLenth = nSize;
+				carInfoOut[nCurPutIndex].nVideoChannel = nCurVideoChan;
+				carInfoOut[nCurPutIndex].nPicType = T_YV12;
+				carInfoOut[nCurPutIndex].nType = recogResult[i].nType;
+				nCurPutIndex++;
 			}
-			debugInfo = "end save image \n";
-			write_log_file("Debug.txt", FILE_MAX_SIZE, debugInfo, strlen(debugInfo));
+			
+			if (++nCurVideoChan >= nVideoChanCount)
+			{
+				nCurVideoChan = 0;
+			}
+			
 		}
+		previewInfo.lChannel = videoChan[nCurVideoChan];
 		NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &previewInfo, NULL, nullptr);
 	}
 	else

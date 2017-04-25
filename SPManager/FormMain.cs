@@ -25,7 +25,7 @@ namespace SPManager
         private void button1_Click(object sender, EventArgs e)
         {
             byte[] videoChan = new byte[] { 33, 34, 35 };
-            IntPtr ip = Marshal.AllocHGlobal(Marshal.SizeOf(videoChan));
+            IntPtr ip = Marshal.AllocHGlobal(videoChan.Length);
             Marshal.Copy(videoChan, 0, ip, videoChan.Length);
             SPlate.SP_InitRunParam(ip, videoChan.Length);
             lblReturn.Text = SPlate.SP_InitNVR("192.168.1.65",8000,"admin","sd123456").ToString();
