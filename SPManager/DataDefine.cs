@@ -1,9 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Runtime.InteropServices;
 namespace SPManager
 {
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CarInfoOut
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        public Char[] license;   // 车牌字符串
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        public Char[] color;      // 车牌颜色
+        public int nColor;         // 车牌颜色
+        public int nType;          // 车牌类型
+        public int nConfidence;    // 整牌可信度
+        public int nCarColor;      //车的颜色
+        public int nCarLogo;         //车标类型
+        public int nCarType;           //车辆类型，已弃用
+        public int nVideoChannel;  //识别图片通道
+        public int nPicType;       //图片类型
+        public int nPicLenth;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10*1024*1024)]
+        public byte[] pic;
+       
+    }
     class DataDefine
     {
     }

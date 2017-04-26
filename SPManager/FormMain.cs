@@ -76,5 +76,16 @@ namespace SPManager
         {
             SPlate.SP_TestAPI();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            CarInfoOut carOut = new CarInfoOut();
+            IntPtr pCarOut = Marshal.AllocHGlobal(Marshal.SizeOf(carOut));
+           // byte[] pCarOut = new byte[carOut];
+            SPlate.SP_GetFirstCarInfo(pCarOut);
+            carOut = (CarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(CarInfoOut));
+            //carOut = (CarInfoOut)obj;
+            MessageBox.Show(carOut.license + carOut.nConfidence.ToString() + carOut.nPicLenth.ToString());
+        }
     }
 }

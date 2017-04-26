@@ -134,5 +134,13 @@ namespace SPManager
       
         [DllImport("SPlate.dll")]
         public static extern int SP_TestAPI();
+        [DllImport("SPlate.dll")]
+        public static extern int SP_GetCarCount();
+        [DllImport("SPlate.dll")]
+        public static extern int SP_GetFirstCarInfo(IntPtr pCarInfoOut );
+        [DllImport("SPlate.dll")]
+        public static extern int SP_GetCarInfo(IntPtr pCarInfoOut, int carCount);
+        [DllImport("SPlate.dll")]
+        public static extern int SP_GetNvrStatus();
     }
 }

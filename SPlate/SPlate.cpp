@@ -26,7 +26,9 @@ unsigned char *videoChan = new unsigned char[MAX_VIDEO_CHANNEL_COUNT];
 int nVideoChanCount;
 int nCurVideoChan = 0;
 int nLogLevel = 0;
+int nCurCarCount = 0;
 char *debugInfo = NULL;
+
 
 
 
@@ -34,7 +36,7 @@ SPLATE_API int SP_InitRunParam(unsigned char *pChan, int lenth)
 {
 	if (lenth > MAX_VIDEO_CHANNEL_COUNT)
 	{
-		return ERROR_VIDEO_COUNT;
+		return INVALID_VIDEO_COUNT;
 	}
 	memcpy(videoChan, pChan, lenth);
 	nVideoChanCount = lenth;
@@ -88,8 +90,57 @@ SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg)
 
 	return ret;
 }
+SPLATE_API int SP_GetCarCount()
+{
+	return nCurCarCount;
+}
+SPLATE_API int SP_GetFirstCarInfo(CarInfoOut *carinfo)
+{
+	if (nCurCarCount > 0)
+	{
+		memcpy(carinfo, &carInfoOut[nCurGetIndex], sizeof(CarInfoOut));
+		nCurCarCount--;
+		if (nCurGetIndex++ == MAX_CAR_COUNT)
+			nCurGetIndex = 0;
+		return SUCCESS;
+	}
+	return FAIL;
+}
+
+SPLATE_API int SP_GetCarInfo(CarInfoOut *carinfo, int carCount)
+{
+	if (carCount > nCurCarCount || carCount <= 0)
+		return INVALID_CAR_COUNT;
+	int size = sizeof(CarInfoOut);
+	for (int i = 0;i<carCount;i++)
+	{
+		memcpy(carinfo + size*i, &carInfoOut[nCurGetIndex], size);
+		nCurCarCount--;
+		if (nCurGetIndex++ == MAX_CAR_COUNT)
+			nCurGetIndex = 0;
+	}
+	return SUCCESS;
+}
+SPLATE_API int SP_GetNvrStatus()
+{
+	return nvrInfo.m_lServerID;
+}
 SPLATE_API int SP_TestAPI()
 {
+	FILE *pFile = fopen("C:\\test01.txt", "r");
+// 	fseek(pFile, 0, SEEK_END); //把指针移动到文件的结尾 ，获取文件长度
+// 	int len = ftell(pFile); //获取文件长度
+// 	rewind(pFile); //把指针移动到文件开头 因为我们一开始把指针移动到结尾，如果不移动回来 会出错
+	for (int i=0;i<MAX_CAR_COUNT;i++)
+	{
+		char *license = "京A12345";
+		memcpy(carInfoOut[i].license,license,strlen(license));
+		carInfoOut[i].nConfidence = i;
+		carInfoOut[i].nPicLenth = 2000+i;
+		fread(carInfoOut[i].pic, sizeof(char), 6220800, pFile);
+	}
+	nCurCarCount = MAX_CAR_COUNT;
+	
 	return 0;
 }
 bool YV12_to_RGB24(unsigned char* pYV12, unsigned char* pRGB24, int iWidth, int iHeight)

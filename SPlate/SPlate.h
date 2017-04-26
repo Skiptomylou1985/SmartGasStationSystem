@@ -25,7 +25,9 @@
 
 
 #define SUCCESS 0             //成功
-#define ERROR_VIDEO_COUNT  -1//超过最大视频通道数
+#define FAIL    -1            //失败
+#define INVALID_VIDEO_COUNT  -1//超过最大视频通道数
+#define INVALID_CAR_COUNT -2  //错误车辆数
 typedef struct tagNVRInfo
 {
 	char *IpAddress;        
@@ -56,8 +58,9 @@ typedef struct
 	int nCarType;			//车辆类型，已弃用
 	int nVideoChannel;  //识别图片通道
 	int nPicType;       //图片类型
-	char pic[PIC_MAX_LENTH];
 	int nPicLenth;
+	char pic[PIC_MAX_LENTH];
+	
 } CarInfoOut;
 bool YV12_to_RGB24(unsigned char* pYV12, unsigned char* pRGB24, int iWidth, int iHeight);
 void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameInfo, long nReserved1, long nReserved2);

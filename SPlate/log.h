@@ -11,6 +11,7 @@
 #include <unistd.h>       // linux下头文件  
 #endif  
 
+#define ActionLog "logs/action.txt"
 
 void get_local_time(char* buffer);
 long get_file_size(char* filename);

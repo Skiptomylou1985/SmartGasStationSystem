@@ -22,7 +22,7 @@ namespace DIT_Demo
 
         private void button2_Click(object sender, EventArgs e)
         {
-            HCNetSDK.NET_DVR_TestAPI();
+            HCNetSDK.NET_DVR_Cleanup();
         }
     }
 }
