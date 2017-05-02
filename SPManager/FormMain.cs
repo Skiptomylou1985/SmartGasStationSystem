@@ -28,7 +28,7 @@ namespace SPManager
             IntPtr ip = Marshal.AllocHGlobal(videoChan.Length);
             Marshal.Copy(videoChan, 0, ip, videoChan.Length);
             SPlate.SP_InitRunParam(ip, videoChan.Length);
-            lblReturn.Text = SPlate.SP_InitNVR("192.168.1.65",8000,"admin","sd123456").ToString();
+            SPlate.SP_InitNVR("192.168.1.65",8000,"admin","sd123456").ToString();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -57,19 +57,23 @@ namespace SPManager
 
         private void button4_Click(object sender, EventArgs e)
         {
-            // previewInfo.hPlayWnd = new IntPtr();//预览窗口
-            previewInfo.hPlayWnd = realVideo.Handle;//预览窗口
-            previewInfo.lChannel = int.Parse(textChanel.Text.ToString());//预te览的设备通道
-            previewInfo.dwStreamType = uint.Parse(textBS.Text.ToString()); ;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+             previewInfo.hPlayWnd = new IntPtr();//预览窗口
+           // previewInfo.hPlayWnd = realVideo.Handle;//预览窗口
+            previewInfo.lChannel = 33;//预te览的设备通道
+            previewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
             previewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
             previewInfo.bBlocked = false; //0- 非阻塞取流，1- 阻塞取流
             previewInfo.dwDisplayBufNum = 15;
-            lblReturn.Text = SPlate.SP_PreviewInfo(ref previewInfo).ToString();
+          //  lblReturn.Text = SPlate.SP_PreviewInfo(ref previewInfo).ToString();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            lblTimes.Text = SPlate.SP_TestAPI().ToString();
+            toolCPU.Text = SystemUnit.getCpuLoad().ToString()+"%";
+            MEMORY_INFO MemInfo;
+            MemInfo = new MEMORY_INFO();
+            SystemUnit.GlobalMemoryStatus(ref MemInfo);
+            toolRAM.Text = MemInfo.dwMemoryLoad.ToString() + "%";
         }
 
         private void btnTest_Click(object sender, EventArgs e)
@@ -86,6 +90,92 @@ namespace SPManager
             carOut = (CarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(CarInfoOut));
             //carOut = (CarInfoOut)obj;
             MessageBox.Show(carOut.license + carOut.nConfidence.ToString() + carOut.nPicLenth.ToString());
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Init();
+
+//             Global.mysqlHelper = new MysqlHelper(new DBInfo("mysql", "gsims", "172.16.84.1", 3306, "root", "root"));
+//             CarInfo car = new CarInfo();
+//             Global.mysqlHelper.ExecuteSql(car.toSqlString());
+
+            //             Global.nLogLevel = 5;
+            //             Global.LogServer = new Log(Global.nLogLevel);
+            //             Global.LogServer.Run();
+            //             for (int i=0;i<100;i++)
+            //             {
+            //                 Global.LogServer.Add(new LogInfo("test", i.ToString(), (int)EnumLogLevel.ERROR, DateTime.Now));
+            //             }
+            //             Global.LogServer.Run();
+            //             for (int i = 0; i < 100; i++)
+            //             {
+            //                 Global.LogServer.Add(new LogInfo("test", i.ToString(), (int)EnumLogLevel.ERROR, DateTime.Now));
+            //             }
+
+
+
+            //             QueueManager<stationInfo> stationQueue = new QueueManager<stationInfo>();
+            //             stationInfo info = new stationInfo();
+            //             info.city = "北京";
+            //             stationQueue.Add(info);
+            //             stationInfo info2 = new stationInfo();
+            //             info2.city = "上海";
+            //             stationQueue.Add(info2);
+            //             //stationQueue.Add(new stationInfo());
+            //             MessageBox.Show(stationQueue.GetQueueCount().ToString());
+            //             stationInfo info3 = stationQueue.Get();
+            //             MessageBox.Show(info3.city);
+            //             MessageBox.Show(stationQueue.GetQueueCount().ToString());
+
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+//             this.notifyIconMain.Visible = true;//在通知区显示Form的Icon
+// 
+//             this.WindowState = FormWindowState.Minimized;
+// 
+//             this.Visible = false;
+// 
+//             this.ShowInTaskbar = false;//使Form不在任务栏上显示
+        }
+
+        private void notifyIconMain_DoubleClick(object sender, EventArgs e)
+        {
+            
+            this.Visible = true;
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;//使Form不在任务栏上显示
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            
+            this.notifyIconMain.Visible = true;//在通知区显示Form的Icon
+
+            this.WindowState = FormWindowState.Minimized;
+
+            this.Visible = false;
+
+            this.ShowInTaskbar = false;//使Form不在任务栏上显示
+           // e.Cancel = true;
+        }
+
+        private void btnQuit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnCloseMain_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            pBoxMain.Image = Global.greenImage;
+            pBoxSocket.Image = Global.redImage;
         }
     }
 }

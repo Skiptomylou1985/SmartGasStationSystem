@@ -4,29 +4,8 @@ using System.Text;
 using System.Runtime.InteropServices;
 namespace SPManager
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct CarInfoOut
-    {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-        public Char[] license;   // 车牌字符串
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-        public Char[] color;      // 车牌颜色
-        public int nColor;         // 车牌颜色
-        public int nType;          // 车牌类型
-        public int nConfidence;    // 整牌可信度
-        public int nCarColor;      //车的颜色
-        public int nCarLogo;         //车标类型
-        public int nCarType;           //车辆类型，已弃用
-        public int nVideoChannel;  //识别图片通道
-        public int nPicType;       //图片类型
-        public int nPicLenth;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10*1024*1024)]
-        public byte[] pic;
-       
-    }
-    class DataDefine
-    {
-    }
+    
+
     public class OilMachine
     {
         public int machineNo
@@ -42,7 +21,7 @@ namespace SPManager
         }
         private int _oilType = 92;
     }
-    public class recogArea
+    public class RecogArea
     {
         public int top
         {
@@ -50,7 +29,7 @@ namespace SPManager
             set { _top = value; }
         }
         private int _top = 0;
-        public int oilType
+        public int bottom
         {
             get { return _bottom; }
             set { _bottom = value; }
@@ -69,14 +48,14 @@ namespace SPManager
         }
         private int _right = 92;
     }
-    public class stationInfo
+    public class StationInfo
     {
-        public string stationNo
+        public string stationCode
         {
-            get { return _stationNo; }
-            set { _stationNo = value; }
+            get { return _stationCode; }
+            set { _stationCode = value; }
         }
-        private string _stationNo = "";
+        private string _stationCode = "";
         public string stationName
         {
             get { return _stationName; }
@@ -107,7 +86,7 @@ namespace SPManager
             set { _addr = value; }
         }
         private string _addr = "";
-        
+
         public int machineCount
         {
             get { return _machineCount; }
@@ -122,4 +101,49 @@ namespace SPManager
         }
         private int _cameraCount = 0;
     }
+
+    public class VideoChannel
+    {
+        public int channelNo
+        {
+            get { return _channelNo; }
+            set { _channelNo = value; }
+        }
+        private int _channelNo = 0;
+
+        public string ip
+        {
+            get { return _ip; }
+            set { _ip = value; }
+        }
+        private string _ip = "";
+
+        public int port
+        {
+            get { return _port; }
+            set { _port = value; }
+        }
+        private int _port = 0;
+
+        public string loginName
+        {
+            get { return _loginName; }
+            set { _loginName = value; }
+        }
+        private string _loginName = "";
+        public string password
+        {
+            get { return _password; }
+            set { _password = value; }
+        }
+        private string _password = "";
+
+        public int videoType
+        {
+            get { return _videoType; }
+            set { _videoType = value; }
+        }
+        private int _videoType = 0;
+    }
+   
 }

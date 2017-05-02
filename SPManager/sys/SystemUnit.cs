@@ -8,6 +8,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Security.Cryptography;
+using System.Diagnostics;
 
 namespace SPManager
 {
@@ -24,6 +25,13 @@ namespace SPManager
             int wParam,         // first message parameter
             int lParam          // second message parameter
             );
+
+        [DllImport("kernel32")]
+        public static extern void GetSystemInfo(ref CPU_INFO cpuinfo);
+        [DllImport("kernel32")]
+        public static extern void GlobalMemoryStatus(ref MEMORY_INFO meminfo);
+
+
 
         public const int LOCALE_USER_DEFAULT = 0x0400;
         public const int LOCALE_SYSTEM_DEFAULT = 0x0800;
@@ -42,21 +50,21 @@ namespace SPManager
         } 
 
         // 设置日期时间格式
-        public static void SetDateTimeFormat()
-        {
-            int val = 0;
-            try
-            {
-                SetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, "yyyy-MM-dd");
-                SetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, "HH:mm:ss");
-                if (0 == SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 0, SMTO_ABORTIFHUNG, 10, ref val))
-                    Log.WriteLog("SystemUnit", "Error", "SendMessageTimeout失败");
-            }
-            catch (Exception ex)
-            {
-                Log.WriteLog("SystemUnit", "Error", "设置日期时间格式失败,错误信息:" + ex.Message);
-            }
-        }
+//         public static void SetDateTimeFormat()
+//         {
+//             int val = 0;
+//             try
+//             {
+//                 SetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, "yyyy-MM-dd");
+//                 SetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, "HH:mm:ss");
+//                 if (0 == SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 0, SMTO_ABORTIFHUNG, 10, ref val))
+//                     //Log.WriteLog("SystemUnit", "Error", "SendMessageTimeout失败");
+//             }
+//             catch (Exception ex)
+//             {
+//                 //Log.WriteLog("SystemUnit", "Error", "设置日期时间格式失败,错误信息:" + ex.Message);
+//             }
+//         }
 
         // 获取指定路径磁盘剩余空间大小，以Mb为单位
         public static float GetVolumeFreeSize(string path)
@@ -106,7 +114,7 @@ namespace SPManager
             }
             catch (Exception ex)
             {
-                Log.WriteLog("SystemUnit", "Error", "转换图像时错误,错误信息:" + ex.Message);
+                //Log.WriteLog("SystemUnit", "Error", "转换图像时错误,错误信息:" + ex.Message);
             }
             return data;
         }
@@ -129,7 +137,7 @@ namespace SPManager
             }
             catch (Exception ex)
             {
-                Log.WriteLog("SystemUnit", "Error", "转换图像时错误,错误信息:" + ex.Message);
+                //Log.WriteLog("SystemUnit", "Error", "转换图像时错误,错误信息:" + ex.Message);
             }
             finally
             {
@@ -179,6 +187,12 @@ namespace SPManager
             //返回结构体
             return obj;
         }
+        public static float getCpuLoad()
+        {
+            PerformanceCounter pc = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            return pc.NextValue();
+        }
+
 
         #region 窗体圆角
         public static void SetWindowRegion(Form frm)
