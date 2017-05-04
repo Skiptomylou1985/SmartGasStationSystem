@@ -128,10 +128,13 @@ namespace SPManager
         [DllImport("SPlate.dll")]
         public static extern int SP_InitNVR(string IpAddress, int nPort, string sAdmin, string sPassword);
         [DllImport("SPlate.dll")]
+        public static extern int SP_Close();
+        [DllImport("SPlate.dll")]
         public static extern int SP_InitAlg(ref TH_PlateIDCfg pPlateConfig);
         [DllImport("SPlate.dll")]
         public static extern int SP_PreviewInfo(ref NET_DVR_PREVIEWINFO previewInfo);
-      
+        [DllImport("SPlate.dll")]
+        public static extern int SP_BeginRecog();
         [DllImport("SPlate.dll")]
         public static extern int SP_TestAPI();
         [DllImport("SPlate.dll")]
@@ -142,5 +145,7 @@ namespace SPManager
         public static extern int SP_GetCarInfo(IntPtr pCarInfoOut, int carCount);
         [DllImport("SPlate.dll")]
         public static extern int SP_GetNvrStatus();
+        [DllImport("SPlate.dll")]
+        public static extern int SP_SetLogLevel(int loglevel);
     }
 }

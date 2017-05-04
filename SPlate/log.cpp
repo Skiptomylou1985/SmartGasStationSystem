@@ -40,8 +40,10 @@ long get_file_size(char* filename)
 
 	return length;
 }
-void write_log_file(char* filename, long max_size, char* buffer, unsigned buf_size)
+void write_log_file(char* fileName, long max_size, char* buffer, unsigned buf_size)
 {
+	char filename[128] = "dlllog\\";
+	strcpy(filename + strlen(filename), fileName);
 	if (filename != NULL && buffer != NULL)
 	{
 		//文件超过最大限制, 删除  
@@ -63,7 +65,7 @@ void write_log_file(char* filename, long max_size, char* buffer, unsigned buf_si
 				get_local_time(now);
 				fwrite(now, strlen(now) + 1, 1, fp);
 				fwrite(buffer, buf_size, 1, fp);
-
+				fwrite("\n", 2, 1, fp);
 				fclose(fp);
 				fp = NULL;
 			}

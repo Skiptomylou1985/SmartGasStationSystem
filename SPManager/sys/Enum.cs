@@ -7,7 +7,7 @@ namespace SPManager
     enum EnumLogLevel
     {
         ERROR = 1,
-        NORMAL = 2,
+        RUN = 2,
         DEBUG = 3,
         FULL = 4,
     }

@@ -25,9 +25,10 @@ CarInfoOut carInfoOut[MAX_CAR_COUNT];
 unsigned char *videoChan = new unsigned char[MAX_VIDEO_CHANNEL_COUNT];
 int nVideoChanCount;
 int nCurVideoChan = 0;
-int nLogLevel = 0;
+int nLogLevel = 3;
 int nCurCarCount = 0;
-char *debugInfo = NULL;
+char debugInfo[256] ;
+
 
 
 
@@ -64,6 +65,18 @@ SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPass
 	return SUCCESS;
 }
 
+SPLATE_API int SP_Close()
+{
+	if (nvrInfo.m_lServerID > 0)
+	{
+		NET_DVR_Logout(nvrInfo.m_lServerID);
+		NET_DVR_Cleanup();
+	}
+	
+	
+	return SUCCESS;
+}
+
 SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo)
 {
 	memcpy(&previewInfo, preInfo, sizeof(previewInfo));
@@ -76,6 +89,34 @@ SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo)
 	}
 	return nvrInfo.m_lPlayHandle;
 }
+SPLATE_API int SP_BeginRecog()
+{
+	previewInfo.hPlayWnd = nullptr;
+	previewInfo.lChannel = videoChan[nCurVideoChan];
+
+	previewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+	previewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
+	previewInfo.bBlocked = false; //0- 非阻塞取流，1- 阻塞取流
+	previewInfo.dwDisplayBufNum = 15;
+	HWND pUser = nullptr;//用户数据
+	nvrInfo.m_lPlayHandle = NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &previewInfo, RealDataCallBack, pUser);
+	
+	if (nLogLevel <= 3)
+	{
+		memset(debugInfo, 0, sizeof(debugInfo));
+		strcpy(debugInfo, "NET_DVR_RealPlay_V40 return value:");
+		_itoa(nvrInfo.m_lPlayHandle, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo+strlen(debugInfo), "通道号:");
+		
+		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo));
+	}
+	if (nvrInfo.m_lPlayHandle < 0)
+	{
+		return NET_DVR_GetLastError();
+	}
+	return nvrInfo.m_lPlayHandle;
+
+}
 SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg)
 {
 	memcpy(&th_PlateIDCfg, th_plateIDCfg, sizeof(TH_PlateIDCfg));
@@ -85,7 +126,7 @@ SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg)
 		return ret;
 	} 
 	
-	TH_SetImageFormat(1, false, false, &th_PlateIDCfg);
+	TH_SetImageFormat(ImageFormatYV12, false, false, &th_PlateIDCfg);
 	TH_SetRecogThreshold(5, 2, &th_PlateIDCfg);//设置阈值 
 
 	return ret;
@@ -125,13 +166,28 @@ SPLATE_API int SP_GetNvrStatus()
 {
 	return nvrInfo.m_lServerID;
 }
+SPLATE_API int SP_SetLogLevel(int loglevel)
+{
+	nLogLevel = loglevel;
+	return SUCCESS;
+}
 SPLATE_API int SP_TestAPI()
 {
-	FILE *pFile = fopen("C:\\test01.txt", "r");
+	write_log_file("time.txt", MAX_FILE_SIZE, "begin change channel", 20);
+	NET_DVR_StopRealPlay(nvrInfo.m_lPlayHandle);
+	write_log_file("time.txt", MAX_FILE_SIZE, "StopRealPlay", 12);
+	if (++nCurVideoChan >= nVideoChanCount)
+	{
+		nCurVideoChan = 0;
+	}
+	previewInfo.lChannel = videoChan[nCurVideoChan];
+	nvrInfo.m_lPlayHandle = NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &previewInfo, RealDataCallBack, nullptr);
+	write_log_file("time.txt", MAX_FILE_SIZE, "end", 3);
+	//FILE *pFile = fopen("C:\\test01.txt", "r");
 // 	fseek(pFile, 0, SEEK_END); //把指针移动到文件的结尾 ，获取文件长度
 // 	int len = ftell(pFile); //获取文件长度
 // 	rewind(pFile); //把指针移动到文件开头 因为我们一开始把指针移动到结尾，如果不移动回来 会出错
-	for (int i=0;i<MAX_CAR_COUNT;i++)
+	/*for (int i=0;i<MAX_CAR_COUNT;i++)
 	{
 		char *license = "京A12345";
 		memcpy(carInfoOut[i].license,license,strlen(license));
@@ -141,6 +197,7 @@ SPLATE_API int SP_TestAPI()
 	}
 	nCurCarCount = MAX_CAR_COUNT;
 	
+	return 0;*/
 	return 0;
 }
 bool YV12_to_RGB24(unsigned char* pYV12, unsigned char* pRGB24, int iWidth, int iHeight)
@@ -194,21 +251,39 @@ bool YV12_to_RGB24(unsigned char* pYV12, unsigned char* pRGB24, int iWidth, int 
 }
 void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameInfo, long nReserved1, long nReserved2)
 {
-
+	if (nLogLevel >= 4)
+	{
+		memset(debugInfo, 0, sizeof(debugInfo));
+		strcpy(debugInfo, "宽度");
+		_itoa(pFrameInfo->nWidth, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), " 高度");
+		_itoa(pFrameInfo->nHeight, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), " 视频格式");
+		_itoa(pFrameInfo->nType, debugInfo + strlen(debugInfo), 10);
+		write_log_file("DecCBFun.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo));
+	}
 	long lFrameType = pFrameInfo->nType;
 	
 	if (lFrameType == T_YV12)
 	{
-		//PlayM4_SetDecCallBack(nPort, NULL);
-		NET_DVR_StopRealPlay(nvrInfo.m_lServerID);
 		nCarNum = 1;
 		unsigned char * p = (unsigned char *)pBuf;
 		const unsigned char *pp = (const unsigned char *)p;
 		int ret = TH_RecogImage(pp, pFrameInfo->nWidth, pFrameInfo->nHeight, recogResult, &nCarNum, &th_RECT, &th_PlateIDCfg);
 		if (nCarNum > 0)
 		{
+			NET_DVR_StopRealPlay(nvrInfo.m_lPlayHandle);
 			for (int i =0;i<nCarNum;i++)
 			{
+
+				if (nLogLevel >= 2)
+				{
+					memset(debugInfo, 0, sizeof(debugInfo));
+					strcpy(debugInfo, "当前识别结果：");
+					memcpy(debugInfo+strlen(debugInfo), recogResult[i].license, strlen(recogResult[i].license));
+					write_log_file("license.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo));
+				}
+
 				memcpy(carInfoOut[nCurPutIndex].license,recogResult[i].license,16);
 				memcpy(carInfoOut[nCurPutIndex].color, recogResult[i].color, 16);
 				memcpy(carInfoOut[nCurPutIndex].pic, pBuf, nSize);
@@ -223,20 +298,27 @@ void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameIn
 				carInfoOut[nCurPutIndex].nType = recogResult[i].nType;
 				nCurPutIndex++;
 			}
+			if (nLogLevel >= 3)
+			{
+				memset(debugInfo, 0, sizeof(debugInfo));
+				strcpy(debugInfo, "当前视频通道：");
+				_itoa(nCurVideoChan, debugInfo, 10);
+				write_log_file("DecCBFun.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo));
+			}
 			
 			if (++nCurVideoChan >= nVideoChanCount)
 			{
 				nCurVideoChan = 0;
 			}
-			
+			previewInfo.lChannel = videoChan[nCurVideoChan];
+			nvrInfo.m_lPlayHandle = NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &previewInfo, RealDataCallBack, nullptr);
 		}
-		previewInfo.lChannel = videoChan[nCurVideoChan];
-		NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &previewInfo, NULL, nullptr);
+		
 	}
 	else
 	{
-		char *errorInfo = "error midea type\n";
-		write_log_file("error.txt", FILE_MAX_SIZE, errorInfo, strlen(errorInfo));
+		char *errorInfo = "error midea type";
+		write_log_file("error.txt", MAX_FILE_SIZE, errorInfo, strlen(errorInfo));
 	}
 
 
@@ -248,6 +330,13 @@ void CALLBACK RealDataCallBack(LONG lPlayHandle, DWORD dwDataType, BYTE *pBuffer
 	switch (dwDataType)
 	{
 	case NET_DVR_SYSHEAD:    //系统头
+		if (nLogLevel >= 3)
+		{
+			memset(debugInfo, 0, sizeof(debugInfo));
+			strcpy(debugInfo, "RealDataCallBack-> NET_DVR_SYSHEAD dwBufSize:");
+			_itoa(dwBufSize, debugInfo + strlen(debugInfo), 10);
+			write_log_file("time.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo));
+		}
 		if (nPort < 0)
 		{
 			if (!PlayM4_GetPort(&nPort)) //获取播放库未使用的通道号
@@ -284,8 +373,21 @@ void CALLBACK RealDataCallBack(LONG lPlayHandle, DWORD dwDataType, BYTE *pBuffer
 		break;
 
 	case NET_DVR_STREAMDATA:   //码流数据
+		if (nLogLevel >= 4)
+		{
+			memset(debugInfo, 0, sizeof(debugInfo));
+			strcpy(debugInfo, "RealDataCallBack-> NET_DVR_STREAMDATA dwBufSize:");
+			_itoa(dwBufSize, debugInfo + strlen(debugInfo), 10);
+			write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo));
+		}
 		if (dwBufSize > 0 && nPort != -1)
 		{
+			if (nLogLevel >= 4)
+			{
+				memset(debugInfo, 0, sizeof(debugInfo));
+				strcpy(debugInfo, "RealDataCallBack-> PlayM4_InputData");
+				write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo));
+			}
 			BOOL inData = PlayM4_InputData(nPort, pBuffer, dwBufSize);
 			while (!inData)
 			{

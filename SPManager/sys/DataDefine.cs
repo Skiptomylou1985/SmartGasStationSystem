@@ -145,5 +145,41 @@ namespace SPManager
         }
         private int _videoType = 0;
     }
+
+    public class NVRInfo
+    {
+        public string ip
+        {
+            get { return _ip; }
+            set { _ip = value; }
+        }
+        private string _ip = "10.225.142.28";
+
+        public int port
+        {
+            get { return _port; }
+            set { _port = value; }
+        }
+        private int _port = 8000;
+
+        public string loginName
+        {
+            get { return _loginName; }
+            set { _loginName = value; }
+        }
+        private string _loginName = "admin";
+        public string password
+        {
+            get { return _password; }
+            set { _password = value; }
+        }
+        private string _password = "12345";
+        public int channelCount
+        {
+            get { return _channelCount; }
+            set { _channelCount = value; }
+        }
+        private int _channelCount = 16;
+    }
    
 }

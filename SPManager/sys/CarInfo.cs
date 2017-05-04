@@ -25,7 +25,7 @@ namespace SPManager
         public byte[] pic;
 
     }
-    class CarInfo
+    public class CarInfo
     {
 
         public string license
