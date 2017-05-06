@@ -1,0 +1,16 @@
+2017-05-04 21:12:54.008->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：1 videoChanNo：7 oilType：1 left：236 right：730 top：333 bottom：884
+2017-05-04 21:12:54.008->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：2 videoChanNo：7 oilType：1 left：1038 right：1715 top：306 bottom：871
+2017-05-04 21:12:54.008->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：3 videoChanNo：6 oilType：1 left：998 right：1883 top：127 bottom：1028
+2017-05-04 21:12:54.008->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：4 videoChanNo：6 oilType：1 left：34 right：761 top：86 bottom：922
+2017-05-04 21:12:54.008->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：5 videoChanNo：5 oilType：1 left：17 right：790 top：84 bottom：935
+2017-05-04 21:12:54.008->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：6 videoChanNo：5 oilType：1 left：1032 right：1904 top：110 bottom：1024
+2017-05-04 21:12:54.008->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：7 videoChanNo：4 oilType：1 left：1082 right：1914 top：121 bottom：1004
+2017-05-04 21:12:54.008->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：8 videoChanNo：4 oilType：1 left：62 right：801 top：144 bottom：898
+2017-05-04 21:15:54.458->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：1 videoChanNo：7 oilType：1 left：236 right：730 top：333 bottom：884
+2017-05-04 21:15:54.458->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：2 videoChanNo：7 oilType：1 left：1038 right：1715 top：306 bottom：871
+2017-05-04 21:15:54.458->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：3 videoChanNo：6 oilType：1 left：998 right：1883 top：127 bottom：1028
+2017-05-04 21:15:54.458->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：4 videoChanNo：6 oilType：1 left：34 right：761 top：86 bottom：922
+2017-05-04 21:15:54.458->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：5 videoChanNo：5 oilType：1 left：17 right：790 top：84 bottom：935
+2017-05-04 21:15:54.458->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：6 videoChanNo：5 oilType：1 left：1032 right：1904 top：110 bottom：1024
+2017-05-04 21:15:54.458->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：7 videoChanNo：4 oilType：1 left：1082 right：1914 top：121 bottom：1004
+2017-05-04 21:15:54.458->:  Main->InitParam->GetNozzleChannelParam get param:machineNo：8 videoChanNo：4 oilType：1 left：62 right：801 top：144 bottom：898

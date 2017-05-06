@@ -25,12 +25,12 @@ namespace SPManager
                 ret += 1 << 1;
                 return ret;  
             }
-            //TODO 临时注销
-            //if (!InitParam())
-            //{
-            //    ret += 1 << 2;
-            //    return ret;
-            //}
+            
+            if (!InitParam())
+            {
+                ret += 1 << 2;
+                return ret;
+            }
             if (!InitAlg())
             {
                 ret += 1 << 3;
@@ -90,6 +90,13 @@ namespace SPManager
         
         private bool InitParam()
         {
+            GetMainParam();
+            GetNozzleChannelParam();
+            return true;
+        }
+       
+        private bool GetMainParam()
+        {
 
             string queryString = "select paramName,paramValue,content,defaultValue from param ";
             try
@@ -97,8 +104,8 @@ namespace SPManager
                 DataTable dt = Global.mysqlHelper.GetDataTable(queryString);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    string paramName = (string)dr[0];
-                    string paramValue = (string)dr[1];
+                    string paramName = dr["paramName"].ToString();
+                    string paramValue = dr["paramValue"].ToString();
                     if (paramName == "loglevel")
                         Global.nLogLevel = int.Parse(paramValue);
                     else if (paramName == "stationname")
@@ -134,25 +141,80 @@ namespace SPManager
             }
             catch (System.Exception ex)
             {
-                Global.LogServer.Add(new LogInfo("Error", "Main:InitRumParm 运行初始化失败:" + ex.Message, (int)EnumLogLevel.ERROR));
+                Global.LogServer.Add(new LogInfo("Error", "Main->InitParam->GetMainParam 运行初始化失败:" + ex.Message, (int)EnumLogLevel.ERROR));
                 return false;
             }
             //queryString = "select "
-            
+
             return true;
         }
-       
+
+        private bool GetNozzleChannelParam()
+        {
+            string queryString = "select a.vchno,b.x1,b.x2,b.y1,b.y2,c.nozzleno,c.oiltype "+
+                                    "from (vch a right join analysisarea b on a.id = b.vchid) right join nozzle c on b.id = c.areaid ";
+            try
+            {
+                DataTable dt = Global.mysqlHelper.GetDataTable(queryString);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Nozzle nozzle = new Nozzle();
+                    nozzle.machineNo = int.Parse(dr["nozzleno"].ToString());
+                    nozzle.oilType = int.Parse(dr["oiltype"].ToString());
+                    nozzle.recogArea.left = (int)(double.Parse(dr["x1"].ToString()) * Global.nDefaultWidth);
+                    nozzle.recogArea.right = (int)(double.Parse(dr["x2"].ToString()) * Global.nDefaultWidth);
+                    nozzle.recogArea.top = (int)(double.Parse(dr["y1"].ToString()) * Global.nDefaultHeight);
+                    nozzle.recogArea.bottom = (int)(double.Parse(dr["y2"].ToString()) * Global.nDefaultHeight);
+                    nozzle.videoChanNo = int.Parse(dr["vchno"].ToString());
+                    Global.nozzleList.Add(nozzle);
+                   
+                    StringBuilder info = new StringBuilder();
+                    info.Append("machineNo：" + nozzle.machineNo.ToString());
+                    info.Append(" videoChanNo：" + nozzle.videoChanNo.ToString());
+                    info.Append(" oilType：" + nozzle.oilType.ToString());
+                    info.Append(" left：" + nozzle.recogArea.left.ToString());
+                    info.Append(" right：" + nozzle.recogArea.right.ToString());
+                    info.Append(" top：" + nozzle.recogArea.top.ToString());
+                    info.Append(" bottom：" + nozzle.recogArea.bottom.ToString());
+                    Global.LogServer.Add(new LogInfo("Main", "Main->InitParam->GetNozzleChannelParam get param:"+info.ToString(), (int)EnumLogLevel.DEBUG));
+
+
+                }
+            }
+            catch(Exception ex)
+            {
+                Global.LogServer.Add(new LogInfo("Error", "Main->InitParam->GetNozzleChannelParam 运行初始化失败:" + ex.Message, (int)EnumLogLevel.ERROR));
+                return false;
+            }
+            return true;
+        }
         private bool InitSocket()
         {
             return true;
         }
         private bool InitDev()
         {
-            Global.LogServer.Add(new LogInfo("Debug","main:InitDev in", (int)EnumLogLevel.DEBUG));
-            byte[] videoChan = new byte[] { 36, 37, 38, 39 };
-            IntPtr ip = Marshal.AllocHGlobal(videoChan.Length);
-            Marshal.Copy(videoChan, 0, ip, videoChan.Length);
-            int ret = SPlate.SP_InitRunParam(ip, videoChan.Length);
+            Global.LogServer.Add(new LogInfo("Debug","main->InitDev in", (int)EnumLogLevel.DEBUG));
+            
+            int structLenth = Marshal.SizeOf(typeof(structNozzle));
+            IntPtr ip = Marshal.AllocHGlobal(Global.nozzleList.Count* structLenth);
+            structNozzle[] nozz = new structNozzle[Global.nozzleList.Count];
+            byte[] ipp = new byte[1024];
+            int offset = 0;
+            for (int i =0;i<Global.nozzleList.Count;i++)
+            {
+                nozz[i].nozzleNo = Global.nozzleList[i].machineNo;
+                nozz[i].videoChanNo = Global.nozzleList[i].videoChanNo;
+                nozz[i].left = Global.nozzleList[i].recogArea.left;
+                nozz[i].right = Global.nozzleList[i].recogArea.right;
+                nozz[i].top = Global.nozzleList[i].recogArea.top;
+                nozz[i].bottom = Global.nozzleList[i].recogArea.bottom;
+                byte[] bNoz = SystemUnit.StrutsToBytesArray(nozz[i]);
+                Buffer.BlockCopy(bNoz, 0, ipp, offset,structLenth);
+                offset += structLenth;
+            }
+            int ret = SPlate.SP_InitRunParam(ipp, Global.nozzleList.Count);
+
             Global.LogServer.Add(new LogInfo("Debug", "main:InitDev SP_InitRunParam done return value"+ret.ToString(), (int)EnumLogLevel.DEBUG));
             Global.LogServer.Add(new LogInfo("Debug", "main->InitDev->SP_InitNVR begin, param value " + Global.nvrInfo.ip + " "
                 + Global.nvrInfo.port.ToString() + " " + Global.nvrInfo.loginName + " " + Global.nvrInfo.password, (int)EnumLogLevel.DEBUG));
@@ -167,6 +229,8 @@ namespace SPManager
         }
         private bool InitAlg()
         {
+            //TODO 临时操作
+            return true;
             TH_PlateIDCfg th_PlateIDCfg = new TH_PlateIDCfg();
             th_PlateIDCfg.nMaxPlateWidth = 400;
             th_PlateIDCfg.nMinPlateWidth = 60;
@@ -177,8 +241,8 @@ namespace SPManager
             th_PlateIDCfg.nFastMemorySize = 16000;//DSP内存大小  
             th_PlateIDCfg.pFastMemory = Marshal.AllocHGlobal(16000);//DSP申请内存 
 
-            th_PlateIDCfg.pMemory = Marshal.AllocHGlobal(100000000);//申请普通内存  
-            th_PlateIDCfg.nMemorySize = 100000000;
+            th_PlateIDCfg.pMemory = Marshal.AllocHGlobal(50000000);//申请普通内存  
+            th_PlateIDCfg.nMemorySize = 50000000;
             th_PlateIDCfg.bUTF8 = 0;
             th_PlateIDCfg.bShadow = 1;
             th_PlateIDCfg.bCarLogo = 0;
@@ -186,6 +250,7 @@ namespace SPManager
             th_PlateIDCfg.bCarModel = 0;
             th_PlateIDCfg.bOutputSingleFrame = 1;
             th_PlateIDCfg.bMovingImage = 0;
+            Global.LogServer.Add(new LogInfo("Debug", "main->SP_InitAlg begin", (int)EnumLogLevel.DEBUG));
             int ret = SPlate.SP_InitAlg(ref th_PlateIDCfg);
             Global.LogServer.Add(new LogInfo("Debug", "main->SP_InitAlg done, return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
             if (ret == 0)
@@ -197,6 +262,10 @@ namespace SPManager
         #endregion
 
         #region 获取，处理数据
+        private void GetNvrConfig()
+        {
+            NET_DVR_IPPARACFG_V40 nvrConfig = new NET_DVR_IPPARACFG_V40();
+        }
         private void GetCarFromDll()
         {
             int count =  SPlate.SP_GetCarCount();

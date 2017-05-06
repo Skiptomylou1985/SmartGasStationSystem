@@ -19,6 +19,7 @@ namespace SPManager
         public int nCarLogo;         //车标类型
         public int nCarType;           //车辆类型，已弃用
         public int nVideoChannel;  //识别图片通道
+        public int nNozzleNo;
         public int nPicType;       //图片类型
         public int nPicLenth;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10 * 1024 * 1024)]

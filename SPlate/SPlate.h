@@ -22,11 +22,13 @@
 #define MAX_PIC_LENTH (10*1024*1024)
 #define MAX_CAR_COUNT 10  //缓存最大车辆数
 #define MAX_VIDEO_CHANNEL_COUNT 16  //最多通道数
+#define MAX_NOZZLE_COUNT 64    //最大油枪数
 
 
 #define SUCCESS 0             //成功
 #define FAIL    -1            //失败
 #define INVALID_VIDEO_COUNT  -1//超过最大视频通道数
+#define INVALID_NOZZLE_COUNT -3 //错误油枪数
 #define INVALID_CAR_COUNT -2  //错误车辆数
 typedef struct tagNVRInfo
 {
@@ -57,16 +59,25 @@ typedef struct
 	int nCarLogo;         //车标类型
 	int nCarType;			//车辆类型，已弃用
 	int nVideoChannel;  //识别图片通道
+	int nNozzleNo;      //油枪号
 	int nPicType;       //图片类型
 	int nPicLenth;
 	char pic[MAX_PIC_LENTH];
 	
 } CarInfoOut;
+typedef struct
+{
+	int nozzleNo;
+	LONG videoChanNo;
+	TH_RECT th_rect;
+} NozzleInfo;
+int SwithNextNozzle(void);
 bool YV12_to_RGB24(unsigned char* pYV12, unsigned char* pRGB24, int iWidth, int iHeight);
 void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameInfo, long nReserved1, long nReserved2);
 void CALLBACK RealDataCallBack(LONG lPlayHandle, DWORD dwDataType, BYTE *pBuffer, DWORD dwBufSize, void *pUser);
 extern "C" SPLATE_API int SP_InitRunParam(BYTE *pChan,int lenth);
 extern "C" SPLATE_API int SP_InitNVR(char *IpAddress,LONG nPort,char *sAdmin,char *sPassword);
+extern "C" SPLATE_API int SP_GetNvrCfg(NET_DVR_IPPARACFG_V40 *nvrCfg,int &lenth);
 extern "C" SPLATE_API int SP_Close();
 extern "C" SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo);
 extern "C" SPLATE_API int SP_BeginRecog();

@@ -20,6 +20,9 @@ namespace SPManager
         public static Image redImage = Image.FromFile(Application.StartupPath + "\\images\\Box_red.png");
         public static int nMatchMode = 1;//匹配模式，1 有出入口相机，2 无出入口相机
         public static List<CarInfo> carList = new List<CarInfo>();
+        public static List<Nozzle> nozzleList = new List<Nozzle>();
+        public static int nDefaultWidth = 1920;
+        public static int nDefaultHeight = 1020;
     }
     
 }

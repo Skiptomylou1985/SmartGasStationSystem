@@ -1,0 +1,20 @@
+2017-05-04 14:48:12.020->:  DBUnit:GetDataReader 执行sql语句失败！sql: select paramName,paramValue,content,defaultValue from param 
+2017-05-04 14:48:12.027->:  DBUnit:GetDataTable 错误信息：值不能为 null。
+参数名: dataReader
+2017-05-04 14:48:12.028->:  Main->InitRumParm->GetMainParam 运行初始化失败:未将对象引用设置到对象的实例。
+2017-05-04 14:55:05.209->:  DBUnit:GetDataReader 执行sql语句失败！sql: select paramName,paramValue,content,defaultValue from param 
+2017-05-04 14:55:05.216->:  DBUnit:GetDataTable 错误信息：值不能为 null。
+参数名: dataReader
+2017-05-04 14:55:05.217->:  Main->InitRumParm->GetMainParam 运行初始化失败:未将对象引用设置到对象的实例。
+2017-05-04 15:07:34.492->:  DBUnit:GetDataReader 执行sql语句失败！sql: select paramName,paramValue,content,defaultValue from param 
+2017-05-04 15:07:34.498->:  DBUnit:GetDataTable 错误信息：值不能为 null。
+参数名: dataReader
+2017-05-04 15:07:34.499->:  Main->InitRumParm->GetMainParam 运行初始化失败:未将对象引用设置到对象的实例。
+2017-05-04 21:12:53.987->:  DBUnit:GetDataReader 执行sql语句失败！sql: select paramName,paramValue,content,defaultValue from param 
+2017-05-04 21:12:53.994->:  DBUnit:GetDataTable 错误信息：值不能为 null。
+参数名: dataReader
+2017-05-04 21:12:53.996->:  Main->InitParam->GetMainParam 运行初始化失败:未将对象引用设置到对象的实例。
+2017-05-04 21:15:54.438->:  DBUnit:GetDataReader 执行sql语句失败！sql: select paramName,paramValue,content,defaultValue from param 
+2017-05-04 21:15:54.445->:  DBUnit:GetDataTable 错误信息：值不能为 null。
+参数名: dataReader
+2017-05-04 21:15:54.446->:  Main->InitParam->GetMainParam 运行初始化失败:未将对象引用设置到对象的实例。

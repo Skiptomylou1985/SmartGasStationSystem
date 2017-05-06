@@ -6,7 +6,7 @@ namespace SPManager
 {
     
 
-    public class OilMachine
+    public class Nozzle
     {
         public int machineNo
         {
@@ -20,6 +20,19 @@ namespace SPManager
             set { _oilType = value; }
         }
         private int _oilType = 92;
+        public RecogArea recogArea
+        {
+            get { return _recogArea; }
+            set { _recogArea = value; }
+        }
+        private RecogArea _recogArea = new RecogArea();
+
+        public int videoChanNo
+        {
+            get { return _videoChanNo; }
+            set { _videoChanNo = value; }
+        }
+        private int _videoChanNo = 33;
     }
     public class RecogArea
     {

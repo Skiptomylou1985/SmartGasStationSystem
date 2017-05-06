@@ -33,6 +33,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.comboLogLevel = new System.Windows.Forms.ComboBox();
+            this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.realVideo = new System.Windows.Forms.PictureBox();
             this.button3 = new System.Windows.Forms.Button();
@@ -63,8 +65,7 @@
             this.pBoxSocket = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button9 = new System.Windows.Forms.Button();
-            this.comboLogLevel = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.realVideo)).BeginInit();
@@ -95,6 +96,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.comboLogLevel);
             this.tabPage1.Controls.Add(this.button9);
             this.tabPage1.Controls.Add(this.button8);
@@ -122,6 +124,31 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "运行状态";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // comboLogLevel
+            // 
+            this.comboLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboLogLevel.FormattingEnabled = true;
+            this.comboLogLevel.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.comboLogLevel.Location = new System.Drawing.Point(316, 233);
+            this.comboLogLevel.Name = "comboLogLevel";
+            this.comboLogLevel.Size = new System.Drawing.Size(69, 29);
+            this.comboLogLevel.TabIndex = 32;
+            // 
+            // button9
+            // 
+            this.button9.Font = new System.Drawing.Font("宋体", 9F);
+            this.button9.Location = new System.Drawing.Point(402, 238);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 31;
+            this.button9.Text = "日志切换";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button8
             // 
@@ -197,8 +224,8 @@
             // toolCPU
             // 
             this.toolCPU.Name = "toolCPU";
-            this.toolCPU.Size = new System.Drawing.Size(40, 17);
-            this.toolCPU.Text = "100%";
+            this.toolCPU.Size = new System.Drawing.Size(26, 17);
+            this.toolCPU.Text = "0%";
             // 
             // toolStripStatusLabel2
             // 
@@ -415,30 +442,16 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // button9
+            // button1
             // 
-            this.button9.Font = new System.Drawing.Font("宋体", 9F);
-            this.button9.Location = new System.Drawing.Point(402, 238);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
-            this.button9.TabIndex = 31;
-            this.button9.Text = "日志切换";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // comboLogLevel
-            // 
-            this.comboLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboLogLevel.FormattingEnabled = true;
-            this.comboLogLevel.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4"});
-            this.comboLogLevel.Location = new System.Drawing.Point(316, 233);
-            this.comboLogLevel.Name = "comboLogLevel";
-            this.comboLogLevel.Size = new System.Drawing.Size(69, 29);
-            this.comboLogLevel.TabIndex = 32;
+            this.button1.Font = new System.Drawing.Font("宋体", 9F);
+            this.button1.Location = new System.Drawing.Point(402, 276);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 33;
+            this.button1.Text = "测试";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // FormMain
             // 
@@ -505,6 +518,7 @@
         private System.Windows.Forms.PictureBox realVideo;
         private System.Windows.Forms.ComboBox comboLogLevel;
         private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button1;
     }
 }
 
