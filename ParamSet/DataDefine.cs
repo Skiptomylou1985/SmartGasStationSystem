@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
-namespace SPManager
+using System.Drawing;
+namespace ParamSet
 {
 
     public class ClsCarInfo
@@ -268,6 +269,8 @@ namespace SPManager
 
     public class ClsNVRInfo
     {
+        public NET_DVR_IPPARACFG_V40 config = new NET_DVR_IPPARACFG_V40();
+        public List<ClsVideoChannel> videoList = new List<ClsVideoChannel>();
         public string ip
         {
             get { return _ip; }
@@ -300,6 +303,30 @@ namespace SPManager
             set { _channelCount = value; }
         }
         private int _channelCount = 16;
+        public string nvrType
+        {
+            get { return _nvrType; }
+            set { _nvrType = value; }
+        }
+        private string _nvrType = "8208";
+        public string nvrName
+        {
+            get { return _nvrName; }
+            set { _nvrName = value; }
+        }
+        private string _nvrName = "";
+        public string id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private string _id = "";
+        public int startChan
+        {
+            get { return _startChan; }
+            set { _startChan = value; }
+        }
+        private int _startChan = 33;
     }
 
     public class ClsPicture
@@ -322,6 +349,14 @@ namespace SPManager
         public byte[] picBufer;
 
 
+    }
+    public struct struDraw
+    {
+        public Point start ;
+        public Point end;
+        public Graphics g;
+        public bool bShowDraw;
+        public bool bReDraw;
     }
    
 }

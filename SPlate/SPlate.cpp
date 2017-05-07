@@ -3,12 +3,13 @@
 
 #include "stdafx.h"
 #include "SPlate.h"
+#include <tchar.h>
 
 //硬盘录像机相关
 NET_DVR_DEVICEINFO_V30 deviceInfo;
 NET_DVR_PREVIEWINFO previewInfo;
 HWND hRealVideoHanlder;
-NVRInfo nvrInfo;
+struNVRInfo nvrInfo;
 LONG testBufferSize ;
 LONG callBackNum;
 
@@ -21,9 +22,9 @@ LONG nPort = -1;
 
 int nCurGetIndex = 0;
 int nCurPutIndex = 0;
-CarInfoOut carInfoOut[MAX_CAR_COUNT];
+struCarInfoOut carInfoOut[MAX_CAR_COUNT];
 unsigned char *videoChan [MAX_VIDEO_CHANNEL_COUNT];
-NozzleInfo nozzleInfo[MAX_NOZZLE_COUNT];
+struNozzleInfo nozzleInfo[MAX_NOZZLE_COUNT];
 int nNozzleCount = 0;
 int nVideoChanCount = 0;
 int nCurVideoChan = 0;
@@ -35,9 +36,7 @@ int calc = 0;
 bool bSwith = false;
 bool bRecog = false;
 NET_DVR_IPPARACFG_V40 struIPPARACFG;
-
-
-
+int WM_CARDATA = RegisterWindowMessage(_T("CARDATA"));
 
 
 SPLATE_API int SP_InitRunParam(unsigned char *pChan, int lenth)
@@ -46,7 +45,7 @@ SPLATE_API int SP_InitRunParam(unsigned char *pChan, int lenth)
 	{
 		return INVALID_NOZZLE_COUNT;
 	}
-	memcpy(nozzleInfo, pChan, lenth*sizeof(NozzleInfo));
+	memcpy(nozzleInfo, pChan, lenth*sizeof(struNozzleInfo));
 	nNozzleCount = lenth;
 	for (int i = 0; i < MAX_NOZZLE_COUNT; i++)
 	{
@@ -102,12 +101,16 @@ SPLATE_API int SP_Close()
 	return SUCCESS;
 }
 
-SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo)
+SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo, int lenth)
 {
-	memcpy(&previewInfo, preInfo, sizeof(previewInfo));
-	previewInfo.lChannel = nozzleInfo[nCurNozzleIndex].videoChanNo;
+	memcpy(&previewInfo, preInfo, lenth);
+	//previewInfo.lChannel = nozzleInfo[nCurNozzleIndex].videoChanNo;
 	HWND pUser = nullptr;//用户数据
-	nvrInfo.m_lPlayHandle = NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &previewInfo, RealDataCallBack, pUser);
+	if (nvrInfo.m_lPlayHandle > -1)
+	{
+		NET_DVR_StopRealPlay(nvrInfo.m_lPlayHandle);
+	}
+	nvrInfo.m_lPlayHandle = NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &previewInfo, NULL, pUser);
 	if (nvrInfo.m_lPlayHandle < 0)
 	{
 		return NET_DVR_GetLastError();
@@ -142,9 +145,9 @@ SPLATE_API int SP_BeginRecog()
 	return nvrInfo.m_lPlayHandle;
 
 }
-SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg)
+SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg, int lenth)
 {
-	memcpy(&th_PlateIDCfg, th_plateIDCfg, sizeof(TH_PlateIDCfg));
+	memcpy(&th_PlateIDCfg, th_plateIDCfg, lenth);
 	int ret = TH_InitPlateIDSDK(&th_PlateIDCfg);
 	if (ret != 0)
 	{
@@ -160,11 +163,12 @@ SPLATE_API int SP_GetCarCount()
 {
 	return nCurCarCount;
 }
-SPLATE_API int SP_GetFirstCarInfo(CarInfoOut *carinfo)
+SPLATE_API int SP_GetFirstCarInfo(struCarInfoOut *carinfo, int &lenth)
 {
 	if (nCurCarCount > 0)
 	{
-		memcpy(carinfo, &carInfoOut[nCurGetIndex], sizeof(CarInfoOut));
+		lenth = sizeof(struCarInfoOut);
+		memcpy(carinfo, &carInfoOut[nCurGetIndex], sizeof(struCarInfoOut));
 		nCurCarCount--;
 		if (nCurGetIndex++ == MAX_CAR_COUNT)
 			nCurGetIndex = 0;
@@ -173,11 +177,11 @@ SPLATE_API int SP_GetFirstCarInfo(CarInfoOut *carinfo)
 	return FAIL;
 }
 
-SPLATE_API int SP_GetCarInfo(CarInfoOut *carinfo, int carCount)
+SPLATE_API int SP_GetCarInfo(struCarInfoOut *carinfo, int carCount,int &lenth)
 {
 	if (carCount > nCurCarCount || carCount <= 0)
 		return INVALID_CAR_COUNT;
-	int size = sizeof(CarInfoOut);
+	int size = sizeof(struCarInfoOut);
 	for (int i = 0;i<carCount;i++)
 	{
 		memcpy(carinfo + size*i, &carInfoOut[nCurGetIndex], size);
@@ -185,6 +189,7 @@ SPLATE_API int SP_GetCarInfo(CarInfoOut *carinfo, int carCount)
 		if (nCurGetIndex++ == MAX_CAR_COUNT)
 			nCurGetIndex = 0;
 	}
+	lenth = carCount*size;
 	return SUCCESS;
 }
 SPLATE_API int SP_GetNvrStatus()
@@ -200,9 +205,11 @@ SPLATE_API int SP_TestAPI()
 {
 	//return SwithNextNozzle();
 	//return 0;
-	NET_DVR_GET_STREAM_UNION teet;
-	int a = sizeof(NET_DVR_GET_STREAM_UNION);
-	return a;
+	
+	
+	
+	PostMessage(HWND_BROADCAST, WM_CARDATA,1, 1);
+	return 0;
 }
 int SwithNextNozzle(void)
 {
@@ -369,6 +376,8 @@ void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameIn
 				carInfoOut[nCurPutIndex].nVideoChannel = nCurVideoChan;
 				carInfoOut[nCurPutIndex].nPicType = T_YV12;
 				carInfoOut[nCurPutIndex].nType = recogResult[i].nType;
+				carInfoOut[nCurPutIndex].nPicWidth = pFrameInfo->nWidth;
+				carInfoOut[nCurPutIndex].nPicHeight = pFrameInfo->nHeight;
 				nCurPutIndex++;
 			}
 			if (nLogLevel >= 3)

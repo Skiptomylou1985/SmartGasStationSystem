@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
-namespace SPManager
+namespace ParamSet
 {
     public static class Global
     {
@@ -15,16 +15,17 @@ namespace SPManager
         public static string basePicPath = "D:\\images\\";
         public static MysqlHelper mysqlHelper;
         public static ClsStationInfo stationInfo = new ClsStationInfo();
-        public static ClsNVRInfo clsNvrInfo = new ClsNVRInfo();
+        public static List<ClsNVRInfo> nvrInfoList = new List<ClsNVRInfo>();
         public static Image greenImage = Image.FromFile(Application.StartupPath+"\\images\\Box_Green.png");
         public static Image redImage = Image.FromFile(Application.StartupPath + "\\images\\Box_red.png");
         public static int nMatchMode = 1;//匹配模式，1 有出入口相机，2 无出入口相机
         public static List<ClsCarInfo> carList = new List<ClsCarInfo>();
         public static List<ClsNozzle> nozzleList = new List<ClsNozzle>();
-        public static QueueManager<struPic> picQueue = new QueueManager<struPic>();
         public static int nDefaultWidth = 1920;
         public static int nDefaultHeight = 1020;
         public static NET_DVR_IPPARACFG_V40 net_dvr_cfg = new NET_DVR_IPPARACFG_V40();
+        public static bool bReDraw;
+        public static bool bShowDraw;
 
     }
     

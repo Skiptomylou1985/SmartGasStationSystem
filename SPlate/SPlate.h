@@ -42,7 +42,7 @@ typedef struct tagNVRInfo
 	LONG m_lAlarmHandle;         
 	LONG m_lPlayHandle;
 	BOOLEAN m_bLocalRecord;		 
-}NVRInfo;
+}struNVRInfo;
 typedef struct tagVideoChanInfo
 {
 	char *NvrIP;
@@ -61,16 +61,18 @@ typedef struct
 	int nVideoChannel;  //识别图片通道
 	int nNozzleNo;      //油枪号
 	int nPicType;       //图片类型
+	int nPicWidth;
+	int nPicHeight;
 	int nPicLenth;
 	char pic[MAX_PIC_LENTH];
 	
-} CarInfoOut;
+} struCarInfoOut;
 typedef struct
 {
 	int nozzleNo;
 	LONG videoChanNo;
 	TH_RECT th_rect;
-} NozzleInfo;
+} struNozzleInfo;
 int SwithNextNozzle(void);
 bool YV12_to_RGB24(unsigned char* pYV12, unsigned char* pRGB24, int iWidth, int iHeight);
 void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameInfo, long nReserved1, long nReserved2);
@@ -79,13 +81,13 @@ extern "C" SPLATE_API int SP_InitRunParam(BYTE *pChan,int lenth);
 extern "C" SPLATE_API int SP_InitNVR(char *IpAddress,LONG nPort,char *sAdmin,char *sPassword);
 extern "C" SPLATE_API int SP_GetNvrCfg(NET_DVR_IPPARACFG_V40 *nvrCfg,int &lenth);
 extern "C" SPLATE_API int SP_Close();
-extern "C" SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo);
+extern "C" SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo,int lenth);
 extern "C" SPLATE_API int SP_BeginRecog();
-extern "C" SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg);
+extern "C" SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg,int lenth);
 extern "C" SPLATE_API int SP_TestAPI();
 extern "C" SPLATE_API int SP_GetCarCount();
-extern "C" SPLATE_API int SP_GetFirstCarInfo(CarInfoOut *carinfo);
-extern "C" SPLATE_API int SP_GetCarInfo(CarInfoOut *carinfo,int carCount);
+extern "C" SPLATE_API int SP_GetFirstCarInfo(struCarInfoOut *carinfo,int &lenth);
+extern "C" SPLATE_API int SP_GetCarInfo(struCarInfoOut *carinfo,int carCount,int &lenth);
 extern "C" SPLATE_API int SP_GetNvrStatus();
 extern "C" SPLATE_API int SP_SetLogLevel(int loglevel);
 

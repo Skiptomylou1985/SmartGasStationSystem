@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SPManager
+namespace ParamSet
 {
     public class QueueManager<T>
     {

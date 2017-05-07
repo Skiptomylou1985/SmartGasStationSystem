@@ -8,10 +8,25 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
 
+
 namespace SPManager
 {
      partial class FormMain
     {
+        [DllImport("user32.dll")]
+        static extern uint RegisterWindowMessage(string lpString);
+        static uint WM_CARDATA = RegisterWindowMessage("CARDATA");    //抓拍
+        protected override void DefWndProc(ref Message m)
+        {
+            if (m.Msg == Convert.ToInt32(WM_CARDATA))
+            {
+                GetCarFromDll();
+            }
+            else
+            {
+                base.DefWndProc(ref m);
+            }
+        }
         #region 系统初始化代码包含 1 数据库 2 日志系统 3 运行参数 4 设备及算法 5 网络服务
         private int Init()
         {
@@ -125,13 +140,13 @@ namespace SPManager
                     else if (paramName == "updatetime")
                         Global.updateTime = DateTime.Parse(paramValue);
                     else if (paramName == "nvrip")
-                        Global.nvrInfo.ip = paramValue;
+                        Global.clsNvrInfo.ip = paramValue;
                     else if (paramName == "nvrport")
-                        Global.nvrInfo.port = int.Parse(paramValue);
+                        Global.clsNvrInfo.port = int.Parse(paramValue);
                     else if (paramName == "nvradmin")
-                        Global.nvrInfo.loginName = paramValue;
+                        Global.clsNvrInfo.loginName = paramValue;
                     else if (paramName == "nvrpassword")
-                        Global.nvrInfo.password = paramValue;
+                        Global.clsNvrInfo.password = paramValue;
                     else if (paramName == "matchmode")
                         Global.nMatchMode = int.Parse(paramValue);
                     else if (paramName == "picpath")
@@ -158,7 +173,7 @@ namespace SPManager
                 DataTable dt = Global.mysqlHelper.GetDataTable(queryString);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Nozzle nozzle = new Nozzle();
+                    ClsNozzle nozzle = new ClsNozzle();
                     nozzle.machineNo = int.Parse(dr["nozzleno"].ToString());
                     nozzle.oilType = int.Parse(dr["oiltype"].ToString());
                     nozzle.recogArea.left = (int)(double.Parse(dr["x1"].ToString()) * Global.nDefaultWidth);
@@ -196,9 +211,9 @@ namespace SPManager
         {
             Global.LogServer.Add(new LogInfo("Debug","main->InitDev in", (int)EnumLogLevel.DEBUG));
             
-            int structLenth = Marshal.SizeOf(typeof(structNozzle));
+            int structLenth = Marshal.SizeOf(typeof(struNozzle));
             IntPtr ip = Marshal.AllocHGlobal(Global.nozzleList.Count* structLenth);
-            structNozzle[] nozz = new structNozzle[Global.nozzleList.Count];
+            struNozzle[] nozz = new struNozzle[Global.nozzleList.Count];
             byte[] ipp = new byte[1024];
             int offset = 0;
             for (int i =0;i<Global.nozzleList.Count;i++)
@@ -216,10 +231,10 @@ namespace SPManager
             int ret = SPlate.SP_InitRunParam(ipp, Global.nozzleList.Count);
 
             Global.LogServer.Add(new LogInfo("Debug", "main:InitDev SP_InitRunParam done return value"+ret.ToString(), (int)EnumLogLevel.DEBUG));
-            Global.LogServer.Add(new LogInfo("Debug", "main->InitDev->SP_InitNVR begin, param value " + Global.nvrInfo.ip + " "
-                + Global.nvrInfo.port.ToString() + " " + Global.nvrInfo.loginName + " " + Global.nvrInfo.password, (int)EnumLogLevel.DEBUG));
+            Global.LogServer.Add(new LogInfo("Debug", "main->InitDev->SP_InitNVR begin, param value " + Global.clsNvrInfo.ip + " "
+                + Global.clsNvrInfo.port.ToString() + " " + Global.clsNvrInfo.loginName + " " + Global.clsNvrInfo.password, (int)EnumLogLevel.DEBUG));
 
-            ret = SPlate.SP_InitNVR(Global.nvrInfo.ip, Global.nvrInfo.port, Global.nvrInfo.loginName, Global.nvrInfo.password);
+            ret = SPlate.SP_InitNVR(Global.clsNvrInfo.ip, Global.clsNvrInfo.port, Global.clsNvrInfo.loginName, Global.clsNvrInfo.password);
             Global.LogServer.Add(new LogInfo("Debug", "main->InitDev->SP_InitNVR done, return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
             if (ret == 0)
                 return true;
@@ -251,7 +266,8 @@ namespace SPManager
             th_PlateIDCfg.bOutputSingleFrame = 1;
             th_PlateIDCfg.bMovingImage = 0;
             Global.LogServer.Add(new LogInfo("Debug", "main->SP_InitAlg begin", (int)EnumLogLevel.DEBUG));
-            int ret = SPlate.SP_InitAlg(ref th_PlateIDCfg);
+            int lenth = Marshal.SizeOf(th_PlateIDCfg);
+            int ret = SPlate.SP_InitAlg(ref th_PlateIDCfg,lenth);
             Global.LogServer.Add(new LogInfo("Debug", "main->SP_InitAlg done, return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
             if (ret == 0)
                 return true;
@@ -264,7 +280,10 @@ namespace SPManager
         #region 获取，处理数据
         private void GetNvrConfig()
         {
-            NET_DVR_IPPARACFG_V40 nvrConfig = new NET_DVR_IPPARACFG_V40();
+            IntPtr ip = Marshal.AllocHGlobal(Marshal.SizeOf(Global.net_dvr_cfg));
+            int lenth = 0;
+            SPlate.SP_GetNvrCfg(ip, ref lenth);
+            Global.net_dvr_cfg = (NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ip, typeof(NET_DVR_IPPARACFG_V40));
         }
         private void GetCarFromDll()
         {
@@ -273,15 +292,68 @@ namespace SPManager
                 return;
             for (int i =0;i<count;i++)
             {
-                CarInfoOut carOut = new CarInfoOut();
-                IntPtr pCarOut = Marshal.AllocHGlobal(Marshal.SizeOf(carOut));
-                SPlate.SP_GetFirstCarInfo(pCarOut);
-                carOut = (CarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(CarInfoOut));
-                CarInfo info = new CarInfo();
+                struCarInfoOut struCarOut = new struCarInfoOut();
+                IntPtr pCarOut = Marshal.AllocHGlobal(Marshal.SizeOf(struCarOut));
+                int lenth = 0;
+                SPlate.SP_GetFirstCarInfo(pCarOut,ref lenth);
+                if (lenth != Marshal.SizeOf(struCarOut))
+                {
+                    Global.LogServer.Add(new LogInfo("Error", "Main->GetCarFromDLL: 动态库输出结构体与上位机定义结构图长度不一致", (int)EnumLogLevel.ERROR));
+                    return;
+                }
+                struCarOut = (struCarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(struCarInfoOut));
+
+                ClsCarInfo info = new ClsCarInfo();
+                
                 
             }
         }
+        private void MatchCarInList(struCarInfoOut struCarInfo)
+        {
+            //1.判断为出入口相机或加油机相机
+            if (Global.nMatchMode == 1) //有出入口相机
+            {
+            } 
+            else if (Global.nMatchMode == 2) //无出入口相机
+            {
+                ClsCarInfo carInfo = new ClsCarInfo();
+                carInfo.arriveTime = DateTime.Now;
+                carInfo.license = System.Text.Encoding.Default.GetString(struCarInfo.license);
+                carInfo.licenseColor = struCarInfo.nColor;
+                carInfo.carColor = struCarInfo.nCarColor;
+                carInfo.carLogo = struCarInfo.nCarLogo;
+                carInfo.oilMachine = struCarInfo.nNozzleNo;
+                carInfo.oilType = GetOilType(struCarInfo.nNozzleNo);
+                string picPath = Global.basePicPath + "\\" + DateTime.Now.ToString("yyyy\\MM\\dd")+"\\"+carInfo.license;
+                carInfo.picPath = picPath;
+                carInfo.matchFlag = 1;
+                Global.carList.Add(carInfo);
 
+                struPic pic = new struPic();
+                pic.sPicPath = picPath;
+                pic.nPicType = struCarInfo.nPicType;
+                pic.nWidth = struCarInfo.nPicWidth;
+                pic.nHeight = struCarInfo.nPicHeight;
+                pic.nLenth = struCarInfo.nPicLenth;
+                pic.nSaveType = 2;
+                Buffer.BlockCopy(struCarInfo.pic, 0, pic.brPicBuffer, 0, struCarInfo.nPicLenth);
+
+            }
+            
+        }
+        
+        
+        private int GetOilType(int nozzleNo)
+        {
+            foreach (ClsNozzle nozz in Global.nozzleList)
+            {
+                if (nozzleNo == nozz.machineNo)
+                {
+                    return nozz.oilType;
+                }
+            }
+            return 1;
+        }
         #endregion
 
     }

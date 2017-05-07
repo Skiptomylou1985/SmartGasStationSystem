@@ -36,7 +36,7 @@ namespace SPManager
         public uint dwAvailVirtual;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct structNozzle
+    public struct struNozzle
     {
         public int nozzleNo;
         public int videoChanNo;
@@ -45,7 +45,40 @@ namespace SPManager
         public int top;
         public int bottom;
     }
-    class StructDefine
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct struCarInfoOut
     {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        public byte[] license;   // 车牌字符串
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        public byte[] color;      // 车牌颜色
+        public int nColor;         // 车牌颜色
+        public int nType;          // 车牌类型
+        public int nConfidence;    // 整牌可信度
+        public int nCarColor;      //车的颜色
+        public int nCarLogo;         //车标类型
+        public int nCarType;           //车辆类型，已弃用
+        public int nVideoChannel;  //识别视频通道
+        public int nNozzleNo;
+        public int nPicType;       //图片类型
+        public int nPicWidth;
+        public int nPicHeight;
+        public int nPicLenth;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10 * 1024 * 1024)]
+        public byte[] pic;
+
     }
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct struPic
+    {
+        public string sPicPath;
+        public int nPicType;
+        public int nSaveType;
+        public int nWidth;
+        public int nHeight;
+        public int nLenth;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10 * 1024 * 1024)]
+        public byte[] brPicBuffer;
+    }
+
 }

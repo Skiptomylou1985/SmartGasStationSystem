@@ -110,24 +110,21 @@ namespace SPManager
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            CarInfoOut carOut = new CarInfoOut();
-            IntPtr pCarOut = Marshal.AllocHGlobal(Marshal.SizeOf(carOut));
-            SPlate.SP_GetFirstCarInfo(pCarOut);
-            carOut = (CarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(CarInfoOut));
+            GetCarFromDll();
             //carOut = (CarInfoOut)obj;
-            MessageBox.Show(carOut.license + carOut.nConfidence.ToString() + carOut.nPicLenth.ToString());
+            //MessageBox.Show(struCarOut.license + struCarOut.nConfidence.ToString() + struCarOut.nPicLenth.ToString());
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
             //previewInfo.hPlayWnd = new IntPtr();//预览窗口
             previewInfo.hPlayWnd = realVideo.Handle;//预览窗口
-           // previewInfo.lChannel = 33;//预te览的设备通道
             previewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
             previewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
             previewInfo.bBlocked = false; //0- 非阻塞取流，1- 阻塞取流
             previewInfo.dwDisplayBufNum = 15;
-            SPlate.SP_PreviewInfo(ref previewInfo).ToString();
+            int lenth = Marshal.SizeOf(previewInfo);
+            SPlate.SP_PreviewInfo(ref previewInfo,lenth).ToString();
         }
 
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -144,12 +141,13 @@ namespace SPManager
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //SPlate.SP_TestAPI();
+            
+            SPlate.SP_TestAPI();
+            return;
             NET_DVR_IPPARACFG_V40 ipparacfg = new NET_DVR_IPPARACFG_V40();
             IntPtr ip = Marshal.AllocHGlobal(Marshal.SizeOf(ipparacfg));
             int lenth = 0;
             SPlate.SP_GetNvrCfg(ip, ref lenth);
-            //object obj = Marshal.PtrToStructure(ip, typeof(NET_DVR_IPPARACFG_V40));
             ipparacfg = (NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ip, typeof(NET_DVR_IPPARACFG_V40));
 
             StringBuilder sb = new StringBuilder();
