@@ -1,0 +1,31 @@
+2017-05-08 14:04:47.863->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 14:04:48.342->:  main->SP_InitAlg begin
+2017-05-08 14:06:44.983->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 14:06:45.331->:  main->SP_InitAlg begin
+2017-05-08 14:11:02.096->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 14:11:02.431->:  main->SP_InitAlg begin
+2017-05-08 19:42:34.990->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 19:42:35.331->:  main->SP_InitAlg begin
+2017-05-08 19:44:44.153->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 19:44:44.453->:  main->SP_InitAlg begin
+2017-05-08 19:47:03.966->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 19:47:04.252->:  main->SP_InitAlg begin
+2017-05-08 19:52:01.385->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 19:52:01.705->:  main->SP_InitAlg begin
+2017-05-08 19:53:20.017->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 19:53:20.295->:  main->SP_InitAlg begin
+2017-05-08 19:56:36.094->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 19:56:36.380->:  main->SP_InitAlg begin
+2017-05-08 20:33:17.774->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 20:33:18.168->:  main->SP_InitAlg begin
+2017-05-08 20:33:29.859->:  main->SP_InitAlg done, return value0
+2017-05-08 20:33:29.860->:  main->InitDev in
+2017-05-08 20:33:29.860->:  main->InitDev->SP_InitNVR begin, param value 10.225.142.28 8000 admin 12345
+2017-05-08 20:33:35.036->:  main->InitDev->SP_InitNVR done, return value10
+2017-05-08 20:36:20.475->:  main->InitDatabase param valueC:\Users\Administrator\Desktop\C#\大象工程\Debug\config.ini mysql 172.16.84.1 gsims3 root root
+2017-05-08 20:36:20.759->:  main->SP_InitAlg begin
+2017-05-08 20:36:24.465->:  main->SP_InitAlg done, return value0
+2017-05-08 20:36:24.467->:  main->InitDev in
+2017-05-08 20:36:24.468->:  main->InitDev->SP_InitNVR begin, param value 10.225.142.28 8000 admin 12345
+2017-05-08 20:36:29.587->:  main->InitDev->SP_InitNVR done, return value10
+2017-05-08 20:37:34.484->:  main:InitDev SP_InitRunParam done return value10

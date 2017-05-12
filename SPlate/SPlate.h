@@ -30,6 +30,7 @@
 #define INVALID_VIDEO_COUNT  -1//超过最大视频通道数
 #define INVALID_NOZZLE_COUNT -3 //错误油枪数
 #define INVALID_CAR_COUNT -2  //错误车辆数
+#define INVALID_LENTH -4      //输入长度错误
 typedef struct tagNVRInfo
 {
 	char *IpAddress;        
@@ -82,7 +83,7 @@ extern "C" SPLATE_API int SP_InitNVR(char *IpAddress,LONG nPort,char *sAdmin,cha
 extern "C" SPLATE_API int SP_GetNvrCfg(NET_DVR_IPPARACFG_V40 *nvrCfg,int &lenth);
 extern "C" SPLATE_API int SP_Close();
 extern "C" SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo,int lenth);
-extern "C" SPLATE_API int SP_BeginRecog();
+extern "C" SPLATE_API int SP_BeginRecog(HWND hPlayHandle);
 extern "C" SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg,int lenth);
 extern "C" SPLATE_API int SP_TestAPI();
 extern "C" SPLATE_API int SP_GetCarCount();
@@ -90,6 +91,7 @@ extern "C" SPLATE_API int SP_GetFirstCarInfo(struCarInfoOut *carinfo,int &lenth)
 extern "C" SPLATE_API int SP_GetCarInfo(struCarInfoOut *carinfo,int carCount,int &lenth);
 extern "C" SPLATE_API int SP_GetNvrStatus();
 extern "C" SPLATE_API int SP_SetLogLevel(int loglevel);
+extern "C" SPLATE_API int SP_SetSwitchFlag(int frameCount);
 
 
 

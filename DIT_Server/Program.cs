@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace DIT_Demo
+namespace DIT_Server
 {
     static class Program
     {
@@ -14,7 +14,7 @@ namespace DIT_Demo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormDIT());
+            Application.Run(new FormServer());
         }
     }
 }

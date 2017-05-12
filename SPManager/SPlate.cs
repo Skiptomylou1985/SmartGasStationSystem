@@ -21,7 +21,7 @@ namespace SPManager
     }
 
     //配置结构体  
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto,Pack =1)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]   //此处不要加Pack =1 字节对齐
     public struct TH_PlateIDCfg
     {
         public int nMinPlateWidth;      //检测的最小车牌宽度，以像素为单位
@@ -197,7 +197,7 @@ namespace SPManager
         [DllImport("SPlate.dll")]
         public static extern int SP_PreviewInfo(ref NET_DVR_PREVIEWINFO previewInfo,int lenth);
         [DllImport("SPlate.dll")]
-        public static extern int SP_BeginRecog();
+        public static extern int SP_BeginRecog(IntPtr hPlayHandle);
         [DllImport("SPlate.dll")]
         public static extern int SP_TestAPI();
         [DllImport("SPlate.dll")]
@@ -210,5 +210,7 @@ namespace SPManager
         public static extern int SP_GetNvrStatus();
         [DllImport("SPlate.dll")]
         public static extern int SP_SetLogLevel(int loglevel);
+        [DllImport("SPlate.dll")]
+        public static extern int SP_SetSwitchFlag(int frameCount);
     }
 }

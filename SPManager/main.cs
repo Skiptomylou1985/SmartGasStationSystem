@@ -228,24 +228,25 @@ namespace SPManager
                 Buffer.BlockCopy(bNoz, 0, ipp, offset,structLenth);
                 offset += structLenth;
             }
-            int ret = SPlate.SP_InitRunParam(ipp, Global.nozzleList.Count);
-
-            Global.LogServer.Add(new LogInfo("Debug", "main:InitDev SP_InitRunParam done return value"+ret.ToString(), (int)EnumLogLevel.DEBUG));
+          
             Global.LogServer.Add(new LogInfo("Debug", "main->InitDev->SP_InitNVR begin, param value " + Global.clsNvrInfo.ip + " "
                 + Global.clsNvrInfo.port.ToString() + " " + Global.clsNvrInfo.loginName + " " + Global.clsNvrInfo.password, (int)EnumLogLevel.DEBUG));
 
-            ret = SPlate.SP_InitNVR(Global.clsNvrInfo.ip, Global.clsNvrInfo.port, Global.clsNvrInfo.loginName, Global.clsNvrInfo.password);
+            int ret = SPlate.SP_InitNVR(Global.clsNvrInfo.ip, Global.clsNvrInfo.port, Global.clsNvrInfo.loginName, Global.clsNvrInfo.password);
             Global.LogServer.Add(new LogInfo("Debug", "main->InitDev->SP_InitNVR done, return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
+            
             if (ret == 0)
+            {
+                SPlate.SP_InitRunParam(ipp, Global.nozzleList.Count);
+                Global.LogServer.Add(new LogInfo("Debug", "main:InitDev SP_InitRunParam done return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
                 return true;
+            }
             else
                 return false;
             
         }
         private bool InitAlg()
         {
-            //TODO 临时操作
-            return true;
             TH_PlateIDCfg th_PlateIDCfg = new TH_PlateIDCfg();
             th_PlateIDCfg.nMaxPlateWidth = 400;
             th_PlateIDCfg.nMinPlateWidth = 60;
@@ -254,9 +255,9 @@ namespace SPManager
             th_PlateIDCfg.nMaxImageHeight = 2500;
 
             th_PlateIDCfg.nFastMemorySize = 16000;//DSP内存大小  
-            th_PlateIDCfg.pFastMemory = Marshal.AllocHGlobal(16000);//DSP申请内存 
+           // th_PlateIDCfg.pFastMemory = Marshal.AllocHGlobal(16000);//DSP申请内存 
 
-            th_PlateIDCfg.pMemory = Marshal.AllocHGlobal(50000000);//申请普通内存  
+          //  th_PlateIDCfg.pMemory = Marshal.AllocHGlobal(50000000);//申请普通内存  
             th_PlateIDCfg.nMemorySize = 50000000;
             th_PlateIDCfg.bUTF8 = 0;
             th_PlateIDCfg.bShadow = 1;
@@ -264,7 +265,7 @@ namespace SPManager
             th_PlateIDCfg.bLeanCorrection = 1;
             th_PlateIDCfg.bCarModel = 0;
             th_PlateIDCfg.bOutputSingleFrame = 1;
-            th_PlateIDCfg.bMovingImage = 0;
+            th_PlateIDCfg.bMovingImage = 1;
             Global.LogServer.Add(new LogInfo("Debug", "main->SP_InitAlg begin", (int)EnumLogLevel.DEBUG));
             int lenth = Marshal.SizeOf(th_PlateIDCfg);
             int ret = SPlate.SP_InitAlg(ref th_PlateIDCfg,lenth);

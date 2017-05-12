@@ -41,8 +41,8 @@ namespace SPManager
         public int nozzleNo;
         public int videoChanNo;
         public int left;
-        public int right;
         public int top;
+        public int right;
         public int bottom;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

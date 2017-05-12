@@ -15,4 +15,5 @@
 
 void get_local_time(char* buffer);
 long get_file_size(char* filename);
-void write_log_file(char* filename, long max_size, char* buffer, unsigned buf_size);
+void write_log_file(char* filename, long max_size, char* buffer, unsigned buf_size, long logLevel);
+void set_log_level(int loglevel);

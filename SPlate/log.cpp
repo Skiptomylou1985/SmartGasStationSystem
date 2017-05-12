@@ -6,7 +6,7 @@
 #include <time.h> 
 
 
-
+int nCurLogLevel = 3;
 void get_local_time(char* buffer)
 {
 	SYSTEMTIME st;
@@ -40,8 +40,12 @@ long get_file_size(char* filename)
 
 	return length;
 }
-void write_log_file(char* fileName, long max_size, char* buffer, unsigned buf_size)
+void write_log_file(char* fileName, long max_size, char* buffer, unsigned buf_size,long logLevel)
 {
+	if (nCurLogLevel < logLevel)
+	{
+		return;
+	}
 	char filename[128] = "dlllog\\";
 	strcpy(filename + strlen(filename), fileName);
 	if (filename != NULL && buffer != NULL)
@@ -71,4 +75,8 @@ void write_log_file(char* fileName, long max_size, char* buffer, unsigned buf_si
 			}
 		}
 	}
+}
+void set_log_level(int loglevel)
+{
+	nCurLogLevel = loglevel;
 }
