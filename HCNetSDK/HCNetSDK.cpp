@@ -3,10 +3,12 @@
 
 #include "stdafx.h"
 #include "HCNetSDK.h"
+#include "log.h"
 #include <WINSOCK2.H> 
 #include <process.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #pragma  comment(lib,"ws2_32.lib")  
 #define  CMDINIT 0x01
 #define  CMDLOGIN 0x02
@@ -65,16 +67,25 @@ void _stdcall ThreadFuncRecv(LPVOID lpParam)
 			memcpy(buffer, recData, len);
 			if (buffer[2] == 0x06 && NULL != msgCallBack_V31)  //»Øµ÷·µ»Ø
 			{
+				write_log_file("receive callback data", strlen("receive callback data"));
 				memset(&curCallBackResult, 0, sizeof(NET_ITS_PLATE_RESULT));
 				memcpy(&curCallBackResult, &buffer[4], sizeof(NET_ITS_PLATE_RESULT));
+				char info[128] = "Plate:";
+				strcpy(info + strlen(info), curCallBackResult.sLicense);
+				strcpy(info + strlen(info), "  byVehicleState:");
+				_itoa(curCallBackResult.byVehicleState, info + strlen(info), 10);
+				write_log_file(info, strlen(info));
 				NET_DVR_ALARMER *p = new NET_DVR_ALARMER();
 				DWORD dwbuflen = sizeof(NET_ITS_PLATE_RESULT);
 				char *pInfo = (char *)malloc(dwbuflen);
 				memcpy(pInfo, &curCallBackResult, dwbuflen);
+				write_log_file("execute callback function begin", strlen("execute callback function begin"));
 				msgCallBack_V31(COMM_ITS_PLATE_RESULT, p, pInfo, dwbuflen, nullptr);
+				write_log_file("execute callback function end", strlen("execute callback function end"));
 			}
 			else if (buffer[2] == 0x03)
 			{
+				write_log_file("receive snap data", strlen("receive snap data"));
 				memset(&curSnapResult, 0, sizeof(NET_DVR_PLATE_RESULT));
 				memcpy(&curSnapResult, &buffer[4], sizeof(NET_DVR_PLATE_RESULT));
 				SetEvent(snapEvent);
@@ -85,20 +96,31 @@ void _stdcall ThreadFuncRecv(LPVOID lpParam)
 }
 HCNETSDK_API BOOL NET_DVR_Init()
 {
-	/*char ip[30];
-	GetPrivateProfileString("server", "ip", "127.0.0.1", ip, 10, ".\\HCNetSDKConfig.ini")*/
+	write_log_file("NET_DVR_Init begin", strlen("NET_DVR_Init begin"));
+	char ip[30];
+	GetPrivateProfileStringA("server", "ip", "127.0.0.1", ip, 10, ".\\HCNetSDKConfig.ini");
+	char sPort[8];
+	GetPrivateProfileStringA("server", "port", "8870", sPort, 10, ".\\HCNetSDKConfig.ini");
+	int port = atoi(sPort);
+	char info[128] = "get parameters from file HCNetSDKConfig.ini    server ip:";
+	strcpy(info + strlen(info), ip);
+	strcpy(info + strlen(info), "  port:");
+	strcpy(info + strlen(info), sPort);
+	write_log_file(info, strlen(info));
 
 	snapEvent = CreateEvent(NULL, false, true, NULL);
-	sclient = getSocketConnect("127.0.0.1", 8870);
+	sclient = getSocketConnect(ip, port);
 	if (NULL == sclient)
 		return false;
 	socketIsConnected = true;
 	socketThreadHwd = _beginthreadex(NULL, 0, (_beginthreadex_proc_type)ThreadFuncRecv, NULL, 0,NULL);
+	write_log_file("NET_DVR_Init Success", strlen("NET_DVR_Init Success"));
 	return true;
 }
 
 HCNETSDK_API BOOL NET_DVR_Cleanup()
 {
+	write_log_file("NET_DVR_Cleanup Begin", strlen("NET_DVR_Cleanup Begin"));
 	socketIsConnected = false;
 	msgCallBack_V31 = nullptr;
 	if (NULL != socketThreadHwd)
@@ -111,23 +133,29 @@ HCNETSDK_API BOOL NET_DVR_Cleanup()
 		closesocket(sclient);
 		sclient = NULL;
 	}
-	
+	write_log_file("NET_DVR_Cleanup SUCCESS", strlen("NET_DVR_Cleanup SUCCESS"));
 	return true;
 }
 HCNETSDK_API LONG NET_DVR_Login_V30(char  *sDVRIP,WORD wDVRPort,char  *sUserName,char  *sPassWord,LPNET_DVR_DEVICEINFO_V30 lpDeviceInfo)
 {
+	
 	bLoginIn = true;
+	write_log_file("NET_DVR_Login_V30 SUCCESS", strlen("NET_DVR_Login_V30 SUCCESS"));
 	return 0;
 }
 HCNETSDK_API BOOL NET_DVR_Logout(LONG lUserID)
 {
 	bLoginIn = false;
+	write_log_file("NET_DVR_Logout SUCCESS", strlen("NET_DVR_Logout SUCCESS"));
 	return true;
 }
 HCNETSDK_API BOOL NET_DVR_ManualSnap(LONG lUserID,NET_DVR_MANUALSNAP * lpInter,LPNET_DVR_PLATE_RESULT lpOuter)
 {
+	write_log_file("NET_DVR_ManualSnap Begin", strlen("NET_DVR_ManualSnap Begin"));
+	bool ret = false;
 	if (socketIsConnected && sclient != NULL && bLoginIn)
 	{
+		
 		NET_DVR_MANUALSNAP snap = NET_DVR_MANUALSNAP();
 		snap.byPumpID = lpInter->byPumpID;
 		snap.byPumpStatus = lpInter->byPumpStatus;
@@ -147,28 +175,34 @@ HCNETSDK_API BOOL NET_DVR_ManualSnap(LONG lUserID,NET_DVR_MANUALSNAP * lpInter,L
 		send(sclient, &sendbuf[0], 10, 0);
 		ResetEvent(snapEvent);
 		DWORD dw = WaitForSingleObject(snapEvent, 3000);
+		char info[128] = "Snap Result Plate:";
 		switch (dw)
 		{
 		case WAIT_OBJECT_0:
 			memcpy(lpOuter, &curSnapResult, sizeof(NET_DVR_PLATE_RESULT));
+			ret = true;
+			strcpy(info + strlen(info), curSnapResult.sLicense);
+			strcpy(info + strlen(info), "  PumpID:");
+			_itoa(curSnapResult.byPumpID, info + strlen(info), 10);
+			write_log_file(info, strlen(info));
+			write_log_file("NET_DVR_ManualSnap SUCCESS", strlen("NET_DVR_ManualSnap SUCCESS"));
 			break;
-
 		case WAIT_TIMEOUT:
-			return false;
+			write_log_file("snap WAIT_TIMEOUT", strlen("snap WAIT_TIMEOUT"));
 			break;
-
 		case WAIT_FAILED:
-			return false;
+			write_log_file("snap WAIT_FAILED", strlen("snap WAIT_FAILED"));
 			break;
 		}
-		return true;
 	}
-	return false;
+	return ret;
 	
 }
 HCNETSDK_API BOOL NET_DVR_SetDVRMessageCallBack_V31(MSGCallBack_V31 fMessageCallBack, void* pUser)
 {
+	
 	msgCallBack_V31 = fMessageCallBack;
+	write_log_file("NET_DVR_SetDVRMessageCallBack_V31 SUCCESS", strlen("NET_DVR_SetDVRMessageCallBack_V31 SUCCESS"));
 	return true;
 }
 HCNETSDK_API BOOL NET_DVR_SetConnectTime(DWORD  dwWaitTime,DWORD  dwTryTimes)
@@ -183,6 +217,7 @@ HCNETSDK_API BOOL NET_DVR_SetConnectTime(DWORD  dwWaitTime,DWORD  dwTryTimes)
 		if (ret < 0)
 			return false;
 	}
+	write_log_file("NET_DVR_SetConnectTime SUCCESS", strlen("NET_DVR_SetConnectTime SUCCESS"));
 	return true;
 	
 }
@@ -190,6 +225,7 @@ HCNETSDK_API BOOL NET_DVR_SetReconnect(DWORD  dwInterval,BOOL  bEnableRecon)
 {
 	dwReconInterval = dwInterval;
 	bReconnetSocket = bEnableRecon;
+	write_log_file("NET_DVR_SetReconnect SUCCESS", strlen("NET_DVR_SetReconnect SUCCESS"));
 	return true;
 }
 HCNETSDK_API void NET_DVR_TestAPI()
