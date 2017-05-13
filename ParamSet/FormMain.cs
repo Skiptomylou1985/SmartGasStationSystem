@@ -79,14 +79,14 @@ namespace ParamSet
 
         private void contextTreeMenu_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && contextTreeMenu.Items[0].Selected)
-            {
-                FormNVR formnvr = new FormNVR();
-                formnvr.ShowDialog();
-            } 
-            else if(contextTreeMenu.Items[0].Selected)
-            {
-            }
+            //if (e.Button == MouseButtons.Left && contextTreeMenu.Items[0].Selected)
+            //{
+            //    FormNVR formnvr = new FormNVR();
+            //    formnvr.ShowDialog();
+            //} 
+            //else if(contextTreeMenu.Items[0].Selected)
+            //{
+            //}
         }
 
         private void videoBox_MouseDown(object sender, MouseEventArgs e)
@@ -202,6 +202,17 @@ namespace ParamSet
                     struDrawInfo[i].g.DrawRectangle(new Pen(Color.Red), X1, Y1, X2 - X1, Y2 - Y1);
                     }
                 }
+        }
+
+        private void addDevice_Click(object sender, EventArgs e)
+        {
+            FormNVR formnvr = new FormNVR();
+            formnvr.ShowDialog();
+        }
+
+        private void deleteDevice_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

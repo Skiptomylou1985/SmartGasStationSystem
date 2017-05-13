@@ -205,20 +205,22 @@
             this.addDevice,
             this.deleteDevice});
             this.contextTreeMenu.Name = "contextTreeMenu";
-            this.contextTreeMenu.Size = new System.Drawing.Size(125, 48);
+            this.contextTreeMenu.Size = new System.Drawing.Size(153, 70);
             this.contextTreeMenu.MouseClick += new System.Windows.Forms.MouseEventHandler(this.contextTreeMenu_MouseClick);
             // 
             // addDevice
             // 
             this.addDevice.Name = "addDevice";
-            this.addDevice.Size = new System.Drawing.Size(124, 22);
+            this.addDevice.Size = new System.Drawing.Size(152, 22);
             this.addDevice.Text = "添加设备";
+            this.addDevice.Click += new System.EventHandler(this.addDevice_Click);
             // 
             // deleteDevice
             // 
             this.deleteDevice.Name = "deleteDevice";
-            this.deleteDevice.Size = new System.Drawing.Size(124, 22);
+            this.deleteDevice.Size = new System.Drawing.Size(152, 22);
             this.deleteDevice.Text = "删除设备";
+            this.deleteDevice.Click += new System.EventHandler(this.deleteDevice_Click);
             // 
             // treeMain
             // 

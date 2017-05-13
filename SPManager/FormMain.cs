@@ -12,11 +12,10 @@ namespace SPManager
 {
     public partial class FormMain : Form
     {
-        TH_RECT th_RECT = new TH_RECT();
-        
-        TH_PlateResult th_PlateResult = new TH_PlateResult();
-        NET_DVR_PREVIEWINFO previewInfo = new NET_DVR_PREVIEWINFO();
-
+        //TH_RECT th_RECT = new TH_RECT();
+        //TH_PlateResult th_PlateResult = new TH_PlateResult();
+        //NET_DVR_PREVIEWINFO previewInfo = new NET_DVR_PREVIEWINFO();
+        private bool toExit = false;
         public FormMain()
         {
             InitializeComponent();
@@ -25,6 +24,7 @@ namespace SPManager
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+
             MEMORY_INFO MemInfo;
             MemInfo = new MEMORY_INFO();
             SystemUnit.GlobalMemoryStatus(ref MemInfo);
@@ -92,7 +92,7 @@ namespace SPManager
 
         private void btnTimer_Click(object sender, EventArgs e)
         {
-            timer1.Enabled = !timer1.Enabled;
+            timerServiceStaus.Enabled = !timerServiceStaus.Enabled;
         }
 
         private void btnChangeLogLevel_Click(object sender, EventArgs e)
@@ -129,6 +129,40 @@ namespace SPManager
             {
                 MessageBox.Show("网络服务初始化失败");
             }
+        }
+
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!this.toExit)
+            {
+                this.Visible = false;
+                e.Cancel = true;
+                return;
+            }
+        }
+
+        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
+        {
+            
+            if (DialogResult.Yes == (MessageBox.Show("确认退出程序？", "提示", MessageBoxButtons.YesNo)))
+            {
+                this.toExit = true;
+                this.Close();
+            }
+        }
+
+        private void notifyIconMain_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                this.contextMenuExit.Show(Cursor.Position);
+            }
+        }
+
+        private void notifyIconMain_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Visible = !this.Visible;
         }
     }
 }

@@ -35,7 +35,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>ooopic_1494137092.ico</ApplicationIcon>
+    <ApplicationIcon>display.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Emgu.CV, Version=2.0.1.0, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
@@ -104,6 +104,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="display.ico" />
     <Content Include="ooopic_1493771851.ico" />
     <Content Include="ooopic_1494137092.ico" />
   </ItemGroup>
