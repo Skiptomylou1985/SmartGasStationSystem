@@ -31,6 +31,8 @@
 #define INVALID_NOZZLE_COUNT -3 //错误油枪数
 #define INVALID_CAR_COUNT -2  //错误车辆数
 #define INVALID_LENTH -4      //输入长度错误
+//int WM_CARDATA = RegisterWindowMessage(_T("CARDATA"));
+int WM_CARDATA = ::RegisterWindowMessageA("CARDATA");
 typedef struct tagNVRInfo
 {
 	char *IpAddress;        
@@ -57,8 +59,9 @@ typedef struct
 	int nType;			// 车牌类型
 	int nConfidence;	// 整牌可信度
 	int nCarColor;		//车的颜色
-	int nCarLogo;         //车标类型
-	int nCarType;			//车辆类型，已弃用
+	int nCarLogo;         //车辆品牌
+	int nSubCarLogo;      //车辆子品牌
+	int nCarModel;			//车辆类型
 	int nVideoChannel;  //识别图片通道
 	int nNozzleNo;      //油枪号
 	int nPicType;       //图片类型

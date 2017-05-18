@@ -38,6 +38,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textName = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboDeviceType = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -62,6 +66,7 @@
             this.textLoginName.Name = "textLoginName";
             this.textLoginName.Size = new System.Drawing.Size(105, 21);
             this.textLoginName.TabIndex = 3;
+            this.textLoginName.Text = "admin";
             // 
             // label2
             // 
@@ -78,7 +83,7 @@
             this.textPassword.Name = "textPassword";
             this.textPassword.Size = new System.Drawing.Size(101, 21);
             this.textPassword.TabIndex = 5;
-            this.textPassword.UseSystemPasswordChar = true;
+            this.textPassword.Text = "12345";
             // 
             // label3
             // 
@@ -95,6 +100,7 @@
             this.textNVRPort.Name = "textNVRPort";
             this.textNVRPort.Size = new System.Drawing.Size(101, 21);
             this.textNVRPort.TabIndex = 7;
+            this.textNVRPort.Text = "8000";
             // 
             // label4
             // 
@@ -107,7 +113,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(75, 92);
+            this.btnOK.Location = new System.Drawing.Point(95, 123);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 8;
@@ -117,7 +123,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(202, 92);
+            this.btnCancel.Location = new System.Drawing.Point(202, 122);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 9;
@@ -125,11 +131,53 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(191, 86);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 12);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "设备类型：";
+            // 
+            // textName
+            // 
+            this.textName.Location = new System.Drawing.Point(75, 81);
+            this.textName.Name = "textName";
+            this.textName.Size = new System.Drawing.Size(105, 21);
+            this.textName.TabIndex = 11;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(20, 86);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "设备名：";
+            // 
+            // comboDeviceType
+            // 
+            this.comboDeviceType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboDeviceType.FormattingEnabled = true;
+            this.comboDeviceType.Items.AddRange(new object[] {
+            "海康",
+            "科达",
+            "大华"});
+            this.comboDeviceType.Location = new System.Drawing.Point(255, 82);
+            this.comboDeviceType.Name = "comboDeviceType";
+            this.comboDeviceType.Size = new System.Drawing.Size(101, 20);
+            this.comboDeviceType.TabIndex = 14;
+            // 
             // FormNVR
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(368, 135);
+            this.ClientSize = new System.Drawing.Size(368, 153);
+            this.Controls.Add(this.comboDeviceType);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.textName);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.textNVRPort);
@@ -162,5 +210,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textName;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboDeviceType;
     }
 }

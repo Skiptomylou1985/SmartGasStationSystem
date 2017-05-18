@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace SPManager
 {
@@ -16,6 +17,7 @@ namespace SPManager
         //TH_PlateResult th_PlateResult = new TH_PlateResult();
         //NET_DVR_PREVIEWINFO previewInfo = new NET_DVR_PREVIEWINFO();
         private bool toExit = false;
+        private DateTime lastUpdateTime = DateTime.Now;
         public FormMain()
         {
             InitializeComponent();
@@ -33,13 +35,39 @@ namespace SPManager
         
         private void FormMain_Load(object sender, EventArgs e)
         {
-//             this.notifyIconMain.Visible = true;//在通知区显示Form的Icon
-// 
-//             this.WindowState = FormWindowState.Minimized;
-// 
-//             this.Visible = false;
-// 
-//             this.ShowInTaskbar = false;//使Form不在任务栏上显示
+            //TODO 临时退出
+            return;
+            int ret = Init();
+            if (ret == 0)
+            {
+                SPlate.SP_BeginRecog(new IntPtr());
+                return;
+            }
+            if ((ret & 0x01) == 0x01)
+            {
+                MessageBox.Show("日志启动失败");
+            }
+            if ((ret & 0x02) == 0x02)
+            {
+                MessageBox.Show("数据库连接失败");
+            }
+            if ((ret & 0x04) == 0x04)
+            {
+                MessageBox.Show("参数初始化失败");
+            }
+            if ((ret & 0x08) == 0x08)
+            {
+                MessageBox.Show("算法初始化失败");
+            }
+            if ((ret & 0x10) == 0x10)
+            {
+                MessageBox.Show("设备初始化失败");
+            }
+            if ((ret & 0x20) == 0x20)
+            {
+                MessageBox.Show("网络服务初始化失败");
+            }
+
         }
 
         private void notifyIconMain_DoubleClick(object sender, EventArgs e)
@@ -77,7 +105,7 @@ namespace SPManager
 
         private void btnBeginWithVideo_Click(object sender, EventArgs e)
         {
-            SPlate.SP_BeginRecog(realVideo.Handle);
+            //SPlate.SP_BeginRecog(realVideo.Handle);
         }
 
         private void btnBeginRecog_Click(object sender, EventArgs e)
@@ -87,6 +115,19 @@ namespace SPManager
 
         private void btnTest_Click(object sender, EventArgs e)
         {
+            //List<ClsCarInfo> list = new List<ClsCarInfo>();
+            //for (int i =0;i<5;i++)
+            //{
+            //    ClsCarInfo info = new ClsCarInfo();
+            //    list.Add(info);
+            //}
+            //foreach (ClsCarInfo car in list)
+            //{
+            //    car.license = "2";
+            //    list.Remove(car);
+            //}
+            
+            
             SPlate.SP_TestAPI();
         }
 
@@ -97,6 +138,7 @@ namespace SPManager
 
         private void btnChangeLogLevel_Click(object sender, EventArgs e)
         {
+            
             SPlate.SP_SetLogLevel(comboLogLevel.SelectedIndex + 1);
         }
 
@@ -104,7 +146,11 @@ namespace SPManager
         {
             int ret = Init();
             if (ret == 0)
+            {
+                SPlate.SP_BeginRecog(new IntPtr());
                 return;
+            }
+                
             if ((ret & 0x01) == 0x01)
             {
                 MessageBox.Show("日志启动失败");
@@ -163,6 +209,33 @@ namespace SPManager
         private void notifyIconMain_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Visible = !this.Visible;
+        }
+
+        private void timerServiceStaus_Tick(object sender, EventArgs e)
+        {
+            this.showMemoryInfo();
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            string appPath = Application.StartupPath;
+            Process proc = Process.Start(appPath+Global.updateAppName);
+            if (proc != null)
+            {
+                ExitApp();
+            }
+        }
+
+        private void timerProcPic_Tick(object sender, EventArgs e)
+        {
+            if (Global.picQueue.GetQueueCount() > 0)
+            {
+                for (int i =0;i<Global.picQueue.GetQueueCount();i++)
+                {
+                    ClsPicture pic = Global.picQueue.Get();
+                    
+                }
+            }
         }
     }
 }

@@ -35,6 +35,27 @@ namespace ParamSet
         }
         private bool AddDevice()
         {
+            string ip = textNVRIP.Text.Trim();
+            int port = int.Parse(textNVRPort.Text.Trim());
+            string loginName = textLoginName.Text.Trim();
+            string password = textPassword.Text.Trim();
+            if (SPlate.SP_InitNVR(ip, port, loginName, password) == 0)
+            {
+                string sqlString = "insert into videohost (hosttype,hostname,hostip,hostport,loginname,loginpwd) varles ('" +
+                    comboDeviceType.Text + "','" + textName.Text.Trim() + "','" + ip + "'," + port.ToString() + ",'" + loginName + "','" + password + "')";
+                Global.mysqlHelper.ExecuteSql(sqlString);
+            }
+            //switch (comboDeviceType.SelectedIndex)
+            //{
+            //    case 0: //海康
+            //        break;
+            //    case 1: //科达
+            //        break;
+            //    case 2: //大华
+            //        break;
+            //    default:
+            //        break;
+            //}
             return false;
 
         }

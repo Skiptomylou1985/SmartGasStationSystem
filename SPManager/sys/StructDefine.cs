@@ -57,7 +57,8 @@ namespace SPManager
         public int nConfidence;    // 整牌可信度
         public int nCarColor;      //车的颜色
         public int nCarLogo;         //车标类型
-        public int nCarType;           //车辆类型，已弃用
+        public int nSubCarLogo;         //车辆品牌
+        public int nCarModel;           //车辆类型，已弃用
         public int nVideoChannel;  //识别视频通道
         public int nNozzleNo;
         public int nPicType;       //图片类型
@@ -79,6 +80,33 @@ namespace SPManager
         public int nLenth;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10 * 1024 * 1024)]
         public byte[] brPicBuffer;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct NET_ITS_PLATE_RESULT
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        public byte[] sLicense;     //车牌号码
+        public byte byPlateColor;                  //车牌颜色
+        public byte byColor;                       ///车颜色
+        public short wVehicleLogoRecog;             ///车品牌
+        public short wVehicleSubLogoRecog;          ///子品牌
+        public byte byVehicleShape;					///车型
+        public byte byVehicleState;              //进出站标识 1进站 2出站
+    }
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct NET_DVR_PLATE_RESULT
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        public byte[] sLicense;     //车牌号码
+        public byte byPlateColor;                  //车牌颜色
+        public byte byColor;                           ///车颜色
+        public short wVehicleLogoRecog;             ///车品牌
+        public short wVehicleSubLogoRecog;              ///子品牌
+        public byte byVehicleShape;                    ///车型
+        public byte byPumpID;                      ///油枪ID
+        public byte byPumpStatus;					///油枪状态
+
     }
 
 }

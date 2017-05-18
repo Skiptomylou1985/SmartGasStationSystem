@@ -110,61 +110,99 @@ namespace ParamSet
     }
     public class ClsNozzle
     {
-        public int machineNo
+        public int id
         {
-            get { return _machineNo; }
-            set { _machineNo = value; }
+            get { return _id; }
+            set { _id = value; }
         }
-        private int _machineNo = 0;
+        private int _id = 0;
+        public int parentid
+        {
+            get { return _parentid; }
+            set { _parentid = value; }
+        }
+        private int _parentid = 0;
+        public int nozzleNo
+        {
+            get { return _nozzleNo; }
+            set { _nozzleNo = value; }
+        }
+        private int _nozzleNo = 0;
         public int oilType
         {
             get { return _oilType; }
             set { _oilType = value; }
         }
-        private int _oilType = 92;
-        public ClsRecogArea recogArea
+        private int _oilType = 1;
+        public int areaid
         {
-            get { return _recogArea; }
-            set { _recogArea = value; }
+            get { return _areaid; }
+            set { _areaid = value; }
         }
-        private ClsRecogArea _recogArea = new ClsRecogArea();
+        private int _areaid = 0;
+        public int subAreaid
+        {
+            get { return _subAreaid; }
+            set { _subAreaid = value; }
+        }
+        private int _subAreaid = 0;
+        //public ClsRecogArea recogArea
+        //{
+        //    get { return _recogArea; }
+        //    set { _recogArea = value; }
+        //}
+        //private ClsRecogArea _recogArea = new ClsRecogArea();
 
-        public int videoChanNo
-        {
-            get { return _videoChanNo; }
-            set { _videoChanNo = value; }
-        }
-        private int _videoChanNo = 33;
+        //public int videoChanNo
+        //{
+        //    get { return _videoChanNo; }
+        //    set { _videoChanNo = value; }
+        //}
+        //private int _videoChanNo = 33;
     }
     public class ClsRecogArea
     {
-        public int top
+        public ClsNozzle nozzle = new ClsNozzle();
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private int _id = 0;
+        public int videoid
+        {
+            get { return _videoid; }
+            set { _videoid = value; }
+        }
+        private int _videoid = 0;
+        public double top
         {
             get { return _top; }
             set { _top = value; }
         }
-        private int _top = 0;
-        public int bottom
+        private double _top = 0;
+        public double bottom
         {
             get { return _bottom; }
             set { _bottom = value; }
         }
-        private int _bottom = 0;
-        public int left
+        private double _bottom = 0;
+        public double left
         {
             get { return _left; }
             set { _left = value; }
         }
-        private int _left = 0;
-        public int right
+        private double _left = 0;
+        public double right
         {
             get { return _right; }
             set { _right = value; }
         }
-        private int _right = 92;
+        private double _right = 0;
     }
     public class ClsStationInfo
     {
+        public List<ClsNVRInfo> nvrList = new List<ClsNVRInfo>();
         public string stationCode
         {
             get { return _stationCode; }
@@ -219,12 +257,25 @@ namespace ParamSet
 
     public class ClsVideoChannel
     {
+        public List<ClsRecogArea> areaList = new List<ClsRecogArea>();
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private int _id = 0;
+        public int parentID
+        {
+            get { return _parentID; }
+            set { _parentID = value; }
+        }
+        private int _parentID = 0;
         public int channelNo
         {
             get { return _channelNo; }
             set { _channelNo = value; }
         }
-        private int _channelNo = 0;
+        private int _channelNo = 101;
 
         public string ip
         {
@@ -253,24 +304,50 @@ namespace ParamSet
         }
         private string _password = "";
 
+        public string videoName
+        {
+            get { return _videoName; }
+            set { _videoName = value; }
+        }
+        private string _videoName = "";
         public int videoType
         {
             get { return _videoType; }
             set { _videoType = value; }
         }
         private int _videoType = 0;
+        public string videoAttr
+        {
+            get { return _videoAttr; }
+            set { _videoAttr = value; }
+        }
+        private string _videoAttr = "0";
         public int streamType
         {
             get { return _streamType; }
             set { _streamType = value; }
         }
         private int _streamType = 0;
+
+        public string getInsertString()
+        {
+            string str = "insert into vch (parentid,vchtype,vchname,vchno,vchip,vchport,loginname,loginpwd,vchAttr,streamType) values("+
+                           parentID.ToString()+","+videoType.ToString()+",'"+videoName+"',"+channelNo.ToString()+",'"+
+                           ip+"',"+port.ToString()+ ",'"+loginName+"','"+password+"','"+videoAttr+"',"+streamType.ToString()+")";
+            return str;
+        }
     }
 
     public class ClsNVRInfo
     {
         public NET_DVR_IPPARACFG_V40 config = new NET_DVR_IPPARACFG_V40();
         public List<ClsVideoChannel> videoList = new List<ClsVideoChannel>();
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private int _id ;
         public string ip
         {
             get { return _ip; }
@@ -315,12 +392,7 @@ namespace ParamSet
             set { _nvrName = value; }
         }
         private string _nvrName = "";
-        public string id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
-        private string _id = "";
+
         public int startChan
         {
             get { return _startChan; }

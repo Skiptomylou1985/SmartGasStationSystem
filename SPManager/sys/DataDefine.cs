@@ -59,12 +59,12 @@ namespace SPManager
         private string _leaveTime = "2000-01-01 00:00:00";
 
 
-        public int oilMachine
+        public int nozzleNo
         {
-            get { return _oilMachine; }
-            set { _oilMachine = value; }
+            get { return _nozzleNo; }
+            set { _nozzleNo = value; }
         }
-        private int _oilMachine = 0;
+        private int _nozzleNo = 0;
 
         public string picPath
         {
@@ -100,11 +100,11 @@ namespace SPManager
             set { _matchFlag = value; }
         }
         private int _matchFlag = 0;
-        public string toSqlString()
+        public string toSaveSqlString()
         {
             String sqlString = "INSERT into gsims.carlog (carnumber,carnumcolor,cartype,carlogo,subcarlogo,carcolor,arrivetime,leavetime,nozzleno,picpath,begintime,endtime,oiltype)" +
         "VALUES('{0}', {1}, {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, '{9}', '{10}', '{11}',{12}) ";
-            return String.Format(sqlString, _license, _licenseColor.ToString(), _type.ToString(), _carLogo.ToString(), _subCarLogo.ToString(), _carColor.ToString(), _arriveTime, _leaveTime, _oilMachine.ToString(), _picPath, _beginTime, _endTime, _oilType);
+            return String.Format(sqlString, _license, _licenseColor.ToString(), _type.ToString(), _carLogo.ToString(), _subCarLogo.ToString(), _carColor.ToString(), _arriveTime, _leaveTime, _nozzleNo.ToString(), _picPath, _beginTime, _endTime, _oilType);
         }
     }
     public class ClsNozzle
@@ -120,7 +120,7 @@ namespace SPManager
             get { return _oilType; }
             set { _oilType = value; }
         }
-        private int _oilType = 92;
+        private int _oilType = 1;
         public ClsRecogArea recogArea
         {
             get { return _recogArea; }
@@ -310,7 +310,12 @@ namespace SPManager
             set { _picPath = value; }
         }
         private string _picPath = "";
-
+        public string picName
+        {
+            get { return _picName; }
+            set { _picName = value; }
+        }
+        private string _picName = "";
         //图片类型  1入口图片 2加油图片 3出口图片
         public int picType
         {
@@ -318,10 +323,30 @@ namespace SPManager
             set { _picType = value; }
         }
         private int _picType = 2;
+        public int picWidth
+        {
+            get { return _picWidth; }
+            set { _picWidth = value; }
+        }
+        private int _picWidth = 1920;
+        public int picHeight
+        {
+            get { return _picHeight; }
+            set { _picHeight = value; }
+        }
+        private int _picHeight = 1080;
 
         public byte[] picBufer;
 
 
+    }
+
+    public class ClsServiceStatus
+    {
+        public bool bRecogIsRun;
+        public bool bMoniterIsRun;
+        public bool bAutoUpdate;
+        public bool bSocketIsRun;
     }
    
 }

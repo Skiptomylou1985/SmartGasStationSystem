@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
@@ -11,13 +11,34 @@ using System.Windows.Forms;
 
 namespace SPManager
 {
-    class SocketTool
+    struct struClient
     {
-        private Socket ssocket = null;
-        private Socket csocket = null;
+        Socket clent;
+        bool isRun;
+    }
+    public class SocketTool
+    {
+        private Socket sSocket = null;
+        private Socket cSocket = null;
         private bool isRun = false;
-       
-        public SocketTool(string serverIP,int serverPort)
+        private int maxClientNum = 1;
+
+        public SocketTool(string serverIP, int serverPort)
+        {
+            ip = serverIP;
+            port = serverPort;
+
+        }
+        public SocketTool(string serverIP, int serverPort, int maxclientNum)
+        {
+            ip = serverIP;
+            port = serverPort;
+            maxClientNum = maxclientNum;
+        }
+        public SocketTool()
+        {
+        }
+        public void SetIPnPort(string serverIP, int serverPort)
         {
             ip = serverIP;
             port = serverPort;
@@ -27,9 +48,9 @@ namespace SPManager
             try
             {
                 IPAddress serverIP = IPAddress.Parse(ip);
-                ssocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                ssocket.Bind(new IPEndPoint(serverIP, port));  //绑定IP地址：端口  
-                ssocket.Listen(10);    //设定最多10个排队连接请求  
+                sSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                sSocket.Bind(new IPEndPoint(serverIP, port));  //绑定IP地址：端口  
+                sSocket.Listen(maxClientNum);    //设定最多10个排队连接请求  
                 isRun = true;
                 Thread myThread = new Thread(ListenClientConnect);
                 myThread.Start();
@@ -40,36 +61,103 @@ namespace SPManager
                 isRun = false;
                 return false;
             }
-            
+
+        }
+
+        public void Send(byte[] buff)
+        {
+            if (isRun && cSocket != null)
+            {
+                try
+                {
+                    cSocket.Send(buff);
+                }
+                catch (System.Exception ex)
+                {
+                    cSocket = null;
+                }
+
+            }
+        }
+        public void Close()
+        {
+            isRun = false;
+            if (null != cSocket)
+            {
+                cSocket.Close();
+                cSocket = null;
+            }
+            if (null != sSocket)
+            {
+                sSocket.Close();
+                sSocket = null;
+            }
+
+        }
+        public int GetStatus()
+        {
+            if (isRun && null != sSocket)
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
         }
         private void ListenClientConnect()
         {
-            while(isRun)
+            while (isRun)
             {
-                Socket client = ssocket.Accept();
-                Thread receiveThd = new Thread(ReceiveMasssage);
-                receiveThd.Start(client);
+                try
+                {
+                    cSocket = sSocket.Accept();
+                    Thread receiveThd = new Thread(ReceiveMasssage);
+                    receiveThd.Start(null);
+                }
+                catch (System.Exception ex)
+                {
+
+                }
+
             }
         }
         private void ReceiveMasssage(object clientSocket)
         {
-            Socket myClientSocket = (Socket)clientSocket;
-            byte[] buff = new byte[1024];
+            //Socket myClientSocket = (Socket)clientSocket;
             while (isRun)
             {
-                int count = myClientSocket.Receive(buff);
-                if (count > 0)
+                try
                 {
-                    MessageBox.Show(System.Text.Encoding.Default.GetString(buff));
+                    byte[] buff = new byte[1024];
+                    int count = cSocket.Receive(buff);
+                    if (count > 0)
+                    {
+                        if (buff[2] == 0x03 && buff[3] == 2)
+                        {
+                            SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)Global.WM_CARSNAP, buff[4], buff[5]);
+                        }
+                        else if (buff[2] == 0x01)
+                        {
+
+                        }
+                    }
+                    Thread.Sleep(30);
                 }
+                catch (System.Exception ex)
+                {
+
+                }
+
             }
         }
+
         public string ip
         {
             get { return _ip; }
             set { _ip = value; }
         }
-        private string _ip = "";
+        private string _ip = "127.0.0.1";
 
         public int port
         {

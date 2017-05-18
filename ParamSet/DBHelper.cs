@@ -53,7 +53,7 @@ namespace ParamSet
             }
             catch (Exception ex)
             {
-                Global.LogServer.Add(new LogInfo("Error", "DBUnit:ConnectDB 连接数据库失败，错误信息：" + ex.Message,(int)EnumLogLevel.ERROR));
+                Global.LogServer.Add(new LogInfo("ParamSet-Error", "DBUnit:ConnectDB 连接数据库失败，错误信息：" + ex.Message,(int)EnumLogLevel.ERROR));
                 return false;
             }
             return true;
@@ -72,7 +72,7 @@ namespace ParamSet
             System.Data.IDataReader reader = null;
             if (this.DBConn == null)
             {
-                Global.LogServer.Add(new LogInfo("Error", "DBUnit:GetDataReader 数据库连接对象为空", (int)EnumLogLevel.ERROR));
+                Global.LogServer.Add(new LogInfo("ParamSet-Error", "DBUnit:GetDataReader 数据库连接对象为空", (int)EnumLogLevel.ERROR));
                 return null;
             }
             try
@@ -91,7 +91,7 @@ namespace ParamSet
             }
             catch (Exception ex)
             {
-                Global.LogServer.Add(new LogInfo("Error", "DBUnit:GetDataReader 执行sql语句失败！sql: " + sql, (int)EnumLogLevel.ERROR));
+                Global.LogServer.Add(new LogInfo("ParamSet-Error", "DBUnit:GetDataReader 执行sql语句失败！sql: " + sql, (int)EnumLogLevel.ERROR));
                 return null;
             }
             return null;
@@ -108,7 +108,7 @@ namespace ParamSet
         {
             if (this.DBConn == null)
             {
-                Global.LogServer.Add(new LogInfo("Error", "DBUnit:GetDataTable 数据库连接对象为空", (int)EnumLogLevel.ERROR));
+                Global.LogServer.Add(new LogInfo("ParamSet-Error", "DBUnit:GetDataTable 数据库连接对象为空", (int)EnumLogLevel.ERROR));
                 return null;
             }
             try
@@ -127,7 +127,7 @@ namespace ParamSet
             }
             catch (Exception ex)
             {
-                Global.LogServer.Add(new LogInfo("Error", "DBUnit:GetDataTable 错误信息：" + ex.Message, (int)EnumLogLevel.ERROR));
+                Global.LogServer.Add(new LogInfo("ParamSet-Error", "DBUnit:GetDataTable 错误信息：" + ex.Message, (int)EnumLogLevel.ERROR));
                 return null;
             }
             return null;
@@ -140,12 +140,12 @@ namespace ParamSet
           Author: HYF
           Date: 2017-04-28
         ************************************************************************/
-        public void ExecuteSql(string sqlstr)
+        public int ExecuteSql(string sqlstr)
         {
             if (this.DBConn == null)
             {
-                Global.LogServer.Add(new LogInfo("Error", "DBUnit:ExecuteSql 数据库连接对象为空", (int)EnumLogLevel.ERROR));
-                return ;
+                Global.LogServer.Add(new LogInfo("ParamSet-Error", "DBUnit:ExecuteSql 数据库连接对象为空", (int)EnumLogLevel.ERROR));
+                return 0;
             }
             try
             {
@@ -155,17 +155,22 @@ namespace ParamSet
                 }
                 if (this.DBConn.State == ConnectionState.Open)
                 {
-                    using(System.Data.IDbCommand cmd = this.DBConn.CreateCommand())
-                    {
+                    //using(System.Data.IDbCommand cmd = this.DBConn.CreateCommand())
+                    //{
+                        MySqlCommand cmd = new MySqlCommand();
+                        cmd.Connection = this.DBConn;
+                        cmd.CommandType = CommandType.Text; 
                         cmd.CommandText = sqlstr;
                         cmd.ExecuteNonQuery();
-                    }                    
-                }                
+                        return (int)cmd.LastInsertedId;
+                   // }                    
+                }
+                return 0;          
             }
             catch (Exception ex)
             {
-                Global.LogServer.Add(new LogInfo("Error", "DBUnit:ExecuteSql 执行sql语句失败！sql: " + sqlstr + "错误信息：" + ex.Message, (int)EnumLogLevel.ERROR));
-                return;
+                Global.LogServer.Add(new LogInfo("ParamSet-Error", "DBUnit:ExecuteSql 执行sql语句失败！sql: " + sqlstr + "错误信息：" + ex.Message, (int)EnumLogLevel.ERROR));
+                return 0;
             }
         }
     }
