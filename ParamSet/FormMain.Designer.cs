@@ -195,7 +195,7 @@
             // 
             this.groupBoxSet.Controls.Add(this.groupBox2);
             this.groupBoxSet.Controls.Add(this.videoBox);
-            this.groupBoxSet.Location = new System.Drawing.Point(186, 71);
+            this.groupBoxSet.Location = new System.Drawing.Point(186, 65);
             this.groupBoxSet.Name = "groupBoxSet";
             this.groupBoxSet.Size = new System.Drawing.Size(810, 569);
             this.groupBoxSet.TabIndex = 2;
@@ -434,7 +434,7 @@
             // 
             // treeMain
             // 
-            this.treeMain.Location = new System.Drawing.Point(13, 81);
+            this.treeMain.Location = new System.Drawing.Point(13, 74);
             this.treeMain.Name = "treeMain";
             this.treeMain.Size = new System.Drawing.Size(162, 559);
             this.treeMain.TabIndex = 4;
@@ -465,7 +465,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 647);
+            this.ClientSize = new System.Drawing.Size(1008, 642);
             this.Controls.Add(this.treeMain);
             this.Controls.Add(this.groupBoxSet);
             this.Controls.Add(this.groupBox1);

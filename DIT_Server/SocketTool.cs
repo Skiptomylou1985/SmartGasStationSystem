@@ -140,8 +140,26 @@ namespace DIT_Server
                             SysUnit.byNozzleStatus = buff[5];
                             SysUnit.PostMessage(SysUnit.HWND_BROADCAST, (int)SysUnit.WM_CARSNAP, 0, 0);
                         }
-                        else if(buff[2] == 0x01)
+                        else if(buff[2] == 0x02 && buff[3] == 58 && count >= 62)
                         {
+                            struLoginInfo info = new struLoginInfo();
+                            byte[] reivBuf = new byte[58];
+                            Buffer.BlockCopy(buff, 4, reivBuf, 0, 58);
+                            info = (struLoginInfo)SysUnit.BytesToStruts(reivBuf, typeof(struLoginInfo));
+                            if (true)
+                            {
+                                byte[] sendbuf = new byte[9];
+                                sendbuf[0] = 0xFF;
+                                sendbuf[1] = 0xFF;
+                                sendbuf[2] = 0x02;
+                                sendbuf[3] = 1;
+                                sendbuf[4] = 1;//成功
+                                sendbuf[5] = 0;
+                                sendbuf[6] = 0;
+                                sendbuf[7] = 0xEE;
+                                sendbuf[8] = 0xEE;
+                                Send(sendbuf);
+                            }
                             
                         }
                     }

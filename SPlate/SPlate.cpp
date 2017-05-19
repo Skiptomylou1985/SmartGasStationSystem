@@ -146,12 +146,6 @@ SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg, int lenth)
 		return INVALID_LENTH;
 	}
 	memcpy(&th_PlateIDCfg, th_plateIDCfg, lenth);
-	//free(th_PlateIDCfg.pFastMemory);
-	th_PlateIDCfg.nFastMemorySize = 16*1024;
-	th_PlateIDCfg.nMemorySize = 50*1024*1024;
-	th_PlateIDCfg.pFastMemory = (unsigned char*)malloc(th_PlateIDCfg.nFastMemorySize);
-	th_PlateIDCfg.pMemory = (unsigned char*)malloc(th_PlateIDCfg.nMemorySize);
-	//memcpy(&th_PlateIDCfg_bak, th_plateIDCfg, lenth); //参数备份
 	nAlgStatus = TH_InitPlateIDSDK(&th_PlateIDCfg);
 	write_log_file("Debug.txt", MAX_FILE_SIZE, "TH_InitPlateIDSDK", strlen("TH_InitPlateIDSDK"), 3);
 	TH_SetImageFormat(ImageFormatYV12, false, false, &th_PlateIDCfg);

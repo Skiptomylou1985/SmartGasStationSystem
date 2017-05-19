@@ -3,3 +3,4 @@ ipch
 *.db
 *.opendb
 *.log
+log

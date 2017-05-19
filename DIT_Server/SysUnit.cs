@@ -18,6 +18,17 @@ namespace DIT_Server
         public byte byVehicleShape;					///车型
         public byte byVehicleState;              //进出站标识 1进站 2出站
     }
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct struLoginInfo
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        public byte[] byIP;     
+        public ushort wPort;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] byLoginName;     
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] byPassword;     
+    }
     [StructLayout(LayoutKind.Sequential,Pack =1)]
     public struct NET_DVR_PLATE_RESULT
     {
@@ -48,5 +59,27 @@ namespace DIT_Server
         public static byte byNozzle = 0;
         public static byte byNozzleStatus = 0;
         public const int HWND_BROADCAST = 0xFFFF;
+        // 将byte[]转换为struct
+        public static object BytesToStruts(byte[] bytes, Type type)
+        {
+            //得到结构体的大小
+            int size = Marshal.SizeOf(type);
+            //byte数组长度小于结构体的大小
+            if (size > bytes.Length)
+            {
+                //返回空
+                return null;
+            }
+            //分配结构体大小的内存空间
+            IntPtr structPtr = Marshal.AllocHGlobal(size);
+            //将byte数组拷到分配好的内存空间
+            Marshal.Copy(bytes, 0, structPtr, size);
+            //将内存空间转换为目标结构体
+            object obj = Marshal.PtrToStructure(structPtr, type);
+            //释放内存空间
+            Marshal.FreeHGlobal(structPtr);
+            //返回结构体
+            return obj;
+        }
     }
 }

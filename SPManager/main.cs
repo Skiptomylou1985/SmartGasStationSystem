@@ -261,14 +261,14 @@ namespace SPManager
             th_PlateIDCfg.nMaxPlateWidth = 400;
             th_PlateIDCfg.nMinPlateWidth = 60;
 
-            th_PlateIDCfg.nMaxImageWidth = 3000;
-            th_PlateIDCfg.nMaxImageHeight = 2500;
+            th_PlateIDCfg.nMaxImageWidth = 1920;
+            th_PlateIDCfg.nMaxImageHeight = 1080;
 
-           // th_PlateIDCfg.nFastMemorySize = 16000;//DSP内存大小  
-          //  th_PlateIDCfg.pFastMemory = Marshal.AllocHGlobal(16000);//DSP申请内存 
+            th_PlateIDCfg.nFastMemorySize = 16000;//DSP内存大小  
+            th_PlateIDCfg.pFastMemory = Marshal.AllocHGlobal(16000);//DSP申请内存 
 
-           // th_PlateIDCfg.pMemory = Marshal.AllocHGlobal(100000000);//申请普通内存  
-           // th_PlateIDCfg.nMemorySize = 100000000;
+            th_PlateIDCfg.pMemory = Marshal.AllocHGlobal(100000000);//申请普通内存  
+            th_PlateIDCfg.nMemorySize = 100000000;
             th_PlateIDCfg.bUTF8 = 0;
             th_PlateIDCfg.bShadow = 1;
             th_PlateIDCfg.bCarLogo = 0;

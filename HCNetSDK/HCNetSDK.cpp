@@ -28,6 +28,7 @@ MSGCallBack_V31 msgCallBack_V31;
 NET_ITS_PLATE_RESULT curCallBackResult;
 NET_DVR_PLATE_RESULT curSnapResult;
 HANDLE snapEvent  = NULL;
+HANDLE loginEvent = NULL;
 bool bLoginIn = false;
 
 SOCKET getSocketConnect(char *hostIP, int port)
@@ -61,7 +62,7 @@ void _stdcall ThreadFuncRecv(LPVOID lpParam)
 	while (socketIsConnected)
 	{
 		int len = recv(sclient, recData, 256, 0);
-		if (len > 0 && bLoginIn)
+		if (len > 0 )
 		{
 			char buffer[256];
 			memcpy(buffer, recData, len);
@@ -83,12 +84,26 @@ void _stdcall ThreadFuncRecv(LPVOID lpParam)
 				msgCallBack_V31(COMM_ITS_PLATE_RESULT, p, pInfo, dwbuflen, nullptr);
 				write_log_file("execute callback function end", strlen("execute callback function end"));
 			}
-			else if (buffer[2] == 0x03)
+			else if (buffer[2] == 0x03 )
 			{
 				write_log_file("receive snap data", strlen("receive snap data"));
 				memset(&curSnapResult, 0, sizeof(NET_DVR_PLATE_RESULT));
 				memcpy(&curSnapResult, &buffer[4], sizeof(NET_DVR_PLATE_RESULT));
+				
 				SetEvent(snapEvent);
+			}
+			else if (buffer[2] == 0x02 )
+			{
+				if (buffer[4] == 0x01)
+				{
+					SetEvent(loginEvent);
+					write_log_file("receive login success info", strlen("receive login success info"));
+				}
+				else
+				{
+					write_log_file("receive login fail info", strlen("receive login fail info"));
+				}
+				
 			}
 		}
 		Sleep(20);
@@ -109,6 +124,7 @@ HCNETSDK_API BOOL NET_DVR_Init()
 	write_log_file(info, strlen(info));
 
 	snapEvent = CreateEvent(NULL, false, true, NULL);
+	loginEvent = CreateEvent(NULL, false, true, NULL);
 	sclient = getSocketConnect(ip, port);
 	if (NULL == sclient)
 		return false;
@@ -138,10 +154,42 @@ HCNETSDK_API BOOL NET_DVR_Cleanup()
 }
 HCNETSDK_API LONG NET_DVR_Login_V30(char  *sDVRIP,WORD wDVRPort,char  *sUserName,char  *sPassWord,LPNET_DVR_DEVICEINFO_V30 lpDeviceInfo)
 {
-	
+	LONG ret = -1;
+	char sendbuf[66];
+	memset(sendbuf, 0, 66);
+	sendbuf[0] = 0xFF;
+	sendbuf[1] = 0xFF;
+	sendbuf[2] = CMDLOGIN;
+	sendbuf[3] = 58;
+	memcpy(&sendbuf[4], sDVRIP, strlen(sDVRIP));
+	sendbuf[20] = wDVRPort % 256;
+	sendbuf[21] = wDVRPort / 256;
+	memcpy(&sendbuf[22], sUserName, strlen(sUserName));
+	memcpy(&sendbuf[42], sPassWord, strlen(sPassWord));
+	sendbuf[62] = 0x00;
+	sendbuf[63] = 0x00;
+	sendbuf[64] = 0xEE;
+	sendbuf[65] = 0xEE;
+	send(sclient, &sendbuf[0], 66, 0);
+	ResetEvent(loginEvent);
+	DWORD dw = WaitForSingleObject(loginEvent, 3000);
+	char info[128] = "NET_DVR_Login_V30 :";
+	switch (dw)
+	{
+	case WAIT_OBJECT_0:
+		ret = 0;
+		write_log_file("NET_DVR_Login_V30 SUCCESS", strlen("NET_DVR_Login_V30 SUCCESS"));
+		break;
+	case WAIT_TIMEOUT:
+		write_log_file("NET_DVR_Login_V30 WAIT_TIMEOUT", strlen("NET_DVR_Login_V30 WAIT_TIMEOUT"));
+		break;
+	case WAIT_FAILED:
+		write_log_file("NET_DVR_Login_V30 WAIT_FAILED", strlen("NET_DVR_Login_V30 WAIT_FAILED"));
+		break;
+	}
 	bLoginIn = true;
 	write_log_file("NET_DVR_Login_V30 SUCCESS", strlen("NET_DVR_Login_V30 SUCCESS"));
-	return 0;
+	return ret;
 }
 HCNETSDK_API BOOL NET_DVR_Logout(LONG lUserID)
 {
