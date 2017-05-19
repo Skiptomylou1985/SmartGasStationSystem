@@ -41,9 +41,11 @@ namespace ParamSet
             string password = textPassword.Text.Trim();
             if (SPlate.SP_InitNVR(ip, port, loginName, password) == 0)
             {
-                string sqlString = "insert into videohost (hosttype,hostname,hostip,hostport,loginname,loginpwd) varles ('" +
-                    comboDeviceType.Text + "','" + textName.Text.Trim() + "','" + ip + "'," + port.ToString() + ",'" + loginName + "','" + password + "')";
+                string sqlString = "insert into videohost (hosttype,hostname,hostip,hostport,loginname,loginpwd) values (" +
+                    comboDeviceType.SelectedIndex.ToString() + ",'" + textName.Text.Trim() + "','" + ip + "'," + port.ToString() + ",'" + loginName + "','" + password + "')";
+                Global.LogServer.Add(new LogInfo("ParamSet-Debug", "FormNVR->AddDevice sqlString:" + sqlString, (int)EnumLogLevel.DEBUG));
                 Global.mysqlHelper.ExecuteSql(sqlString);
+                return true;
             }
             //switch (comboDeviceType.SelectedIndex)
             //{

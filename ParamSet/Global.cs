@@ -30,9 +30,11 @@ namespace ParamSet
         public static NET_DVR_IPPARACFG_V40 net_dvr_cfg = new NET_DVR_IPPARACFG_V40();
         public static bool bReDraw;
         public static bool bShowDraw;
-        public static int nCurSelectedVideoChan;
-        public static string sCurSelectedNvrName;
+        public static int nCurSelectedVideoChan  = 4;
+        public static string sCurSelectedNvrName = "NVR01";
         public static bool bVideoInShow = false;
+        public static int nCurStatus = 0;   //0显示 1 添加 2修改 
+        public static ClsVideoChannel clsCurVideo = null;
         
     }
     

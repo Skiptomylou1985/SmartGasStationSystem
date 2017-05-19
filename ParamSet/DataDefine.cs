@@ -146,6 +146,13 @@ namespace ParamSet
             set { _subAreaid = value; }
         }
         private int _subAreaid = 0;
+
+        public string getInsertString()
+        {
+            string str = "insert into nozzle (nozzleno,oiltype,areaid,subareaid,parentid) values (" + nozzleNo.ToString() + "," +
+                oilType.ToString() + "," + areaid.ToString() + "," + subAreaid.ToString() + "," + parentid.ToString() + ")";
+            return str;
+        }
         //public ClsRecogArea recogArea
         //{
         //    get { return _recogArea; }
@@ -199,6 +206,18 @@ namespace ParamSet
             set { _right = value; }
         }
         private double _right = 0;
+        public string getInsertString()
+        {
+            string str = "insert into analysisarea (x1,x2,y1,y2,vchid) values (" + left.ToString() + "," +
+                right.ToString() + "," + top.ToString() + "," + bottom.ToString() + "," + videoid.ToString() + ")";
+            return str;
+        }
+        public string getUpdateString()
+        {
+            string str = "update analysisarea set x1 = "+ left.ToString() + ",x2 = " +right.ToString() + 
+                        ",y1="  + top.ToString() + ",y2=" + bottom.ToString() + " where id = "+id.ToString();
+            return str;
+        }
     }
     public class ClsStationInfo
     {
@@ -269,7 +288,7 @@ namespace ParamSet
             get { return _parentID; }
             set { _parentID = value; }
         }
-        private int _parentID = 0;
+        private int _parentID = 1;
         public int channelNo
         {
             get { return _channelNo; }
@@ -427,7 +446,6 @@ namespace ParamSet
         public Point start ;
         public Point end;
         public Graphics g;
-        public bool bShowDraw;
         public bool bReDraw;
     }
    
