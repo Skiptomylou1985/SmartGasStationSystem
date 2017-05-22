@@ -28,7 +28,7 @@ namespace SPManager
             {
                 int nNozzleID = (int)m.WParam;
                 int nNozzleStatus = (int)m.LParam;
-                
+                ProcSnapFromDIT(nNozzleID, nNozzleStatus);
             }
             else 
             {
@@ -113,6 +113,7 @@ namespace SPManager
         private bool InitParam()
         {
             GetMainParam();
+            GetVideoHostParam();
             GetNozzleChannelParam();
             return true;
         }
@@ -146,14 +147,14 @@ namespace SPManager
                         Global.softVersion = paramValue;
                     else if (paramName == "updatetime")
                         Global.updateTime = DateTime.Parse(paramValue);
-                    else if (paramName == "nvrip")
-                        Global.clsNvrInfo.ip = paramValue;
-                    else if (paramName == "nvrport")
-                        Global.clsNvrInfo.port = int.Parse(paramValue);
-                    else if (paramName == "nvradmin")
-                        Global.clsNvrInfo.loginName = paramValue;
-                    else if (paramName == "nvrpassword")
-                        Global.clsNvrInfo.password = paramValue;
+                    //else if (paramName == "nvrip")
+                    //    Global.clsNvrInfo.ip = paramValue;
+                    //else if (paramName == "nvrport")
+                    //    Global.clsNvrInfo.port = int.Parse(paramValue);
+                    //else if (paramName == "nvradmin")
+                    //    Global.clsNvrInfo.loginName = paramValue;
+                    //else if (paramName == "nvrpassword")
+                    //    Global.clsNvrInfo.password = paramValue;
                     else if (paramName == "matchmode")
                         Global.nMatchMode = int.Parse(paramValue);
                     else if (paramName == "picpath")
@@ -171,6 +172,36 @@ namespace SPManager
             return true;
         }
 
+
+        private void GetVideoHostParam()
+        {
+            string queryString = "select * from videohost limit 0,1";
+            try
+            {
+                DataTable dt = Global.mysqlHelper.GetDataTable(queryString);
+                if (dt == null || dt.Rows.Count < 1)
+                {
+                    Global.LogServer.Add(new LogInfo("Error", "Main->GetVideoHostParam 获取NVR信息失败！数据为空", (int)EnumLogLevel.ERROR));
+                    return;
+                }
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ClsNVRInfo nvr = new ClsNVRInfo();
+                    Global.clsNvrInfo.id = int.Parse(dr["id"].ToString());
+                    Global.clsNvrInfo.nvrType = dr["hosttype"].ToString();
+                    Global.clsNvrInfo.nvrName = dr["hostname"].ToString();
+                    Global.clsNvrInfo.ip = dr["hostip"].ToString();
+                    Global.clsNvrInfo.password = dr["loginpwd"].ToString();
+                    Global.clsNvrInfo.loginName = dr["loginname"].ToString();
+                    Global.clsNvrInfo.port = int.Parse(dr["hostport"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Global.LogServer.Add(new LogInfo("Error", "Main->GetVideoHostParam 获取NVR信息失败:" + ex.Message, (int)EnumLogLevel.ERROR));
+               
+            }
+        }
         private bool GetNozzleChannelParam()
         {
             string queryString = "select a.vchno,b.x1,b.x2,b.y1,b.y2,c.nozzleno,c.oiltype "+

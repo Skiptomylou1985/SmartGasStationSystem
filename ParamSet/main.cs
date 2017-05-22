@@ -21,6 +21,8 @@ namespace ParamSet
                     string paramValue = dr["paramValue"].ToString();
                     if (paramName == "loglevel")
                         Global.nLogLevel = int.Parse(paramValue);
+                    if (paramName == "matchmode")
+                        Global.nMatchMode = int.Parse(paramValue);
                     else if (paramName == "stationname")
                         Global.stationInfo.stationName = paramValue;
                     else if (paramName == "stationcode")
@@ -33,8 +35,11 @@ namespace ParamSet
                         Global.stationInfo.district = paramValue;
                     else if (paramName == "address")
                         Global.stationInfo.addr = paramValue;
+                    else if (paramName == "picpath")
+                        Global.basePicPath = paramValue;
                     //TODO 一系列参数的初始化
                 }
+                
             }
             catch (System.Exception ex)
             {
@@ -90,6 +95,7 @@ namespace ParamSet
             Global.stationInfo.nvrList.Clear();
             try
             {
+                treeMain.Nodes[0].Nodes.Clear();
                 DataTable dt = Global.mysqlHelper.GetDataTable(queryString);
                 if (dt == null || dt.Rows.Count < 1)
                 {
@@ -114,6 +120,7 @@ namespace ParamSet
                     }
                     Global.nvrList.Add(nvr);
                     TreeNode nvrTree = new TreeNode(nvr.nvrName);
+                   
                     treeMain.Nodes[0].Nodes.Add(nvrTree);
                     
                 }
@@ -249,13 +256,13 @@ namespace ParamSet
             Global.recogAreaList.Clear();
             Global.nozzleList.Clear();
             GetNozzleListFromDB();
-            Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->btnOpen_Click->GetNozzleListFromDB done", (int)EnumLogLevel.DEBUG));
+            Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->GetParamFromDB->GetNozzleListFromDB done", (int)EnumLogLevel.DEBUG));
             GetRecogAreaListFromDB();
-            Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->btnOpen_Click->GetRecogAreaListFromDB done", (int)EnumLogLevel.DEBUG));
+            Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->GetParamFromDB->GetRecogAreaListFromDB done", (int)EnumLogLevel.DEBUG));
             GetVideoListFromDB();
-            Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->btnOpen_Click->GetVideoListFromDB done", (int)EnumLogLevel.DEBUG));
+            Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->GetParamFromDB->GetVideoListFromDB done", (int)EnumLogLevel.DEBUG));
             GetNVRListFromDB();
-            Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->btnOpen_Click->GetNVRListFromDB done", (int)EnumLogLevel.DEBUG));
+            Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->GetParamFromDB->GetNVRListFromDB done", (int)EnumLogLevel.DEBUG));
         }
         private void SwitchVideo()
         {

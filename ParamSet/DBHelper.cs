@@ -28,7 +28,7 @@ namespace ParamSet
         public MysqlHelper(DBInfo dbinfo)
         {
             this.LocalDB = dbinfo;
-            ConnectDB();
+            //ConnectDB();
         }
 
         public void SetDBInfo(DBInfo info)

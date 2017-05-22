@@ -32,16 +32,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerServiceStaus = new System.Windows.Forms.Timer(this.components);
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.btnTest = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
+            this.btnShowData = new System.Windows.Forms.Button();
+            this.lblLogLevel = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.comboLogLevel = new System.Windows.Forms.ComboBox();
             this.btnChangeLogLevel = new System.Windows.Forms.Button();
-            this.btnGetCar = new System.Windows.Forms.Button();
             this.statusSystem = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolCPU = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolRAM = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnInit = new System.Windows.Forms.Button();
             this.btnCloseMonitor = new System.Windows.Forms.Button();
             this.btnOpenMonitor = new System.Windows.Forms.Button();
             this.pBoxMonitor = new System.Windows.Forms.PictureBox();
@@ -64,10 +65,6 @@
             this.notifyIconMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuExit = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lblLogLevel = new System.Windows.Forms.Label();
-            this.btnShowData = new System.Windows.Forms.Button();
-            this.btnUpdate = new System.Windows.Forms.Button();
             this.timerProcPic = new System.Windows.Forms.Timer(this.components);
             this.tabPage1.SuspendLayout();
             this.statusSystem.SuspendLayout();
@@ -93,12 +90,9 @@
             this.tabPage1.Controls.Add(this.btnShowData);
             this.tabPage1.Controls.Add(this.lblLogLevel);
             this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Controls.Add(this.btnTest);
             this.tabPage1.Controls.Add(this.comboLogLevel);
             this.tabPage1.Controls.Add(this.btnChangeLogLevel);
-            this.tabPage1.Controls.Add(this.btnGetCar);
             this.tabPage1.Controls.Add(this.statusSystem);
-            this.tabPage1.Controls.Add(this.btnInit);
             this.tabPage1.Controls.Add(this.btnCloseMonitor);
             this.tabPage1.Controls.Add(this.btnOpenMonitor);
             this.tabPage1.Controls.Add(this.pBoxMonitor);
@@ -113,21 +107,53 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(432, 318);
+            this.tabPage1.Size = new System.Drawing.Size(432, 289);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "运行状态";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // btnTest
+            // btnUpdate
             // 
-            this.btnTest.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnTest.Location = new System.Drawing.Point(143, 235);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(75, 23);
-            this.btnTest.TabIndex = 33;
-            this.btnTest.Text = "测试";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            this.btnUpdate.Font = new System.Drawing.Font("宋体", 9F);
+            this.btnUpdate.Location = new System.Drawing.Point(152, 224);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(100, 29);
+            this.btnUpdate.TabIndex = 36;
+            this.btnUpdate.Text = "手动升级软件";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
+            // btnShowData
+            // 
+            this.btnShowData.Font = new System.Drawing.Font("宋体", 9F);
+            this.btnShowData.Location = new System.Drawing.Point(17, 224);
+            this.btnShowData.Name = "btnShowData";
+            this.btnShowData.Size = new System.Drawing.Size(75, 29);
+            this.btnShowData.TabIndex = 35;
+            this.btnShowData.Text = "查看数据";
+            this.btnShowData.UseVisualStyleBackColor = true;
+            this.btnShowData.Click += new System.EventHandler(this.btnShowData_Click);
+            // 
+            // lblLogLevel
+            // 
+            this.lblLogLevel.AutoSize = true;
+            this.lblLogLevel.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblLogLevel.ForeColor = System.Drawing.Color.Green;
+            this.lblLogLevel.Location = new System.Drawing.Point(149, 185);
+            this.lblLogLevel.Name = "lblLogLevel";
+            this.lblLogLevel.Size = new System.Drawing.Size(42, 21);
+            this.lblLogLevel.TabIndex = 34;
+            this.lblLogLevel.Text = "调试";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(13, 185);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(122, 21);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "当前日志级别：";
             // 
             // comboLogLevel
             // 
@@ -154,17 +180,6 @@
             this.btnChangeLogLevel.UseVisualStyleBackColor = true;
             this.btnChangeLogLevel.Click += new System.EventHandler(this.btnChangeLogLevel_Click);
             // 
-            // btnGetCar
-            // 
-            this.btnGetCar.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnGetCar.Location = new System.Drawing.Point(235, 235);
-            this.btnGetCar.Name = "btnGetCar";
-            this.btnGetCar.Size = new System.Drawing.Size(75, 23);
-            this.btnGetCar.TabIndex = 28;
-            this.btnGetCar.Text = "提取车辆";
-            this.btnGetCar.UseVisualStyleBackColor = true;
-            this.btnGetCar.Click += new System.EventHandler(this.btnGetCar_Click);
-            // 
             // statusSystem
             // 
             this.statusSystem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -172,7 +187,7 @@
             this.toolCPU,
             this.toolStripStatusLabel2,
             this.toolRAM});
-            this.statusSystem.Location = new System.Drawing.Point(0, 296);
+            this.statusSystem.Location = new System.Drawing.Point(0, 267);
             this.statusSystem.Name = "statusSystem";
             this.statusSystem.Size = new System.Drawing.Size(432, 22);
             this.statusSystem.TabIndex = 25;
@@ -201,17 +216,6 @@
             this.toolRAM.Name = "toolRAM";
             this.toolRAM.Size = new System.Drawing.Size(40, 17);
             this.toolRAM.Text = "100%";
-            // 
-            // btnInit
-            // 
-            this.btnInit.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnInit.Location = new System.Drawing.Point(17, 235);
-            this.btnInit.Name = "btnInit";
-            this.btnInit.Size = new System.Drawing.Size(75, 23);
-            this.btnInit.TabIndex = 24;
-            this.btnInit.Text = "初始化";
-            this.btnInit.UseVisualStyleBackColor = true;
-            this.btnInit.Click += new System.EventHandler(this.btnInit_Click);
             // 
             // btnCloseMonitor
             // 
@@ -403,7 +407,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(440, 344);
+            this.tabControl1.Size = new System.Drawing.Size(440, 315);
             this.tabControl1.TabIndex = 18;
             // 
             // notifyIconMain
@@ -428,48 +432,6 @@
             this.toolStripMenuItemExit.Text = "退出";
             this.toolStripMenuItemExit.Click += new System.EventHandler(this.toolStripMenuItemExit_Click);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(13, 185);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(122, 21);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "当前日志级别：";
-            // 
-            // lblLogLevel
-            // 
-            this.lblLogLevel.AutoSize = true;
-            this.lblLogLevel.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblLogLevel.ForeColor = System.Drawing.Color.Green;
-            this.lblLogLevel.Location = new System.Drawing.Point(149, 185);
-            this.lblLogLevel.Name = "lblLogLevel";
-            this.lblLogLevel.Size = new System.Drawing.Size(42, 21);
-            this.lblLogLevel.TabIndex = 34;
-            this.lblLogLevel.Text = "调试";
-            // 
-            // btnShowData
-            // 
-            this.btnShowData.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnShowData.Location = new System.Drawing.Point(331, 235);
-            this.btnShowData.Name = "btnShowData";
-            this.btnShowData.Size = new System.Drawing.Size(75, 23);
-            this.btnShowData.TabIndex = 35;
-            this.btnShowData.Text = "查看数据";
-            this.btnShowData.UseVisualStyleBackColor = true;
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnUpdate.Location = new System.Drawing.Point(306, 270);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(100, 23);
-            this.btnUpdate.TabIndex = 36;
-            this.btnUpdate.Text = "手动升级软件";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
-            // 
             // timerProcPic
             // 
             this.timerProcPic.Enabled = true;
@@ -480,7 +442,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 344);
+            this.ClientSize = new System.Drawing.Size(440, 315);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
@@ -510,16 +472,13 @@
         #endregion
         private System.Windows.Forms.Timer timerServiceStaus;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.ComboBox comboLogLevel;
         private System.Windows.Forms.Button btnChangeLogLevel;
-        private System.Windows.Forms.Button btnGetCar;
         private System.Windows.Forms.StatusStrip statusSystem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolCPU;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolRAM;
-        private System.Windows.Forms.Button btnInit;
         private System.Windows.Forms.Button btnCloseMonitor;
         private System.Windows.Forms.Button btnOpenMonitor;
         private System.Windows.Forms.PictureBox pBoxMonitor;

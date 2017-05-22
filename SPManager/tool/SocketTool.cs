@@ -137,9 +137,32 @@ namespace SPManager
                         {
                             SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)Global.WM_CARSNAP, buff[4], buff[5]);
                         }
-                        else if (buff[2] == 0x01)
+                        else if (buff[2] == 0x02 && buff[3] == 58 && count >= 62)
                         {
-
+                            struLoginInfo info = new struLoginInfo();
+                            byte[] reivBuf = new byte[58];
+                            Buffer.BlockCopy(buff, 4, reivBuf, 0, 58);
+                            info = (struLoginInfo)SystemUnit.BytesToStruts(reivBuf, typeof(struLoginInfo));
+                            string ip = System.Text.Encoding.Default.GetString(info.byIP);
+                            int port  = info.wPort;
+                            string loginName = System.Text.Encoding.Default.GetString(info.byLoginName);
+                            string password = System.Text.Encoding.Default.GetString(info.byPassword);
+                            byte[] sendbuf = new byte[9];
+                            sendbuf[0] = 0xFF;
+                            sendbuf[1] = 0xFF;
+                            sendbuf[2] = 0x02;
+                            sendbuf[3] = 1;
+                            if (ip == Global.clsNvrInfo.ip && port == Global.clsNvrInfo.port &&
+                               loginName == Global.clsNvrInfo.loginName && password == Global.clsNvrInfo.password)
+                                sendbuf[4] = 1;//1 成功 
+                            else
+                                sendbuf[4] = 0;//0 失败 
+                            ushort crc = SystemUnit.getCRC(sendbuf, 0, 5);
+                            sendbuf[5] = (byte)(crc / 256); 
+                            sendbuf[6] = (byte)(crc % 256); 
+                            sendbuf[7] = 0xEE;
+                            sendbuf[8] = 0xEE;
+                            Send(sendbuf);
                         }
                     }
                     Thread.Sleep(30);

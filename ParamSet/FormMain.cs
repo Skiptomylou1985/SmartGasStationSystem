@@ -32,12 +32,13 @@ namespace ParamSet
             struDrawInfo.g = this.videoBox.CreateGraphics();
             comboDBType.SelectedIndex = 0;
             treeMain.Nodes.Add("设备");
+            btnClose.Enabled = false;
+            btnSetInfo.Enabled = false;
             SwithFormStat(0);
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-
             try
             {
                 DBInfo info = new DBInfo();
@@ -50,12 +51,19 @@ namespace ParamSet
                 Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->InitDatabase param value" +
                    Global.iniPath + " " + info.type + " " + info.ip + " " + info.dbname + " " + info.username + " " + info.password, (int)EnumLogLevel.DEBUG));
                 Global.mysqlHelper = new MysqlHelper(info);
+                if (!Global.mysqlHelper.ConnectDB())
+                {
+                    MessageBox.Show("数据库连接失败！");
+                }
                 GetMainParam();
                 Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->btnOpen_Click->GetMainParam done", (int)EnumLogLevel.DEBUG));
                 GetParamFromDB();
                 treeMain.Enabled = true;
                 groupBoxSet.Enabled = true;
-
+                btnClose.Enabled = true;
+                btnOpen.Enabled = false;
+                btnSetInfo.Enabled = true;
+                lblStationName.Text = Global.stationInfo.stationName;
             }
             catch (System.Exception ex)
             {
@@ -132,73 +140,81 @@ namespace ParamSet
 
         private void treeMain_DoubleClick(object sender, EventArgs e)
         {
-            TreeNode node = treeMain.SelectedNode;
-            if (node.Nodes.Count > 0)
+            try
             {
-                return;
-            }
-            foreach (ClsNVRInfo nvr in Global.nvrList)
-            {
-                if (node.Text == nvr.nvrName)
+                TreeNode node = treeMain.SelectedNode;
+                if (node.Nodes.Count > 0)
                 {
-                    try
+                    return;
+                }
+                foreach (ClsNVRInfo nvr in Global.nvrList)
+                {
+                    if (node.Text == nvr.nvrName)
                     {
-                        if (0 == SPlate.SP_InitNVR(nvr.ip, nvr.port, nvr.loginName, nvr.password))
+                        try
                         {
-                            Global.LogServer.Add(new LogInfo("ParamSet-Debug", "SP_InitNVR true", (int)EnumLogLevel.DEBUG));
-                            IntPtr ip = Marshal.AllocHGlobal(Marshal.SizeOf(nvr.config));
-                            int lenth = 0;
-                            SPlate.SP_GetNvrCfg(ip, ref lenth);
-                            nvr.config = (NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ip, typeof(NET_DVR_IPPARACFG_V40));
-                            
-                            for (int i = 0; i < nvr.config.dwDChanNum; i++)
+                            if (0 == SPlate.SP_InitNVR(nvr.ip, nvr.port, nvr.loginName, nvr.password))
                             {
-                                Global.LogServer.Add(new LogInfo("ParamSet-Debug", "dwDChanNum:" + i.ToString(), (int)EnumLogLevel.DEBUG));
-                                if (nvr.config.struIPDevInfo[i].byEnable == 1)
-                                {
-                                    TreeNode cNode = new TreeNode();
-                                    cNode.Text = "Video" + i.ToString();
-                                    node.Nodes.Add(cNode);
-                                    Global.LogServer.Add(new LogInfo("ParamSet-Debug", "struIPDevInfo.byEnable true", (int)EnumLogLevel.DEBUG));
+                                Global.LogServer.Add(new LogInfo("ParamSet-Debug", "SP_InitNVR true", (int)EnumLogLevel.DEBUG));
+                                IntPtr ip = Marshal.AllocHGlobal(Marshal.SizeOf(nvr.config));
+                                int lenth = 0;
+                                SPlate.SP_GetNvrCfg(ip, ref lenth);
+                                nvr.config = (NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ip, typeof(NET_DVR_IPPARACFG_V40));
 
+                                for (int i = 0; i < nvr.config.dwDChanNum; i++)
+                                {
+                                    Global.LogServer.Add(new LogInfo("ParamSet-Debug", "dwDChanNum:" + i.ToString(), (int)EnumLogLevel.DEBUG));
+                                    if (nvr.config.struIPDevInfo[i].byEnable == 1)
+                                    {
+                                        TreeNode cNode = new TreeNode();
+                                        cNode.Text = "Video" + i.ToString();
+                                        node.Nodes.Add(cNode);
+                                        Global.LogServer.Add(new LogInfo("ParamSet-Debug", "struIPDevInfo.byEnable true", (int)EnumLogLevel.DEBUG));
+
+                                    }
                                 }
                             }
-                        }
-                        Global.sCurSelectedNvrName = nvr.nvrName;
-                        break;
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Global.LogServer.Add(new LogInfo("ParamSet-Error", "FormMain->treeMain_DoubleClick",(int)EnumLogLevel.ERROR));
-                    }
-                   
-                }
-                else
-                {
-                    for (int i = 0; i < nvr.config.dwDChanNum; i++)
-                    {
-                        if (node.Text == "Video" + i.ToString())
-                        {
-                            NET_DVR_PREVIEWINFO previewInfo = new NET_DVR_PREVIEWINFO();
-                            previewInfo.hPlayWnd = videoBox.Handle;//预览窗口
-                            previewInfo.lChannel = nvr.config.dwStartDChan + i;
-                            previewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
-                            previewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
-                            previewInfo.bBlocked = false; //0- 非阻塞取流，1- 阻塞取流
-                            previewInfo.dwDisplayBufNum = 15;
-                            int lenth = Marshal.SizeOf(previewInfo);
-                            SPlate.SP_PreviewInfo(ref previewInfo, lenth).ToString();
-
-                            //更新当前被选中的视频线路
-                            Global.bVideoInShow = true;
-                            Global.nCurSelectedVideoChan = i;
+                            Global.sCurSelectedNvrName = nvr.nvrName;
                             break;
                         }
+                        catch (System.Exception ex)
+                        {
+                            Global.LogServer.Add(new LogInfo("ParamSet-Error", "FormMain->treeMain_DoubleClick", (int)EnumLogLevel.ERROR));
+                        }
+
                     }
-                    
-                    SwitchVideo();
+                    else
+                    {
+                        for (int i = 0; i < nvr.config.dwDChanNum; i++)
+                        {
+                            if (node.Text == "Video" + i.ToString())
+                            {
+                                NET_DVR_PREVIEWINFO previewInfo = new NET_DVR_PREVIEWINFO();
+                                previewInfo.hPlayWnd = videoBox.Handle;//预览窗口
+                                previewInfo.lChannel = nvr.config.dwStartDChan + i;
+                                previewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+                                previewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
+                                previewInfo.bBlocked = false; //0- 非阻塞取流，1- 阻塞取流
+                                previewInfo.dwDisplayBufNum = 15;
+                                int lenth = Marshal.SizeOf(previewInfo);
+                                SPlate.SP_PreviewInfo(ref previewInfo, lenth).ToString();
+
+                                //更新当前被选中的视频线路
+                                Global.bVideoInShow = true;
+                                Global.nCurSelectedVideoChan = i;
+                                break;
+                            }
+                        }
+
+                        SwitchVideo();
+                    }
                 }
             }
+            catch (System.Exception ex)
+            {
+                Global.LogServer.Add(new LogInfo("ParamSet-Error", "FormMain->treeMain_DoubleClick:"+ex.Message, (int)EnumLogLevel.ERROR));
+            }
+            
         }
 
         private void timerCurve_Tick(object sender, EventArgs e)
@@ -281,11 +297,18 @@ namespace ParamSet
                         string sqlString = "delete a,b,c,d from nozzle a,analysisarea b,vch c ,videohost d " +
                                             "where a.areaid = b.id and b.vchid = c.id and c.parentid = d.id and d.hostname = '" + nvr.nvrName + "'";
                         Global.mysqlHelper.ExecuteSql(sqlString);
-                        Global.nvrList.Remove(nvr);
+                        sqlString = "delete b,c,d from analysisarea b,vch c ,videohost d " +
+                                            "where b.vchid = c.id and c.parentid = d.id and d.hostname = '" + nvr.nvrName + "'";
+                        Global.mysqlHelper.ExecuteSql(sqlString);
+                        sqlString = "delete c,d from vch c ,videohost d " +
+                                            "where c.parentid = d.id and d.hostname = '" + nvr.nvrName + "'";
+                        Global.mysqlHelper.ExecuteSql(sqlString);
+                        sqlString = "delete from videohost where hostname = '" + nvr.nvrName + "'";
+                        Global.mysqlHelper.ExecuteSql(sqlString);
                         break;
                     }
                 }
-                GetNVRListFromDB();
+                GetParamFromDB();
             }
         }
 
@@ -425,5 +448,28 @@ namespace ParamSet
                 }
             }
         }
+
+        private void btnSetInfo_Click(object sender, EventArgs e)
+        {
+            FormStationInfo info = new FormStationInfo();
+            info.ShowDialog();
+            lblStationName.Text = Global.stationInfo.stationName;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            treeMain.Nodes[0].Nodes.Clear();
+            Global.nvrList.Clear();
+            Global.videoList.Clear();
+            Global.recogAreaList.Clear();
+            Global.nozzleList.Clear();
+            groupBoxSet.Enabled = false;
+            treeMain.Enabled = false;
+            btnOpen.Enabled = true;
+            btnClose.Enabled = false;
+            btnSetInfo.Enabled = false;
+        }
+
+      
     }
 }

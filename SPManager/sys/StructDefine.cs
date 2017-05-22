@@ -108,5 +108,16 @@ namespace SPManager
         public byte byPumpStatus;					///油枪状态
 
     }
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct struLoginInfo
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        public byte[] byIP;
+        public ushort wPort;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] byLoginName;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] byPassword;
+    }
 
 }

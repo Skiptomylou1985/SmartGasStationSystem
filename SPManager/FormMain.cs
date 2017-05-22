@@ -35,8 +35,6 @@ namespace SPManager
         
         private void FormMain_Load(object sender, EventArgs e)
         {
-            //TODO 临时退出
-            return;
             int ret = Init();
             if (ret == 0)
             {
@@ -236,6 +234,12 @@ namespace SPManager
                     
                 }
             }
+        }
+
+        private void btnShowData_Click(object sender, EventArgs e)
+        {
+            FormSearchData searchData = new FormSearchData();
+            searchData.Show();
         }
     }
 }

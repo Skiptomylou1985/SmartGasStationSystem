@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnSetInfo = new System.Windows.Forms.Button();
             this.textDBName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnOpen = new System.Windows.Forms.Button();
@@ -62,16 +64,22 @@
             this.timerCurve = new System.Windows.Forms.Timer(this.components);
             this.contextMenuDelete = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblStationName = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.groupBoxSet.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.videoBox)).BeginInit();
             this.contextTreeAdd.SuspendLayout();
             this.contextMenuDelete.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnClose);
+            this.groupBox1.Controls.Add(this.btnSetInfo);
             this.groupBox1.Controls.Add(this.textDBName);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.btnOpen);
@@ -85,23 +93,43 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(11, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(973, 52);
+            this.groupBox1.Size = new System.Drawing.Size(985, 69);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "数据库";
             // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(808, 24);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 22;
+            this.btnClose.Text = "断  开";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnSetInfo
+            // 
+            this.btnSetInfo.Location = new System.Drawing.Point(889, 23);
+            this.btnSetInfo.Name = "btnSetInfo";
+            this.btnSetInfo.Size = new System.Drawing.Size(80, 24);
+            this.btnSetInfo.TabIndex = 11;
+            this.btnSetInfo.Text = "站点设置";
+            this.btnSetInfo.UseVisualStyleBackColor = true;
+            this.btnSetInfo.Click += new System.EventHandler(this.btnSetInfo_Click);
+            // 
             // textDBName
             // 
-            this.textDBName.Location = new System.Drawing.Point(621, 17);
+            this.textDBName.Location = new System.Drawing.Point(646, 25);
             this.textDBName.Name = "textDBName";
             this.textDBName.Size = new System.Drawing.Size(71, 21);
             this.textDBName.TabIndex = 10;
-            this.textDBName.Text = "gsims2";
+            this.textDBName.Text = "gsims";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(538, 21);
+            this.label5.Location = new System.Drawing.Point(563, 29);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(77, 12);
             this.label5.TabIndex = 9;
@@ -109,7 +137,7 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(728, 16);
+            this.btnOpen.Location = new System.Drawing.Point(727, 24);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 8;
@@ -125,7 +153,7 @@
             "MySQL",
             "SQL Server",
             "Oracle"});
-            this.comboDBType.Location = new System.Drawing.Point(77, 18);
+            this.comboDBType.Location = new System.Drawing.Point(102, 26);
             this.comboDBType.Name = "comboDBType";
             this.comboDBType.Size = new System.Drawing.Size(73, 20);
             this.comboDBType.TabIndex = 7;
@@ -133,7 +161,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 22);
+            this.label4.Location = new System.Drawing.Point(31, 30);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(77, 12);
             this.label4.TabIndex = 6;
@@ -141,7 +169,7 @@
             // 
             // textDBPwd
             // 
-            this.textDBPwd.Location = new System.Drawing.Point(440, 18);
+            this.textDBPwd.Location = new System.Drawing.Point(465, 26);
             this.textDBPwd.Name = "textDBPwd";
             this.textDBPwd.Size = new System.Drawing.Size(84, 21);
             this.textDBPwd.TabIndex = 5;
@@ -151,7 +179,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(393, 22);
+            this.label3.Location = new System.Drawing.Point(418, 30);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 4;
@@ -159,7 +187,7 @@
             // 
             // textDBAdmin
             // 
-            this.textDBAdmin.Location = new System.Drawing.Point(331, 18);
+            this.textDBAdmin.Location = new System.Drawing.Point(356, 26);
             this.textDBAdmin.Name = "textDBAdmin";
             this.textDBAdmin.Size = new System.Drawing.Size(56, 21);
             this.textDBAdmin.TabIndex = 3;
@@ -168,7 +196,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(279, 23);
+            this.label2.Location = new System.Drawing.Point(304, 31);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 2;
@@ -176,7 +204,7 @@
             // 
             // textDBIP
             // 
-            this.textDBIP.Location = new System.Drawing.Point(187, 18);
+            this.textDBIP.Location = new System.Drawing.Point(212, 26);
             this.textDBIP.Name = "textDBIP";
             this.textDBIP.Size = new System.Drawing.Size(86, 21);
             this.textDBIP.TabIndex = 1;
@@ -185,7 +213,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(158, 22);
+            this.label1.Location = new System.Drawing.Point(183, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 12);
             this.label1.TabIndex = 0;
@@ -195,9 +223,9 @@
             // 
             this.groupBoxSet.Controls.Add(this.groupBox2);
             this.groupBoxSet.Controls.Add(this.videoBox);
-            this.groupBoxSet.Location = new System.Drawing.Point(186, 65);
+            this.groupBoxSet.Location = new System.Drawing.Point(186, 87);
             this.groupBoxSet.Name = "groupBoxSet";
-            this.groupBoxSet.Size = new System.Drawing.Size(810, 569);
+            this.groupBoxSet.Size = new System.Drawing.Size(810, 547);
             this.groupBoxSet.TabIndex = 2;
             this.groupBoxSet.TabStop = false;
             // 
@@ -214,9 +242,9 @@
             this.groupBox2.Controls.Add(this.btnSaveCurve);
             this.groupBox2.Controls.Add(this.btnAddCurve);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(6, 20);
+            this.groupBox2.Location = new System.Drawing.Point(6, 11);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(800, 84);
+            this.groupBox2.Size = new System.Drawing.Size(800, 54);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "油枪出入口关联设置";
@@ -224,7 +252,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(242, 39);
+            this.btnCancel.Location = new System.Drawing.Point(242, 23);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 21;
@@ -271,7 +299,7 @@
             "30",
             "31",
             "32"});
-            this.comboAreaShow.Location = new System.Drawing.Point(608, 38);
+            this.comboAreaShow.Location = new System.Drawing.Point(608, 22);
             this.comboAreaShow.Name = "comboAreaShow";
             this.comboAreaShow.Size = new System.Drawing.Size(59, 20);
             this.comboAreaShow.TabIndex = 20;
@@ -279,7 +307,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(573, 43);
+            this.label8.Location = new System.Drawing.Point(573, 27);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(41, 12);
             this.label8.TabIndex = 19;
@@ -287,7 +315,7 @@
             // 
             // btnChangeCurve
             // 
-            this.btnChangeCurve.Location = new System.Drawing.Point(83, 39);
+            this.btnChangeCurve.Location = new System.Drawing.Point(83, 23);
             this.btnChangeCurve.Name = "btnChangeCurve";
             this.btnChangeCurve.Size = new System.Drawing.Size(75, 23);
             this.btnChangeCurve.TabIndex = 18;
@@ -306,7 +334,7 @@
             "97#汽油",
             "98#汽油",
             "0#柴油"});
-            this.comboOilType.Location = new System.Drawing.Point(496, 39);
+            this.comboOilType.Location = new System.Drawing.Point(496, 23);
             this.comboOilType.Name = "comboOilType";
             this.comboOilType.Size = new System.Drawing.Size(62, 20);
             this.comboOilType.TabIndex = 17;
@@ -314,7 +342,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(446, 44);
+            this.label7.Location = new System.Drawing.Point(446, 28);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 15;
@@ -359,7 +387,7 @@
             "30",
             "31",
             "32"});
-            this.comboNozzleNo.Location = new System.Drawing.Point(373, 40);
+            this.comboNozzleNo.Location = new System.Drawing.Point(373, 24);
             this.comboNozzleNo.Name = "comboNozzleNo";
             this.comboNozzleNo.Size = new System.Drawing.Size(67, 20);
             this.comboNozzleNo.TabIndex = 14;
@@ -367,7 +395,7 @@
             // 
             // btnDeleteCurve
             // 
-            this.btnDeleteCurve.Location = new System.Drawing.Point(682, 36);
+            this.btnDeleteCurve.Location = new System.Drawing.Point(682, 20);
             this.btnDeleteCurve.Name = "btnDeleteCurve";
             this.btnDeleteCurve.Size = new System.Drawing.Size(88, 23);
             this.btnDeleteCurve.TabIndex = 13;
@@ -377,7 +405,7 @@
             // 
             // btnSaveCurve
             // 
-            this.btnSaveCurve.Location = new System.Drawing.Point(162, 39);
+            this.btnSaveCurve.Location = new System.Drawing.Point(162, 23);
             this.btnSaveCurve.Name = "btnSaveCurve";
             this.btnSaveCurve.Size = new System.Drawing.Size(75, 23);
             this.btnSaveCurve.TabIndex = 12;
@@ -387,7 +415,7 @@
             // 
             // btnAddCurve
             // 
-            this.btnAddCurve.Location = new System.Drawing.Point(6, 39);
+            this.btnAddCurve.Location = new System.Drawing.Point(6, 23);
             this.btnAddCurve.Name = "btnAddCurve";
             this.btnAddCurve.Size = new System.Drawing.Size(75, 23);
             this.btnAddCurve.TabIndex = 11;
@@ -398,7 +426,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(326, 43);
+            this.label6.Location = new System.Drawing.Point(326, 27);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 4;
@@ -408,7 +436,7 @@
             // 
             this.videoBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("videoBox.BackgroundImage")));
             this.videoBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.videoBox.Location = new System.Drawing.Point(6, 109);
+            this.videoBox.Location = new System.Drawing.Point(6, 71);
             this.videoBox.Name = "videoBox";
             this.videoBox.Size = new System.Drawing.Size(800, 450);
             this.videoBox.TabIndex = 0;
@@ -434,9 +462,9 @@
             // 
             // treeMain
             // 
-            this.treeMain.Location = new System.Drawing.Point(13, 74);
+            this.treeMain.Location = new System.Drawing.Point(13, 98);
             this.treeMain.Name = "treeMain";
-            this.treeMain.Size = new System.Drawing.Size(162, 559);
+            this.treeMain.Size = new System.Drawing.Size(162, 535);
             this.treeMain.TabIndex = 4;
             this.treeMain.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeDevice_NodeMouseClick);
             this.treeMain.DoubleClick += new System.EventHandler(this.treeMain_DoubleClick);
@@ -461,11 +489,35 @@
             this.toolStripMenuItem1.Text = "删除设备";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.lblStationName});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 620);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1008, 22);
+            this.statusStrip1.TabIndex = 5;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(68, 17);
+            this.toolStripStatusLabel1.Text = "站点名称：";
+            // 
+            // lblStationName
+            // 
+            this.lblStationName.Name = "lblStationName";
+            this.lblStationName.Size = new System.Drawing.Size(44, 17);
+            this.lblStationName.Text = "测试站";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 642);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.treeMain);
             this.Controls.Add(this.groupBoxSet);
             this.Controls.Add(this.groupBox1);
@@ -482,7 +534,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.videoBox)).EndInit();
             this.contextTreeAdd.ResumeLayout(false);
             this.contextMenuDelete.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -520,6 +575,11 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuDelete;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnSetInfo;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel lblStationName;
     }
 }
 

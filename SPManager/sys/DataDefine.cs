@@ -268,6 +268,14 @@ namespace SPManager
 
     public class ClsNVRInfo
     {
+        public NET_DVR_IPPARACFG_V40 config = new NET_DVR_IPPARACFG_V40();
+        public List<ClsVideoChannel> videoList = new List<ClsVideoChannel>();
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private int _id;
         public string ip
         {
             get { return _ip; }
@@ -300,6 +308,25 @@ namespace SPManager
             set { _channelCount = value; }
         }
         private int _channelCount = 16;
+        public string nvrType
+        {
+            get { return _nvrType; }
+            set { _nvrType = value; }
+        }
+        private string _nvrType = "8208";
+        public string nvrName
+        {
+            get { return _nvrName; }
+            set { _nvrName = value; }
+        }
+        private string _nvrName = "";
+
+        public int startChan
+        {
+            get { return _startChan; }
+            set { _startChan = value; }
+        }
+        private int _startChan = 33;
     }
 
     public class ClsPicture
@@ -337,6 +364,11 @@ namespace SPManager
         private int _picHeight = 1080;
 
         public byte[] picBufer;
+
+        public void savePic()
+        {
+
+        }
 
 
     }

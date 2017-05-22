@@ -29,7 +29,7 @@ namespace SPManager
         public static ClsNVRInfo clsNvrInfo = new ClsNVRInfo();
         public static Image greenImage = Image.FromFile(Application.StartupPath+"\\images\\Box_Green.png");
         public static Image redImage = Image.FromFile(Application.StartupPath + "\\images\\Box_red.png");
-        public static int nMatchMode = 1;//匹配模式，1 有出入口相机，2 无出入口相机
+        public static int nMatchMode = 2;//匹配模式，1 有出入口相机，2 无出入口相机
         public static List<ClsCarInfo> carList = new List<ClsCarInfo>();
         public static List<ClsNozzle> nozzleList = new List<ClsNozzle>();
         public static QueueManager<ClsPicture> picQueue = new QueueManager<ClsPicture>();

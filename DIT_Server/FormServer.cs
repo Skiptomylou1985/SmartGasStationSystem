@@ -85,7 +85,6 @@ namespace DIT_Server
             cnapInfo.byPumpID = (byte)comboNozzle.SelectedIndex;
             cnapInfo.byPumpStatus = (byte)comboNozzleStatus.SelectedIndex;
             //NET_DVR_PLATE_RESULT result = SysUnit.carInfo;
-            //TODO 解决结构体转数组问题
             byte[] data = StrutsToBytesArray(cnapInfo);
             byte[] sendbuf = new byte[data.Length+8];
             sendbuf[0] = 0xFF;

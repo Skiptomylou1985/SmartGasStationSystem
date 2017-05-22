@@ -65,6 +65,12 @@
     <Compile Include="FormNVR.Designer.cs">
       <DependentUpon>FormNVR.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStationInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStationInfo.Designer.cs">
+      <DependentUpon>FormStationInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="main.cs">
@@ -79,6 +85,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormNVR.resx">
       <DependentUpon>FormNVR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStationInfo.resx">
+      <DependentUpon>FormStationInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -36,8 +36,8 @@ char debugInfo[256] ;
 int calc = 0;
 NET_DVR_IPPARACFG_V40 struIPPARACFG;
 
-int nSwitchCount = 10;
-char *lastLicense[MAX_NOZZLE_COUNT];
+int nSwitchCount = 100;
+char *lastLicense[MAX_NOZZLE_COUNT] ;
 
 
 SPLATE_API int SP_InitRunParam(unsigned char *pChan, int lenth)
@@ -50,12 +50,14 @@ SPLATE_API int SP_InitRunParam(unsigned char *pChan, int lenth)
 	nNozzleCount = lenth;
 	for (int i = 0; i < MAX_NOZZLE_COUNT; i++)
 	{
+		lastLicense[i] = (char *)malloc(16);
 		nozzleInfo[i].videoChanNo += struIPPARACFG.dwStartDChan;
 	}
 	return SUCCESS;
 }
 SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPassword)
 {
+	
 	bool ret = NET_DVR_Init();
 	NET_DVR_SetConnectTime(2000, 1); 
 	NET_DVR_SetReconnect(10000, true);
@@ -203,7 +205,15 @@ SPLATE_API int SP_SetSwitchFlag(int frameCount)
 }
 SPLATE_API int SP_TestAPI()
 {
-	PostMessage(HWND_BROADCAST, WM_CARDATA, 0, 0);
+	//PostMessage(HWND_BROADCAST, WM_CARDATA, 0, 0);
+	//char test[16] = "12345";
+	//lastLicense[0] = "init";
+	//lastLicense[0] = (char *)malloc(16);
+	//memcpy(lastLicense[0], test, 5);
+	//if (strcmp(lastLicense[0],test) == 0)
+	//{
+	//	return 0;
+	//}
 	return 0;
 	//return SwithNextNozzle();
 }
@@ -351,7 +361,7 @@ void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameIn
 
 		write_log_file("Callback.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 4);
 		int ret = TH_RecogImage(pp, pFrameInfo->nWidth, pFrameInfo->nHeight, recogResult, &nCarNum, &nozzleInfo[nCurNozzleIndex].th_rect, &th_PlateIDCfg);
-		//int ret = TH_RecogImage(pp, 1920, 1080, recogResult, &nCarNum, &nozzleInfo[nCurNozzleIndex].th_rect, &th_PlateIDCfg);
+		
 		write_log_file("Callback.txt", MAX_FILE_SIZE, "end recog", strlen("end recog"), 4);
 		/*if (nLogLevel >= 4)
 		{
@@ -376,7 +386,7 @@ void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameIn
 					write_log_file("license.txt", MAX_FILE_SIZE, "license repeat", strlen("license repeat"), 2);
 					continue;
 				}
-
+				memcpy(lastLicense[nCurNozzleIndex], recogResult[i].license, 16);
 				memcpy(carInfoOut[nCurPutIndex].license,recogResult[i].license,16);
 				memcpy(carInfoOut[nCurPutIndex].color, recogResult[i].color, 16);
 				memcpy(carInfoOut[nCurPutIndex].pic, pBuf, nSize);
@@ -388,16 +398,19 @@ void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameIn
 				carInfoOut[nCurPutIndex].nConfidence = recogResult[i].nConfidence;
 				carInfoOut[nCurPutIndex].nPicLenth = nSize;
 				carInfoOut[nCurPutIndex].nVideoChannel = nozzleInfo[nCurNozzleIndex].videoChanNo;
+				carInfoOut[nCurPutIndex].nNozzleNo = nozzleInfo[nCurNozzleIndex].nozzleNo;
 				carInfoOut[nCurPutIndex].nPicType = T_YV12;
 				carInfoOut[nCurPutIndex].nType = recogResult[i].nType;
 				carInfoOut[nCurPutIndex].nPicWidth = pFrameInfo->nWidth;
 				carInfoOut[nCurPutIndex].nPicHeight = pFrameInfo->nHeight;
+				
 
 				if (++nCurPutIndex == MAX_CAR_COUNT)
 				{
 					nCurPutIndex = 0;
 				}
 				nCurCarCount++;
+				write_log_file("license.txt", MAX_FILE_SIZE, "post massage", strlen("post massage"), 2);
 				PostMessage(HWND_BROADCAST,WM_CARDATA ,0, 0);
 			}
 			memset(debugInfo, 0, sizeof(debugInfo));
