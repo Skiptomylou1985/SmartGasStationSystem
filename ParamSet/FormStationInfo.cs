@@ -42,6 +42,7 @@ namespace ParamSet
             updateParam("picpath", Global.basePicPath);
 
             MessageBox.Show("设置成功!");
+            this.Close();
 
         }
         private void updateParam(string key,string value)

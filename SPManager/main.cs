@@ -68,6 +68,10 @@ namespace SPManager
             {
                 ret += 1 << 5;
             }
+            if(!InitPicWork())
+            {
+                ret += 1 << 6;
+            }
             return ret;
         }
         private bool InitDatabase()
@@ -107,6 +111,20 @@ namespace SPManager
                 return false;
             }
            
+            return true;
+        }
+        private bool InitPicWork()
+        {
+            try
+            {
+                Global.picWork = new PictureWork();
+                Global.picWork.Run();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
             return true;
         }
         
@@ -229,7 +247,7 @@ namespace SPManager
                     info.Append(" right：" + nozzle.recogArea.right.ToString());
                     info.Append(" top：" + nozzle.recogArea.top.ToString());
                     info.Append(" bottom：" + nozzle.recogArea.bottom.ToString());
-                    Global.LogServer.Add(new LogInfo("Main", "Main->InitParam->GetNozzleChannelParam get param:"+info.ToString(), (int)EnumLogLevel.DEBUG));
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->GetNozzleChannelParam get param:"+info.ToString(), (int)EnumLogLevel.DEBUG));
 
 
                 }
@@ -336,68 +354,81 @@ namespace SPManager
                 return;
             for (int i =0;i<count;i++)
             {
-                struCarInfoOut struCarOut = new struCarInfoOut();
-                IntPtr pCarOut = Marshal.AllocHGlobal(Marshal.SizeOf(struCarOut));
-                int lenth = 0;
-                SPlate.SP_GetFirstCarInfo(pCarOut,ref lenth);
-                if (lenth != Marshal.SizeOf(struCarOut))
+                try
                 {
-                    Global.LogServer.Add(new LogInfo("Error", "Main->GetCarFromDLL: 动态库输出结构体与上位机定义结构图长度不一致", (int)EnumLogLevel.ERROR));
-                    return;
-                }
-                struCarOut = (struCarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(struCarInfoOut));
-                string license = System.Text.Encoding.Default.GetString(struCarOut.license);
-                Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 提取动态库车辆信息，车牌号"+license + "  油枪号:"+struCarOut.nNozzleNo, (int)EnumLogLevel.DEBUG));
-                
-                if (Global.nMatchMode == (int)EnumMatchMode.NON_IN_OUT)//如果为无出入口站点，则直接存库
-                {
-
-                    ClsCarInfo info = new ClsCarInfo();
-                    info.license = System.Text.Encoding.Default.GetString(struCarOut.license).Trim();
-                    info.licenseColor = struCarOut.nColor;
-                    info.carLogo = struCarOut.nCarLogo;
-                    info.subCarLogo = struCarOut.nSubCarLogo;
-                    info.carColor = struCarOut.nCarColor;
-                    info.arriveTime = DateTime.Now;  //都取当前时间，再收到DIT信息后修改加油及离开时间
-                    info.beginTime = DateTime.Now;
-                    info.endTime = DateTime.Now;
-                    info.leaveTime = DateTime.Now;
-                    info.nozzleNo = struCarOut.nNozzleNo;
-                    info.oilType = GetOilType(struCarOut.nNozzleNo);
-
-                    Global.mysqlHelper.ExecuteSql(info.toSaveSqlString());
-                    Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 无出入口相机模式下，车辆信息入库完成，车牌号" + license + "  油枪号:" + struCarOut.nNozzleNo, (int)EnumLogLevel.DEBUG));
-
-                    ClsPicture pic = new ClsPicture();
-                    pic.picBufer = new byte[struCarOut.nPicLenth];
-                    Buffer.BlockCopy(struCarOut.pic, 0, pic.picBufer, 0, struCarOut.nPicLenth);
-                    pic.picPath = Global.basePicPath + info.arriveTime.ToString("yyyy//MM//dd//") + info.license+"//";
-                    pic.picName = info.arriveTime.ToString("HHmmss") + ".jpg";
-                    pic.picWidth = struCarOut.nPicWidth;
-                    pic.picHeight = struCarOut.nPicHeight;
-                    Global.picQueue.Add(pic);
-
-
-                }
-                else if(Global.nMatchMode == (int)EnumMatchMode.WITH_IN_OUT)
-                {
-                    Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 进入WITH_IN_OUT匹配", (int)EnumLogLevel.DEBUG));
-                    //string license = System.Text.Encoding.Default.GetString(struCarOut.license);
-                    int nozzleNo = struCarOut.nNozzleNo; //油枪号 0位入口，100为出口，其他为真实油枪号
-                    switch (nozzleNo)
+                    struCarInfoOut struCarOut = new struCarInfoOut();
+                    IntPtr pCarOut = Marshal.AllocHGlobal(Marshal.SizeOf(struCarOut));
+                    int lenth = 0;
+                    SPlate.SP_GetFirstCarInfo(pCarOut, ref lenth);
+                    if (lenth != Marshal.SizeOf(struCarOut))
                     {
-                        case 0:  //新添加一条信息入队列
-                            AddNewCarToList(struCarOut);
-                            break;
-                        case 100:
-                            ProcCarLeave(struCarOut);
-                            break;
-                        default:
-                            MatchCarInList(struCarOut);
-                            break;
+                        Global.LogServer.Add(new LogInfo("Error", "Main->GetCarFromDLL: 动态库输出结构体与上位机定义结构图长度不一致", (int)EnumLogLevel.ERROR));
+                        return;
                     }
+                    struCarOut = (struCarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(struCarInfoOut));
+                    string license = System.Text.Encoding.Default.GetString(struCarOut.license);
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 提取动态库车辆信息，车牌号" + license + "  油枪号:" + struCarOut.nNozzleNo, (int)EnumLogLevel.DEBUG));
+                    if (Global.nMatchMode == (int)EnumMatchMode.NON_IN_OUT)//如果为无出入口站点，则直接存库
+                    {
+
+
+                        ClsCarInfo info = new ClsCarInfo();
+                        info.license = System.Text.Encoding.Default.GetString(struCarOut.license).Trim();
+                        info.licenseColor = struCarOut.nColor;
+                        info.carLogo = struCarOut.nCarLogo;
+                        info.subCarLogo = struCarOut.nSubCarLogo;
+                        info.carColor = struCarOut.nCarColor;
+                        info.arriveTime = DateTime.Now;  //都取当前时间，再收到DIT信息后修改加油及离开时间
+                        info.beginTime = DateTime.Now;
+                        info.endTime = DateTime.Now;
+                        info.leaveTime = DateTime.Now;
+                        info.nozzleNo = struCarOut.nNozzleNo;
+                        info.oilType = GetOilType(struCarOut.nNozzleNo);
+                        
+                        Global.mysqlHelper.ExecuteSql(info.toSaveSqlString());
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 无出入口相机模式下，车辆信息入库完成，车牌号" + license + "  油枪号:" + struCarOut.nNozzleNo, (int)EnumLogLevel.DEBUG));
+
+                        ClsPicture pic = new ClsPicture();
+                        pic.picBufer = new byte[struCarOut.nPicLenth];
+                        Buffer.BlockCopy(struCarOut.pic, 0, pic.picBufer, 0, struCarOut.nPicLenth);
+                        pic.picPath =Global.basePicPath + info.arriveTime.ToString("yyyyMMdd") +"\\"+ info.license.Trim() + "\\";
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
+                        pic.picName = info.arriveTime.ToString("HHmmss") + ".jpg";
+                        pic.picWidth = struCarOut.nPicWidth;
+                        pic.picHeight = struCarOut.nPicHeight;
+                        pic.picType = struCarOut.nPicType;
+                        Global.picWork.Add(pic);
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath +pic.picName, (int)EnumLogLevel.DEBUG));
+                        
+                    }
+                    else if (Global.nMatchMode == (int)EnumMatchMode.WITH_IN_OUT)
+                    {
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 进入WITH_IN_OUT匹配", (int)EnumLogLevel.DEBUG));
+                        //string license = System.Text.Encoding.Default.GetString(struCarOut.license);
+                        int nozzleNo = struCarOut.nNozzleNo; //油枪号 0位入口，100为出口，其他为真实油枪号
+                        switch (nozzleNo)
+                        {
+                            case 0:  //新添加一条信息入队列
+                                AddNewCarToList(struCarOut);
+                                break;
+                            case 100:
+                                ProcCarLeave(struCarOut);
+                                break;
+                            default:
+                                MatchCarInList(struCarOut);
+                                break;
+                        }
+
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Global.LogServer.Add(new LogInfo("Error", "Main->GetCarFromDll " + ex.Message, (int)EnumLogLevel.ERROR));
 
                 }
+
+
+
             }
         }
         private void AddNewCarToList(struCarInfoOut carOut)
@@ -414,7 +445,7 @@ namespace SPManager
             info.leaveTime = DateTime.Now;
             info.nozzleNo = carOut.nNozzleNo;
             info.matchFlag = 1;
-            info.picPath = Global.basePicPath + info.arriveTime.ToString("yyyy\\MM\\dd\\") + info.license + "\\";
+            info.picPath =@""+ Global.basePicPath + info.arriveTime.ToString("yyyy\\MM\\dd") + "\\"+info.license.Trim() + "\\";
             Global.carList.Add(info);
             Global.LogServer.Add(new LogInfo("Run", "Main->AddNewCarToList: a new car added to list   license "+info.license,(int)EnumLogLevel.RUN));
 
@@ -425,7 +456,8 @@ namespace SPManager
             pic.picName = info.arriveTime.ToString("HHmmss") +"_in"+ ".jpg";
             pic.picWidth = carOut.nPicWidth;
             pic.picHeight = carOut.nPicHeight;
-            Global.picQueue.Add(pic);
+            pic.picType = carOut.nPicType;
+            Global.picWork.Add(pic);
             //info.oilType = GetOilType(struCarOut.nNozzleNo);
         }
 
@@ -449,7 +481,8 @@ namespace SPManager
                     pic.picName = car.arriveTime.ToString("HHmmss") +"_"+car.nozzleNo.ToString()+ ".jpg";
                     pic.picWidth = carOut.nPicWidth;
                     pic.picHeight = carOut.nPicHeight;
-                    Global.picQueue.Add(pic);
+                    pic.picType = carOut.nPicType;
+                    Global.picWork.Add(pic);
                     Global.LogServer.Add(new LogInfo("Run", "Main->AddNewCarToList: 匹配成功，车牌号： " + car.license+" 油枪号:"+car.nozzleNo.ToString(), (int)EnumLogLevel.RUN));
                     return;//匹配成功，结束匹配，返回。
                 }
@@ -470,11 +503,12 @@ namespace SPManager
                     ClsPicture pic = new ClsPicture();
                     pic.picBufer = new byte[carOut.nPicLenth];
                     Buffer.BlockCopy(carOut.pic, 0, pic.picBufer, 0, carOut.nPicLenth);
-                    pic.picPath = pic.picPath = car.picPath;
+                    pic.picPath  = car.picPath;
                     pic.picName = car.leaveTime.ToString("HHmmss") + "_out"+ ".jpg";
                     pic.picWidth = carOut.nPicWidth;
                     pic.picHeight = carOut.nPicHeight;
-                    Global.picQueue.Add(pic);
+                    pic.picType = carOut.nPicType;
+                    Global.picWork.Add(pic);
 
                     Global.mysqlHelper.ExecuteSql(car.toSaveSqlString());
                     Global.carList.Remove(car);
@@ -656,9 +690,12 @@ namespace SPManager
         private void ExitApp()
         {
             SPlate.SP_Close();
+            Global.socketTool.Close();
+            Global.picWork.Stop();
             if (Global.LogServer != null)
                 Global.LogServer.Stop();
             this.toExit = true;
+            
             Application.Exit();
         }
     }

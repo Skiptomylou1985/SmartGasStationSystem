@@ -202,6 +202,7 @@ namespace ParamSet
                                 //更新当前被选中的视频线路
                                 Global.bVideoInShow = true;
                                 Global.nCurSelectedVideoChan = i;
+                                lblCurVideoNo.Text = "当前视频：Video" + i.ToString();
                                 break;
                             }
                         }

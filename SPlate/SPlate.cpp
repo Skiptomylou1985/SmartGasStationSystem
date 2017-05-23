@@ -36,7 +36,7 @@ char debugInfo[256] ;
 int calc = 0;
 NET_DVR_IPPARACFG_V40 struIPPARACFG;
 
-int nSwitchCount = 100;
+int nSwitchCount = 10;
 char *lastLicense[MAX_NOZZLE_COUNT] ;
 
 

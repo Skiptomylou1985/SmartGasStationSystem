@@ -364,13 +364,6 @@ namespace SPManager
         private int _picHeight = 1080;
 
         public byte[] picBufer;
-
-        public void savePic()
-        {
-
-        }
-
-
     }
 
     public class ClsServiceStatus

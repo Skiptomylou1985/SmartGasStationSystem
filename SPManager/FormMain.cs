@@ -224,22 +224,20 @@ namespace SPManager
             }
         }
 
-        private void timerProcPic_Tick(object sender, EventArgs e)
-        {
-            if (Global.picQueue.GetQueueCount() > 0)
-            {
-                for (int i =0;i<Global.picQueue.GetQueueCount();i++)
-                {
-                    ClsPicture pic = Global.picQueue.Get();
-                    
-                }
-            }
-        }
-
         private void btnShowData_Click(object sender, EventArgs e)
         {
             FormSearchData searchData = new FormSearchData();
             searchData.Show();
+        }
+
+        private void btnTest_Click_1(object sender, EventArgs e)
+        {
+            string str1 = "D:\\Image\\";
+
+            if (!Directory.Exists(str1))
+            {
+                Directory.CreateDirectory(str1);
+            }
         }
     }
 }

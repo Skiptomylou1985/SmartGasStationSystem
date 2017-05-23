@@ -32,7 +32,8 @@ namespace SPManager
         public static int nMatchMode = 2;//匹配模式，1 有出入口相机，2 无出入口相机
         public static List<ClsCarInfo> carList = new List<ClsCarInfo>();
         public static List<ClsNozzle> nozzleList = new List<ClsNozzle>();
-        public static QueueManager<ClsPicture> picQueue = new QueueManager<ClsPicture>();
+        // public static QueueManager<ClsPicture> picQueue = new QueueManager<ClsPicture>();
+        public static PictureWork picWork;
         public static int nDefaultWidth = 1920;
         public static int nDefaultHeight = 1020;
         public static NET_DVR_IPPARACFG_V40 net_dvr_cfg = new NET_DVR_IPPARACFG_V40();

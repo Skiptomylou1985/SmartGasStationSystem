@@ -65,7 +65,7 @@
             this.notifyIconMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuExit = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerProcPic = new System.Windows.Forms.Timer(this.components);
+            this.btnTest = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             this.statusSystem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMonitor)).BeginInit();
@@ -86,6 +86,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnTest);
             this.tabPage1.Controls.Add(this.btnUpdate);
             this.tabPage1.Controls.Add(this.btnShowData);
             this.tabPage1.Controls.Add(this.lblLogLevel);
@@ -432,11 +433,16 @@
             this.toolStripMenuItemExit.Text = "退出";
             this.toolStripMenuItemExit.Click += new System.EventHandler(this.toolStripMenuItemExit_Click);
             // 
-            // timerProcPic
+            // btnTest
             // 
-            this.timerProcPic.Enabled = true;
-            this.timerProcPic.Interval = 1000;
-            this.timerProcPic.Tick += new System.EventHandler(this.timerProcPic_Tick);
+            this.btnTest.Font = new System.Drawing.Font("宋体", 9F);
+            this.btnTest.Location = new System.Drawing.Point(331, 224);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(60, 29);
+            this.btnTest.TabIndex = 37;
+            this.btnTest.Text = "测试";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click_1);
             // 
             // FormMain
             // 
@@ -505,7 +511,7 @@
         private System.Windows.Forms.Label lblLogLevel;
         private System.Windows.Forms.Button btnShowData;
         private System.Windows.Forms.Button btnUpdate;
-        private System.Windows.Forms.Timer timerProcPic;
+        private System.Windows.Forms.Button btnTest;
     }
 }
 

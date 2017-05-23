@@ -67,6 +67,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStationName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblCurVideoNo = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.groupBoxSet.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -493,7 +495,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.lblStationName});
+            this.lblStationName,
+            this.toolStripStatusLabel2,
+            this.lblCurVideoNo});
             this.statusStrip1.Location = new System.Drawing.Point(0, 620);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1008, 22);
@@ -511,6 +515,18 @@
             this.lblStationName.Name = "lblStationName";
             this.lblStationName.Size = new System.Drawing.Size(44, 17);
             this.lblStationName.Text = "测试站";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(28, 17);
+            this.toolStripStatusLabel2.Text = "     ";
+            // 
+            // lblCurVideoNo
+            // 
+            this.lblCurVideoNo.Name = "lblCurVideoNo";
+            this.lblCurVideoNo.Size = new System.Drawing.Size(68, 17);
+            this.lblCurVideoNo.Text = "当前视频：";
             // 
             // FormMain
             // 
@@ -580,6 +596,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel lblStationName;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ToolStripStatusLabel lblCurVideoNo;
     }
 }
 
