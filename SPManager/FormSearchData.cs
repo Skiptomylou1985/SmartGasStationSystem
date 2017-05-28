@@ -28,8 +28,12 @@ namespace SPManager
             string leaveBegin = dateLeaveBegin.Value.ToString("yyyy-MM-dd") + timeLeaveBegin.Value.ToString(" HH:mm:ss");
             string leaveEnd = dateLeaveEnd.Value.ToString("yyyy-MM-dd") + timeLeaveEnd.Value.ToString(" HH:mm:ss");
             StringBuilder sbQuery = new StringBuilder();
-            sbQuery.Append("select id,carnumber,nozzleno,oiltype,arrivetime,leavetime,begintime,carlogo,carcolor,picpath from carlog ");
-            sbQuery.Append(" where carnumber like '%" + textLicense.Text.Trim() + "%'");
+            sbQuery.Append("select id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath from carlog ");
+            sbQuery.Append(" where 1 = 1");
+            if (textLicense.Text.Trim().Length >0)
+            {
+                sbQuery.Append(" and carnumber like '%" + textLicense.Text.Trim() + "%'");
+            }
             if (checkBoxArriveTime.Checked)
             {
                 sbQuery.Append(" and (arrivetime between '" + arriveBegin + "' and '" + arriveEnd + "')");
@@ -51,8 +55,8 @@ namespace SPManager
             dgv.Columns[2].HeaderText = "油枪号";
             dgv.Columns[3].HeaderText = "油类型";
             dgv.Columns[4].HeaderText = "进站时间";
-            dgv.Columns[5].HeaderText = "出站时间";
-            dgv.Columns[6].HeaderText = "加油时间";
+            dgv.Columns[5].HeaderText = "加油时间";
+            dgv.Columns[6].HeaderText = "出站时间";
             dgv.Columns[7].HeaderText = "车辆品牌";
             dgv.Columns[8].HeaderText = "车辆颜色";
             dgv.Columns[9].Visible = false;
@@ -92,7 +96,9 @@ namespace SPManager
                 lblCarLogo.Text = dataGridCar.Rows[cur].Cells["carlogo"].Value.ToString();
 
                 string picPath = dataGridCar.Rows[cur].Cells["picpath"].Value.ToString();
-                pictureBoxArrive.Image = Image.FromFile("C:\\Users\\Administrator\\Desktop\\C#\\HighSpeed\\HighSpeed\\image\\truck3.jpg");
+                
+                //pictureBoxArrive.Image = Image.FromFile(picPath + ".jpg");
+
             }
             catch (System.Exception ex)
             {
@@ -100,6 +106,26 @@ namespace SPManager
             }
             
 
+        }
+
+        private void timerCalc_Tick(object sender, EventArgs e)
+        {
+            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            string sqlString = "select count(*) as count from carlog where arrivetime > '" + today + "'";
+            try
+            {
+                DataTable dt = Global.mysqlHelper.GetDataTable(sqlString);
+                lblTotalCar.Text = dt.Rows[0]["count"].ToString();
+                sqlString = "select count(*) as count from carlog where nozzleno > 0 and arrivetime > '" + today + "'";
+                dt = Global.mysqlHelper.GetDataTable(sqlString);
+                lblMatchCar.Text = dt.Rows[0]["count"].ToString();
+                lblUnMatchCar.Text = (int.Parse(lblTotalCar.Text.Trim()) - int.Parse(lblMatchCar.Text.Trim())).ToString();
+            }
+            catch (System.Exception ex)
+            {
+            	
+            }
+            
         }
     }
 }

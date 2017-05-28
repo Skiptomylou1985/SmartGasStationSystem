@@ -103,6 +103,7 @@ namespace ParamSet
         private int _matchFlag = 0;
         public string toSqlString()
         {
+            
             String sqlString = "INSERT into gsims.carlog (carnumber,carnumcolor,cartype,carlogo,subcarlogo,carcolor,arrivetime,leavetime,nozzleno,picpath,begintime,endtime,oiltype)" +
         "VALUES('{0}', {1}, {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, '{9}', '{10}', '{11}',{12}) ";
             return String.Format(sqlString, _license, _licenseColor.ToString(), _type.ToString(), _carLogo.ToString(), _subCarLogo.ToString(), _carColor.ToString(), _arriveTime, _leaveTime, _oilMachine.ToString(), _picPath, _beginTime, _endTime, _oilType);
@@ -169,7 +170,7 @@ namespace ParamSet
     }
     public class ClsRecogArea
     {
-        public ClsNozzle nozzle = new ClsNozzle();
+        public List<ClsNozzle> nozzleList = new List<ClsNozzle>();
         public int id
         {
             get { return _id; }

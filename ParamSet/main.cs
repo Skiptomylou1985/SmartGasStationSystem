@@ -200,7 +200,7 @@ namespace ParamSet
                     {
                         if (nozzle.areaid == area.id)
                         {
-                            area.nozzle = nozzle;
+                            area.nozzleList.Add(nozzle);
                         }
                     }
 
@@ -266,33 +266,22 @@ namespace ParamSet
         }
         private void SwitchVideo()
         {
-            comboAreaShow.Items.Clear();
+            comboArea.Items.Clear();
             foreach (ClsVideoChannel video in Global.videoList)
             {
                 if (video.channelNo == Global.nCurSelectedVideoChan)
                 {
                     if (video.areaList.Count < 1)
                     {
+                        comboArea.Items.Add("无");
                         return;
                     }
-                    comboAreaShow.Items.Add("全部");
-                    comboAreaShow.Items.Add("不显示");
+                    comboArea.Items.Add("全部");
                     foreach (ClsRecogArea area in video.areaList)
                     {
-                        if (area.nozzle.nozzleNo == 0) //入口
-                        {
-                            comboAreaShow.Items.Add("入口");
-                        }
-                        else if (area.nozzle.nozzleNo == 100)
-                        {
-                            comboAreaShow.Items.Add("出口");
-                        }
-                        else
-                        {
-                            comboAreaShow.Items.Add("油枪" + area.nozzle.nozzleNo.ToString());
-                        }
+                        comboArea.Items.Add( area.id.ToString());
                     }
-                    comboAreaShow.SelectedIndex = 0;
+                    comboArea.SelectedIndex = 0;
                 }
             }
            // 
@@ -311,7 +300,7 @@ namespace ParamSet
                     btnSaveCurve.Enabled = false;
                     comboNozzleNo.Enabled = false;
                     comboOilType.Enabled = false;
-                    comboAreaShow.Enabled = true;
+                    comboArea.Enabled = true;
                     btnDeleteCurve.Enabled = true;
                     break;
                 case 1: //正在添加
@@ -322,7 +311,7 @@ namespace ParamSet
                     btnSaveCurve.Enabled = true;
                     comboNozzleNo.Enabled = true;
                     comboOilType.Enabled = true;
-                    comboAreaShow.Enabled = false;
+                    comboArea.Enabled = false;
                     btnDeleteCurve.Enabled = false;
                     break;
                 case 2: //正在修改
@@ -333,7 +322,7 @@ namespace ParamSet
                     btnSaveCurve.Enabled = true;
                     comboNozzleNo.Enabled = true;
                     comboOilType.Enabled = true;
-                    comboAreaShow.Enabled = false;
+                    comboArea.Enabled = false;
                     btnDeleteCurve.Enabled = false;
                     break;
             }
@@ -342,7 +331,7 @@ namespace ParamSet
 
 
        
-        private void AddOrUpdateNozzleOrInOut(int nozzleNo,int AoU)
+        private void AddOrUpdateArea(int AoU)
         { 
 
             if (AoU == 1) //add 
@@ -362,13 +351,6 @@ namespace ParamSet
                                 area.top = (double)Math.Round((decimal)struDrawInfo.start.Y / this.videoBox.Height, 4);
                                 area.bottom = (double)Math.Round((decimal)struDrawInfo.end.Y / this.videoBox.Height, 4);
                                 area.id = Global.mysqlHelper.ExecuteSql(area.getInsertString());
-                                ClsNozzle nozzle = new ClsNozzle();
-                                nozzle.areaid = area.id;
-                                nozzle.nozzleNo = nozzleNo;
-                                nozzle.oilType = comboOilType.SelectedIndex;
-                                nozzle.id = Global.mysqlHelper.ExecuteSql(nozzle.getInsertString());
-                                area.nozzle = nozzle;
-                                Global.nozzleList.Add(nozzle);
                                 Global.recogAreaList.Add(area);
                                 video.areaList.Add(area);
                                 return;
@@ -393,13 +375,7 @@ namespace ParamSet
                         area2.top = (double)Math.Round((decimal)struDrawInfo.start.Y / this.videoBox.Height, 4);
                         area2.bottom = (double)Math.Round((decimal)struDrawInfo.end.Y / this.videoBox.Height, 4);
                         area2.id = Global.mysqlHelper.ExecuteSql(area2.getInsertString());
-                        ClsNozzle nozzle2 = new ClsNozzle();
-                        nozzle2.areaid = area2.id;
-                        nozzle2.nozzleNo = nozzleNo;
-                        nozzle2.oilType = comboOilType.SelectedIndex;
-                        nozzle2.id = Global.mysqlHelper.ExecuteSql(nozzle2.getInsertString());
-                        area2.nozzle = nozzle2;
-                        Global.nozzleList.Add(nozzle2);
+                        
                         Global.recogAreaList.Add(area2);
                         videoChan.areaList.Add(area2);
                         Global.videoList.Add(videoChan);
@@ -414,7 +390,7 @@ namespace ParamSet
             {
                 foreach (ClsRecogArea area in Global.recogAreaList)
                 {
-                    if (area.nozzle.nozzleNo == nozzleNo)
+                    if (area.id.ToString() == comboArea.Text.Trim())
                     {
                         area.left = (double)Math.Round((decimal)struDrawInfo.start.X / this.videoBox.Width, 4);
                         area.right = (double)Math.Round((decimal)struDrawInfo.end.X / this.videoBox.Width, 4);

@@ -25,7 +25,7 @@ namespace DIT_Demo
             if (HCNetSDK.NET_DVR_Init())
             {
                 NET_DVR_DEVICEINFO_V30 device = new NET_DVR_DEVICEINFO_V30();
-               if (HCNetSDK.NET_DVR_Login_V30("127.0.0.1",8000,"admin","12345",ref device) == 0)
+               if (HCNetSDK.NET_DVR_Login_V30(textIP.Text.Trim(),8870,"admin","12345",ref device) == 0)
                {
                     MessageBox.Show("连接成功");
                }

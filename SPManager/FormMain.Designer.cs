@@ -32,6 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerServiceStaus = new System.Windows.Forms.Timer(this.components);
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnTest = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnShowData = new System.Windows.Forms.Button();
             this.lblLogLevel = new System.Windows.Forms.Label();
@@ -62,11 +65,16 @@
             this.pBoxSocket = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.richTextBoxDIT = new System.Windows.Forms.RichTextBox();
+            this.listViewCache = new System.Windows.Forms.ListView();
             this.notifyIconMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuExit = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnTest = new System.Windows.Forms.Button();
+            this.timerDataProc = new System.Windows.Forms.Timer(this.components);
+            this.btnSwitch = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusSystem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMonitor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMain)).BeginInit();
@@ -75,6 +83,7 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxSocket)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.contextMenuExit.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,6 +95,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.pictureBox1);
+            this.tabPage1.Controls.Add(this.textBox1);
             this.tabPage1.Controls.Add(this.btnTest);
             this.tabPage1.Controls.Add(this.btnUpdate);
             this.tabPage1.Controls.Add(this.btnShowData);
@@ -108,26 +119,52 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(432, 289);
+            this.tabPage1.Size = new System.Drawing.Size(559, 401);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "运行状态";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(29, 215);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(279, 161);
+            this.pictureBox1.TabIndex = 39;
+            this.pictureBox1.TabStop = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(367, 245);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(86, 29);
+            this.textBox1.TabIndex = 38;
+            // 
+            // btnTest
+            // 
+            this.btnTest.Font = new System.Drawing.Font("宋体", 9F);
+            this.btnTest.Location = new System.Drawing.Point(473, 247);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(72, 29);
+            this.btnTest.TabIndex = 37;
+            this.btnTest.Text = "测试";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click_1);
+            // 
             // btnUpdate
             // 
             this.btnUpdate.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnUpdate.Location = new System.Drawing.Point(152, 224);
+            this.btnUpdate.Location = new System.Drawing.Point(473, 179);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(100, 29);
+            this.btnUpdate.Size = new System.Drawing.Size(78, 29);
             this.btnUpdate.TabIndex = 36;
-            this.btnUpdate.Text = "手动升级软件";
+            this.btnUpdate.Text = "升级软件";
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnShowData
             // 
             this.btnShowData.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnShowData.Location = new System.Drawing.Point(17, 224);
+            this.btnShowData.Location = new System.Drawing.Point(378, 180);
             this.btnShowData.Name = "btnShowData";
             this.btnShowData.Size = new System.Drawing.Size(75, 29);
             this.btnShowData.TabIndex = 35;
@@ -140,7 +177,7 @@
             this.lblLogLevel.AutoSize = true;
             this.lblLogLevel.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblLogLevel.ForeColor = System.Drawing.Color.Green;
-            this.lblLogLevel.Location = new System.Drawing.Point(149, 185);
+            this.lblLogLevel.Location = new System.Drawing.Point(143, 182);
             this.lblLogLevel.Name = "lblLogLevel";
             this.lblLogLevel.Size = new System.Drawing.Size(42, 21);
             this.lblLogLevel.TabIndex = 34;
@@ -150,7 +187,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(13, 185);
+            this.label5.Location = new System.Drawing.Point(8, 180);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(122, 21);
             this.label5.TabIndex = 10;
@@ -165,7 +202,7 @@
             "正常",
             "调试",
             "全部"});
-            this.comboLogLevel.Location = new System.Drawing.Point(235, 180);
+            this.comboLogLevel.Location = new System.Drawing.Point(191, 180);
             this.comboLogLevel.Name = "comboLogLevel";
             this.comboLogLevel.Size = new System.Drawing.Size(75, 29);
             this.comboLogLevel.TabIndex = 32;
@@ -173,7 +210,7 @@
             // btnChangeLogLevel
             // 
             this.btnChangeLogLevel.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnChangeLogLevel.Location = new System.Drawing.Point(331, 179);
+            this.btnChangeLogLevel.Location = new System.Drawing.Point(281, 180);
             this.btnChangeLogLevel.Name = "btnChangeLogLevel";
             this.btnChangeLogLevel.Size = new System.Drawing.Size(75, 29);
             this.btnChangeLogLevel.TabIndex = 31;
@@ -188,9 +225,9 @@
             this.toolCPU,
             this.toolStripStatusLabel2,
             this.toolRAM});
-            this.statusSystem.Location = new System.Drawing.Point(0, 267);
+            this.statusSystem.Location = new System.Drawing.Point(0, 379);
             this.statusSystem.Name = "statusSystem";
-            this.statusSystem.Size = new System.Drawing.Size(432, 22);
+            this.statusSystem.Size = new System.Drawing.Size(559, 22);
             this.statusSystem.TabIndex = 25;
             this.statusSystem.Text = "statusStrip1";
             // 
@@ -307,7 +344,7 @@
             this.panel3.Location = new System.Drawing.Point(-4, 126);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(500, 40);
+            this.panel3.Size = new System.Drawing.Size(614, 40);
             this.panel3.TabIndex = 1;
             // 
             // btnCloseUpdate
@@ -359,7 +396,7 @@
             this.panel1.Location = new System.Drawing.Point(-7, 38);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(500, 40);
+            this.panel1.Size = new System.Drawing.Size(617, 40);
             this.panel1.TabIndex = 0;
             // 
             // btnCloseSocket
@@ -404,12 +441,43 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(440, 315);
+            this.tabControl1.Size = new System.Drawing.Size(567, 427);
             this.tabControl1.TabIndex = 18;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.btnSwitch);
+            this.tabPage2.Controls.Add(this.richTextBoxDIT);
+            this.tabPage2.Controls.Add(this.listViewCache);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Size = new System.Drawing.Size(559, 401);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "缓存队列";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // richTextBoxDIT
+            // 
+            this.richTextBoxDIT.Location = new System.Drawing.Point(354, 0);
+            this.richTextBoxDIT.Name = "richTextBoxDIT";
+            this.richTextBoxDIT.Size = new System.Drawing.Size(202, 337);
+            this.richTextBoxDIT.TabIndex = 1;
+            this.richTextBoxDIT.Text = "";
+            // 
+            // listViewCache
+            // 
+            this.listViewCache.GridLines = true;
+            this.listViewCache.Location = new System.Drawing.Point(0, 0);
+            this.listViewCache.Name = "listViewCache";
+            this.listViewCache.Size = new System.Drawing.Size(356, 340);
+            this.listViewCache.TabIndex = 0;
+            this.listViewCache.UseCompatibleStateImageBehavior = false;
+            this.listViewCache.View = System.Windows.Forms.View.Details;
             // 
             // notifyIconMain
             // 
@@ -433,22 +501,27 @@
             this.toolStripMenuItemExit.Text = "退出";
             this.toolStripMenuItemExit.Click += new System.EventHandler(this.toolStripMenuItemExit_Click);
             // 
-            // btnTest
+            // timerDataProc
             // 
-            this.btnTest.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnTest.Location = new System.Drawing.Point(331, 224);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(60, 29);
-            this.btnTest.TabIndex = 37;
-            this.btnTest.Text = "测试";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click_1);
+            this.timerDataProc.Enabled = true;
+            this.timerDataProc.Interval = 1000;
+            this.timerDataProc.Tick += new System.EventHandler(this.timerDataProc_Tick);
+            // 
+            // btnSwitch
+            // 
+            this.btnSwitch.Location = new System.Drawing.Point(221, 346);
+            this.btnSwitch.Name = "btnSwitch";
+            this.btnSwitch.Size = new System.Drawing.Size(75, 23);
+            this.btnSwitch.TabIndex = 2;
+            this.btnSwitch.Text = "切换视频";
+            this.btnSwitch.UseVisualStyleBackColor = true;
+            this.btnSwitch.Click += new System.EventHandler(this.btnSwitch_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 315);
+            this.ClientSize = new System.Drawing.Size(567, 427);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
@@ -459,6 +532,7 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.statusSystem.ResumeLayout(false);
             this.statusSystem.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMonitor)).EndInit();
@@ -470,6 +544,7 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxSocket)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.contextMenuExit.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -512,6 +587,13 @@
         private System.Windows.Forms.Button btnShowData;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Timer timerDataProc;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ListView listViewCache;
+        private System.Windows.Forms.RichTextBox richTextBoxDIT;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button btnSwitch;
     }
 }
 

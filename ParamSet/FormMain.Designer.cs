@@ -46,9 +46,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxSet = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnDeleteNozzle = new System.Windows.Forms.Button();
+            this.btnAddNozzle = new System.Windows.Forms.Button();
+            this.comboArea = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.comboAreaShow = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lblAction = new System.Windows.Forms.Label();
             this.btnChangeCurve = new System.Windows.Forms.Button();
             this.comboOilType = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -225,17 +228,20 @@
             // 
             this.groupBoxSet.Controls.Add(this.groupBox2);
             this.groupBoxSet.Controls.Add(this.videoBox);
-            this.groupBoxSet.Location = new System.Drawing.Point(186, 87);
+            this.groupBoxSet.Location = new System.Drawing.Point(186, 102);
             this.groupBoxSet.Name = "groupBoxSet";
-            this.groupBoxSet.Size = new System.Drawing.Size(810, 547);
+            this.groupBoxSet.Size = new System.Drawing.Size(810, 581);
             this.groupBoxSet.TabIndex = 2;
             this.groupBoxSet.TabStop = false;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnDeleteNozzle);
+            this.groupBox2.Controls.Add(this.btnAddNozzle);
+            this.groupBox2.Controls.Add(this.comboArea);
+            this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.btnCancel);
-            this.groupBox2.Controls.Add(this.comboAreaShow);
-            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.lblAction);
             this.groupBox2.Controls.Add(this.btnChangeCurve);
             this.groupBox2.Controls.Add(this.comboOilType);
             this.groupBox2.Controls.Add(this.label7);
@@ -246,27 +252,36 @@
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Location = new System.Drawing.Point(6, 11);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(800, 54);
+            this.groupBox2.Size = new System.Drawing.Size(800, 110);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "油枪出入口关联设置";
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
-            // btnCancel
+            // btnDeleteNozzle
             // 
-            this.btnCancel.Location = new System.Drawing.Point(242, 23);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 21;
-            this.btnCancel.Text = "取  消";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnDeleteNozzle.Location = new System.Drawing.Point(514, 35);
+            this.btnDeleteNozzle.Name = "btnDeleteNozzle";
+            this.btnDeleteNozzle.Size = new System.Drawing.Size(88, 23);
+            this.btnDeleteNozzle.TabIndex = 25;
+            this.btnDeleteNozzle.Text = "删除油枪";
+            this.btnDeleteNozzle.UseVisualStyleBackColor = true;
             // 
-            // comboAreaShow
+            // btnAddNozzle
             // 
-            this.comboAreaShow.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboAreaShow.FormattingEnabled = true;
-            this.comboAreaShow.Items.AddRange(new object[] {
+            this.btnAddNozzle.Location = new System.Drawing.Point(407, 35);
+            this.btnAddNozzle.Name = "btnAddNozzle";
+            this.btnAddNozzle.Size = new System.Drawing.Size(89, 23);
+            this.btnAddNozzle.TabIndex = 24;
+            this.btnAddNozzle.Text = "添加油枪";
+            this.btnAddNozzle.UseVisualStyleBackColor = true;
+            this.btnAddNozzle.Click += new System.EventHandler(this.btnAddNozzle_Click);
+            // 
+            // comboArea
+            // 
+            this.comboArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboArea.FormattingEnabled = true;
+            this.comboArea.Items.AddRange(new object[] {
             "入口",
             "出口",
             "1",
@@ -301,27 +316,47 @@
             "30",
             "31",
             "32"});
-            this.comboAreaShow.Location = new System.Drawing.Point(608, 22);
-            this.comboAreaShow.Name = "comboAreaShow";
-            this.comboAreaShow.Size = new System.Drawing.Size(59, 20);
-            this.comboAreaShow.TabIndex = 20;
+            this.comboArea.Location = new System.Drawing.Point(61, 69);
+            this.comboArea.Name = "comboArea";
+            this.comboArea.Size = new System.Drawing.Size(67, 20);
+            this.comboArea.TabIndex = 23;
+            this.comboArea.SelectedIndexChanged += new System.EventHandler(this.comboArea_SelectedIndexChanged);
             // 
-            // label8
+            // label9
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(573, 27);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(41, 12);
-            this.label8.TabIndex = 19;
-            this.label8.Text = "显示：";
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 72);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 12);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "识别号：";
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(256, 67);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 21;
+            this.btnCancel.Text = "取  消";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // lblAction
+            // 
+            this.lblAction.AutoSize = true;
+            this.lblAction.Location = new System.Drawing.Point(642, 73);
+            this.lblAction.Name = "lblAction";
+            this.lblAction.Size = new System.Drawing.Size(41, 12);
+            this.lblAction.TabIndex = 19;
+            this.lblAction.Text = "显示：";
             // 
             // btnChangeCurve
             // 
-            this.btnChangeCurve.Location = new System.Drawing.Point(83, 23);
+            this.btnChangeCurve.Location = new System.Drawing.Point(156, 35);
             this.btnChangeCurve.Name = "btnChangeCurve";
             this.btnChangeCurve.Size = new System.Drawing.Size(75, 23);
             this.btnChangeCurve.TabIndex = 18;
-            this.btnChangeCurve.Text = "修改绘图";
+            this.btnChangeCurve.Text = "修改识别区";
             this.btnChangeCurve.UseVisualStyleBackColor = true;
             this.btnChangeCurve.Click += new System.EventHandler(this.btnChangeCurve_Click);
             // 
@@ -336,7 +371,7 @@
             "97#汽油",
             "98#汽油",
             "0#柴油"});
-            this.comboOilType.Location = new System.Drawing.Point(496, 23);
+            this.comboOilType.Location = new System.Drawing.Point(540, 67);
             this.comboOilType.Name = "comboOilType";
             this.comboOilType.Size = new System.Drawing.Size(62, 20);
             this.comboOilType.TabIndex = 17;
@@ -344,7 +379,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(446, 28);
+            this.label7.Location = new System.Drawing.Point(490, 72);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 15;
@@ -389,7 +424,7 @@
             "30",
             "31",
             "32"});
-            this.comboNozzleNo.Location = new System.Drawing.Point(373, 24);
+            this.comboNozzleNo.Location = new System.Drawing.Point(419, 69);
             this.comboNozzleNo.Name = "comboNozzleNo";
             this.comboNozzleNo.Size = new System.Drawing.Size(67, 20);
             this.comboNozzleNo.TabIndex = 14;
@@ -397,17 +432,17 @@
             // 
             // btnDeleteCurve
             // 
-            this.btnDeleteCurve.Location = new System.Drawing.Point(682, 20);
+            this.btnDeleteCurve.Location = new System.Drawing.Point(256, 35);
             this.btnDeleteCurve.Name = "btnDeleteCurve";
-            this.btnDeleteCurve.Size = new System.Drawing.Size(88, 23);
+            this.btnDeleteCurve.Size = new System.Drawing.Size(75, 23);
             this.btnDeleteCurve.TabIndex = 13;
-            this.btnDeleteCurve.Text = "删除关联油枪";
+            this.btnDeleteCurve.Text = "删除识别区";
             this.btnDeleteCurve.UseVisualStyleBackColor = true;
             this.btnDeleteCurve.Click += new System.EventHandler(this.btnDeleteCurve_Click);
             // 
             // btnSaveCurve
             // 
-            this.btnSaveCurve.Location = new System.Drawing.Point(162, 23);
+            this.btnSaveCurve.Location = new System.Drawing.Point(156, 67);
             this.btnSaveCurve.Name = "btnSaveCurve";
             this.btnSaveCurve.Size = new System.Drawing.Size(75, 23);
             this.btnSaveCurve.TabIndex = 12;
@@ -417,18 +452,18 @@
             // 
             // btnAddCurve
             // 
-            this.btnAddCurve.Location = new System.Drawing.Point(6, 23);
+            this.btnAddCurve.Location = new System.Drawing.Point(53, 35);
             this.btnAddCurve.Name = "btnAddCurve";
             this.btnAddCurve.Size = new System.Drawing.Size(75, 23);
             this.btnAddCurve.TabIndex = 11;
-            this.btnAddCurve.Text = "添加绘图";
+            this.btnAddCurve.Text = "添加识别区";
             this.btnAddCurve.UseVisualStyleBackColor = true;
             this.btnAddCurve.Click += new System.EventHandler(this.btnAddCurve_Click);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(326, 27);
+            this.label6.Location = new System.Drawing.Point(369, 73);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 4;
@@ -438,7 +473,7 @@
             // 
             this.videoBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("videoBox.BackgroundImage")));
             this.videoBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.videoBox.Location = new System.Drawing.Point(6, 71);
+            this.videoBox.Location = new System.Drawing.Point(6, 127);
             this.videoBox.Name = "videoBox";
             this.videoBox.Size = new System.Drawing.Size(800, 450);
             this.videoBox.TabIndex = 0;
@@ -464,9 +499,9 @@
             // 
             // treeMain
             // 
-            this.treeMain.Location = new System.Drawing.Point(13, 98);
+            this.treeMain.Location = new System.Drawing.Point(13, 111);
             this.treeMain.Name = "treeMain";
-            this.treeMain.Size = new System.Drawing.Size(162, 535);
+            this.treeMain.Size = new System.Drawing.Size(162, 572);
             this.treeMain.TabIndex = 4;
             this.treeMain.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeDevice_NodeMouseClick);
             this.treeMain.DoubleClick += new System.EventHandler(this.treeMain_DoubleClick);
@@ -498,7 +533,7 @@
             this.lblStationName,
             this.toolStripStatusLabel2,
             this.lblCurVideoNo});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 620);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 860);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1008, 22);
             this.statusStrip1.TabIndex = 5;
@@ -532,7 +567,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 642);
+            this.ClientSize = new System.Drawing.Size(1008, 882);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.treeMain);
             this.Controls.Add(this.groupBoxSet);
@@ -586,8 +621,7 @@
         private System.Windows.Forms.ComboBox comboNozzleNo;
         private System.Windows.Forms.Button btnChangeCurve;
         private System.Windows.Forms.ComboBox comboOilType;
-        private System.Windows.Forms.ComboBox comboAreaShow;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblAction;
         private System.Windows.Forms.ContextMenuStrip contextMenuDelete;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.Button btnCancel;
@@ -598,6 +632,10 @@
         private System.Windows.Forms.ToolStripStatusLabel lblStationName;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel lblCurVideoNo;
+        private System.Windows.Forms.Button btnDeleteNozzle;
+        private System.Windows.Forms.Button btnAddNozzle;
+        private System.Windows.Forms.ComboBox comboArea;
+        private System.Windows.Forms.Label label9;
     }
 }
 

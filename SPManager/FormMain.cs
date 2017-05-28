@@ -18,6 +18,7 @@ namespace SPManager
         //NET_DVR_PREVIEWINFO previewInfo = new NET_DVR_PREVIEWINFO();
         private bool toExit = false;
         private DateTime lastUpdateTime = DateTime.Now;
+        int gcCount = 0;
         public FormMain()
         {
             InitializeComponent();
@@ -35,6 +36,8 @@ namespace SPManager
         
         private void FormMain_Load(object sender, EventArgs e)
         {
+            lastMessageTime = DateTime.Now;
+            addListViewHead();
             int ret = Init();
             if (ret == 0)
             {
@@ -95,44 +98,7 @@ namespace SPManager
             if(Global.LogServer != null)
             Global.LogServer.Stop();
         }
-        
-        private void btnGetCar_Click(object sender, EventArgs e)
-        {
-            GetCarFromDll();
-        }
-
-        private void btnBeginWithVideo_Click(object sender, EventArgs e)
-        {
-            //SPlate.SP_BeginRecog(realVideo.Handle);
-        }
-
-        private void btnBeginRecog_Click(object sender, EventArgs e)
-        {
-            int ret = SPlate.SP_BeginRecog(new IntPtr());
-        }
-
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            //List<ClsCarInfo> list = new List<ClsCarInfo>();
-            //for (int i =0;i<5;i++)
-            //{
-            //    ClsCarInfo info = new ClsCarInfo();
-            //    list.Add(info);
-            //}
-            //foreach (ClsCarInfo car in list)
-            //{
-            //    car.license = "2";
-            //    list.Remove(car);
-            //}
-            
-            
-            SPlate.SP_TestAPI();
-        }
-
-        private void btnTimer_Click(object sender, EventArgs e)
-        {
-            timerServiceStaus.Enabled = !timerServiceStaus.Enabled;
-        }
+    
 
         private void btnChangeLogLevel_Click(object sender, EventArgs e)
         {
@@ -212,6 +178,29 @@ namespace SPManager
         private void timerServiceStaus_Tick(object sender, EventArgs e)
         {
             this.showMemoryInfo();
+            gcCount++;
+            if (gcCount > 60)
+            {
+                gcCount = 0;
+                GC.Collect();
+            }
+            //int calcTime = int.Parse(DateTime.Now.ToString("HHmm"));
+            //if (calcTime < 700 && lastMessageTime.AddMinutes(30).CompareTo(DateTime.Now) < 0)
+            //{
+            //        Global.LogServer.Add(new LogInfo("Error", "Main 10分钟未收到车牌，重启视频", (int)EnumLogLevel.ERROR));
+            //        SPlate.SP_Close();
+            //        InitAlg();
+            //        InitDev();
+            //} 
+            //else if(lastMessageTime.AddMinutes(10).CompareTo(DateTime.Now) < 0)
+            //{
+            //    Global.LogServer.Add(new LogInfo("Error", "Main 10分钟未收到车牌，重启视频", (int)EnumLogLevel.ERROR));
+            //    SPlate.SP_Close();
+            //    InitAlg();
+            //    InitDev();
+            //}
+            
+
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -232,12 +221,83 @@ namespace SPManager
 
         private void btnTest_Click_1(object sender, EventArgs e)
         {
-            string str1 = "D:\\Image\\";
+            SPlate.SP_TestAPI();
 
-            if (!Directory.Exists(str1))
+            SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)WM_CARDATA, 0, 0);
+        
+            //Application.DoEvents();
+            //NET_DVR_PREVIEWINFO previewInfo = new NET_DVR_PREVIEWINFO();
+            //previewInfo.hPlayWnd = pictureBox1.Handle;//预览窗口
+            //previewInfo.lChannel = int.Parse(textBox1.Text);
+            //previewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+            //previewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
+            //previewInfo.bBlocked = false; //0- 非阻塞取流，1- 阻塞取流
+            //previewInfo.dwDisplayBufNum = 15;
+            //int lenth = Marshal.SizeOf(previewInfo);
+            //SPlate.SP_PreviewInfo(ref previewInfo, lenth).ToString();
+        }
+
+        private void timerDataProc_Tick(object sender, EventArgs e)
+        {
+            GetCarFromDll_Array();
+
+            showCarList();
+            DateTime dt = DateTime.Now;
+            //if (Global.carList.Count >0)
+            //{
+            //    lock (Global.lockObj)
+            //    {
+            //        try
+            //        {
+            //            foreach (ClsCarInfo car in Global.carList)
+            //            {
+            //                if (car.arriveTime.AddSeconds(600).CompareTo(dt) < 0)
+            //                {
+            //                    car.leaveTime = DateTime.Now;
+            //                    Global.mysqlHelper.ExecuteSql(car.toSaveSqlString());
+            //                    Global.carList.Remove(car);
+            //                    Global.LogServer.Add(new LogInfo("Run", "Main->timerDataProc time out in list  license " + car.license, (int)EnumLogLevel.RUN));
+            //                    Global.LogServer.Add(new LogInfo("Run", "Main->timerDataProc car list length " + Global.carList.Count, (int)EnumLogLevel.RUN));
+            //                }
+            //            }
+            //        }
+            //        catch (System.Exception ex)
+            //        {
+            //            Global.LogServer.Add(new LogInfo("Error", "Main->timerDataProc exception" + ex.Message, (int)EnumLogLevel.ERROR));
+            //        }
+                    
+            //    }
+                
+            //}
+            try
             {
-                Directory.CreateDirectory(str1);
+                if (Global.exitLicenseList.Count > 20)
+                {
+                    foreach (string lic in Global.exitLicenseList)
+                    {
+                        if (Global.exitLicenseList.Count > 20)
+                        {
+                            Global.exitLicenseList.Remove(lic);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
             }
+            catch (System.Exception ex)
+            {
+            	
+            }
+            
+           
+            
+        }
+
+        private void btnSwitch_Click(object sender, EventArgs e)
+        {
+            SPlate.SP_TestAPI();
         }
     }
 }

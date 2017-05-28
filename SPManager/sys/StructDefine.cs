@@ -36,14 +36,15 @@ namespace SPManager
         public uint dwAvailVirtual;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct struNozzle
+    public struct struArea
     {
-        public int nozzleNo;
+        public int areaNo;
         public int videoChanNo;
         public int left;
         public int top;
         public int right;
         public int bottom;
+        public int areaFlag;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct struCarInfoOut
@@ -60,7 +61,7 @@ namespace SPManager
         public int nSubCarLogo;         //车辆品牌
         public int nCarModel;           //车辆类型，已弃用
         public int nVideoChannel;  //识别视频通道
-        public int nNozzleNo;
+        public int nAreaNo;
         public int nPicType;       //图片类型
         public int nPicWidth;
         public int nPicHeight;

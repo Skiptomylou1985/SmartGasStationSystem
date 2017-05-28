@@ -226,7 +226,7 @@ namespace ParamSet
                 struDrawInfo.g.DrawRectangle(new Pen(Color.Red), struDrawInfo.start.X, struDrawInfo.start.Y,
                                              struDrawInfo.end.X - struDrawInfo.start.X, struDrawInfo.end.Y - struDrawInfo.start.Y);
             }
-            else if (comboAreaShow.SelectedIndex != 1 && Global.nCurStatus == 0)
+            else if (Global.nCurStatus == 0)
             {
                 
                 foreach(ClsNVRInfo nvr in Global.nvrList)
@@ -239,9 +239,7 @@ namespace ParamSet
                             {
                                 for (int i =0;i<video.areaList.Count; i++)
                                 {
-                                    if (comboAreaShow.SelectedIndex == 0 || "油枪"+video.areaList[i].nozzle.nozzleNo.ToString() == comboAreaShow.Text.Trim()
-                                        ||(video.areaList[i].nozzle.nozzleNo == 0 && comboAreaShow.Text.Trim() == "入口")
-                                        || (video.areaList[i].nozzle.nozzleNo == 100 && comboAreaShow.Text.Trim() == "出口")) 
+                                    if (comboArea.SelectedIndex == 0 || video.areaList[i].id.ToString() == comboArea.Text.Trim() ) 
                                     {
                                         int X1 = (int)(video.areaList[i].left * videoBox.Width);
                                         int X2 = (int)(video.areaList[i].right * videoBox.Width);
@@ -343,29 +341,30 @@ namespace ParamSet
 
         private void btnSaveCurve_Click(object sender, EventArgs e)
         {
-            if (comboNozzleNo.SelectedIndex < 0)
-            {
-                MessageBox.Show("请选择油枪");
-                return;
-            }
-            if (comboOilType.SelectedIndex < 0)
-            {
-                MessageBox.Show("请选择油类型");
-                return;
-            }
-            if (comboNozzleNo.Text.ToString().Trim() == "入口") //入口
-            {
-                AddOrUpdateNozzleOrInOut(0, Global.nCurStatus);
-            }
-            else if(comboNozzleNo.Text.ToString().Trim() == "出口")
-            {
-                AddOrUpdateNozzleOrInOut(100, Global.nCurStatus);
-            }
-            else
-            {
-                AddOrUpdateNozzleOrInOut(int.Parse(comboNozzleNo.Text.ToString()), Global.nCurStatus);
-            }
-            
+
+            //if (comboNozzleNo.SelectedIndex < 0)
+            //{
+            //    MessageBox.Show("请选择油枪");
+            //    return;
+            //}
+            //if (comboOilType.SelectedIndex < 0)
+            //{
+            //    MessageBox.Show("请选择油类型");
+            //    return;
+            //}
+            //if (comboNozzleNo.Text.ToString().Trim() == "入口") //入口
+            //{
+            //    AddOrUpdateNozzleOrInOut(0, Global.nCurStatus);
+            //}
+            //else if(comboNozzleNo.Text.ToString().Trim() == "出口")
+            //{
+            //    AddOrUpdateNozzleOrInOut(100, Global.nCurStatus);
+            //}
+            //else
+            //{
+            //    AddOrUpdateNozzleOrInOut(int.Parse(comboNozzleNo.Text.ToString()), Global.nCurStatus);
+            //}
+            AddOrUpdateArea(Global.nCurStatus);
             SwithFormStat(0);
             SwitchVideo();
         }
@@ -384,12 +383,7 @@ namespace ParamSet
                 {
                     foreach (ClsRecogArea area in video.areaList)
                     {
-                            if (area.nozzle.nozzleNo == 0)
-                                this.comboNozzleNo.Items.Add("入口");
-                            else if (area.nozzle.nozzleNo == 100)
-                                this.comboNozzleNo.Items.Add("出口");
-                            else
-                                this.comboNozzleNo.Items.Add(area.nozzle.nozzleNo.ToString());
+                        this.comboNozzleNo.Items.Add(area.id.ToString());
 
                     }
                     if (this.comboNozzleNo.Items.Count > 0)
@@ -405,45 +399,47 @@ namespace ParamSet
 
         private void comboNozzleNo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Global.nCurStatus == 2)
-            {
-                foreach (ClsRecogArea area in Global.recogAreaList)
-                {
-                    if (area.nozzle.nozzleNo.ToString() == comboNozzleNo.Text.Trim())
-                    {
-                        struDrawInfo.start.X = (int)(area.left * videoBox.Width);
-                        struDrawInfo.start.Y = (int)(area.top * videoBox.Height);
-                        struDrawInfo.end.X = (int)(area.right * videoBox.Width);
-                        struDrawInfo.end.Y = (int)(area.bottom * videoBox.Height);
-                        comboOilType.SelectedIndex = area.nozzle.oilType;
-                    }
-                }
+            //if (Global.nCurStatus == 2)
+            //{
+            //    foreach (ClsRecogArea area in Global.recogAreaList)
+            //    {
+            //        if (area.nozzle.nozzleNo.ToString() == comboNozzleNo.Text.Trim())
+            //        {
+            //            struDrawInfo.start.X = (int)(area.left * videoBox.Width);
+            //            struDrawInfo.start.Y = (int)(area.top * videoBox.Height);
+            //            struDrawInfo.end.X = (int)(area.right * videoBox.Width);
+            //            struDrawInfo.end.Y = (int)(area.bottom * videoBox.Height);
+            //            comboOilType.SelectedIndex = area.nozzle.oilType;
+            //        }
+            //    }
 
-            }
+            //}
         }
 
         private void btnDeleteCurve_Click(object sender, EventArgs e)
         {
-            if(comboAreaShow.Text.Trim() == "不显示")
+           
+            if (comboArea.Text.Trim() == "全部")
             {
-                MessageBox.Show("请选择要删除的油枪序号");
-            }
-            else if (comboAreaShow.Text.Trim() == "全部")
-            {
-                if (DialogResult.Yes == MessageBox.Show("确认删除视频"+Global.nCurSelectedVideoChan.ToString()+"所有关联油枪?","提示",MessageBoxButtons.YesNo))
+                if (DialogResult.Yes == MessageBox.Show("确认删除视频"+Global.nCurSelectedVideoChan.ToString()+"所有关联的所有识别区及油枪信息?","提示",MessageBoxButtons.YesNo))
                 {
                     string sqlString = "delete a ,b from nozzle a,analysisarea b,vch c where a.areaid = b.id and b.vchid = c.id and c.vchno = " + Global.nCurSelectedVideoChan.ToString();
+                    Global.mysqlHelper.ExecuteSql(sqlString);
+                    sqlString = "delete b from analysisarea b,vch c where  b.vchid = c.id and c.vchno = " + Global.nCurSelectedVideoChan.ToString();
                     Global.mysqlHelper.ExecuteSql(sqlString);
                     GetParamFromDB();
                 }
             }
             else
             {
-                if (DialogResult.Yes == MessageBox.Show("确认删除视频" + Global.nCurSelectedVideoChan.ToString() + "所关联的"+comboAreaShow.Text+"?", "提示", MessageBoxButtons.YesNo))
+                if (DialogResult.Yes == MessageBox.Show("确认删除视频" + Global.nCurSelectedVideoChan.ToString() + "所关联的识别区"+comboArea.Text+"及该区域所关联的油枪?", "提示", MessageBoxButtons.YesNo))
                 {
-                    string nozzleNO = System.Text.RegularExpressions.Regex.Replace(comboAreaShow.Text, @"[^0-9]+", "");
+                    
                     string sqlString = "delete a ,b from nozzle a,analysisarea b,vch c where a.areaid = b.id and b.vchid = c.id and c.vchno = " + 
-                        Global.nCurSelectedVideoChan.ToString()+" and a.nozzleno = "+nozzleNO;
+                        Global.nCurSelectedVideoChan.ToString();
+                    Global.mysqlHelper.ExecuteSql(sqlString);
+                    sqlString = "delete b from analysisarea b,vch c where b.vchid = c.id and c.vchno = " +
+                        Global.nCurSelectedVideoChan.ToString() + " and b.id = " + comboArea.Text.Trim();
                     Global.mysqlHelper.ExecuteSql(sqlString);
                     GetParamFromDB();
                 }
@@ -471,6 +467,14 @@ namespace ParamSet
             btnSetInfo.Enabled = false;
         }
 
-      
+        private void comboArea_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAddNozzle_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

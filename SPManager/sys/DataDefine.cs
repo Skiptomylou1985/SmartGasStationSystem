@@ -65,7 +65,12 @@ namespace SPManager
             set { _nozzleNo = value; }
         }
         private int _nozzleNo = 0;
-
+        public int areaNo
+        {
+            get { return _areaNo; }
+            set { _areaNo = value; }
+        }
+        private int _areaNo = 0;
         public string picPath
         {
             get { return _picPath; }
@@ -102,6 +107,8 @@ namespace SPManager
         private int _matchFlag = 0;
         public string toSaveSqlString()
         {
+            //TODO 未解决路径问题;
+            _picPath = "";
             String sqlString = "INSERT into gsims.carlog (carnumber,carnumcolor,cartype,carlogo,subcarlogo,carcolor,arrivetime,leavetime,nozzleno,picpath,begintime,endtime,oiltype)" +
         "VALUES('{0}', {1}, {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, '{9}', '{10}', '{11}',{12}) ";
             return String.Format(sqlString, _license, _licenseColor.ToString(), _type.ToString(), _carLogo.ToString(), _subCarLogo.ToString(), _carColor.ToString(), _arriveTime, _leaveTime, _nozzleNo.ToString(), _picPath, _beginTime, _endTime, _oilType);
@@ -109,58 +116,114 @@ namespace SPManager
     }
     public class ClsNozzle
     {
-        public int machineNo
+        public int id
         {
-            get { return _machineNo; }
-            set { _machineNo = value; }
+            get { return _id; }
+            set { _id = value; }
         }
-        private int _machineNo = 0;
+        private int _id = 0;
+        public int parentid
+        {
+            get { return _parentid; }
+            set { _parentid = value; }
+        }
+        private int _parentid = 0;
+        public int nozzleNo
+        {
+            get { return _nozzleNo; }
+            set { _nozzleNo = value; }
+        }
+        private int _nozzleNo = 0;
         public int oilType
         {
             get { return _oilType; }
             set { _oilType = value; }
         }
         private int _oilType = 1;
-        public ClsRecogArea recogArea
+        public int areaid
         {
-            get { return _recogArea; }
-            set { _recogArea = value; }
+            get { return _areaid; }
+            set { _areaid = value; }
         }
-        private ClsRecogArea _recogArea = new ClsRecogArea();
+        private int _areaid = 0;
+        public int subAreaid
+        {
+            get { return _subAreaid; }
+            set { _subAreaid = value; }
+        }
+        private int _subAreaid = 0;
 
-        public int videoChanNo
+        public string getInsertString()
         {
-            get { return _videoChanNo; }
-            set { _videoChanNo = value; }
+            string str = "insert into nozzle (nozzleno,oiltype,areaid,subareaid,parentid) values (" + nozzleNo.ToString() + "," +
+                oilType.ToString() + "," + areaid.ToString() + "," + subAreaid.ToString() + "," + parentid.ToString() + ")";
+            return str;
         }
-        private int _videoChanNo = 33;
     }
     public class ClsRecogArea
     {
-        public int top
+        public List<ClsNozzle> nozzleList = new List<ClsNozzle>();
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private int _id = 0;
+        public int videoid
+        {
+            get { return _videoid; }
+            set { _videoid = value; }
+        }
+        private int _videoid = 0;
+        public double top
         {
             get { return _top; }
             set { _top = value; }
         }
-        private int _top = 0;
-        public int bottom
+        private double _top = 0;
+        public double bottom
         {
             get { return _bottom; }
             set { _bottom = value; }
         }
-        private int _bottom = 0;
-        public int left
+        private double _bottom = 0;
+        public double left
         {
             get { return _left; }
             set { _left = value; }
         }
-        private int _left = 0;
-        public int right
+        private double _left = 0;
+        public double right
         {
             get { return _right; }
             set { _right = value; }
         }
-        private int _right = 92;
+        private double _right = 0;
+
+        public int areaFlag //是否为出入口识别区,0为油枪识别区，99 入口  100 出口
+        {
+            get { return _areaFlag; }
+            set { _areaFlag = value; }
+        }
+        private int _areaFlag = 0;
+        public int videoChannel
+        {
+            get { return _videoChannel; }
+            set { _videoChannel = value; }
+        }
+        private int _videoChannel = 0;
+public string getInsertString()
+        {
+            string str = "insert into analysisarea (x1,x2,y1,y2,vchid) values (" + left.ToString() + "," +
+                right.ToString() + "," + top.ToString() + "," + bottom.ToString() + "," + videoid.ToString() + ")";
+            return str;
+        }
+        public string getUpdateString()
+        {
+            string str = "update analysisarea set x1 = " + left.ToString() + ",x2 = " + right.ToString() +
+                        ",y1=" + top.ToString() + ",y2=" + bottom.ToString() + " where id = " + id.ToString();
+            return str;
+        }
     }
     public class ClsStationInfo
     {

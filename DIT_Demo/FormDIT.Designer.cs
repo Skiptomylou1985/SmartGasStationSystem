@@ -50,6 +50,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.lblInOut = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.textIP = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -300,11 +301,20 @@
             this.label6.TabIndex = 21;
             this.label6.Text = "进出站标识：";
             // 
+            // textIP
+            // 
+            this.textIP.Location = new System.Drawing.Point(178, 211);
+            this.textIP.Name = "textIP";
+            this.textIP.Size = new System.Drawing.Size(100, 21);
+            this.textIP.TabIndex = 23;
+            this.textIP.Text = "127.0.0.1";
+            // 
             // FormDIT
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(332, 241);
+            this.Controls.Add(this.textIP);
             this.Controls.Add(this.lblInOut);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.lblCarType);
@@ -359,6 +369,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label lblInOut;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textIP;
     }
 }
 

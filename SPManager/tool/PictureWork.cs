@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Drawing;
 using System.IO;
-
+using System.Text.RegularExpressions;
 namespace SPManager
 {
     public class PictureWork
@@ -65,9 +65,11 @@ namespace SPManager
         }
         public void SavePic(ClsPicture pic)
         {
-            Global.LogServer.Add(new LogInfo("Debug", "PictureWork->SavePic picpath:" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
-            string path = pic.picPath.Replace(@"\","\\");
-            Global.LogServer.Add(new LogInfo("Debug", "PictureWork->SavePic picpath:" + path + pic.picName, (int)EnumLogLevel.DEBUG));
+            return;
+            string path = pic.picPath;
+            Global.LogServer.Add(new LogInfo("Debug", "PictureWork->SavePic picpath:" + path, (int)EnumLogLevel.DEBUG));
+            //Regex.Replace(path, @"\", "\\");
+            //Global.LogServer.Add(new LogInfo("Debug", "PictureWork->SavePic picpath:" + path + pic.picName, (int)EnumLogLevel.DEBUG));
 
             try
             {
