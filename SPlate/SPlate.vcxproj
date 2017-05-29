@@ -95,7 +95,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);TH_PLATEID.lib;HCCore.lib;HCNetSDK.lib;PlayCtrl.lib;GdiPlus.lib;IPHlpApi.Lib;ws2_32.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);TH_PLATEID.lib;HCCore.lib;HCNetSDK.lib;PlayCtrl.lib;GdiPlus.lib;IPHlpApi.Lib;ws2_32.lib;winmm.lib;libjpeg.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -154,6 +154,7 @@
     <ClInclude Include="DataType.h" />
     <ClInclude Include="DecodeCardSdk.h" />
     <ClInclude Include="HCNetSDK.h" />
+    <ClInclude Include="jpeglib.h" />
     <ClInclude Include="log.h" />
     <ClInclude Include="PlayM4.h" />
     <ClInclude Include="plaympeg4.h" />

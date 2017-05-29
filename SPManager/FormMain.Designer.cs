@@ -33,7 +33,7 @@
             this.timerServiceStaus = new System.Windows.Forms.Timer(this.components);
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textVideoChan = new System.Windows.Forms.TextBox();
             this.btnTest = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnShowData = new System.Windows.Forms.Button();
@@ -66,13 +66,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnSwitch = new System.Windows.Forms.Button();
             this.richTextBoxDIT = new System.Windows.Forms.RichTextBox();
             this.listViewCache = new System.Windows.Forms.ListView();
             this.notifyIconMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuExit = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
-            this.btnSwitch = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusSystem.SuspendLayout();
@@ -96,7 +96,7 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.pictureBox1);
-            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.textVideoChan);
             this.tabPage1.Controls.Add(this.btnTest);
             this.tabPage1.Controls.Add(this.btnUpdate);
             this.tabPage1.Controls.Add(this.btnShowData);
@@ -132,12 +132,12 @@
             this.pictureBox1.TabIndex = 39;
             this.pictureBox1.TabStop = false;
             // 
-            // textBox1
+            // textVideoChan
             // 
-            this.textBox1.Location = new System.Drawing.Point(367, 245);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(86, 29);
-            this.textBox1.TabIndex = 38;
+            this.textVideoChan.Location = new System.Drawing.Point(367, 245);
+            this.textVideoChan.Name = "textVideoChan";
+            this.textVideoChan.Size = new System.Drawing.Size(86, 29);
+            this.textVideoChan.TabIndex = 38;
             // 
             // btnTest
             // 
@@ -461,6 +461,16 @@
             this.tabPage2.Text = "缓存队列";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // btnSwitch
+            // 
+            this.btnSwitch.Location = new System.Drawing.Point(221, 346);
+            this.btnSwitch.Name = "btnSwitch";
+            this.btnSwitch.Size = new System.Drawing.Size(75, 23);
+            this.btnSwitch.TabIndex = 2;
+            this.btnSwitch.Text = "切换视频";
+            this.btnSwitch.UseVisualStyleBackColor = true;
+            this.btnSwitch.Click += new System.EventHandler(this.btnSwitch_Click);
+            // 
             // richTextBoxDIT
             // 
             this.richTextBoxDIT.Location = new System.Drawing.Point(354, 0);
@@ -506,16 +516,6 @@
             this.timerDataProc.Enabled = true;
             this.timerDataProc.Interval = 1000;
             this.timerDataProc.Tick += new System.EventHandler(this.timerDataProc_Tick);
-            // 
-            // btnSwitch
-            // 
-            this.btnSwitch.Location = new System.Drawing.Point(221, 346);
-            this.btnSwitch.Name = "btnSwitch";
-            this.btnSwitch.Size = new System.Drawing.Size(75, 23);
-            this.btnSwitch.TabIndex = 2;
-            this.btnSwitch.Text = "切换视频";
-            this.btnSwitch.UseVisualStyleBackColor = true;
-            this.btnSwitch.Click += new System.EventHandler(this.btnSwitch_Click);
             // 
             // FormMain
             // 
@@ -591,7 +591,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListView listViewCache;
         private System.Windows.Forms.RichTextBox richTextBoxDIT;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textVideoChan;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnSwitch;
     }

@@ -36,6 +36,8 @@ namespace SPManager
         
         private void FormMain_Load(object sender, EventArgs e)
         {
+            //TODO 临时返回
+            //return;
             lastMessageTime = DateTime.Now;
             addListViewHead();
             int ret = Init();
@@ -221,10 +223,20 @@ namespace SPManager
 
         private void btnTest_Click_1(object sender, EventArgs e)
         {
-            SPlate.SP_TestAPI();
+            //SPlate.SP_DecJpeg();
 
-            SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)WM_CARDATA, 0, 0);
-        
+            IntPtr pLic = Marshal.AllocHGlobal(16);
+            string lic = "";
+            byte[] pic = new byte[300 * 1024];
+            int picLenth = 0;
+            SPlate.SP_Snap(int.Parse(textVideoChan.Text), pLic, pic, ref picLenth);
+            MemoryStream ms = new MemoryStream(pic);
+            ms.Write(pic, 0, picLenth);
+            Image img = Image.FromStream(ms);
+            img.Save("lic.jpg");
+
+            // SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)WM_CARDATA, 0, 0);
+
             //Application.DoEvents();
             //NET_DVR_PREVIEWINFO previewInfo = new NET_DVR_PREVIEWINFO();
             //previewInfo.hPlayWnd = pictureBox1.Handle;//预览窗口

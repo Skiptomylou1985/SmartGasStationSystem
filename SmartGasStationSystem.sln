@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIT_Server", "DIT_Server\DI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kill", "Moniter\Kill.csproj", "{C6DF001D-AC42-46F6-8692-A76DFB937439}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NvrClient", "NvrClient\NvrClient.csproj", "{E5334A4A-887A-48FE-9259-E579082C91BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,18 @@ Global
 		{C6DF001D-AC42-46F6-8692-A76DFB937439}.Release|x64.Build.0 = Release|Any CPU
 		{C6DF001D-AC42-46F6-8692-A76DFB937439}.Release|x86.ActiveCfg = Release|Any CPU
 		{C6DF001D-AC42-46F6-8692-A76DFB937439}.Release|x86.Build.0 = Release|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Debug|x64.Build.0 = Debug|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Debug|x86.Build.0 = Debug|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Release|x64.ActiveCfg = Release|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Release|x64.Build.0 = Release|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Release|x86.ActiveCfg = Release|Any CPU
+		{E5334A4A-887A-48FE-9259-E579082C91BA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

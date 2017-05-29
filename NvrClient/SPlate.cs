@@ -1,9 +1,10 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace SPManager
+namespace NvrClient
 {
     #region  算法数据结构定义块
     //矩形区域结构体  
@@ -66,7 +67,7 @@ namespace SPManager
     }
 
     //识别结果结构体 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto,Pack =1)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
     public struct TH_PlateResult
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
@@ -175,7 +176,7 @@ namespace SPManager
     public struct NET_DVR_STREAM_MODE
     {
         public byte byGetStreamType; //取流方式GET_STREAM_TYPE，0-直接从设备取流，1-从流媒体取流、2-通过IPServer获得ip地址后取流,3.通过IPServer找到设备，再通过流媒体去设备的流
-                              //4-通过流媒体由URL去取流,5-通过hkDDNS取流，6-直接从设备取流(扩展)，使用NET_DVR_IPCHANINFO_V40结构, 7-通过RTSP协议方式进行取流
+                                     //4-通过流媒体由URL去取流,5-通过hkDDNS取流，6-直接从设备取流(扩展)，使用NET_DVR_IPCHANINFO_V40结构, 7-通过RTSP协议方式进行取流
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public byte[] byRes;        //保留字节
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 492)]
@@ -185,17 +186,17 @@ namespace SPManager
     class SPlate
     {
         [DllImport("SPlate.dll")]
-        public static extern int SP_InitRunParam(byte[] nozzleInfo,int lenth);
+        public static extern int SP_InitRunParam(byte[] nozzleInfo, int lenth);
         [DllImport("SPlate.dll")]
         public static extern int SP_InitNVR(string ipAddress, int nPort, string sAdmin, string sPassword);
         [DllImport("SPlate.dll")]
-        public static extern int SP_GetNvrCfg(IntPtr nvrCfg,ref int lenth);
+        public static extern int SP_GetNvrCfg(IntPtr nvrCfg, ref int lenth);
         [DllImport("SPlate.dll")]
         public static extern int SP_Close();
         [DllImport("SPlate.dll")]
-        public static extern int SP_InitAlg(ref TH_PlateIDCfg pPlateConfig,int lenth);
+        public static extern int SP_InitAlg(ref TH_PlateIDCfg pPlateConfig, int lenth);
         [DllImport("SPlate.dll")]
-        public static extern int SP_PreviewInfo(ref NET_DVR_PREVIEWINFO previewInfo,int lenth);
+        public static extern int SP_PreviewInfo(ref NET_DVR_PREVIEWINFO previewInfo, int lenth);
         [DllImport("SPlate.dll")]
         public static extern int SP_BeginRecog(IntPtr hPlayHandle);
         [DllImport("SPlate.dll")]
@@ -203,9 +204,9 @@ namespace SPManager
         [DllImport("SPlate.dll")]
         public static extern int SP_GetCarCount();
         [DllImport("SPlate.dll")]
-        public static extern int SP_GetFirstCarInfo(IntPtr pCarInfoOut,ref int lenth );
+        public static extern int SP_GetFirstCarInfo(IntPtr pCarInfoOut, ref int lenth);
         [DllImport("SPlate.dll")]
-        public static extern int SP_GetCarInfo(IntPtr pCarInfoOut, int carCount,ref int lenth);
+        public static extern int SP_GetCarInfo(IntPtr pCarInfoOut, int carCount, ref int lenth);
         [DllImport("SPlate.dll")]
         public static extern int SP_GetNvrStatus();
         [DllImport("SPlate.dll")]
@@ -213,9 +214,7 @@ namespace SPManager
         [DllImport("SPlate.dll")]
         public static extern int SP_SetSwitchFlag(int frameCount);
         [DllImport("SPlate.dll")]
-        public static extern int SP_DecJpeg();
-        [DllImport("SPlate.dll")]
-        public static extern int SP_Snap(int videoChan, IntPtr lic,byte[] pic,ref int picLenth);
-
+        public static extern int SP_Snap(int videoChan, IntPtr pCarPic, ref int lenth);
     }
 }
+

@@ -364,8 +364,8 @@ namespace SPManager
             th_PlateIDCfg.nMaxPlateWidth = 400;
             th_PlateIDCfg.nMinPlateWidth = 60;
 
-            th_PlateIDCfg.nMaxImageWidth = 1920;
-            th_PlateIDCfg.nMaxImageHeight = 1080;
+            th_PlateIDCfg.nMaxImageWidth = 2100;
+            th_PlateIDCfg.nMaxImageHeight = 1500;
 
             th_PlateIDCfg.nFastMemorySize = 16000;//DSP内存大小  
             th_PlateIDCfg.pFastMemory = Marshal.AllocHGlobal(16000);//DSP申请内存 
