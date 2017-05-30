@@ -419,7 +419,7 @@ SPLATE_API int SP_Capture(int areaNo, struCarInfoOut *carinfo)
 	}
 
 	TH_SetImageFormat(ImageFormatRGB, false, false, &th_PlateIDCfg);
-	int nCarNum = 0;
+	int nCarNum = 1;
 	const unsigned char * src = (const unsigned char *)src_buff;
 	TH_RecogImage(src, width, height, recogResult, &nCarNum, &areaInfo[index].th_rect, &th_PlateIDCfg);
 	if (nCarNum > 0)
@@ -428,6 +428,24 @@ SPLATE_API int SP_Capture(int areaNo, struCarInfoOut *carinfo)
 		strcpy(debugInfo, "车牌:");
 		memcpy(debugInfo + strlen(debugInfo), recogResult[0].license, strlen(recogResult[0].license));
 		write_log_file("snap.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+		memset(&tempCarOut, 0, sizeof(tempCarOut));
+		memcpy(tempCarOut.license, recogResult[0].license, strlen(recogResult[0].license));
+		memcpy(tempCarOut.color, recogResult[0].color, 8);
+		memcpy(tempCarOut.pic, pBuffer, lenth);
+		tempCarOut.nCarColor = recogResult[0].nCarColor;
+		tempCarOut.nCarLogo = recogResult[0].nCarLogo;
+		tempCarOut.nSubCarLogo = recogResult[0].nCarType;
+		tempCarOut.nCarModel = recogResult[0].nCarModel;
+		tempCarOut.nColor = recogResult[0].nColor;
+		tempCarOut.nConfidence = recogResult[0].nConfidence;
+		tempCarOut.nPicLenth = lenth;
+		tempCarOut.nVideoChannel = areaInfo[index].videoChanNo;
+		tempCarOut.nAreaNo = areaNo;
+		tempCarOut.nPicType = 0;
+		tempCarOut.nType = recogResult[0].nType;
+		tempCarOut.nPicWidth = width;
+		tempCarOut.nPicHeight = height;
+		memcpy(carinfo, &tempCarOut, sizeof(tempCarOut));
 	}
 	jpeg_finish_decompress(&cinfo);//解压缩完毕
 	jpeg_destroy_decompress(&cinfo);// 释放资源

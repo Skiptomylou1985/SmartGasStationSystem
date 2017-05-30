@@ -213,9 +213,11 @@ namespace SPManager
         [DllImport("SPlate.dll")]
         public static extern int SP_SetSwitchFlag(int frameCount);
         [DllImport("SPlate.dll")]
-        public static extern int SP_DecJpeg();
+        public static extern int SP_DecJpeg(IntPtr pJpegPic, int nJpegLenth, ref string license);
         [DllImport("SPlate.dll")]
         public static extern int SP_Snap(int videoChan, IntPtr lic,byte[] pic,ref int picLenth);
+        [DllImport("SPlate.dll")]
+        public static extern int SP_Capture(int areaNo, IntPtr carinfo);
 
     }
 }

@@ -72,6 +72,7 @@
             this.lblStationName = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblCurVideoNo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBoxSet.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -236,6 +237,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.btnDeleteNozzle);
             this.groupBox2.Controls.Add(this.btnAddNozzle);
             this.groupBox2.Controls.Add(this.comboArea);
@@ -260,7 +262,7 @@
             // 
             // btnDeleteNozzle
             // 
-            this.btnDeleteNozzle.Location = new System.Drawing.Point(514, 35);
+            this.btnDeleteNozzle.Location = new System.Drawing.Point(533, 22);
             this.btnDeleteNozzle.Name = "btnDeleteNozzle";
             this.btnDeleteNozzle.Size = new System.Drawing.Size(88, 23);
             this.btnDeleteNozzle.TabIndex = 25;
@@ -269,7 +271,7 @@
             // 
             // btnAddNozzle
             // 
-            this.btnAddNozzle.Location = new System.Drawing.Point(407, 35);
+            this.btnAddNozzle.Location = new System.Drawing.Point(429, 22);
             this.btnAddNozzle.Name = "btnAddNozzle";
             this.btnAddNozzle.Size = new System.Drawing.Size(89, 23);
             this.btnAddNozzle.TabIndex = 24;
@@ -316,24 +318,24 @@
             "30",
             "31",
             "32"});
-            this.comboArea.Location = new System.Drawing.Point(61, 69);
+            this.comboArea.Location = new System.Drawing.Point(55, 56);
             this.comboArea.Name = "comboArea";
-            this.comboArea.Size = new System.Drawing.Size(67, 20);
+            this.comboArea.Size = new System.Drawing.Size(75, 20);
             this.comboArea.TabIndex = 23;
             this.comboArea.SelectedIndexChanged += new System.EventHandler(this.comboArea_SelectedIndexChanged);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 72);
+            this.label9.Location = new System.Drawing.Point(6, 59);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(53, 12);
             this.label9.TabIndex = 22;
-            this.label9.Text = "识别号：";
+            this.label9.Text = "识别区：";
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(256, 67);
+            this.btnCancel.Location = new System.Drawing.Point(256, 54);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 21;
@@ -344,7 +346,7 @@
             // lblAction
             // 
             this.lblAction.AutoSize = true;
-            this.lblAction.Location = new System.Drawing.Point(642, 73);
+            this.lblAction.Location = new System.Drawing.Point(391, 89);
             this.lblAction.Name = "lblAction";
             this.lblAction.Size = new System.Drawing.Size(41, 12);
             this.lblAction.TabIndex = 19;
@@ -352,7 +354,7 @@
             // 
             // btnChangeCurve
             // 
-            this.btnChangeCurve.Location = new System.Drawing.Point(156, 35);
+            this.btnChangeCurve.Location = new System.Drawing.Point(156, 22);
             this.btnChangeCurve.Name = "btnChangeCurve";
             this.btnChangeCurve.Size = new System.Drawing.Size(75, 23);
             this.btnChangeCurve.TabIndex = 18;
@@ -371,7 +373,7 @@
             "97#汽油",
             "98#汽油",
             "0#柴油"});
-            this.comboOilType.Location = new System.Drawing.Point(540, 67);
+            this.comboOilType.Location = new System.Drawing.Point(550, 54);
             this.comboOilType.Name = "comboOilType";
             this.comboOilType.Size = new System.Drawing.Size(62, 20);
             this.comboOilType.TabIndex = 17;
@@ -379,7 +381,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(490, 72);
+            this.label7.Location = new System.Drawing.Point(500, 59);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 15;
@@ -424,7 +426,7 @@
             "30",
             "31",
             "32"});
-            this.comboNozzleNo.Location = new System.Drawing.Point(419, 69);
+            this.comboNozzleNo.Location = new System.Drawing.Point(429, 56);
             this.comboNozzleNo.Name = "comboNozzleNo";
             this.comboNozzleNo.Size = new System.Drawing.Size(67, 20);
             this.comboNozzleNo.TabIndex = 14;
@@ -432,7 +434,7 @@
             // 
             // btnDeleteCurve
             // 
-            this.btnDeleteCurve.Location = new System.Drawing.Point(256, 35);
+            this.btnDeleteCurve.Location = new System.Drawing.Point(256, 22);
             this.btnDeleteCurve.Name = "btnDeleteCurve";
             this.btnDeleteCurve.Size = new System.Drawing.Size(75, 23);
             this.btnDeleteCurve.TabIndex = 13;
@@ -442,7 +444,7 @@
             // 
             // btnSaveCurve
             // 
-            this.btnSaveCurve.Location = new System.Drawing.Point(156, 67);
+            this.btnSaveCurve.Location = new System.Drawing.Point(156, 54);
             this.btnSaveCurve.Name = "btnSaveCurve";
             this.btnSaveCurve.Size = new System.Drawing.Size(75, 23);
             this.btnSaveCurve.TabIndex = 12;
@@ -452,7 +454,7 @@
             // 
             // btnAddCurve
             // 
-            this.btnAddCurve.Location = new System.Drawing.Point(53, 35);
+            this.btnAddCurve.Location = new System.Drawing.Point(53, 22);
             this.btnAddCurve.Name = "btnAddCurve";
             this.btnAddCurve.Size = new System.Drawing.Size(75, 23);
             this.btnAddCurve.TabIndex = 11;
@@ -463,7 +465,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(369, 73);
+            this.label6.Location = new System.Drawing.Point(379, 60);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 4;
@@ -563,6 +565,15 @@
             this.lblCurVideoNo.Size = new System.Drawing.Size(68, 17);
             this.lblCurVideoNo.Text = "当前视频：";
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(13, 87);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(77, 12);
+            this.label8.TabIndex = 26;
+            this.label8.Text = "已关联油枪：";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -636,6 +647,7 @@
         private System.Windows.Forms.Button btnAddNozzle;
         private System.Windows.Forms.ComboBox comboArea;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
     }
 }
 

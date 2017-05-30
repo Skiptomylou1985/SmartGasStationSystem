@@ -251,8 +251,6 @@ namespace SPManager
 
         private void timerDataProc_Tick(object sender, EventArgs e)
         {
-            GetCarFromDll_Array();
-
             showCarList();
             DateTime dt = DateTime.Now;
             //if (Global.carList.Count >0)

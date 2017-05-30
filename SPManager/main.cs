@@ -39,9 +39,9 @@ namespace SPManager
                 richTextBoxDIT.AppendText("DIT信号:油枪" + nNozzleID.ToString() + " 状态" + nNozzleStatus.ToString()+"\n");
 
                 Global.LogServer.Add(new LogInfo("Run", "Main->DefWndProc: 收到DIT消息,油枪号：" + nNozzleID.ToString() + "  状态号:"+nNozzleStatus.ToString(), (int)EnumLogLevel.RUN));
-               // ProcSnapFromDIT(nNozzleID, nNozzleStatus);
+                // ProcSnapFromDIT(nNozzleID, nNozzleStatus);
                 //ProcSnapFromDIT_Backward(nNozzleID, nNozzleStatus);
-                ProcSnapFromDIT_Array(nNozzleID, nNozzleStatus);
+                ProcSnapFromDIT_Capture(nNozzleID, nNozzleStatus);
             }
             else 
             {
@@ -1030,6 +1030,8 @@ namespace SPManager
             int areaId = GetAreaIdByNozzNo(nozzleNo);
             int index = Global.areaMap[GetAreaIdByNozzNo(nozzleNo)];
 
+
+
             byte[] license = System.Text.Encoding.Default.GetBytes(Global.arrayAreaCar[index].license);
             Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
             snapData.byColor = (byte)Global.arrayAreaCar[index].carColor;
@@ -1083,6 +1085,102 @@ namespace SPManager
                     break;
             }
         }
+        private void ProcSnapFromDIT_Capture(int nozzleNo, int nozzleStatus)
+        {
+            struCarInfoOut carOut = new struCarInfoOut();
+            NET_DVR_PLATE_RESULT snapData = new NET_DVR_PLATE_RESULT();
+            snapData.byPumpID = (byte)nozzleNo;
+            snapData.byPumpStatus = (byte)nozzleStatus;
+            snapData.sLicense = new byte[16];
+            int areaId = GetAreaIdByNozzNo(nozzleNo);
+            int index = Global.areaMap[GetAreaIdByNozzNo(nozzleNo)];
+
+            struCarInfoOut struCarOut = new struCarInfoOut();
+            IntPtr pCarOut = Marshal.AllocHGlobal(Marshal.SizeOf(struCarOut));
+            Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 开始抓拍，识别区："+areaId.ToString(), (int)EnumLogLevel.DEBUG));
+            SPlate.SP_Capture(areaId, pCarOut);
+            //if (lenth != Marshal.SizeOf(struCarOut))
+            //{
+            //    Global.LogServer.Add(new LogInfo("Error", "Main->GetCarFromDll_Array: 动态库输出结构体与上位机定义结构图长度不一致", (int)EnumLogLevel.ERROR));
+            //    return;
+            //}
+            struCarOut = (struCarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(struCarInfoOut));
+            Marshal.FreeHGlobal(pCarOut);
+            string tempLicense = System.Text.Encoding.Default.GetString(struCarOut.license);
+            Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 抓拍车牌："+ tempLicense +
+                "  置信度:"+struCarOut.nConfidence.ToString(), (int)EnumLogLevel.DEBUG));
+
+            
+            if (struCarOut.nConfidence > 75 || nozzleStatus == 1)
+            {
+                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 抓拍车牌：" + tempLicense +
+               "  置信度:" + struCarOut.nConfidence.ToString(), (int)EnumLogLevel.DEBUG));
+                Global.arrayAreaCar[index].license = tempLicense;
+                Global.arrayAreaCar[index].licenseColor = struCarOut.nColor;
+                Global.arrayAreaCar[index].carLogo = struCarOut.nCarLogo;
+                Global.arrayAreaCar[index].subCarLogo = struCarOut.nSubCarLogo;
+                Global.arrayAreaCar[index].carColor = struCarOut.nCarColor;
+            }
+            Global.arrayAreaCar[index].nozzleNo = nozzleNo;
+            Global.arrayAreaCar[index].matchFlag = nozzleStatus;
+            byte[] license = System.Text.Encoding.Default.GetBytes(Global.arrayAreaCar[index].license);
+            Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
+            snapData.byColor = (byte)Global.arrayAreaCar[index].carColor;
+            snapData.byPlateColor = (byte)Global.arrayAreaCar[index].licenseColor;
+            snapData.byVehicleShape = (byte)Global.arrayAreaCar[index].carLogo;
+            snapData.wVehicleLogoRecog = (short)Global.arrayAreaCar[index].carLogo;
+            snapData.wVehicleSubLogoRecog = (short)Global.arrayAreaCar[index].subCarLogo;
+
+
+
+            byte[] data = SystemUnit.StrutsToBytesArray(snapData);
+            byte[] sendbuf = new byte[data.Length + 8];
+            sendbuf[0] = 0xFF;
+            sendbuf[1] = 0xFF;
+            sendbuf[2] = 0x03;
+            sendbuf[3] = (byte)data.Length;
+            Buffer.BlockCopy(data, 0, sendbuf, 4, data.Length);
+            uint crc = SystemUnit.getCRC(sendbuf, 0, data.Length + 4);
+            sendbuf[data.Length + 4] = (byte)(crc / 256);
+            sendbuf[data.Length + 5] = (byte)(crc % 256);
+            sendbuf[data.Length + 6] = 0xEE;
+            sendbuf[data.Length + 7] = 0xEE;
+            Global.socketTool.Send(sendbuf);
+
+
+            
+            Global.LogServer.Add(new LogInfo("Run", "Main->ProcSnapFromDIT_Capture: 发送车辆信息到DIT  车牌号:" +
+                Global.arrayAreaCar[index].license + "  油枪号：" + nozzleNo.ToString(), (int)EnumLogLevel.RUN));
+
+            
+            DateTime dt = DateTime.Now;
+            switch (nozzleStatus)
+            {
+                case 0:  //不生效 默认开始时间
+                    Global.arrayAreaCar[index].beginTime = dt;
+                    break;
+                case 1:  //提枪
+                    Global.arrayAreaCar[index].arriveTime = dt;
+                    Global.arrayAreaCar[index].beginTime = dt;
+                    Global.arrayAreaCar[index].endTime = dt;
+                    Global.arrayAreaCar[index].leaveTime = dt;
+                    break;
+                case 2: //加油
+                    Global.arrayAreaCar[index].beginTime = dt;
+                    Global.arrayAreaCar[index].endTime = dt;
+                    Global.arrayAreaCar[index].leaveTime = dt;
+                    break;
+                case 3: //挂枪
+                    Global.arrayAreaCar[index].endTime = dt;
+                    Global.arrayAreaCar[index].leaveTime = dt;
+                    Global.mysqlHelper.ExecuteSql(Global.arrayAreaCar[index].toSaveSqlString());
+                    //Global.arrayAreaCar[index].
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private int GetAreaIdByNozzNo(int nozzleNo)
         {
             foreach (ClsNozzle nozz in Global.nozzleList)
