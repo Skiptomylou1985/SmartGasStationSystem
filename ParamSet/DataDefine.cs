@@ -289,7 +289,7 @@ namespace ParamSet
             get { return _parentID; }
             set { _parentID = value; }
         }
-        private int _parentID = 1;
+        private int _parentID = 0;
         public int channelNo
         {
             get { return _channelNo; }

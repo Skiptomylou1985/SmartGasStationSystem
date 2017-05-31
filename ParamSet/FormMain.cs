@@ -57,7 +57,14 @@ namespace ParamSet
                 }
                 GetMainParam();
                 Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->btnOpen_Click->GetMainParam done", (int)EnumLogLevel.DEBUG));
+                treeMain.Nodes[0].Nodes.Clear();
                 GetParamFromDB();
+                foreach (ClsNVRInfo nvr in Global.nvrList)
+                {
+                    TreeNode nvrTree = new TreeNode(nvr.nvrName);
+                    treeMain.Nodes[0].Nodes.Add(nvrTree);
+                }
+                
                 treeMain.Enabled = true;
                 groupBoxSet.Enabled = true;
                 btnClose.Enabled = true;
@@ -226,35 +233,45 @@ namespace ParamSet
                 struDrawInfo.g.DrawRectangle(new Pen(Color.Red), struDrawInfo.start.X, struDrawInfo.start.Y,
                                              struDrawInfo.end.X - struDrawInfo.start.X, struDrawInfo.end.Y - struDrawInfo.start.Y);
             }
-            else if (Global.nCurStatus == 0)
-            {
-                
-                foreach(ClsNVRInfo nvr in Global.nvrList)
+
+             foreach(ClsNVRInfo nvr in Global.nvrList)
                 {
                     if (Global.sCurSelectedNvrName == nvr.nvrName)
                     {
                         foreach (ClsVideoChannel video in nvr.videoList)
+                        //foreach (ClsVideoChannel video in Global.videoList)
                         {
                             if (Global.nCurSelectedVideoChan == video.channelNo)
                             {
-                                for (int i =0;i<video.areaList.Count; i++)
+                            for (int i =0;i<video.areaList.Count; i++)
                                 {
-                                    if (comboArea.SelectedIndex == 0 || video.areaList[i].id.ToString() == comboArea.Text.Trim() ) 
-                                    {
-                                        int X1 = (int)(video.areaList[i].left * videoBox.Width);
+                                if ((Global.nCurStatus == 0 && (comboArea.Text == "全部" || video.areaList[i].id.ToString() == comboArea.Text.Trim())) ||
+                                    Global.nCurStatus == 1 || (Global.nCurStatus == 2 && video.areaList[i].id.ToString() != comboArea.Text.Trim())||
+                                    (Global.nCurStatus == 3 && video.areaList[i].id.ToString() == comboMainArea.Text.Trim()))
+
+                                  {
+                                    int X1 = (int)(video.areaList[i].left * videoBox.Width);
                                         int X2 = (int)(video.areaList[i].right * videoBox.Width);
                                         int Y1 = (int)(video.areaList[i].top * videoBox.Height);
                                         int Y2 = (int)(video.areaList[i].bottom * videoBox.Height);
                                         Graphics g = this.videoBox.CreateGraphics();
                                         g.DrawRectangle(new Pen(Color.Red), X1, Y1, X2 - X1, Y2 - Y1);
-                                    }
-
+                                  }
+                                if (Global.nCurStatus == 3 && video.areaList[i].id.ToString() == comboSubArea.Text.Trim())
+                                {
+                                    int X1 = (int)(video.areaList[i].left * videoBox.Width);
+                                    int X2 = (int)(video.areaList[i].right * videoBox.Width);
+                                    int Y1 = (int)(video.areaList[i].top * videoBox.Height);
+                                    int Y2 = (int)(video.areaList[i].bottom * videoBox.Height);
+                                    Graphics g = this.videoBox.CreateGraphics();
+                                    g.DrawRectangle(new Pen(Color.Blue), X1, Y1, X2 - X1, Y2 - Y1);
+                                }
+                                
                                 }
                             }
                         }
                     }
                 }
-            }
         }
 
         private void addDevice_Click(object sender, EventArgs e)
@@ -314,8 +331,6 @@ namespace ParamSet
         private void btnAddCurve_Click(object sender, EventArgs e)
         {
             Global.nCurStatus = 1;
-            lblAction.Text = "请绘制识别区并保存";
-            lblAction.ForeColor = Color.Red;
             SwithFormStat(1);
             foreach (ClsNVRInfo nvr in Global.nvrList)
             {
@@ -337,6 +352,7 @@ namespace ParamSet
                     videoChan.password = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].sPassword);
                     videoChan.port = nvr.config.struIPDevInfo[i].wDVRPort;
                     videoChan.streamType = nvr.config.struStreamMode[i].byGetStreamType;
+                    videoChan.parentID = nvr.id;
                     videoChan.id = Global.mysqlHelper.ExecuteSql(videoChan.getInsertString());
 
                     Global.videoList.Add(videoChan);
@@ -355,29 +371,6 @@ namespace ParamSet
 
         private void btnSaveCurve_Click(object sender, EventArgs e)
         {
-
-            //if (comboNozzleNo.SelectedIndex < 0)
-            //{
-            //    MessageBox.Show("请选择油枪");
-            //    return;
-            //}
-            //if (comboOilType.SelectedIndex < 0)
-            //{
-            //    MessageBox.Show("请选择油类型");
-            //    return;
-            //}
-            //if (comboNozzleNo.Text.ToString().Trim() == "入口") //入口
-            //{
-            //    AddOrUpdateNozzleOrInOut(0, Global.nCurStatus);
-            //}
-            //else if(comboNozzleNo.Text.ToString().Trim() == "出口")
-            //{
-            //    AddOrUpdateNozzleOrInOut(100, Global.nCurStatus);
-            //}
-            //else
-            //{
-            //    AddOrUpdateNozzleOrInOut(int.Parse(comboNozzleNo.Text.ToString()), Global.nCurStatus);
-            //}
             AddOrUpdateArea(Global.nCurStatus);
             SwithFormStat(0);
             SwitchVideo();
@@ -458,6 +451,7 @@ namespace ParamSet
                     GetParamFromDB();
                 }
             }
+            SwitchVideo();
         }
 
         private void btnSetInfo_Click(object sender, EventArgs e)
@@ -483,14 +477,18 @@ namespace ParamSet
 
         private void comboArea_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string info = "已关联油枪：";
+            comboNozzleNo.Items.Clear();
             if (comboArea.Text != "全部")
             {
                 foreach (ClsNozzle nozz in Global.nozzleList)
                 {
                     if (nozz.areaid.ToString() == comboArea.Text)
                     {
-                        info = info + nozz.nozzleNo.ToString() + " ";
+                        comboNozzleNo.Items.Add(nozz.nozzleNo.ToString());
+                    }
+                    else if (nozz.subAreaid.ToString() == comboArea.Text)
+                    {
+                        comboNozzleNo.Items.Add(nozz.nozzleNo.ToString());
                     }
                 }
             }
@@ -499,7 +497,57 @@ namespace ParamSet
 
         private void btnAddNozzle_Click(object sender, EventArgs e)
         {
+            
+            comboMainArea.Items.Clear();
+            comboSubArea.Items.Clear();
+            foreach (ClsVideoChannel video in Global.videoList)
+            {
+                if (video.channelNo == Global.nCurSelectedVideoChan)
+                {
+                    if (video.areaList.Count < 1)
+                    {
+                        MessageBox.Show("当前视频通道未添加识别区，请先添加识别区!");
+                        return;
+                    }
+                    comboSubArea.Items.Add("不使用");
+                    foreach (ClsRecogArea area in video.areaList)
+                    {
+                        comboMainArea.Items.Add(area.id.ToString());
+                        comboSubArea.Items.Add(area.id.ToString());
+                    }
+                    comboMainArea.SelectedIndex = 0;
+                    comboSubArea.SelectedIndex = 0;
+                }
+            }
+            comboNozzleNo.Items.Clear();
+            this.comboNozzleNo.Items.AddRange(new object[] {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15",
+            "16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32"});
+            foreach (ClsNozzle nozz in Global.nozzleList)
+            {
+                this.comboNozzleNo.Items.Remove(nozz.nozzleNo.ToString());
+            }
+            Global.nCurStatus = 3;
+            SwithFormStat(Global.nCurStatus);
 
+        }
+
+
+        private void btnDeleteNozzle_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("确认删除油枪" + comboNozzleNo.Text.ToString() + "?", "提示", MessageBoxButtons.YesNo))
+            {
+                string sqlString = "delete from nozzle where nozzleno = " + comboNozzleNo.Text;
+                Global.mysqlHelper.ExecuteSql(sqlString);
+                foreach (ClsNozzle nozz in Global.nozzleList)
+                {
+                    if (nozz.nozzleNo.ToString() == comboNozzleNo.Text)
+                    {
+                        Global.nozzleList.Remove(nozz);
+                        break;
+                    }
+                }
+
+            }
         }
     }
 }

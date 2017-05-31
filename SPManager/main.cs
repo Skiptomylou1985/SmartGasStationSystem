@@ -41,7 +41,7 @@ namespace SPManager
                 Global.LogServer.Add(new LogInfo("Run", "Main->DefWndProc: 收到DIT消息,油枪号：" + nNozzleID.ToString() + "  状态号:"+nNozzleStatus.ToString(), (int)EnumLogLevel.RUN));
                 // ProcSnapFromDIT(nNozzleID, nNozzleStatus);
                 //ProcSnapFromDIT_Backward(nNozzleID, nNozzleStatus);
-                ProcSnapFromDIT_Capture(nNozzleID, nNozzleStatus);
+                ProcSnapFromDIT_Capture_V2(nNozzleID, nNozzleStatus);
             }
             else 
             {
@@ -249,7 +249,6 @@ namespace SPManager
                 }
                 foreach (DataRow dr in dt.Rows)
                 {
-                   
                     ClsRecogArea area = new ClsRecogArea();
                     area.left = double.Parse(dr["x1"].ToString());
                     area.right = double.Parse(dr["x2"].ToString());
@@ -273,26 +272,7 @@ namespace SPManager
                         Global.exitAreaID = area.id;
                         Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->GetAreaNozzleParam 出口识别区:" + area.id.ToString(), (int)EnumLogLevel.DEBUG));
                     }
-                    string sqlString = "select * from nozzle where areaid = " + area.id.ToString();
-                    DataTable dt2 = Global.mysqlHelper.GetDataTable(sqlString);
-                    if (dt2.Rows.Count > 0)
-                    {
-                        foreach (DataRow dr2 in dt2.Rows)
-                        {
-                            ClsNozzle nozzle = new ClsNozzle();
-                            nozzle.areaid = area.id;
-                            nozzle.oilType = int.Parse(dr2["oiltype"].ToString());
-                            nozzle.nozzleNo = int.Parse(dr2["nozzleno"].ToString());
-                            Global.nozzleList.Add(nozzle);
-                            area.nozzleList.Add(nozzle);
-                            StringBuilder loginfo = new StringBuilder();
-                            loginfo.Append(" areaid：" + area.id.ToString());
-                            loginfo.Append("nozzleNo：" + nozzle.nozzleNo.ToString());
-                            loginfo.Append(" oilType：" + nozzle.oilType.ToString());
-                            Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->GetAreaNozzleParam get param:" + loginfo.ToString(), (int)EnumLogLevel.DEBUG));
-
-                        }
-                    }
+                   
                     Global.areaList.Add(area);
                    
                     StringBuilder info = new StringBuilder();
@@ -302,6 +282,31 @@ namespace SPManager
                     info.Append(" top：" + area.top.ToString());
                     info.Append(" bottom：" + area.bottom.ToString());
                     Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->GetAreaNozzleParam get param:" + info.ToString(), (int)EnumLogLevel.DEBUG));
+                }
+                string sqlString = "select * from nozzle ";
+                DataTable dt2 = Global.mysqlHelper.GetDataTable(sqlString);
+                if (dt2.Rows.Count > 0)
+                {
+                    index = 0;
+                    Global.arrayNozzleCar = new ClsCarInfo[dt2.Rows.Count];
+                    foreach (DataRow dr2 in dt2.Rows)
+                    {
+                        ClsNozzle nozzle = new ClsNozzle();
+                        nozzle.areaid = int.Parse(dr2["areaid"].ToString()); ;
+                        nozzle.oilType = int.Parse(dr2["oiltype"].ToString());
+                        nozzle.nozzleNo = int.Parse(dr2["nozzleno"].ToString());
+                        nozzle.subAreaid = int.Parse(dr2["subareaid"].ToString());
+                        Global.nozzleMap.Add(nozzle.nozzleNo, index);
+                        index++;
+                        Global.nozzleList.Add(nozzle);
+                        StringBuilder loginfo = new StringBuilder();
+                        loginfo.Append("nozzleNo：" + nozzle.nozzleNo.ToString());
+                        loginfo.Append(" areaid：" + nozzle.areaid.ToString());
+                        loginfo.Append(" oilType：" + nozzle.oilType.ToString());
+                        loginfo.Append(" subAreaid：" + nozzle.subAreaid.ToString());
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->GetAreaNozzleParam get param:" + loginfo.ToString(), (int)EnumLogLevel.DEBUG));
+
+                    }
                 }
             }
             catch(Exception ex)
@@ -325,7 +330,7 @@ namespace SPManager
             
             int structLenth = Marshal.SizeOf(typeof(struArea));
             //IntPtr ip = Marshal.AllocHGlobal(Global.nozzleList.Count* structLenth);
-            struArea[] area = new struArea[Global.nozzleList.Count];
+            struArea[] area = new struArea[Global.areaList.Count];
             byte[] ipp = new byte[1024];
             int offset = 0;
             for (int i =0;i<Global.areaList.Count;i++)
@@ -341,7 +346,6 @@ namespace SPManager
                 Buffer.BlockCopy(bArea, 0, ipp, offset,structLenth);
                 offset += structLenth;
             }
-          
             Global.LogServer.Add(new LogInfo("Debug", "main->InitDev->SP_InitNVR begin, param value " + Global.clsNvrInfo.ip + " "
                 + Global.clsNvrInfo.port.ToString() + " " + Global.clsNvrInfo.loginName + " " + Global.clsNvrInfo.password, (int)EnumLogLevel.DEBUG));
 
@@ -357,6 +361,65 @@ namespace SPManager
             else
                 return false;
             
+        }
+        private bool InitDev_V2()
+        {
+            Global.LogServer.Add(new LogInfo("Debug", "main->InitDev_V2 in", (int)EnumLogLevel.DEBUG));
+
+            int structLenth = Marshal.SizeOf(typeof(struNozzleRecog));
+            //IntPtr ip = Marshal.AllocHGlobal(Global.nozzleList.Count* structLenth);
+            struNozzleRecog[] nozzleRecog = new struNozzleRecog[Global.nozzleList.Count];
+            byte[] ipp = new byte[2048];
+            int offset = 0;
+            for (int i = 0; i < Global.nozzleList.Count; i++)
+            {
+                nozzleRecog[i].nozzleNo = Global.nozzleList[i].nozzleNo;
+                nozzleRecog[i].areas = new struArea[8];
+                if (Global.nozzleList[i].subAreaid == 0)
+                    nozzleRecog[i].areaCount = 1;
+                else
+                    nozzleRecog[i].areaCount = 2;
+                foreach (ClsRecogArea area in Global.areaList)
+                {
+                    if (Global.nozzleList[i].areaid == area.id)
+                    {
+                        nozzleRecog[i].videoChan = area.videoChannel;
+                        nozzleRecog[i].areas[0].areaNo = area.videoChannel;
+                        nozzleRecog[i].areas[0].left = (int)(area.left * Global.nDefaultHeight);
+                        nozzleRecog[i].areas[0].right = (int)(area.right * Global.nDefaultWidth);
+                        nozzleRecog[i].areas[0].top = (int)(area.top * Global.nDefaultHeight);
+                        nozzleRecog[i].areas[0].bottom = (int)(area.bottom * Global.nDefaultHeight);
+                        nozzleRecog[i].areas[0].areaFlag = area.areaFlag;
+                    }
+                    if (Global.nozzleList[i].subAreaid == area.id)
+                    {
+                        nozzleRecog[i].areas[1].areaNo = area.videoChannel;
+                        nozzleRecog[i].areas[1].left = (int)(area.left * Global.nDefaultHeight);
+                        nozzleRecog[i].areas[1].right = (int)(area.right * Global.nDefaultWidth);
+                        nozzleRecog[i].areas[1].top = (int)(area.top * Global.nDefaultHeight);
+                        nozzleRecog[i].areas[1].bottom = (int)(area.bottom * Global.nDefaultHeight);
+                        nozzleRecog[i].areas[1].areaFlag = area.areaFlag;
+                    }
+                }
+                byte[] bNozzle = SystemUnit.StrutsToBytesArray(nozzleRecog[i]);
+                Buffer.BlockCopy(bNozzle, 0, ipp, offset, structLenth);
+                offset += structLenth;
+            }
+            Global.LogServer.Add(new LogInfo("Debug", "main->InitDev_V2->SP_InitNVR begin, param value " + Global.clsNvrInfo.ip + " "
+                + Global.clsNvrInfo.port.ToString() + " " + Global.clsNvrInfo.loginName + " " + Global.clsNvrInfo.password, (int)EnumLogLevel.DEBUG));
+
+            int ret = SPlate.SP_InitNVR(Global.clsNvrInfo.ip, Global.clsNvrInfo.port, Global.clsNvrInfo.loginName, Global.clsNvrInfo.password);
+            Global.LogServer.Add(new LogInfo("Debug", "main->InitDev_V2->SP_InitNVR done, return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
+
+            if (ret == 0)
+            {
+                SPlate.SP_InitRunParam(ipp, Global.nozzleList.Count);
+                Global.LogServer.Add(new LogInfo("Debug", "main:InitDev_V2->SP_InitRunParam done return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
+                return true;
+            }
+            else
+                return false;
+
         }
         private bool InitAlg()
         {
@@ -634,14 +697,12 @@ namespace SPManager
             listViewCache.Items.Clear();
             listViewCache.BeginUpdate();
 
-            for (int i = 0; i < Global.arrayAreaCar.Length; i++)
+            for (int i = 0; i < Global.arrayNozzleCar.Length; i++)
             {
                 ListViewItem lvi = new ListViewItem();
-                lvi.Text = i.ToString();
-                lvi.SubItems.Add(Global.arrayAreaCar[i].areaNo.ToString());
-                lvi.SubItems.Add(Global.arrayAreaCar[i].license);
-                lvi.SubItems.Add(Global.arrayAreaCar[i].nozzleNo.ToString());
-                lvi.SubItems.Add(Global.arrayAreaCar[i].matchFlag.ToString());
+                lvi.Text = Global.arrayNozzleCar[i].nozzleNo.ToString();
+                lvi.SubItems.Add(Global.arrayNozzleCar[i].license);
+                lvi.SubItems.Add(Global.arrayNozzleCar[i].matchFlag.ToString());
                 listViewCache.Items.Add(lvi);
             }
             listViewCache.EndUpdate();
@@ -1181,6 +1242,123 @@ namespace SPManager
             }
         }
 
+        private void ProcSnapFromDIT_Capture_V2(int nozzleNo,int nozzleStatus)
+        {
+            NET_DVR_PLATE_RESULT snapData = new NET_DVR_PLATE_RESULT();
+            snapData.byPumpID = (byte)nozzleNo;
+            snapData.byPumpStatus = (byte)nozzleStatus;
+            snapData.sLicense = new byte[16];
+            
+            int index = Global.nozzleMap[nozzleNo];
+            IntPtr pCarOut = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(struCarInfoOut))*4);
+            Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 开始抓拍，油枪号：" + nozzleNo.ToString(), (int)EnumLogLevel.DEBUG));
+            
+            SPlate.SP_Capture_V2(nozzleNo, pCarOut);
+            struCarInfoOut_V2 struCarOut;
+            struCarOut = (struCarInfoOut_V2)Marshal.PtrToStructure(pCarOut, typeof(struCarInfoOut_V2));
+            Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 识别车牌数量：" + struCarOut.nLicenseCount.ToString(), (int)EnumLogLevel.DEBUG));
+            Marshal.FreeHGlobal(pCarOut);
+            Global.arrayNozzleCar[index] = MatchCar(struCarOut, nozzleNo);
+            Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 匹配车牌：" + Global.arrayNozzleCar[index].license, (int)EnumLogLevel.DEBUG));
+            Global.arrayNozzleCar[index].nozzleNo = nozzleNo;
+            Global.arrayNozzleCar[index].matchFlag = nozzleStatus;
+            byte[] license = System.Text.Encoding.Default.GetBytes(Global.arrayNozzleCar[index].license);
+            Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
+            snapData.byColor = (byte)Global.arrayNozzleCar[index].carColor;
+            snapData.byPlateColor = (byte)Global.arrayNozzleCar[index].licenseColor;
+            snapData.byVehicleShape = (byte)Global.arrayNozzleCar[index].carLogo;
+            snapData.wVehicleLogoRecog = (short)Global.arrayNozzleCar[index].carLogo;
+            snapData.wVehicleSubLogoRecog = (short)Global.arrayNozzleCar[index].subCarLogo;
+            SendSnapToDIT(snapData);
+            
+            DateTime dt = DateTime.Now;
+            switch (nozzleStatus)
+            {
+                case 0:  //不生效 默认开始时间
+                    Global.arrayNozzleCar[index].beginTime = dt;
+                    break;
+                case 1:  //提枪
+                    Global.arrayNozzleCar[index].arriveTime = dt;
+                    Global.arrayNozzleCar[index].beginTime = dt;
+                    Global.arrayNozzleCar[index].endTime = dt;
+                    Global.arrayNozzleCar[index].leaveTime = dt;
+                    break;
+                case 2: //加油
+                    Global.arrayNozzleCar[index].beginTime = dt;
+                    Global.arrayNozzleCar[index].endTime = dt;
+                    Global.arrayNozzleCar[index].leaveTime = dt;
+                    break;
+                case 3: //挂枪
+                    Global.arrayNozzleCar[index].endTime = dt;
+                    Global.arrayNozzleCar[index].leaveTime = dt;
+                    Global.mysqlHelper.ExecuteSql(Global.arrayNozzleCar[index].toSaveSqlString());
+                    //Global.arrayAreaCar[index].
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private ClsCarInfo MatchCar(struCarInfoOut_V2 struCarInfo,int nozzleNo)
+        {
+            ClsCarInfo car = new ClsCarInfo();
+            int index = 0;
+            int nCurConfidence = 0;
+            for (int i=0;i<struCarInfo.nLicenseCount;i++)
+            {
+                string license = System.Text.Encoding.Default.GetString(struCarInfo.license[i].license);
+                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 车牌号：" + 
+                    license+" 置信度："+ struCarInfo.license[i].nConfidence.ToString() + " 识别区："+ 
+                    struCarInfo.license[i].nAreaNo.ToString(), (int)EnumLogLevel.DEBUG));
+                if (LicenseIsMatched(license,nozzleNo) > 0)
+                    continue;
+                if (struCarInfo.license[i].nConfidence > nCurConfidence)
+                {
+                    index = i;
+                    nCurConfidence = struCarInfo.license[i].nConfidence;
+                }
+                
+            }
+          
+            car.license = System.Text.Encoding.Default.GetString(struCarInfo.license[index].license);
+            car.licenseColor = struCarInfo.license[index].nColor;
+            car.carColor = struCarInfo.license[index].nCarColor;
+            car.carLogo = struCarInfo.license[index].nCarLogo;
+            car.subCarLogo = struCarInfo.license[index].nSubCarLogo;
+            car.areaNo = struCarInfo.license[index].nAreaNo;
+            return car;
+
+        }
+        private int LicenseIsMatched(string license,int exceptNozzleNo)
+        {
+            foreach (ClsCarInfo car in Global.arrayNozzleCar)
+            {
+                if (car.license == license && car.nozzleNo != exceptNozzleNo)
+                {
+                    return car.nozzleNo;
+                }
+            }
+            return 0;
+        }
+        private void SendSnapToDIT(NET_DVR_PLATE_RESULT snapData)
+        {
+            byte[] data = SystemUnit.StrutsToBytesArray(snapData);
+            byte[] sendbuf = new byte[data.Length + 8];
+            sendbuf[0] = 0xFF;
+            sendbuf[1] = 0xFF;
+            sendbuf[2] = 0x03;
+            sendbuf[3] = (byte)data.Length;
+            Buffer.BlockCopy(data, 0, sendbuf, 4, data.Length);
+            uint crc = SystemUnit.getCRC(sendbuf, 0, data.Length + 4);
+            sendbuf[data.Length + 4] = (byte)(crc / 256);
+            sendbuf[data.Length + 5] = (byte)(crc % 256);
+            sendbuf[data.Length + 6] = 0xEE;
+            sendbuf[data.Length + 7] = 0xEE;
+            Global.socketTool.Send(sendbuf);
+
+            Global.LogServer.Add(new LogInfo("Run", "Main->ProcSnapFromDIT_Capture: 发送车辆信息到DIT  车牌号:" +
+                 System.Text.Encoding.Default.GetString(snapData.sLicense) + "  油枪号：" + snapData.byPumpID.ToString(), (int)EnumLogLevel.RUN));
+        }
         private int GetAreaIdByNozzNo(int nozzleNo)
         {
             foreach (ClsNozzle nozz in Global.nozzleList)
@@ -1293,14 +1471,10 @@ namespace SPManager
         private void addListViewHead()
         {
             listViewCache.View = View.Details;
-            //ColumnHeader ch = new ColumnHeader();
-            //ch.Text = "序号";
-            //ch.Width = 60;
-            //listViewCache.Columns.Add(ch);
-            listViewCache.Columns.Add("序号", 60);
-            listViewCache.Columns.Add("识别区", 60);
+            listViewCache.Columns.Add("油枪号", 60);
+            //listViewCache.Columns.Add("识别区", 60);
             listViewCache.Columns.Add("车牌", 100);
-            listViewCache.Columns.Add("当前油枪", 60);
+           // listViewCache.Columns.Add("当前油枪", 60);
             listViewCache.Columns.Add("油枪状态", 60);
 
         }

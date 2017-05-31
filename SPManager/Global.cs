@@ -45,8 +45,9 @@ namespace SPManager
         public static int exitAreaID = 0;
         public static object lockObj = new object();
         public static Dictionary<int, int> areaMap = new Dictionary<int, int>();
+        public static Dictionary<int,int> nozzleMap = new Dictionary<int, int>();
         public static ClsCarInfo[] arrayAreaCar;
-
+        public static ClsCarInfo[] arrayNozzleCar;
     }
     
 }

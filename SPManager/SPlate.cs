@@ -218,6 +218,8 @@ namespace SPManager
         public static extern int SP_Snap(int videoChan, IntPtr lic,byte[] pic,ref int picLenth);
         [DllImport("SPlate.dll")]
         public static extern int SP_Capture(int areaNo, IntPtr carinfo);
+        [DllImport("SPlate.dll")]
+        public static extern int SP_Capture_V2(int nozzleNo, IntPtr carinfo);
 
     }
 }

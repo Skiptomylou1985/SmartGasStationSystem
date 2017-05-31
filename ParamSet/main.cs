@@ -95,7 +95,7 @@ namespace ParamSet
             Global.stationInfo.nvrList.Clear();
             try
             {
-                treeMain.Nodes[0].Nodes.Clear();
+               
                 DataTable dt = Global.mysqlHelper.GetDataTable(queryString);
                 if (dt == null || dt.Rows.Count < 1)
                 {
@@ -119,10 +119,6 @@ namespace ParamSet
                         }
                     }
                     Global.nvrList.Add(nvr);
-                    TreeNode nvrTree = new TreeNode(nvr.nvrName);
-                   
-                    treeMain.Nodes[0].Nodes.Add(nvrTree);
-                    
                 }
             }
             catch (Exception ex)
@@ -165,6 +161,8 @@ namespace ParamSet
                         }
                     }
                     Global.videoList.Add(video);
+                    Global.LogServer.Add(new LogInfo("ParamSet-Debug", "Main->GetRecogAreaListFromDB videoid:" +
+                        video.id.ToString() + "  video.channelNo:" + video.channelNo.ToString(), (int)EnumLogLevel.DEBUG));
                 }
                 return true;
             }
@@ -205,6 +203,8 @@ namespace ParamSet
                     }
 
                     Global.recogAreaList.Add(area);
+                    Global.LogServer.Add(new LogInfo("ParamSet-Debug", "Main->GetRecogAreaListFromDB areaid:" + 
+                        area.id.ToString()+"  videoid:"+area.videoid.ToString(), (int)EnumLogLevel.DEBUG));
                 }
                 return true;
             }
@@ -237,6 +237,7 @@ namespace ParamSet
                     nozzle.areaid = int.Parse(dr["areaid"].ToString());
                     nozzle.subAreaid = int.Parse(dr["subareaid"].ToString());
                     Global.nozzleList.Add(nozzle);
+                    Global.LogServer.Add(new LogInfo("ParamSet-Debug", "Main->GetNozzleListFromDB nozzleNo:"+ nozzle.nozzleNo.ToString(), (int)EnumLogLevel.DEBUG));
                 }
                 return true;
             }
@@ -304,6 +305,8 @@ namespace ParamSet
                     btnDeleteCurve.Enabled = true;
                     btnAddNozzle.Enabled = true;
                     btnDeleteNozzle.Enabled = true;
+                    comboMainArea.Enabled = false;
+                    comboSubArea.Enabled = false;
                     break;
                 case 1: //正在添加
                     btnAddCurve.Enabled = false;
@@ -313,10 +316,12 @@ namespace ParamSet
                     btnSaveCurve.Enabled = true;
                     comboNozzleNo.Enabled = false;
                     comboOilType.Enabled = false;
-                    comboArea.Enabled = false;
+                    comboArea.Enabled = true;
                     btnDeleteCurve.Enabled = false;
                     btnAddNozzle.Enabled = false;
                     btnDeleteNozzle.Enabled = false;
+                    comboMainArea.Enabled = false;
+                    comboSubArea.Enabled = false;
                     break;
                 case 2: //正在修改
                     btnAddCurve.Enabled = false;
@@ -326,11 +331,29 @@ namespace ParamSet
                     btnSaveCurve.Enabled = true;
                     comboNozzleNo.Enabled = false;
                     comboOilType.Enabled = true;
+                    comboArea.Enabled = true;
+                    btnDeleteCurve.Enabled = false;
+                    btnAddNozzle.Enabled = false;
+                    btnDeleteNozzle.Enabled = false;
+                    comboMainArea.Enabled = false;
+                    comboSubArea.Enabled = false;
+                    break;
+                case 3: //正在添加油枪
+                    btnAddCurve.Enabled = false;
+                    btnChangeCurve.Enabled = false;
+                    btnDeleteCurve.Enabled = false;
+                    btnCancel.Enabled = true;
+                    btnSaveCurve.Enabled = true;
+                    comboNozzleNo.Enabled = true;
+                    comboOilType.Enabled = true;
                     comboArea.Enabled = false;
                     btnDeleteCurve.Enabled = false;
                     btnAddNozzle.Enabled = false;
                     btnDeleteNozzle.Enabled = false;
+                    comboMainArea.Enabled = true;
+                    comboSubArea.Enabled = true;
                     break;
+                
             }
 
         }
@@ -340,68 +363,71 @@ namespace ParamSet
         private void AddOrUpdateArea(int AoU)
         { 
 
-            if (AoU == 1) //add 
+            switch(AoU)
             {
-                foreach (ClsNVRInfo nvr in Global.nvrList)
-                {
-                    if (nvr.nvrName == Global.sCurSelectedNvrName)
+                case 1:
+                    foreach (ClsNVRInfo nvr in Global.nvrList)
                     {
-                        foreach (ClsVideoChannel video in nvr.videoList)
+                        if (nvr.nvrName == Global.sCurSelectedNvrName)
                         {
-                            if (video.channelNo == Global.nCurSelectedVideoChan)
+                            foreach (ClsVideoChannel video in nvr.videoList)
                             {
-                                ClsRecogArea area = new ClsRecogArea();
-                                area.videoid = video.id;
-                                area.left = (double)Math.Round((decimal)struDrawInfo.start.X / this.videoBox.Width, 4);
-                                area.right = (double)Math.Round((decimal)struDrawInfo.end.X / this.videoBox.Width, 4);
-                                area.top = (double)Math.Round((decimal)struDrawInfo.start.Y / this.videoBox.Height, 4);
-                                area.bottom = (double)Math.Round((decimal)struDrawInfo.end.Y / this.videoBox.Height, 4);
-                                area.id = Global.mysqlHelper.ExecuteSql(area.getInsertString());
-                                Global.recogAreaList.Add(area);
-                                video.areaList.Add(area);
-                                return;
+                                if (video.channelNo == Global.nCurSelectedVideoChan)
+                                {
+                                    ClsRecogArea area = new ClsRecogArea();
+                                    area.videoid = video.id;
+                                    area.left = (double)Math.Round((decimal)struDrawInfo.start.X / this.videoBox.Width, 4);
+                                    area.right = (double)Math.Round((decimal)struDrawInfo.end.X / this.videoBox.Width, 4);
+                                    area.top = (double)Math.Round((decimal)struDrawInfo.start.Y / this.videoBox.Height, 4);
+                                    area.bottom = (double)Math.Round((decimal)struDrawInfo.end.Y / this.videoBox.Height, 4);
+                                    area.id = Global.mysqlHelper.ExecuteSql(area.getInsertString());
+                                    Global.recogAreaList.Add(area);
+                                    video.areaList.Add(area);
+                                    return;
+                                }
                             }
                         }
-
-                        //没有匹配到，则添加视频通道
-                        //ClsVideoChannel videoChan = new ClsVideoChannel();
-                        //int i = Global.nCurSelectedVideoChan;
-                        //videoChan.ip = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].struIP.sIpV4);
-                        //videoChan.channelNo = Global.nCurSelectedVideoChan;
-                        //videoChan.loginName = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].sUserName);
-                        //videoChan.password = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].sPassword);
-                        //videoChan.port = nvr.config.struIPDevInfo[i].wDVRPort;
-                        //videoChan.streamType = nvr.config.struStreamMode[i].byGetStreamType;
-                        //videoChan.id = Global.mysqlHelper.ExecuteSql(videoChan.getInsertString());
-
-                        //ClsRecogArea area2 = new ClsRecogArea();
-                        //area2.videoid = videoChan.id;
-                        //area2.left = (double)Math.Round((decimal)struDrawInfo.start.X / this.videoBox.Width, 4);
-                        //area2.right = (double)Math.Round((decimal)struDrawInfo.end.X / this.videoBox.Width, 4);
-                        //area2.top = (double)Math.Round((decimal)struDrawInfo.start.Y / this.videoBox.Height, 4);
-                        //area2.bottom = (double)Math.Round((decimal)struDrawInfo.end.Y / this.videoBox.Height, 4);
-                        //area2.id = Global.mysqlHelper.ExecuteSql(area2.getInsertString());
-                        
-                        //Global.recogAreaList.Add(area2);
-                        //videoChan.areaList.Add(area2);
-                        //Global.videoList.Add(videoChan);
-                        //nvr.videoList.Add(videoChan);
                     }
-                }
-            } 
+                    break;
+                case 2:
+                    foreach (ClsRecogArea area in Global.recogAreaList)
+                    {
+                        if (area.id.ToString() == comboArea.Text.Trim())
+                        {
+                            area.left = (double)Math.Round((decimal)struDrawInfo.start.X / this.videoBox.Width, 4);
+                            area.right = (double)Math.Round((decimal)struDrawInfo.end.X / this.videoBox.Width, 4);
+                            area.top = (double)Math.Round((decimal)struDrawInfo.start.Y / this.videoBox.Height, 4);
+                            area.bottom = (double)Math.Round((decimal)struDrawInfo.end.Y / this.videoBox.Height, 4);
+                            Global.mysqlHelper.ExecuteSql(area.getUpdateString());
+                        }
+                    }
+                    break;
+                case 3:
+                    ClsNozzle nozzle = new ClsNozzle();
+                    nozzle.nozzleNo = int.Parse(comboNozzleNo.Text);
+                    nozzle.oilType = comboOilType.SelectedIndex;
+                    nozzle.areaid = int.Parse(comboMainArea.Text);
+                    if (comboSubArea.Text == "不使用")
+                        nozzle.subAreaid = 0;
+                    else
+                        nozzle.subAreaid = int.Parse(comboSubArea.Text);
+                    nozzle.id = Global.mysqlHelper.ExecuteSql(nozzle.getInsertString());
+                    Global.nozzleList.Add(nozzle);
+                    break;
+                case 4:
+
+                    break;
+                default:
+                    break;
+
+            }
+            if (AoU == 1) //add 
+            {
+                
+            }  
             else if(AoU == 2) //update
             {
-                foreach (ClsRecogArea area in Global.recogAreaList)
-                {
-                    if (area.id.ToString() == comboArea.Text.Trim())
-                    {
-                        area.left = (double)Math.Round((decimal)struDrawInfo.start.X / this.videoBox.Width, 4);
-                        area.right = (double)Math.Round((decimal)struDrawInfo.end.X / this.videoBox.Width, 4);
-                        area.top = (double)Math.Round((decimal)struDrawInfo.start.Y / this.videoBox.Height, 4);
-                        area.bottom = (double)Math.Round((decimal)struDrawInfo.end.Y / this.videoBox.Height, 4);
-                        Global.mysqlHelper.ExecuteSql(area.getUpdateString());
-                    }
-                }
+                
 
             }
 

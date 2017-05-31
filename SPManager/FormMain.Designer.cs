@@ -32,9 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerServiceStaus = new System.Windows.Forms.Timer(this.components);
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.textVideoChan = new System.Windows.Forms.TextBox();
-            this.btnTest = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnShowData = new System.Windows.Forms.Button();
             this.lblLogLevel = new System.Windows.Forms.Label();
@@ -74,7 +71,6 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusSystem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMonitor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMain)).BeginInit();
@@ -95,9 +91,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.pictureBox1);
-            this.tabPage1.Controls.Add(this.textVideoChan);
-            this.tabPage1.Controls.Add(this.btnTest);
             this.tabPage1.Controls.Add(this.btnUpdate);
             this.tabPage1.Controls.Add(this.btnShowData);
             this.tabPage1.Controls.Add(this.lblLogLevel);
@@ -119,41 +112,15 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(559, 401);
+            this.tabPage1.Size = new System.Drawing.Size(436, 286);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "运行状态";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(29, 215);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(279, 161);
-            this.pictureBox1.TabIndex = 39;
-            this.pictureBox1.TabStop = false;
-            // 
-            // textVideoChan
-            // 
-            this.textVideoChan.Location = new System.Drawing.Point(367, 245);
-            this.textVideoChan.Name = "textVideoChan";
-            this.textVideoChan.Size = new System.Drawing.Size(86, 29);
-            this.textVideoChan.TabIndex = 38;
-            // 
-            // btnTest
-            // 
-            this.btnTest.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnTest.Location = new System.Drawing.Point(473, 247);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(72, 29);
-            this.btnTest.TabIndex = 37;
-            this.btnTest.Text = "测试";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click_1);
-            // 
             // btnUpdate
             // 
             this.btnUpdate.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnUpdate.Location = new System.Drawing.Point(473, 179);
+            this.btnUpdate.Location = new System.Drawing.Point(265, 232);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(78, 29);
             this.btnUpdate.TabIndex = 36;
@@ -164,7 +131,7 @@
             // btnShowData
             // 
             this.btnShowData.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnShowData.Location = new System.Drawing.Point(378, 180);
+            this.btnShowData.Location = new System.Drawing.Point(175, 232);
             this.btnShowData.Name = "btnShowData";
             this.btnShowData.Size = new System.Drawing.Size(75, 29);
             this.btnShowData.TabIndex = 35;
@@ -177,7 +144,7 @@
             this.lblLogLevel.AutoSize = true;
             this.lblLogLevel.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblLogLevel.ForeColor = System.Drawing.Color.Green;
-            this.lblLogLevel.Location = new System.Drawing.Point(143, 182);
+            this.lblLogLevel.Location = new System.Drawing.Point(127, 181);
             this.lblLogLevel.Name = "lblLogLevel";
             this.lblLogLevel.Size = new System.Drawing.Size(42, 21);
             this.lblLogLevel.TabIndex = 34;
@@ -202,7 +169,7 @@
             "正常",
             "调试",
             "全部"});
-            this.comboLogLevel.Location = new System.Drawing.Point(191, 180);
+            this.comboLogLevel.Location = new System.Drawing.Point(175, 179);
             this.comboLogLevel.Name = "comboLogLevel";
             this.comboLogLevel.Size = new System.Drawing.Size(75, 29);
             this.comboLogLevel.TabIndex = 32;
@@ -210,7 +177,7 @@
             // btnChangeLogLevel
             // 
             this.btnChangeLogLevel.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnChangeLogLevel.Location = new System.Drawing.Point(281, 180);
+            this.btnChangeLogLevel.Location = new System.Drawing.Point(265, 179);
             this.btnChangeLogLevel.Name = "btnChangeLogLevel";
             this.btnChangeLogLevel.Size = new System.Drawing.Size(75, 29);
             this.btnChangeLogLevel.TabIndex = 31;
@@ -225,9 +192,9 @@
             this.toolCPU,
             this.toolStripStatusLabel2,
             this.toolRAM});
-            this.statusSystem.Location = new System.Drawing.Point(0, 379);
+            this.statusSystem.Location = new System.Drawing.Point(0, 264);
             this.statusSystem.Name = "statusSystem";
-            this.statusSystem.Size = new System.Drawing.Size(559, 22);
+            this.statusSystem.Size = new System.Drawing.Size(436, 22);
             this.statusSystem.TabIndex = 25;
             this.statusSystem.Text = "statusStrip1";
             // 
@@ -446,7 +413,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(567, 427);
+            this.tabControl1.Size = new System.Drawing.Size(444, 312);
             this.tabControl1.TabIndex = 18;
             // 
             // tabPage2
@@ -521,7 +488,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(567, 427);
+            this.ClientSize = new System.Drawing.Size(444, 312);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
@@ -532,7 +499,6 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.statusSystem.ResumeLayout(false);
             this.statusSystem.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMonitor)).EndInit();
@@ -586,13 +552,10 @@
         private System.Windows.Forms.Label lblLogLevel;
         private System.Windows.Forms.Button btnShowData;
         private System.Windows.Forms.Button btnUpdate;
-        private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Timer timerDataProc;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListView listViewCache;
         private System.Windows.Forms.RichTextBox richTextBoxDIT;
-        private System.Windows.Forms.TextBox textVideoChan;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnSwitch;
     }
 }
