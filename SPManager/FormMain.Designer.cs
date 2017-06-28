@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerServiceStaus = new System.Windows.Forms.Timer(this.components);
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnTest = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnShowData = new System.Windows.Forms.Button();
             this.lblLogLevel = new System.Windows.Forms.Label();
@@ -70,6 +71,9 @@
             this.contextMenuExit = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.listViewArea = new System.Windows.Forms.ListView();
+            this.richTextBoxArea = new System.Windows.Forms.RichTextBox();
             this.tabPage1.SuspendLayout();
             this.statusSystem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMonitor)).BeginInit();
@@ -81,6 +85,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.contextMenuExit.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerServiceStaus
@@ -91,6 +96,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnTest);
             this.tabPage1.Controls.Add(this.btnUpdate);
             this.tabPage1.Controls.Add(this.btnShowData);
             this.tabPage1.Controls.Add(this.lblLogLevel);
@@ -116,6 +122,17 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "运行状态";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnTest
+            // 
+            this.btnTest.Font = new System.Drawing.Font("宋体", 9F);
+            this.btnTest.Location = new System.Drawing.Point(353, 179);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(75, 29);
+            this.btnTest.TabIndex = 37;
+            this.btnTest.Text = "测  试";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // btnUpdate
             // 
@@ -409,11 +426,12 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(444, 312);
+            this.tabControl1.Size = new System.Drawing.Size(509, 312);
             this.tabControl1.TabIndex = 18;
             // 
             // tabPage2
@@ -423,9 +441,9 @@
             this.tabPage2.Controls.Add(this.listViewCache);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(559, 401);
+            this.tabPage2.Size = new System.Drawing.Size(480, 286);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "缓存队列";
+            this.tabPage2.Text = "油枪队列";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // btnSwitch
@@ -480,15 +498,43 @@
             // 
             // timerDataProc
             // 
-            this.timerDataProc.Enabled = true;
             this.timerDataProc.Interval = 1000;
             this.timerDataProc.Tick += new System.EventHandler(this.timerDataProc_Tick);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.richTextBoxArea);
+            this.tabPage3.Controls.Add(this.listViewArea);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(501, 286);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "识别区队列";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // listViewArea
+            // 
+            this.listViewArea.GridLines = true;
+            this.listViewArea.Location = new System.Drawing.Point(0, 0);
+            this.listViewArea.Name = "listViewArea";
+            this.listViewArea.Size = new System.Drawing.Size(356, 340);
+            this.listViewArea.TabIndex = 1;
+            this.listViewArea.UseCompatibleStateImageBehavior = false;
+            this.listViewArea.View = System.Windows.Forms.View.Details;
+            // 
+            // richTextBoxArea
+            // 
+            this.richTextBoxArea.Location = new System.Drawing.Point(352, 0);
+            this.richTextBoxArea.Name = "richTextBoxArea";
+            this.richTextBoxArea.Size = new System.Drawing.Size(202, 337);
+            this.richTextBoxArea.TabIndex = 2;
+            this.richTextBoxArea.Text = "";
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 312);
+            this.ClientSize = new System.Drawing.Size(509, 312);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
@@ -512,6 +558,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.contextMenuExit.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -557,6 +604,10 @@
         private System.Windows.Forms.ListView listViewCache;
         private System.Windows.Forms.RichTextBox richTextBoxDIT;
         private System.Windows.Forms.Button btnSwitch;
+        private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.RichTextBox richTextBoxArea;
+        private System.Windows.Forms.ListView listViewArea;
     }
 }
 

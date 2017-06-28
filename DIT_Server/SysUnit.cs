@@ -5,7 +5,21 @@ using System.Runtime.InteropServices;
 
 namespace DIT_Server
 {
-
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct NET_ITS_TRANS_INFO
+    {
+        public int nPumpID;  //油枪ID
+        public int nOilType;                  //油品编码
+        public float fTradeLitre;                      //交易升数
+        public float fTradeMoney;                      //交易金额
+        public float fTradePrice;                      //交易单价
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] sStartTime;    //提枪时间
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] sEndTime;     //挂枪时间
+        public float fStartRead;       //提枪泵码
+        public float fEndRead;         //挂枪泵码
+    }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NET_ITS_PLATE_RESULT
     {
@@ -55,10 +69,12 @@ namespace DIT_Server
         [DllImport("user32.dll")]
         static extern uint RegisterWindowMessage(string lpString);
         public static uint WM_CARSNAP = RegisterWindowMessage("CARSNAP");    //抓拍
+        public static uint WM_CARTRADE = RegisterWindowMessage("CARTRADE");    //抓拍
         //public static NET_DVR_PLATE_RESULT carInfo = new NET_DVR_PLATE_RESULT();
         public static byte byNozzle = 0;
         public static byte byNozzleStatus = 0;
         public const int HWND_BROADCAST = 0xFFFF;
+        public static NET_ITS_TRANS_INFO tradeInfo = new NET_ITS_TRANS_INFO();
         // 将byte[]转换为struct
         public static object BytesToStruts(byte[] bytes, Type type)
         {

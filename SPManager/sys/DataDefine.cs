@@ -4,7 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 namespace SPManager
 {
-
+    //车辆信息类
     public class ClsCarInfo
     {
 
@@ -105,6 +105,7 @@ namespace SPManager
             set { _matchFlag = value; }
         }
         private int _matchFlag = 0;
+       
         public string toSaveSqlString()
         {
             //TODO 未解决路径问题;
@@ -114,8 +115,21 @@ namespace SPManager
             return String.Format(sqlString, _license, _licenseColor.ToString(), _type.ToString(), _carLogo.ToString(), _subCarLogo.ToString(), _carColor.ToString(), _arriveTime, _leaveTime, _nozzleNo.ToString(), _picPath, _beginTime, _endTime, _oilType);
         }
     }
+    //油枪信息类
     public class ClsNozzle
     {
+        //关联的主识别区
+        public List<int> linkedMainAreaList = new List<int>(); 
+        //关联的副识别区，油岛另外一侧 
+        public List<int> linkedSubAreaList = new List<int>();
+        //关联的油岛号
+        public int linkedIslandNo;
+        //当前油枪占位车辆信息
+        public ClsCarInfo nozzleCar = new ClsCarInfo();
+        //油枪状态 0空闲，1提枪 2 加油，3挂枪
+        public int curStatus = 0;
+        //当前油枪是否已匹配车辆
+        public bool bMatched = false;
         public int id
         {
             get { return _id; }
@@ -160,6 +174,7 @@ namespace SPManager
             return str;
         }
     }
+    //识别区域类
     public class ClsRecogArea
     {
         public List<ClsNozzle> nozzleList = new List<ClsNozzle>();
@@ -225,6 +240,8 @@ public string getInsertString()
             return str;
         }
     }
+
+    //站点信息类
     public class ClsStationInfo
     {
         public string stationCode
@@ -279,6 +296,7 @@ public string getInsertString()
         private int _cameraCount = 0;
     }
 
+    //视频通道类
     public class ClsVideoChannel
     {
         public int channelNo
@@ -329,6 +347,36 @@ public string getInsertString()
         private int _streamType = 0;
     }
 
+    //油岛类，一个油岛可对应多个视频通道，包含多个油枪、识别区、加油位
+    public class ClsGasIsland
+    {
+        //油岛ID
+        public int id 
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private int _id = 0;
+
+        public List<int> locationNoList = new List<int>();
+        public List<int> videoNoList = new List<int>();
+        public List<int> nozzleNoList = new List<int>();
+        public List<int> areaNoList = new List<int>();
+        public List<ClsCarInfo> carList = new List<ClsCarInfo>();
+    }
+
+    //油位信息类
+    public class ClsGasLocation
+    {
+        public int gasIslandNo
+        {
+            get { return _gasIslandNo; }
+            set { _gasIslandNo = value; }
+        }
+        private int _gasIslandNo = 0;
+        public List<int> areaNoList = new List<int>();
+        public List<int> nozzleNoList = new List<int>();
+    }
     public class ClsNVRInfo
     {
         public NET_DVR_IPPARACFG_V40 config = new NET_DVR_IPPARACFG_V40();

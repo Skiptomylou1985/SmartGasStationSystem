@@ -7,6 +7,8 @@ using System.Threading;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Drawing.Imaging;
+
 namespace SPManager
 {
     public class PictureWork
@@ -65,9 +67,8 @@ namespace SPManager
         }
         public void SavePic(ClsPicture pic)
         {
-            return;
             string path = pic.picPath;
-            Global.LogServer.Add(new LogInfo("Debug", "PictureWork->SavePic picpath:" + path, (int)EnumLogLevel.DEBUG));
+            //Global.LogServer.Add(new LogInfo("Debug", "PictureWork->SavePic picpath:" + path, (int)EnumLogLevel.DEBUG));
             //Regex.Replace(path, @"\", "\\");
             //Global.LogServer.Add(new LogInfo("Debug", "PictureWork->SavePic picpath:" + path + pic.picName, (int)EnumLogLevel.DEBUG));
 
@@ -93,13 +94,27 @@ namespace SPManager
                     byte[] rgbBuf = new byte[pic.picWidth * pic.picHeight * 3];
                     Bitmap bm = ConvertYUV2RGB(pic.picBufer, rgbBuf, pic.picWidth, pic.picHeight);
                     bm.Save(path + pic.picName);
-                    //bm.Save(sPicDst);
                 }
                 catch (System.Exception ex)
                 {
                     Global.LogServer.Add(new LogInfo("Error", "PictureWork->SavePic 图片存储失败:" + ex.Message, (int)EnumLogLevel.ERROR));
                 }
-                
+            }
+            else if(pic.picType == 0)
+            {
+                try
+                {
+                    MemoryStream ms = new MemoryStream(pic.picBufer);
+                    Image img = Image.FromStream(ms);
+                    //img.Save(path + pic.picName);
+                    img.Save("D:\\images\\"+pic.picName);
+                    ms.Dispose();
+                    img.Dispose();
+                }
+                catch (System.Exception ex)
+                {
+                    Global.LogServer.Add(new LogInfo("Error", "PictureWork->SavePic 图片存储失败,图片路径"+ path + pic.picName + ex.Message, (int)EnumLogLevel.ERROR));
+                }
             }
         }
 

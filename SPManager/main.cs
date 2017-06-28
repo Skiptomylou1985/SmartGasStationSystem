@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace SPManager
 {
@@ -22,7 +23,6 @@ namespace SPManager
         {
             if (m.Msg == Convert.ToInt32(WM_CARDATA))
             {
-                MessageBox.Show("1");
                 lastUpdateTime = DateTime.Now;
                 Global.LogServer.Add(new LogInfo("Debug", "Main->DefWndProc: 收到动态库车辆消息", (int)EnumLogLevel.DEBUG));
                 GetCarFromDll_Array();
@@ -41,7 +41,21 @@ namespace SPManager
                 Global.LogServer.Add(new LogInfo("Run", "Main->DefWndProc: 收到DIT消息,油枪号：" + nNozzleID.ToString() + "  状态号:"+nNozzleStatus.ToString(), (int)EnumLogLevel.RUN));
                 // ProcSnapFromDIT(nNozzleID, nNozzleStatus);
                 //ProcSnapFromDIT_Backward(nNozzleID, nNozzleStatus);
-                ProcSnapFromDIT_Capture_V2(nNozzleID, nNozzleStatus);
+                if (Global.nRunMode == 1)
+                {
+                    ProcSnapFromDIT_Capture_V2(nNozzleID, nNozzleStatus);
+                } 
+                else if(Global.nRunMode == 2)
+                {
+                    if (Global.bCaptureFlag == 1) //抓拍使能开启，抓拍实时数据
+                    {
+
+                    } 
+                    else //未开启抓拍使能，从视频车牌中查找车牌
+                    {
+                        FindCarInAreaCarList(nNozzleID, nNozzleStatus);
+                    }
+                }
             }
             else 
             {
@@ -72,7 +86,7 @@ namespace SPManager
                 ret += 1 << 3;
                 //return ret;
             }
-            if (!InitDev())
+            if (!InitDevice())
             {
                 ret += 1 << 4;
                 //return ret;
@@ -86,6 +100,24 @@ namespace SPManager
                 ret += 1 << 6;
             }
             return ret;
+        }
+
+        private bool InitDevice()
+        {
+            if (Global.nRunMode == 1)
+            {
+                return InitDev_V2();
+            } 
+            else if(Global.nRunMode == 2)
+            {
+                return InitDev_HKCN();
+            }
+            else if (Global.nRunMode == 4)
+            {
+                return InitDev_MultiChan();
+            }
+            
+            return false;
         }
         private bool InitDatabase()
         {
@@ -179,14 +211,16 @@ namespace SPManager
                         Global.softVersion = paramValue;
                     else if (paramName == "updatetime")
                         Global.updateTime = DateTime.Parse(paramValue);
-                    //else if (paramName == "nvrip")
-                    //    Global.clsNvrInfo.ip = paramValue;
-                    //else if (paramName == "nvrport")
-                    //    Global.clsNvrInfo.port = int.Parse(paramValue);
-                    //else if (paramName == "nvradmin")
-                    //    Global.clsNvrInfo.loginName = paramValue;
-                    //else if (paramName == "nvrpassword")
-                    //    Global.clsNvrInfo.password = paramValue;
+                    else if (paramName == "runmode")
+                        Global.nRunMode = int.Parse(paramValue);
+                    else if (paramName == "captureflag")
+                        Global.bCaptureFlag = int.Parse(paramValue);
+                    else if (paramName == "defaultprovince")
+                        Global.clsNvrInfo.loginName = paramValue;
+                    else if (paramName == "socketip")
+                        Global.socketIP = paramValue;
+                    else if (paramName == "socketport")
+                        Global.socketPort = int.Parse(paramValue);
                     else if (paramName == "matchmode")
                         Global.nMatchMode = int.Parse(paramValue);
                     else if (paramName == "picpath")
@@ -289,6 +323,11 @@ namespace SPManager
                 {
                     index = 0;
                     Global.arrayNozzleCar = new ClsCarInfo[dt2.Rows.Count];
+                    for (int i=0;i<Global.arrayNozzleCar.Length;i++)
+                    {
+                        Global.arrayNozzleCar[i] = new ClsCarInfo();
+                    }
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->GetAreaNozzleParam arrayNozzleCar lenth " + Global.arrayNozzleCar.Length.ToString(), (int)EnumLogLevel.DEBUG));
                     foreach (DataRow dr2 in dt2.Rows)
                     {
                         ClsNozzle nozzle = new ClsNozzle();
@@ -296,6 +335,7 @@ namespace SPManager
                         nozzle.oilType = int.Parse(dr2["oiltype"].ToString());
                         nozzle.nozzleNo = int.Parse(dr2["nozzleno"].ToString());
                         nozzle.subAreaid = int.Parse(dr2["subareaid"].ToString());
+                        nozzle.linkedMainAreaList.Add(nozzle.areaid);
                         Global.nozzleMap.Add(nozzle.nozzleNo, index);
                         index++;
                         Global.nozzleList.Add(nozzle);
@@ -331,7 +371,7 @@ namespace SPManager
             int structLenth = Marshal.SizeOf(typeof(struArea));
             //IntPtr ip = Marshal.AllocHGlobal(Global.nozzleList.Count* structLenth);
             struArea[] area = new struArea[Global.areaList.Count];
-            byte[] ipp = new byte[1024];
+            byte[] ipp = new byte[10240];
             int offset = 0;
             for (int i =0;i<Global.areaList.Count;i++)
             {
@@ -369,7 +409,7 @@ namespace SPManager
             int structLenth = Marshal.SizeOf(typeof(struNozzleRecog));
             //IntPtr ip = Marshal.AllocHGlobal(Global.nozzleList.Count* structLenth);
             struNozzleRecog[] nozzleRecog = new struNozzleRecog[Global.nozzleList.Count];
-            byte[] ipp = new byte[2048];
+            byte[] ipp = new byte[10000];
             int offset = 0;
             for (int i = 0; i < Global.nozzleList.Count; i++)
             {
@@ -413,7 +453,7 @@ namespace SPManager
 
             if (ret == 0)
             {
-                SPlate.SP_InitRunParam(ipp, Global.nozzleList.Count);
+                SPlate.SP_InitRunParam_V2(ipp, Global.nozzleList.Count);
                 Global.LogServer.Add(new LogInfo("Debug", "main:InitDev_V2->SP_InitRunParam done return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
                 return true;
             }
@@ -421,29 +461,88 @@ namespace SPManager
                 return false;
 
         }
+
+        private bool InitDev_MultiChan()
+        {
+            int ret = SPlate.SP_InitNVR(Global.clsNvrInfo.ip, Global.clsNvrInfo.port, Global.clsNvrInfo.loginName, Global.clsNvrInfo.password);
+            if (ret == 0)
+            {
+               // SPlate.SP_BeginRecog_MultiChan();
+               // SPlate.SP_InitRunParam_V2(ipp, Global.nozzleList.Count);
+                Global.LogServer.Add(new LogInfo("Debug", "main:InitDev_V2->SP_InitRunParam done return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
+                return true;
+            }
+            else
+                return false;
+        }
+        private bool InitDev_HKCN()
+        {
+            Global.LogServer.Add(new LogInfo("Debug", "main->InitDev_HKCN in", (int)EnumLogLevel.DEBUG));
+
+            int structLenth = Marshal.SizeOf(typeof(struArea));
+            //IntPtr ip = Marshal.AllocHGlobal(Global.nozzleList.Count* structLenth);
+            struArea[] area = new struArea[Global.areaList.Count];
+            byte[] ipp = new byte[10240];
+            int offset = 0;
+            for (int i = 0; i < Global.areaList.Count; i++)
+            {
+                area[i].areaNo = Global.areaList[i].id;
+                area[i].videoChanNo = Global.areaList[i].videoChannel;
+                area[i].left = (int)(Global.areaList[i].left * Global.nDefaultHeight);
+                area[i].right = (int)(Global.areaList[i].right * Global.nDefaultWidth);
+                area[i].top = (int)(Global.areaList[i].top * Global.nDefaultHeight);
+                area[i].bottom = (int)(Global.areaList[i].bottom * Global.nDefaultHeight);
+                area[i].areaFlag = Global.areaList[i].areaFlag;
+                byte[] bArea = SystemUnit.StrutsToBytesArray(area[i]);
+                Buffer.BlockCopy(bArea, 0, ipp, offset, structLenth);
+                offset += structLenth;
+            }
+            Global.LogServer.Add(new LogInfo("Debug", "main->InitDev_HKCN->SP_InitNVR_HKCN begin, param value " + Global.clsNvrInfo.ip + " "
+                + Global.clsNvrInfo.port.ToString() + " " + Global.clsNvrInfo.loginName + " " + Global.clsNvrInfo.password, (int)EnumLogLevel.DEBUG));
+
+            int ret = SPlate.SP_InitNVR_HKCN(Global.clsNvrInfo.ip, Global.clsNvrInfo.port, Global.clsNvrInfo.loginName, Global.clsNvrInfo.password);
+            Global.LogServer.Add(new LogInfo("Debug", "main->InitDev_HKCN done return value" + ret.ToString(), (int)EnumLogLevel.DEBUG));
+            if (ret == 0)
+            {
+                SPlate.SP_InitRunParam(ipp, Global.areaList.Count);
+                return true;
+            }
+            else
+                return false;
+        }
         private bool InitAlg()
         {
+            if (Global.nRunMode != 1 && Global.nRunMode !=4)
+            {
+                return true;
+            }
             TH_PlateIDCfg th_PlateIDCfg = new TH_PlateIDCfg();
             th_PlateIDCfg.nMaxPlateWidth = 400;
             th_PlateIDCfg.nMinPlateWidth = 60;
 
-            th_PlateIDCfg.nMaxImageWidth = 2100;
-            th_PlateIDCfg.nMaxImageHeight = 1500;
+            th_PlateIDCfg.nMaxImageWidth = 1920;
+            th_PlateIDCfg.nMaxImageHeight = 1080;
 
             th_PlateIDCfg.nFastMemorySize = 16000;//DSP内存大小  
             th_PlateIDCfg.pFastMemory = Marshal.AllocHGlobal(16000);//DSP申请内存 
-
             th_PlateIDCfg.pMemory = Marshal.AllocHGlobal(100000000);//申请普通内存  
             th_PlateIDCfg.nMemorySize = 100000000;
             th_PlateIDCfg.bUTF8 = 0;
             th_PlateIDCfg.bShadow = 1;
-            th_PlateIDCfg.bCarLogo = 0;
+            th_PlateIDCfg.bCarLogo = 1;
             th_PlateIDCfg.bLeanCorrection = 1;
-            th_PlateIDCfg.bCarModel = 0;
-
+            th_PlateIDCfg.bCarModel = 1;
             //TODO 注意模式切换
-            th_PlateIDCfg.bOutputSingleFrame = 0;  
-            th_PlateIDCfg.bMovingImage = 0;   //0 识别静止图片，1识别动态视频（结果输出延时）
+            th_PlateIDCfg.bOutputSingleFrame = 1;  
+            if (Global.nRunMode == 1)
+            {
+                th_PlateIDCfg.bMovingImage = 0;   //0 识别静止图片，1识别动态视频（结果输出延时）
+            }
+            else if(Global.nRunMode == 4)
+            {
+                th_PlateIDCfg.bMovingImage = 1;   //0 识别静止图片，1识别动态视频（结果输出延时）
+            }
+            
             Global.LogServer.Add(new LogInfo("Debug", "main->SP_InitAlg begin", (int)EnumLogLevel.DEBUG));
             int lenth = Marshal.SizeOf(th_PlateIDCfg);
             int ret = SPlate.SP_InitAlg(ref th_PlateIDCfg,lenth);
@@ -458,6 +557,122 @@ namespace SPManager
 
         #region 获取，处理数据
 
+        private void FindCarInAreaCarList(int nozzleNo,int nozzleStatus)
+        {
+            //查找关联油岛及区域并在其中查找车牌
+            Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 开始查找车牌" , (int)EnumLogLevel.DEBUG));
+            bool bMatched = false;
+            foreach(ClsNozzle nozzle in Global.nozzleList)
+            {
+                if (nozzleNo == nozzle.nozzleNo)
+                {
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 找到油枪列："+nozzleNo.ToString(), (int)EnumLogLevel.DEBUG));
+                    if (nozzle.bMatched)
+                    {
+                        bMatched = true;
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 该油枪已匹配车辆，车牌号："+nozzle.nozzleCar.license, (int)EnumLogLevel.DEBUG));
+                    } 
+                    else
+                    {
+                        foreach (int areaNo in nozzle.linkedMainAreaList)
+                        {
+                            Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 开始主识别区查找车辆", (int)EnumLogLevel.DEBUG));
+                            int areaIndex = Global.areaMap[areaNo];
+                            if (Global.arrayAreaCar[areaIndex].matchFlag == 0 && Global.arrayAreaCar[areaIndex].license != "" )
+                            {
+                                Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 匹配到车辆，车牌："+ 
+                                    Global.arrayAreaCar[areaIndex].license + " 识别区："+areaIndex.ToString(), (int)EnumLogLevel.DEBUG));
+                                nozzle.bMatched = true;
+                                Global.arrayAreaCar[areaIndex].matchFlag = 1;
+                                Global.arrayAreaCar[areaIndex].nozzleNo = nozzleNo;
+                                nozzle.nozzleCar = Global.arrayAreaCar[areaIndex];
+                                bMatched = true;
+                                break;
+                            }
+                        }
+                        if (!bMatched)  //主识别区未找到车辆，则从油岛邻侧区域查找
+                        {
+                            Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 主识别区未查找车辆，进入副识别区查找车辆", (int)EnumLogLevel.DEBUG));
+                            foreach (int areaNo in nozzle.linkedSubAreaList)
+                            {
+                                int areaIndex = Global.areaMap[areaNo];
+                                if (Global.arrayAreaCar[areaIndex].matchFlag == 0 && Global.arrayAreaCar[areaIndex].license != "")
+                                {
+                                    nozzle.bMatched = true;
+                                    Global.arrayAreaCar[areaIndex].matchFlag = 1;
+                                    Global.arrayAreaCar[areaIndex].nozzleNo = nozzleNo;
+                                    nozzle.nozzleCar = Global.arrayAreaCar[areaIndex];
+                                    bMatched = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                    if (!bMatched)
+                    {
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 匹配结束，未匹配到任何车辆", (int)EnumLogLevel.DEBUG));
+                    }
+                    nozzle.curStatus = nozzleStatus;
+                    NET_DVR_PLATE_RESULT snapData = new NET_DVR_PLATE_RESULT();
+                    snapData.byPumpID = (byte)nozzleNo;
+                    snapData.byPumpStatus = (byte)nozzleStatus;
+                    snapData.sLicense = new byte[16];
+                    byte[] license = System.Text.Encoding.Default.GetBytes(nozzle.nozzleCar.license);
+                    Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
+                    snapData.byColor = (byte)nozzle.nozzleCar.carColor;
+                    snapData.byPlateColor = (byte)nozzle.nozzleCar.licenseColor;
+                    snapData.byVehicleShape = (byte)nozzle.nozzleCar.carLogo;
+                    snapData.wVehicleLogoRecog = (short)nozzle.nozzleCar.carLogo;
+                    snapData.wVehicleSubLogoRecog = (short)nozzle.nozzleCar.subCarLogo;
+                    SendSnapToDIT(snapData);
+
+                    DateTime dt = DateTime.Now;
+                    switch (nozzleStatus)
+                    {
+                        case 0:  //不生效 默认开始时间
+                            nozzle.nozzleCar.beginTime = dt;
+                            break;
+                        case 1:  //提枪
+                            nozzle.nozzleCar.arriveTime = dt;
+                            nozzle.nozzleCar.beginTime = dt;
+                            nozzle.nozzleCar.endTime = dt;
+                            nozzle.nozzleCar.leaveTime = dt;
+                            nozzle.nozzleCar.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + nozzle.nozzleCar.license.Trim() + @"\\";
+                            break;
+                        case 2: //加油
+                            nozzle.nozzleCar.beginTime = dt;
+                            nozzle.nozzleCar.endTime = dt;
+                            nozzle.nozzleCar.leaveTime = dt;
+                            break;
+                        case 3: //挂枪
+                            nozzle.nozzleCar.endTime = dt;
+                            nozzle.nozzleCar.leaveTime = dt;
+                            nozzle.nozzleCar.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + nozzle.nozzleCar.license.Trim() + @"\\";
+                            Global.mysqlHelper.ExecuteSql(nozzle.nozzleCar.toSaveSqlString());
+                            for (int i=0;i<Global.arrayAreaCar.Length;i++)
+                            {
+                                if (nozzle.nozzleCar.license == Global.arrayAreaCar[i].license)
+                                {
+                                    Global.arrayAreaCar[i].license = "";
+                                    Global.arrayAreaCar[i].nozzleNo = 0;
+                                    Global.arrayAreaCar[i].matchFlag = 0;
+                                }
+                            }
+                            nozzle.bMatched = false;
+                            nozzle.nozzleCar.license = "";
+                            nozzle.curStatus = 0;
+
+                            //Global.arrayAreaCar[index].
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+            }
+           
+        }
         private void GetNvrConfig()
         {
             IntPtr ip = Marshal.AllocHGlobal(Marshal.SizeOf(Global.net_dvr_cfg));
@@ -591,8 +806,28 @@ namespace SPManager
                     Global.LogServer.Add(new LogInfo("Run", "Main->GetCarFromDll_Array: 对应区域车牌重复", (int)EnumLogLevel.RUN));
                     continue;
                 }
+                int index = 0;
+                try
+                {
+                    index = Global.areaMap[struCarOut.nAreaNo];
+                }
+                catch (Exception ex)
+                {
+                    Global.LogServer.Add(new LogInfo("Error", "Main->GetCarFromDll_Array 获取识别区下脚标失败，识别区号:" +struCarOut.nAreaNo.ToString() +"  "+ ex.Message, (int)EnumLogLevel.ERROR));
+                    return;
+                }
+                ClsPicture pic = new ClsPicture();
+                pic.picBufer = new byte[struCarOut.nPicLenth];
+                Buffer.BlockCopy(struCarOut.pic, 0, pic.picBufer, 0, struCarOut.nPicLenth);
+                pic.picPath = Global.basePicPath + Global.arrayAreaCar[index].arriveTime.ToString("yyyyMMdd") + "\\" + Global.arrayAreaCar[index].license.Trim() + "\\";
 
-                int index = Global.areaMap[struCarOut.nAreaNo];
+                // Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath+ pic.picName, (int)EnumLogLevel.DEBUG));
+                pic.picName = Global.arrayAreaCar[index].arriveTime.ToString("HHmmss") + ".jpg";
+                pic.picWidth = struCarOut.nPicWidth;
+                pic.picHeight = struCarOut.nPicHeight;
+                pic.picType = struCarOut.nPicType;
+                Global.picWork.Add(pic);
+                Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll_Array: 车辆图片入队列,图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
                 if (struCarOut.nAreaNo == Global.entryAreaID)
                     {
                         sendCallbackInfo(struCarOut, 1);
@@ -628,19 +863,9 @@ namespace SPManager
                     Global.arrayAreaCar[index].leaveTime = DateTime.Now;
                     Global.arrayAreaCar[index].areaNo = struCarOut.nAreaNo;
                     Global.arrayAreaCar[index].matchFlag = 0;
+                    Global.arrayAreaCar[index].nozzleNo = 0;
                 }
-                    ClsPicture pic = new ClsPicture();
-                    pic.picBufer = new byte[struCarOut.nPicLenth];
-                    Buffer.BlockCopy(struCarOut.pic, 0, pic.picBufer, 0, struCarOut.nPicLenth);
-                    pic.picPath = Global.basePicPath + Global.arrayAreaCar[index].arriveTime.ToString("yyyyMMdd") + "\\" + Global.arrayAreaCar[index].license.Trim() + "\\";
-
-                    // Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath+ pic.picName, (int)EnumLogLevel.DEBUG));
-                    pic.picName = Global.arrayAreaCar[index].arriveTime.ToString("HHmmss") + ".jpg";
-                    pic.picWidth = struCarOut.nPicWidth;
-                    pic.picHeight = struCarOut.nPicHeight;
-                    pic.picType = struCarOut.nPicType;
-                    Global.picWork.Add(pic);
-                    Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll_Array: 车辆图片入队列,图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
+                    
                 
             }
         }
@@ -696,16 +921,32 @@ namespace SPManager
         {
             listViewCache.Items.Clear();
             listViewCache.BeginUpdate();
-
-            for (int i = 0; i < Global.arrayNozzleCar.Length; i++)
+            //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList Length:" + Global.arrayNozzleCar.Length.ToString(), (int)EnumLogLevel.DEBUG));
+            for (int i = 0; i < Global.nozzleList.Count; i++)
             {
+                //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList arrayNozzleCar:" + i.ToString(), (int)EnumLogLevel.DEBUG));
                 ListViewItem lvi = new ListViewItem();
-                lvi.Text = Global.arrayNozzleCar[i].nozzleNo.ToString();
-                lvi.SubItems.Add(Global.arrayNozzleCar[i].license);
-                lvi.SubItems.Add(Global.arrayNozzleCar[i].matchFlag.ToString());
+                lvi.Text = Global.nozzleList[i].nozzleNo.ToString();
+                lvi.SubItems.Add(Global.nozzleList[i].nozzleCar.license);
+                lvi.SubItems.Add(Global.nozzleList[i].curStatus.ToString());
                 listViewCache.Items.Add(lvi);
             }
             listViewCache.EndUpdate();
+
+            listViewArea.Items.Clear();
+            listViewArea.BeginUpdate();
+            //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList Length:" + Global.arrayNozzleCar.Length.ToString(), (int)EnumLogLevel.DEBUG));
+            for (int i = 0; i < Global.arrayAreaCar.Length; i++)
+            {
+                //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList arrayNozzleCar:" + i.ToString(), (int)EnumLogLevel.DEBUG));
+                ListViewItem lvi = new ListViewItem();
+                lvi.Text = Global.arrayAreaCar[i].areaNo.ToString();
+                lvi.SubItems.Add(Global.arrayAreaCar[i].license);
+                lvi.SubItems.Add(Global.arrayAreaCar[i].nozzleNo.ToString());
+                lvi.SubItems.Add(Global.arrayAreaCar[i].matchFlag.ToString());
+                listViewArea.Items.Add(lvi);
+            }
+            listViewArea.EndUpdate();
 
 
         }
@@ -1259,6 +1500,7 @@ namespace SPManager
             Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 识别车牌数量：" + struCarOut.nLicenseCount.ToString(), (int)EnumLogLevel.DEBUG));
             Marshal.FreeHGlobal(pCarOut);
             Global.arrayNozzleCar[index] = MatchCar(struCarOut, nozzleNo);
+            Regex.Replace(Global.arrayNozzleCar[index].license, " ", "");
             Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 匹配车牌：" + Global.arrayNozzleCar[index].license, (int)EnumLogLevel.DEBUG));
             Global.arrayNozzleCar[index].nozzleNo = nozzleNo;
             Global.arrayNozzleCar[index].matchFlag = nozzleStatus;
@@ -1282,6 +1524,7 @@ namespace SPManager
                     Global.arrayNozzleCar[index].beginTime = dt;
                     Global.arrayNozzleCar[index].endTime = dt;
                     Global.arrayNozzleCar[index].leaveTime = dt;
+                    Global.arrayNozzleCar[index].picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
                     break;
                 case 2: //加油
                     Global.arrayNozzleCar[index].beginTime = dt;
@@ -1291,12 +1534,25 @@ namespace SPManager
                 case 3: //挂枪
                     Global.arrayNozzleCar[index].endTime = dt;
                     Global.arrayNozzleCar[index].leaveTime = dt;
+                    Global.arrayNozzleCar[index].picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
                     Global.mysqlHelper.ExecuteSql(Global.arrayNozzleCar[index].toSaveSqlString());
                     //Global.arrayAreaCar[index].
                     break;
                 default:
                     break;
             }
+            ClsPicture pic = new ClsPicture();
+            pic.picBufer = new byte[struCarOut.nPicLenth];
+            Buffer.BlockCopy(struCarOut.pic, 0, pic.picBufer, 0, struCarOut.nPicLenth);
+            //pic.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
+            pic.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\";
+            // Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath+ pic.picName, (int)EnumLogLevel.DEBUG));
+            pic.picName = dt.ToString("HHmmss") + ".jpg";
+            pic.picWidth = struCarOut.nPicWidth;
+            pic.picHeight = struCarOut.nPicHeight;
+            pic.picType = struCarOut.nPicType;
+            Global.picWork.Add(pic);
+            Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
         }
 
         private ClsCarInfo MatchCar(struCarInfoOut_V2 struCarInfo,int nozzleNo)
@@ -1321,6 +1577,7 @@ namespace SPManager
             }
           
             car.license = System.Text.Encoding.Default.GetString(struCarInfo.license[index].license);
+           // car.license = System.Text.Encoding.Default.GetString(struCarInfo.license[index].license,0,);
             car.licenseColor = struCarInfo.license[index].nColor;
             car.carColor = struCarInfo.license[index].nCarColor;
             car.carLogo = struCarInfo.license[index].nCarLogo;
@@ -1356,7 +1613,7 @@ namespace SPManager
             sendbuf[data.Length + 7] = 0xEE;
             Global.socketTool.Send(sendbuf);
 
-            Global.LogServer.Add(new LogInfo("Run", "Main->ProcSnapFromDIT_Capture: 发送车辆信息到DIT  车牌号:" +
+            Global.LogServer.Add(new LogInfo("Run", "Main->SendSnapToDIT: 发送车辆信息到DIT  车牌号:" +
                  System.Text.Encoding.Default.GetString(snapData.sLicense) + "  油枪号：" + snapData.byPumpID.ToString(), (int)EnumLogLevel.RUN));
         }
         private int GetAreaIdByNozzNo(int nozzleNo)
@@ -1476,6 +1733,14 @@ namespace SPManager
             listViewCache.Columns.Add("车牌", 100);
            // listViewCache.Columns.Add("当前油枪", 60);
             listViewCache.Columns.Add("油枪状态", 60);
+
+            listViewArea.View = View.Details;
+            listViewArea.Columns.Add("识别区号", 60);
+            //listViewCache.Columns.Add("识别区", 60);
+            listViewArea.Columns.Add("车牌", 100);
+            listViewArea.Columns.Add("匹配油枪", 60);
+            // listViewCache.Columns.Add("当前油枪", 60);
+            listViewArea.Columns.Add("匹配状态", 60);
 
         }
     }

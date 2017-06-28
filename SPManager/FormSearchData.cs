@@ -42,7 +42,7 @@ namespace SPManager
             {
                 sbQuery.Append(" and (leavetime between '" + leaveBegin + "' and '" + leaveEnd + "')");
             }
-            sbQuery.Append(" order by arrivetime desc limit 0,500");
+            sbQuery.Append(" order by leavetime desc limit 0,500");
             DataTable dt = Global.mysqlHelper.GetDataTable(sbQuery.ToString());
             dataGridCar.DataSource = dt;
             setDGV(dataGridCar);

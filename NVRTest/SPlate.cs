@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace SPManager
+namespace NVRTest
 {
     #region  算法数据结构定义块
     //矩形区域结构体  
@@ -200,8 +200,6 @@ namespace SPManager
         public static extern int SP_PreviewInfo(ref NET_DVR_PREVIEWINFO previewInfo,int lenth);
         [DllImport("SPlate.dll")]
         public static extern int SP_BeginRecog(IntPtr hPlayHandle);
-        [DllImport("SPlate.dll")]
-        public static extern int SP_BeginRecog_MultiChan();
         [DllImport("SPlate.dll")]
         public static extern int SP_TestAPI();
         [DllImport("SPlate.dll")]

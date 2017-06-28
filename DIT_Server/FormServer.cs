@@ -35,6 +35,18 @@ namespace DIT_Server
                 comboNozzleStatus.SelectedIndex = SysUnit.byNozzleStatus;
                 sentSnapInfo();
             }
+            else if (m.Msg == Convert.ToInt32(SysUnit.WM_CARTRADE))
+            {
+                lblOilType.Text = SysUnit.tradeInfo.nOilType.ToString();
+                lblTradeLitre.Text = SysUnit.tradeInfo.fTradeLitre.ToString();
+                lblTradeMoney.Text = SysUnit.tradeInfo.fTradeMoney.ToString();
+                lblTradePrice.Text = SysUnit.tradeInfo.fTradePrice.ToString();
+                lblStartTime.Text = System.Text.Encoding.Default.GetString(SysUnit.tradeInfo.sStartTime);
+                lblEndTime.Text = System.Text.Encoding.Default.GetString(SysUnit.tradeInfo.sStartTime);
+                lblStartRead.Text = SysUnit.tradeInfo.fStartRead.ToString();
+                lblEndRead.Text = SysUnit.tradeInfo.fEndRead.ToString();
+                comboNozzle.Text = SysUnit.tradeInfo.nPumpID.ToString();
+            }
             else
             {
                 base.DefWndProc(ref m);

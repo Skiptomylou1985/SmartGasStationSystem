@@ -35,6 +35,20 @@ typedef struct tagNET_ITS_PLATE_RESULT
 	BYTE	byVehicleState;              //进出站标识 1进站 2出站
 }NET_ITS_PLATE_RESULT, *LPNET_ITS_PLATE_RESULT;
 
+typedef struct tagNET_ITS_TRANS_INFO
+{
+	int nPumpID;	              //油枪ID
+	int nItemCode;			 //油品编码
+	float fTransVolume;		 //交易升数
+	float fTransValue;		 //交易金额
+	float fTransPrice;		 //交易单价
+	char sStartTime[20];        //提枪时间
+	char sEndTime[20];		 //挂枪时间
+	float fPumpOpenCounter;     //提枪泵码
+	float fPumpCloseCounter;    //挂枪泵码
+}NET_ITS_TRANS_INFO, *LPNET_ITS_TRANS_INFO;
+
+
 //手动抓拍传出结构体:
 typedef struct tagNET_DVR_PLATE_RESULT
 {
@@ -173,6 +187,7 @@ extern "C" HCNETSDK_API BOOL NET_DVR_ManualSnap(
 	NET_DVR_MANUALSNAP * lpInter,
 	LPNET_DVR_PLATE_RESULT lpOuter
 );
+extern "C" HCNETSDK_API BOOL NET_DVR_SendTrans(NET_ITS_TRANS_INFO tradeInfo);
 extern "C" HCNETSDK_API BOOL NET_DVR_SetDVRMessageCallBack_V31(
 	MSGCallBack_V31 fMessageCallBack,
 	void* pUser

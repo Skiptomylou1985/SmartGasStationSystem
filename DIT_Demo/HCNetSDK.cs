@@ -126,6 +126,21 @@ namespace DIT_Demo
        public byte byPumpID;//油枪号 （0-不生效，）
        public byte byPumpStatus;//油枪状态 （0-不生效，1-提抢，2-开始加油，3-挂枪）   
     }
+    [StructLayout(LayoutKind.Sequential,Pack =1)]
+    public struct NET_ITS_TRANS_INFO
+    {
+        public int nPumpID;  //油枪ID
+        public int nOilType;                  //油品编码
+        public float fTradeLitre;                      //交易升数
+        public float fTradeMoney;                      //交易金额
+        public float fTradePrice;                      //交易单价
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] sStartTime;    //提枪时间
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        public byte[] sEndTime;     //挂枪时间
+        public float fStartRead;       //提枪泵码
+        public float fEndRead;         //挂枪泵码
+    }
     class HCNetSDK
     {
         [DllImport("HCNetSDK.dll")]
@@ -142,7 +157,9 @@ namespace DIT_Demo
         public static extern bool NET_DVR_SetConnectTime(int dwWaitTime,int dwTryTimes);
         [DllImport("HCNetSDK.dll")]
         public static extern bool NET_DVR_SetReconnect(int dwInterval,bool bEnableRecon);
-       
+        [DllImport("HCNetSDK.dll")]
+        public static extern bool NET_DVR_SendTrans(NET_ITS_TRANS_INFO tradeInfo);
+
         [DllImport("HCNetSDK.dll")]
         public static extern bool NET_DVR_SetDVRMessageCallBack_V31(MSGCallBack_V31 fMessageCallBack,IntPtr pUser);
         public delegate void MSGCallBack_V31(int lcomd, IntPtr para1,IntPtr pAlarmInfo, int lenth, IntPtr pUser);

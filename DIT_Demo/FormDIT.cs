@@ -128,5 +128,25 @@ namespace DIT_Demo
             dicInOut.Add(1, "进站");
             dicInOut.Add(2, "出站");
         }
+
+        private void btnSendTrade_Click(object sender, EventArgs e)
+        {
+            NET_ITS_TRANS_INFO trade = new NET_ITS_TRANS_INFO();
+            trade.sStartTime = new byte[20];
+            trade.sEndTime = new byte[20];
+            //int a = Marshal.SizeOf(trade);
+            trade.nPumpID = (byte)comboNozzle.SelectedIndex;
+            trade.nOilType = 92;
+            trade.fTradeLitre = 3.2f;
+            trade.fTradeMoney = 35.0f;
+            trade.fTradePrice = 6.80f;
+            trade.fStartRead = 1000.1f;
+            trade.fEndRead = 1003.3f;
+            string time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            byte[] byTime = System.Text.Encoding.Default.GetBytes(time);
+            Buffer.BlockCopy(byTime, 0, trade.sStartTime, 0, byTime.Length);
+            Buffer.BlockCopy(byTime, 0, trade.sEndTime, 0, byTime.Length);
+            HCNetSDK.NET_DVR_SendTrans(trade);
+        }
     }
 }

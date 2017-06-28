@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIT_Server", "DIT_Server\DI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kill", "Moniter\Kill.csproj", "{C6DF001D-AC42-46F6-8692-A76DFB937439}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NVRTest", "NVRTest\NVRTest.csproj", "{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,18 @@ Global
 		{C6DF001D-AC42-46F6-8692-A76DFB937439}.Release|x64.Build.0 = Release|Any CPU
 		{C6DF001D-AC42-46F6-8692-A76DFB937439}.Release|x86.ActiveCfg = Release|Any CPU
 		{C6DF001D-AC42-46F6-8692-A76DFB937439}.Release|x86.Build.0 = Release|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Debug|x64.Build.0 = Debug|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Debug|x86.Build.0 = Debug|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Release|x64.ActiveCfg = Release|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Release|x64.Build.0 = Release|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Release|x86.ActiveCfg = Release|Any CPU
+		{A83B15E9-A12E-44F6-8C9A-A5426CEEB92C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

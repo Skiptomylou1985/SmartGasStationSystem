@@ -51,6 +51,24 @@
             this.label11 = new System.Windows.Forms.Label();
             this.comboInOut = new System.Windows.Forms.ComboBox();
             this.btnSendSingle = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblOilType = new System.Windows.Forms.Label();
+            this.lblTradeLitre = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.lblTradeMoney = new System.Windows.Forms.Label();
+            this.lblTra = new System.Windows.Forms.Label();
+            this.lblTradePrice = new System.Windows.Forms.Label();
+            this.lbl = new System.Windows.Forms.Label();
+            this.lblEndRead = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.lblStartRead = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.lblEndTime = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.lblStartTime = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSendAuto
@@ -377,11 +395,181 @@
             this.btnSendSingle.UseVisualStyleBackColor = true;
             this.btnSendSingle.Click += new System.EventHandler(this.btnSendSingle_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.lblEndRead);
+            this.groupBox1.Controls.Add(this.label20);
+            this.groupBox1.Controls.Add(this.lblStartRead);
+            this.groupBox1.Controls.Add(this.label22);
+            this.groupBox1.Controls.Add(this.lblEndTime);
+            this.groupBox1.Controls.Add(this.label24);
+            this.groupBox1.Controls.Add(this.lblStartTime);
+            this.groupBox1.Controls.Add(this.label26);
+            this.groupBox1.Controls.Add(this.lblTradePrice);
+            this.groupBox1.Controls.Add(this.lbl);
+            this.groupBox1.Controls.Add(this.lblTradeMoney);
+            this.groupBox1.Controls.Add(this.lblTra);
+            this.groupBox1.Controls.Add(this.lblTradeLitre);
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.lblOilType);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Location = new System.Drawing.Point(19, 224);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(365, 143);
+            this.groupBox1.TabIndex = 27;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "交易数据";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(11, 28);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 12);
+            this.label6.TabIndex = 26;
+            this.label6.Text = "油品编码：";
+            // 
+            // lblOilType
+            // 
+            this.lblOilType.AutoSize = true;
+            this.lblOilType.Location = new System.Drawing.Point(82, 28);
+            this.lblOilType.Name = "lblOilType";
+            this.lblOilType.Size = new System.Drawing.Size(11, 12);
+            this.lblOilType.TabIndex = 27;
+            this.lblOilType.Text = "0";
+            // 
+            // lblTradeLitre
+            // 
+            this.lblTradeLitre.AutoSize = true;
+            this.lblTradeLitre.Location = new System.Drawing.Point(266, 28);
+            this.lblTradeLitre.Name = "lblTradeLitre";
+            this.lblTradeLitre.Size = new System.Drawing.Size(11, 12);
+            this.lblTradeLitre.TabIndex = 29;
+            this.lblTradeLitre.Text = "0";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(195, 28);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(65, 12);
+            this.label14.TabIndex = 28;
+            this.label14.Text = "交易升数：";
+            // 
+            // lblTradeMoney
+            // 
+            this.lblTradeMoney.AutoSize = true;
+            this.lblTradeMoney.Location = new System.Drawing.Point(82, 52);
+            this.lblTradeMoney.Name = "lblTradeMoney";
+            this.lblTradeMoney.Size = new System.Drawing.Size(11, 12);
+            this.lblTradeMoney.TabIndex = 31;
+            this.lblTradeMoney.Text = "0";
+            // 
+            // lblTra
+            // 
+            this.lblTra.AutoSize = true;
+            this.lblTra.Location = new System.Drawing.Point(11, 52);
+            this.lblTra.Name = "lblTra";
+            this.lblTra.Size = new System.Drawing.Size(65, 12);
+            this.lblTra.TabIndex = 30;
+            this.lblTra.Text = "交易金额：";
+            // 
+            // lblTradePrice
+            // 
+            this.lblTradePrice.AutoSize = true;
+            this.lblTradePrice.Location = new System.Drawing.Point(266, 52);
+            this.lblTradePrice.Name = "lblTradePrice";
+            this.lblTradePrice.Size = new System.Drawing.Size(11, 12);
+            this.lblTradePrice.TabIndex = 33;
+            this.lblTradePrice.Text = "0";
+            // 
+            // lbl
+            // 
+            this.lbl.AutoSize = true;
+            this.lbl.Location = new System.Drawing.Point(195, 52);
+            this.lbl.Name = "lbl";
+            this.lbl.Size = new System.Drawing.Size(65, 12);
+            this.lbl.TabIndex = 32;
+            this.lbl.Text = "交易单价：";
+            // 
+            // lblEndRead
+            // 
+            this.lblEndRead.AutoSize = true;
+            this.lblEndRead.Location = new System.Drawing.Point(266, 103);
+            this.lblEndRead.Name = "lblEndRead";
+            this.lblEndRead.Size = new System.Drawing.Size(11, 12);
+            this.lblEndRead.TabIndex = 41;
+            this.lblEndRead.Text = "0";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(195, 103);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(65, 12);
+            this.label20.TabIndex = 40;
+            this.label20.Text = "挂枪泵码：";
+            // 
+            // lblStartRead
+            // 
+            this.lblStartRead.AutoSize = true;
+            this.lblStartRead.Location = new System.Drawing.Point(82, 103);
+            this.lblStartRead.Name = "lblStartRead";
+            this.lblStartRead.Size = new System.Drawing.Size(11, 12);
+            this.lblStartRead.TabIndex = 39;
+            this.lblStartRead.Text = "0";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(11, 103);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(65, 12);
+            this.label22.TabIndex = 38;
+            this.label22.Text = "提枪泵码：";
+            // 
+            // lblEndTime
+            // 
+            this.lblEndTime.AutoSize = true;
+            this.lblEndTime.Location = new System.Drawing.Point(266, 79);
+            this.lblEndTime.Name = "lblEndTime";
+            this.lblEndTime.Size = new System.Drawing.Size(11, 12);
+            this.lblEndTime.TabIndex = 37;
+            this.lblEndTime.Text = "0";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(195, 79);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(65, 12);
+            this.label24.TabIndex = 36;
+            this.label24.Text = "挂枪时间：";
+            // 
+            // lblStartTime
+            // 
+            this.lblStartTime.AutoSize = true;
+            this.lblStartTime.Location = new System.Drawing.Point(82, 79);
+            this.lblStartTime.Name = "lblStartTime";
+            this.lblStartTime.Size = new System.Drawing.Size(11, 12);
+            this.lblStartTime.TabIndex = 35;
+            this.lblStartTime.Text = "0";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(11, 79);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(65, 12);
+            this.label26.TabIndex = 34;
+            this.label26.Text = "提枪时间：";
+            // 
             // FormServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 251);
+            this.ClientSize = new System.Drawing.Size(396, 379);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnSendSingle);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.comboInOut);
@@ -407,6 +595,8 @@
             this.Text = "DIT测试服务端";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -436,6 +626,23 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox comboInOut;
         private System.Windows.Forms.Button btnSendSingle;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblTradePrice;
+        private System.Windows.Forms.Label lbl;
+        private System.Windows.Forms.Label lblTradeMoney;
+        private System.Windows.Forms.Label lblTra;
+        private System.Windows.Forms.Label lblTradeLitre;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label lblOilType;
+        private System.Windows.Forms.Label lblEndRead;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label lblStartRead;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label lblEndTime;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label lblStartTime;
+        private System.Windows.Forms.Label label26;
     }
 }
 

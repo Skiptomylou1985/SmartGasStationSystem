@@ -15,6 +15,7 @@
 #define  CMDSNAP 0x03
 #define  CMDHEARTBIT 0x04
 #define  CMDSETMODE 0x05
+#define  CMDTRADE 0x06
 
 SOCKET sclient = NULL;
 bool socketIsConnected = false;
@@ -367,6 +368,36 @@ HCNETSDK_API void NET_DVR_TestAPI()
 HCNETSDK_API DWORD NET_DVR_GetLastError()
 {
 	return lastError;
+}
+HCNETSDK_API BOOL NET_DVR_SendTrans(NET_ITS_TRANS_INFO tradeInfo)
+{
+	write_log_file("NET_DVR_SendTrans Begin", strlen("NET_DVR_SendTrade Begin"));
+	bool ret = false;
+	if (socketIsConnected && sclient != NULL)
+	{
+		failSendCount++;
+		if (failSendCount > 2)
+		{
+			socketIsConnected = false;
+			failSendCount = 0;
+		}
+		//NET_ITS_TRADE_INFO info;
+		//memcpy(&info, tradeInfo, sizeof(info));
+		int dataLenth = sizeof(tradeInfo);
+		char sendbuf[76];
+		sendbuf[0] = 0xFF;
+		sendbuf[1] = 0xFF;
+		sendbuf[2] = CMDTRADE;
+		sendbuf[3] = dataLenth;
+		memcpy(&sendbuf[4], &tradeInfo, dataLenth);
+		sendbuf[dataLenth+4] = 0;
+		sendbuf[dataLenth + 5] = 0;
+		sendbuf[dataLenth + 6] = 0xEE;
+		sendbuf[dataLenth + 7] = 0xEE;
+		send(sclient, &sendbuf[0], dataLenth + 8, 0);
+		ret = true;
+	}
+	return ret;
 }
 
 

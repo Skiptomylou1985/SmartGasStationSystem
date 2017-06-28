@@ -22,7 +22,7 @@
 #define MAX_PIC_LENTH (10*1024*1024)
 #define MAX_CAR_COUNT 10  //缓存最大车辆数
 #define MAX_VIDEO_CHANNEL_COUNT 16  //最多通道数
-#define MAX_AREA_COUNT 32    //最大识别区数
+#define MAX_AREA_COUNT 64    //最大识别区数
 #define MAX_NOZZLE_COUNT 64  //最多油枪数
 
 
@@ -34,6 +34,14 @@
 #define INVALID_LENTH -4      //输入长度错误
 //int WM_CARDATA = RegisterWindowMessage(_T("CARDATA"));
 int WM_CARDATA = ::RegisterWindowMessageA("CAR");
+
+typedef struct tagPlayInfo
+{
+	LONG nPort;
+	LONG lPlayHandle;
+	int nVideoChan;
+	NET_DVR_PREVIEWINFO previewInfo;
+}struPlayInfo;
 typedef struct tagNVRInfo
 {
 	char *IpAddress;        
@@ -42,7 +50,7 @@ typedef struct tagNVRInfo
 	LONG nPort;
 	unsigned char nChanelNum;        
 	unsigned char ConnectStatus; 
-	LONG m_lServerID;            
+	LONG m_lServerID;           
 	LONG m_lAlarmHandle;         
 	LONG m_lPlayHandle;
 	BOOLEAN m_bLocalRecord;		 
@@ -117,13 +125,19 @@ int SwithNextArea(void);
 bool YV12_to_RGB24(unsigned char* pYV12, unsigned char* pRGB24, int iWidth, int iHeight);
 void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameInfo, long nReserved1, long nReserved2);
 void CALLBACK RealDataCallBack(LONG lPlayHandle, DWORD dwDataType, BYTE *pBuffer, DWORD dwBufSize, void *pUser);
-extern "C" SPLATE_API int SP_InitRunParam(BYTE *pChan,int lenth);
-extern "C" SPLATE_API int SP_InitRunParam_V2(BYTE *pNozzleInfo, int lenth);
+void CALLBACK PlateDataCallBack(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *pAlarmInfo, DWORD dwBufLen, void *pUser);
+void CALLBACK RealDataCallBack_MultiChan(LONG lPlayHandle, DWORD dwDataType, BYTE *pBuffer, DWORD dwBufSize, void *pUser);
+void CALLBACK DecCBFun_MultiChan(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameInfo, long nReserved1, long nReserved2);
+
+extern "C" SPLATE_API int SP_InitRunParam(BYTE *pChan,int areaCount);
+extern "C" SPLATE_API int SP_InitRunParam_V2(unsigned char *pNozzleInfo, int nozzleCount);
+extern "C" SPLATE_API int SP_InitRunParam_Video(unsigned char *pVideoInfo, int videoCount);
 extern "C" SPLATE_API int SP_InitNVR(char *IpAddress,LONG nPort,char *sAdmin,char *sPassword);
 extern "C" SPLATE_API int SP_GetNvrCfg(NET_DVR_IPPARACFG_V40 *nvrCfg,int &lenth);
 extern "C" SPLATE_API int SP_Close();
 extern "C" SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo,int lenth);
 extern "C" SPLATE_API int SP_BeginRecog(HWND hPlayHandle);
+extern "C" SPLATE_API int SP_BeginRecog_MultiChan();
 extern "C" SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg,int lenth);
 extern "C" SPLATE_API int SP_TestAPI();
 extern "C" SPLATE_API int SP_GetCarCount();
@@ -136,6 +150,7 @@ extern "C" SPLATE_API int SP_Snap(int videoChan, char *lic, unsigned char * picB
 extern "C" SPLATE_API int SP_Capture(int areaNo, struCarInfoOut *carinfo);
 extern "C" SPLATE_API int SP_Capture_V2(int nozzleNo, struCarInfoOut_V2 *carInfo);
 extern "C" SPLATE_API int SP_DecJpeg(const unsigned char * pJpegPic, int nJpegLenth, char *license);
+extern "C" SPLATE_API int SP_InitNVR_HKCN(char *IpAddress, LONG nPort, char *sAdmin, char *sPassword);
 
 
 

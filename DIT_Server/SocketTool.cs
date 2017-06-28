@@ -162,6 +162,14 @@ namespace DIT_Server
                             }
                             
                         }
+                        else if (buff[2] == 0x06 && buff[3] == 68)
+                        {
+                           // NET_ITS_TRANS_INFO trade = new NET_ITS_TRANS_INFO();
+                            byte[] reivBuf = new byte[68];
+                            Buffer.BlockCopy(buff, 4, reivBuf, 0, 68);
+                            SysUnit.tradeInfo = (NET_ITS_TRANS_INFO)SysUnit.BytesToStruts(reivBuf, typeof(NET_ITS_TRANS_INFO));
+                            SysUnit.PostMessage(SysUnit.HWND_BROADCAST, (int)SysUnit.WM_CARTRADE, 0, 0);
+                        }
                     }
                     Thread.Sleep(30);
                 }

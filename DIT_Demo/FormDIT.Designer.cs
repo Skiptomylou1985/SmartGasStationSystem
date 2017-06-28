@@ -51,6 +51,7 @@
             this.lblInOut = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textIP = new System.Windows.Forms.TextBox();
+            this.btnSendTrade = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -85,7 +86,7 @@
             // 
             // btnSnap
             // 
-            this.btnSnap.Location = new System.Drawing.Point(209, 66);
+            this.btnSnap.Location = new System.Drawing.Point(194, 66);
             this.btnSnap.Name = "btnSnap";
             this.btnSnap.Size = new System.Drawing.Size(87, 49);
             this.btnSnap.TabIndex = 4;
@@ -114,7 +115,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(34, 98);
+            this.label2.Location = new System.Drawing.Point(19, 98);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 8;
@@ -123,7 +124,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(44, 71);
+            this.label3.Location = new System.Drawing.Point(29, 71);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 7;
@@ -169,7 +170,7 @@
             "14",
             "15",
             "16"});
-            this.comboNozzle.Location = new System.Drawing.Point(103, 66);
+            this.comboNozzle.Location = new System.Drawing.Point(88, 66);
             this.comboNozzle.Name = "comboNozzle";
             this.comboNozzle.Size = new System.Drawing.Size(92, 20);
             this.comboNozzle.TabIndex = 9;
@@ -188,7 +189,7 @@
             "提枪",
             "开始加油",
             "挂枪"});
-            this.comboNozzleStatus.Location = new System.Drawing.Point(103, 95);
+            this.comboNozzleStatus.Location = new System.Drawing.Point(88, 95);
             this.comboNozzleStatus.Name = "comboNozzleStatus";
             this.comboNozzleStatus.Size = new System.Drawing.Size(92, 20);
             this.comboNozzleStatus.TabIndex = 10;
@@ -309,11 +310,22 @@
             this.textIP.TabIndex = 23;
             this.textIP.Text = "127.0.0.1";
             // 
+            // btnSendTrade
+            // 
+            this.btnSendTrade.Location = new System.Drawing.Point(287, 66);
+            this.btnSendTrade.Name = "btnSendTrade";
+            this.btnSendTrade.Size = new System.Drawing.Size(87, 49);
+            this.btnSendTrade.TabIndex = 24;
+            this.btnSendTrade.Text = "发送交易";
+            this.btnSendTrade.UseVisualStyleBackColor = true;
+            this.btnSendTrade.Click += new System.EventHandler(this.btnSendTrade_Click);
+            // 
             // FormDIT
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(332, 241);
+            this.ClientSize = new System.Drawing.Size(373, 241);
+            this.Controls.Add(this.btnSendTrade);
             this.Controls.Add(this.textIP);
             this.Controls.Add(this.lblInOut);
             this.Controls.Add(this.label6);
@@ -370,6 +382,7 @@
         private System.Windows.Forms.Label lblInOut;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textIP;
+        private System.Windows.Forms.Button btnSendTrade;
     }
 }
 

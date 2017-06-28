@@ -12,19 +12,20 @@ namespace SPManager
         [DllImport("user32.dll")]
         static extern uint RegisterWindowMessage(string lpString);
         public static uint WM_CARSNAP = RegisterWindowMessage("CARSNAP");    //抓拍
-        public static byte byNozzle = 0;
-        public static byte byNozzleStatus = 0;
-        public static string softVersion;
-        public static DateTime updateTime; 
+        public static string softVersion;  //软件版本
+        public static int nRunMode = 4;//运行模式，1，抓图实时识别，无视频流 2、海康超脑 3、大华超脑 4、多路视频流识别
+        public static int bCaptureFlag = 1;  //抓拍使能; 0 关闭 1开启
+        public static string defaultProvice = "鲁"; //文通识别算法默认省份
+        public static DateTime updateTime;  
         public static Log LogServer;
-        public static int nLogLevel = 3;
+        public static int nLogLevel = 3;   //日志级别 
         public static string iniPath ="config.ini";
         public static string basePicPath = "D:\\images\\";
         public static string updateAppName = "\\AutoUpdater\\AutoUpdater.exe";
         public static MysqlHelper mysqlHelper;
         public static SocketTool socketTool;
-        public static string socketIP = "0.0.0.0";
-        public static int socketPort = 8870;
+        public static string socketIP = "0.0.0.0";  //DIT服务IP
+        public static int socketPort = 8870;   //DIT服务端口
         public static ClsStationInfo stationInfo = new ClsStationInfo();
         public static ClsNVRInfo clsNvrInfo = new ClsNVRInfo();
         public static Image greenImage = Image.FromFile(Application.StartupPath+"\\images\\Box_Green.png");
@@ -46,8 +47,10 @@ namespace SPManager
         public static object lockObj = new object();
         public static Dictionary<int, int> areaMap = new Dictionary<int, int>();
         public static Dictionary<int,int> nozzleMap = new Dictionary<int, int>();
+        public static Dictionary<int, int> islandMap = new Dictionary<int, int>();
         public static ClsCarInfo[] arrayAreaCar;
         public static ClsCarInfo[] arrayNozzleCar;
+        public static ClsGasIsland[] arrayIsland;
     }
     
 }
