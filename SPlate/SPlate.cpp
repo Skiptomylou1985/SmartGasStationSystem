@@ -26,21 +26,27 @@ LONG nPort = -1;
 int nAlgStatus = 0;
 int nCurGetIndex = 0;
 int nCurPutIndex = 0;
-struCarInfoOut carInfoOut[MAX_CAR_COUNT];
-struCarInfoOut tempCarOut;
-struCarInfoOut_V2 carOutCache;
+struSingleCarInfoOut carInfoOut[MAX_CAR_COUNT];
+struSingleCarInfoOut tempCarOut;
+struMultiCarInfoOut carOutCache;
 unsigned char *videoChan [MAX_VIDEO_CHANNEL_COUNT];
 TH_PlateIDCfg th_PlateCfg[MAX_VIDEO_CHANNEL_COUNT];
 struPlayInfo playInfo[MAX_VIDEO_CHANNEL_COUNT];
 struAreaInfo areaInfo[MAX_AREA_COUNT];
 struNozzleInfo nozzleInfo[MAX_NOZZLE_COUNT];
+struVideoInfo videoInfo[MAX_VIDEO_CHANNEL_COUNT];
+struSingleCarInfoOut areaCar[MAX_AREA_COUNT];
 int nAreaCount = 0;
 int nNozzleCount = 0;
 int nVideoChanCount = 0;
 int nLogLevel = 3;
 int nCurCarCount = 0;
 int nCurAreaIndex= 0;
+int nDefaultStratChan = 33;
+int nDefaultImageWidth = 1920;
+int nDefaultImageHeight = 1080;
 char debugInfo[256] ;
+char debugInfoThread[256];
 char logFileName[32];
 int calc = 0;
 NET_DVR_IPPARACFG_V40 struIPPARACFG;
@@ -93,12 +99,12 @@ SPLATE_API int SP_InitRunParam(unsigned char *pArea, int areaCount)
 	}
 	return SUCCESS;
 }
-SPLATE_API int SP_InitRunParam_V2(unsigned char *pNozzleInfo, int nozzleCount)
+SPLATE_API int SP_InitRunParam_Nozzle(unsigned char *pNozzleInfo, int nozzleCount)
 {
 	memset(&tempCarOut, 0, sizeof(tempCarOut));
-	if (nozzleCount > MAX_AREA_COUNT)
+	if (nozzleCount > MAX_NOZZLE_COUNT)
 	{
-		return INVALID_AREA_COUNT;
+		return INVALID_NOZZLE_COUNT;
 	}
 	memcpy(nozzleInfo, pNozzleInfo, nozzleCount * sizeof(struNozzleInfo));
 	nNozzleCount = nozzleCount;
@@ -122,6 +128,58 @@ SPLATE_API int SP_InitRunParam_V2(unsigned char *pNozzleInfo, int nozzleCount)
 }
 SPLATE_API int SP_InitRunParam_Video(unsigned char *pVideoInfo, int videoCount)
 {
+	if (videoCount > MAX_VIDEO_CHANNEL_COUNT)
+	{
+		return INVALID_VIDEO_COUNT;
+	}
+	memcpy(videoInfo, pVideoInfo, videoCount * sizeof(struVideoInfo));
+	nVideoChanCount = videoCount;
+	memset(debugInfo, 0, sizeof(debugInfo));
+	strcpy(debugInfo, "SP_InitRunParam_Video  ");
+	strcpy(debugInfo + strlen(debugInfo), "videoCount：");
+	_itoa(videoCount, debugInfo + strlen(debugInfo), 10);
+	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+	for (int i = 0; i < nVideoChanCount; i++)
+	{
+		videoInfo[i].nChanNo += nDefaultStratChan;
+
+
+		th_PlateCfg[i].bMovingImage = 1;
+		th_PlateCfg[i].bOutputSingleFrame = 1;
+		th_PlateCfg[i].nFastMemorySize = 16000;
+		th_PlateCfg[i].pFastMemory = (unsigned char *)malloc(16000);
+		th_PlateCfg[i].nMemorySize = 100000000;
+		th_PlateCfg[i].pMemory = (unsigned char *)malloc(100000000);
+		th_PlateCfg[i].nMaxPlateWidth = 400;
+		th_PlateCfg[i].nMinPlateWidth = 60;
+		th_PlateCfg[i].bUTF8 = 0;
+		th_PlateCfg[i].bShadow = 1;
+		th_PlateCfg[i].bCarLogo = 1;
+		th_PlateCfg[i].bLeanCorrection = 1;
+		th_PlateCfg[i].bCarModel = 1;
+		th_PlateCfg[i].nMaxImageWidth = nDefaultImageWidth;
+		th_PlateCfg[i].nMaxImageHeight = nDefaultImageHeight;
+
+		
+
+		playInfo[i].nPort = -1;
+		playInfo[i].nVideoChan = videoInfo[i].nChanNo;
+		playInfo[i].previewInfo.dwDisplayBufNum = 15;
+		playInfo[i].previewInfo.bBlocked = false;
+		playInfo[i].previewInfo.dwLinkMode = 0;
+		playInfo[i].previewInfo.lChannel = videoInfo[i].nChanNo;
+
+
+		memset(debugInfo, 0, sizeof(debugInfo));
+		strcpy(debugInfo + strlen(debugInfo), "videoNo：");
+		_itoa(videoInfo[i].nChanNo, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), " videoType：");
+		_itoa(videoInfo[i].nVideoType, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), " AreaCount：");
+		_itoa(videoInfo[i].nAreaCount, debugInfo + strlen(debugInfo), 10);
+		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+	}
+
 
 	return SUCCESS;
 }
@@ -129,7 +187,6 @@ SPLATE_API int SP_InitRunParam_Video(unsigned char *pVideoInfo, int videoCount)
 
 SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPassword)
 {
-	
 	bool ret = NET_DVR_Init();
 	NET_DVR_SetConnectTime(2000, 1); 
 	NET_DVR_SetReconnect(10000, true);
@@ -149,6 +206,7 @@ SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPass
 	}
 	DWORD dwReturn = 0;
 	NET_DVR_GetDVRConfig(nvrInfo.m_lServerID, NET_DVR_GET_IPPARACFG_V40, 0, &struIPPARACFG, sizeof(struIPPARACFG), &dwReturn);
+	nDefaultStratChan = struIPPARACFG.dwStartDChan;
 	return SUCCESS;
 }
 
@@ -187,56 +245,48 @@ SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo, int lenth)
 	}
 	return lplayHandle;
 }
-SPLATE_API int SP_BeginRecog(HWND hPlayHandle)
+//SPLATE_API int SP_BeginRecog(HWND hPlayHandle)
+//{
+//	isRecog = true;
+//	//ThreadSwith = _beginthreadex(NULL, 0, (_beginthreadex_proc_type)ThreadKeepSwitch, NULL, 0, NULL);
+//	previewInfo.hPlayWnd = nullptr;
+//	previewInfo.lChannel = areaInfo[nCurAreaIndex].videoChanNo;
+//	if (hPlayHandle != NULL)
+//	{
+//		previewInfo.hPlayWnd = hPlayHandle;
+//	}
+//	previewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+//	previewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
+//	previewInfo.bBlocked = false; //0- 非阻塞取流，1- 阻塞取流
+//	previewInfo.dwDisplayBufNum = 15;
+//	HWND pUser = nullptr;//用户数据
+//	nvrInfo.m_lPlayHandle = NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &previewInfo, RealDataCallBack, pUser);
+//	
+//	memset(debugInfo, 0, sizeof(debugInfo));
+//	strcpy(debugInfo, "NET_DVR_RealPlay_V40 return value:");
+//	_itoa(nvrInfo.m_lPlayHandle, debugInfo + strlen(debugInfo), 10);
+//	strcpy(debugInfo+strlen(debugInfo), " 通道号:");
+//	_itoa(areaInfo[nCurAreaIndex].videoChanNo, debugInfo + strlen(debugInfo), 10);
+//	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo),3);
+//	if (nvrInfo.m_lPlayHandle < 0)
+//	{
+//		return NET_DVR_GetLastError();
+//	}
+//	return nvrInfo.m_lPlayHandle;
+//
+//}
+SPLATE_API int SP_BeginRecog()
 {
-	isRecog = true;
-	//ThreadSwith = _beginthreadex(NULL, 0, (_beginthreadex_proc_type)ThreadKeepSwitch, NULL, 0, NULL);
-	previewInfo.hPlayWnd = nullptr;
-	previewInfo.lChannel = areaInfo[nCurAreaIndex].videoChanNo;
-	if (hPlayHandle != NULL)
-	{
-		previewInfo.hPlayWnd = hPlayHandle;
-	}
-	previewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
-	previewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
-	previewInfo.bBlocked = false; //0- 非阻塞取流，1- 阻塞取流
-	previewInfo.dwDisplayBufNum = 15;
-	HWND pUser = nullptr;//用户数据
-	nvrInfo.m_lPlayHandle = NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &previewInfo, RealDataCallBack, pUser);
-	
-	memset(debugInfo, 0, sizeof(debugInfo));
-	strcpy(debugInfo, "NET_DVR_RealPlay_V40 return value:");
-	_itoa(nvrInfo.m_lPlayHandle, debugInfo + strlen(debugInfo), 10);
-	strcpy(debugInfo+strlen(debugInfo), " 通道号:");
-	_itoa(areaInfo[nCurAreaIndex].videoChanNo, debugInfo + strlen(debugInfo), 10);
-	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo),3);
-	if (nvrInfo.m_lPlayHandle < 0)
-	{
-		return NET_DVR_GetLastError();
-	}
-	return nvrInfo.m_lPlayHandle;
-
-}
-SPLATE_API int SP_BeginRecog_MultiChan()
-{
-	nVideoChanCount = 4;
 	for (int i=0;i<nVideoChanCount;i++)
 	{
-		th_PlateCfg[i].bMovingImage = 1;
-		th_PlateCfg[i].bOutputSingleFrame = 1;
-		th_PlateCfg[i].nFastMemorySize = 16000;
-		th_PlateCfg[i].pFastMemory = (unsigned char *)malloc(16000);
-		th_PlateCfg[i].nMemorySize = 100000000;
-		th_PlateCfg[i].pMemory = (unsigned char *)malloc(100000000);
-		th_PlateCfg[i].nMaxPlateWidth = 400;
-		th_PlateCfg[i].nMinPlateWidth = 60;
-		th_PlateCfg[i].bUTF8 = 0;
-		th_PlateCfg[i].bShadow = 1;
-		th_PlateCfg[i].bCarLogo = 1;
-		th_PlateCfg[i].bLeanCorrection = 1;
-		th_PlateCfg[i].bCarModel = 1;
-		th_PlateCfg[i].nMaxImageWidth = 1920;
-		th_PlateCfg[i].nMaxImageHeight = 1080;
+		playInfo[i].lPlayHandle = NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &playInfo[i].previewInfo, RealDataCallBack_MultiChan, nullptr);
+	}
+	return SUCCESS;
+}
+SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg, int lenth)
+{
+	for (int i = 0; i < nVideoChanCount; i++)
+	{
 		int ret = TH_InitPlateIDSDK(&th_PlateCfg[i]);
 		memset(debugInfo, 0, sizeof(debugInfo));
 		strcpy(debugInfo, "初始化算法序号:");
@@ -246,19 +296,9 @@ SPLATE_API int SP_BeginRecog_MultiChan()
 		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 		TH_SetImageFormat(ImageFormatYV12, false, false, &th_PlateCfg[i]);
 		TH_SetRecogThreshold(5, 2, &th_PlateCfg[i]);//设置阈值
-		playInfo[i].nPort = -1;
-		playInfo[i].nVideoChan = 36 + i;
-		playInfo[i].previewInfo.dwDisplayBufNum = 15;
-		playInfo[i].previewInfo.bBlocked = false;
-		playInfo[i].previewInfo.dwLinkMode = 0;
-		playInfo[i].previewInfo.lChannel = 36 + i;
-		playInfo[i].lPlayHandle = NET_DVR_RealPlay_V40(nvrInfo.m_lServerID, &playInfo[i].previewInfo, RealDataCallBack_MultiChan, nullptr);
+		
 	}
-	return SUCCESS;
-}
-SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg, int lenth)
-{
-	return SUCCESS;
+	
 	write_log_file("Debug.txt", MAX_FILE_SIZE, "begin initAlg", strlen("begin initAlg"), 3);
 	if (lenth != sizeof(TH_PlateIDCfg))
 	{
@@ -270,14 +310,14 @@ SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg, int lenth)
 	{
 		write_log_file("Debug.txt", MAX_FILE_SIZE, "TH_InitPlateIDSDK", strlen("TH_InitPlateIDSDK"), 3);
 		TH_SetImageFormat(ImageFormatYV12, false, false, &th_PlateIDCfg);
-		TH_SetProvinceOrder("陕", &th_PlateIDCfg);
+		//TH_SetProvinceOrder("陕", &th_PlateIDCfg);
 		TH_SetRecogThreshold(5, 2, &th_PlateIDCfg);//设置阈值 
-		int maxThread = 0;
-		TH_GetKeyMaxThread(&maxThread);
-		memset(debugInfo, 0, sizeof(debugInfo));
-		strcpy(debugInfo, "识别最多路数:");
-		_itoa(maxThread, debugInfo + strlen(debugInfo), 10);
-		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+		//int maxThread = 0;
+		//TH_GetKeyMaxThread(&maxThread);
+		//memset(debugInfo, 0, sizeof(debugInfo));
+		//strcpy(debugInfo, "识别最多路数:");
+		//_itoa(maxThread, debugInfo + strlen(debugInfo), 10);
+		//write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 		write_log_file("Debug.txt", MAX_FILE_SIZE, "TH_SetRecogThreshold", strlen("TH_SetRecogThreshold"), 3);
 	}
 	else
@@ -299,12 +339,12 @@ SPLATE_API int SP_GetCarCount()
 	write_log_file("PlateDataCallBack.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 	return nCurCarCount;
 }
-SPLATE_API int SP_GetFirstCarInfo(struCarInfoOut *carinfo, int &lenth)
+SPLATE_API int SP_GetFirstCarInfo(struSingleCarInfoOut *carinfo, int &lenth)
 {
 	if (nCurCarCount > 0)
 	{
-		lenth = sizeof(struCarInfoOut);
-		memcpy(carinfo, &carInfoOut[nCurGetIndex], sizeof(struCarInfoOut));
+		lenth = sizeof(struSingleCarInfoOut);
+		memcpy(carinfo, &carInfoOut[nCurGetIndex], sizeof(struSingleCarInfoOut));
 		memset(debugInfo, 0, sizeof(debugInfo));
 		strcpy(debugInfo, "上位机提取车牌：");
 		strcpy(debugInfo + strlen(debugInfo), carInfoOut[nCurGetIndex].license);
@@ -318,11 +358,23 @@ SPLATE_API int SP_GetFirstCarInfo(struCarInfoOut *carinfo, int &lenth)
 	}
 	return FAIL;
 }
-SPLATE_API int SP_GetCarInfo(struCarInfoOut *carinfo, int carCount,int &lenth)
+SPLATE_API int SP_GetAreaCarInfo(struSingleCarInfoOut *carinfo, int areaNo)
+{
+	if (areaNo > 0 && areaNo <= MAX_AREA_COUNT)
+	{
+		memcpy(carinfo, &areaCar[areaNo - 1], sizeof(struSingleCarInfoOut));
+		areaCar[areaNo - 1].nConfidence = 0;
+		memset(areaCar[areaNo - 1].license, 0, 16);
+	}
+	else
+		return INVALID_AREA_COUNT;
+	
+}
+SPLATE_API int SP_GetCarInfo(struSingleCarInfoOut *carinfo, int carCount,int &lenth)
 {
 	if (carCount > nCurCarCount || carCount <= 0)
 		return INVALID_CAR_COUNT;
-	int size = sizeof(struCarInfoOut);
+	int size = sizeof(struSingleCarInfoOut);
 	for (int i = 0;i<carCount;i++)
 	{
 		memcpy(carinfo + size*i, &carInfoOut[nCurGetIndex], size);
@@ -446,7 +498,7 @@ SPLATE_API int SP_DecJpeg(const unsigned char * pJpegPic,int nJpegLenth,char *li
 	write_log_file("snap.txt", MAX_FILE_SIZE, "7", 1, 3);
 	return 0;
 }
-SPLATE_API int SP_Capture(int areaNo, struCarInfoOut *carinfo)
+SPLATE_API int SP_Capture(int areaNo, struSingleCarInfoOut *carinfo)
 {
 	int index = -1;
 	for (int i = 0 ;i<nAreaCount;i++)
@@ -534,7 +586,7 @@ SPLATE_API int SP_Capture(int areaNo, struCarInfoOut *carinfo)
 		memset(&tempCarOut, 0, sizeof(tempCarOut));
 		memcpy(tempCarOut.license, recogResult[0].license, strlen(recogResult[0].license));
 		memcpy(tempCarOut.color, recogResult[0].color, 8);
-		memcpy(tempCarOut.pic, pBuffer, lenth);
+//		memcpy(tempCarOut.pic, pBuffer, lenth);
 		tempCarOut.nCarColor = recogResult[0].nCarColor;
 		tempCarOut.nCarLogo = recogResult[0].nCarLogo;
 		tempCarOut.nSubCarLogo = recogResult[0].nCarType;
@@ -556,7 +608,7 @@ SPLATE_API int SP_Capture(int areaNo, struCarInfoOut *carinfo)
 	return 0;
 
 }
-SPLATE_API int SP_Capture_V2(int nozzleNo, struCarInfoOut_V2 *carInfo)
+SPLATE_API int SP_Capture_V2(int nozzleNo, struMultiCarInfoOut *carInfo)
 {
 	int nLicCount = 0;
 	int index = -1;
@@ -581,9 +633,11 @@ SPLATE_API int SP_Capture_V2(int nozzleNo, struCarInfoOut_V2 *carInfo)
 	NET_DVR_CaptureJPEGPicture_NEW(nvrInfo.m_lServerID, nozzleInfo[index].videoChan, &jpegPara, pBuffer, MAX_PIC_LENTH, retPicSize);
 	int lenth = *retPicSize;
 	memset(debugInfo, 0, sizeof(debugInfo));
-	strcpy(debugInfo, "图片长度:");
+	strcpy(debugInfo, "抓拍通道:");
+	_itoa(nozzleInfo[index].videoChan, debugInfo + strlen(debugInfo), 10);
+	strcpy(debugInfo + strlen(debugInfo), "图片长度:");
 	_itoa(lenth, debugInfo + strlen(debugInfo), 10);
-	write_log_file("snap.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 	if (lenth < 1000)
 	{
 		return -2;
@@ -632,35 +686,50 @@ SPLATE_API int SP_Capture_V2(int nozzleNo, struCarInfoOut_V2 *carInfo)
 
 	int licIndex = 0;
 	TH_SetImageFormat(ImageFormatRGB, false, false, &th_PlateIDCfg);
-	int nCarNum = 2;
+	int nCarNum = 1;
 	const unsigned char * src = (const unsigned char *)src_buff;
 	for (int i = 0;i<nozzleInfo[index].areaCount;i++)
 	{
+		memset(debugInfo, 0, sizeof(debugInfo));
+		strcpy(debugInfo, "识别区:");
+		_itoa(nozzleInfo[index].areas[i].areaNo, debugInfo + strlen(debugInfo), 10);
+		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+		nCarNum = 1;
 		TH_RecogImage(src, width, height, recogResult, &nCarNum, &nozzleInfo[index].areas[i].th_rect, &th_PlateIDCfg);
+
 		if (nCarNum > 0)
 		{
-			carOutCache.nLicenseCount += nCarNum;
+			
+			
 			for (int j = 0; j < nCarNum; j++)
 			{
 				memset(debugInfo, 0, sizeof(debugInfo));
 				strcpy(debugInfo, "车牌:");
 				memcpy(debugInfo + strlen(debugInfo), recogResult[j].license, strlen(recogResult[j].license));
-				write_log_file("snap.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+				write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 				
-				memcpy(carOutCache.license[licIndex +j].license, recogResult[j].license, strlen(recogResult[j].license));
-				memcpy(carOutCache.license[licIndex + j].color, recogResult[j].color, 8);
-				carOutCache.license[licIndex + j].nCarColor = recogResult[j].nCarColor;
-				carOutCache.license[licIndex + j].nCarLogo = recogResult[j].nCarLogo;
-				carOutCache.license[licIndex + j].nSubCarLogo = recogResult[j].nCarType;
-				carOutCache.license[licIndex + j].nCarModel = recogResult[j].nCarModel;
-				carOutCache.license[licIndex + j].nColor = recogResult[j].nColor;
-				carOutCache.license[licIndex + j].nConfidence = recogResult[j].nConfidence;
-				carOutCache.license[licIndex + j].nAreaNo = nozzleInfo[index].areas[i].areaNo;
-				carOutCache.license[licIndex + j].nType = recogResult[j].nType;
+				if (strlen(recogResult[j].license) < 5 || recogResult[j].nConfidence < 70)
+				{
+					write_log_file("Debug.txt", MAX_FILE_SIZE, "无效车牌", strlen("无效车牌"), 3);
+					continue;
+				}
+				memcpy(carOutCache.license[licIndex].license, recogResult[j].license, strlen(recogResult[j].license));
+				memcpy(carOutCache.license[licIndex].color, recogResult[j].color, 8);
+				carOutCache.license[licIndex].nCarColor = recogResult[j].nCarColor;
+				carOutCache.license[licIndex].nCarLogo = recogResult[j].nCarLogo;
+				carOutCache.license[licIndex].nSubCarLogo = recogResult[j].nCarType;
+				carOutCache.license[licIndex].nCarModel = recogResult[j].nCarModel;
+				carOutCache.license[licIndex].nColor = recogResult[j].nColor;
+				carOutCache.license[licIndex].nConfidence = recogResult[j].nConfidence;
+				carOutCache.license[licIndex].nAreaNo = nozzleInfo[index].areas[i].areaNo;
+				carOutCache.license[licIndex].nType = recogResult[j].nType;
+				carOutCache.nLicenseCount += 1;
+				licIndex += 1;
 			}
-			licIndex += nCarNum;
+			
 		}
 	}
+	
 	memcpy(carInfo, &carOutCache, sizeof(carOutCache));
 	jpeg_finish_decompress(&cinfo);//解压缩完毕
 	jpeg_destroy_decompress(&cinfo);// 释放资源
@@ -669,7 +738,7 @@ SPLATE_API int SP_Capture_V2(int nozzleNo, struCarInfoOut_V2 *carInfo)
 }
 SPLATE_API int SP_TestAPI()
 {
-	PostMessage(HWND_BROADCAST, WM_CARDATA, 0, 0);
+	PostMessage(HWND_BROADCAST, WM_AREACAR, 1, 2);
 	return 0;
 }
 
@@ -808,7 +877,7 @@ void CALLBACK DecCBFun(long nPort, char *pBuf, long nSize, FRAME_INFO * pFrameIn
 					//memcpy(lastLicense[nCurAreaIndex], recogResult[i].license, strlen(recogResult[i].license));
 					memcpy(tempCarOut.license, recogResult[i].license, strlen(recogResult[i].license));
 					memcpy(tempCarOut.color, recogResult[i].color, 8);
-					memcpy(tempCarOut.pic, pBuf, nSize);
+//					memcpy(tempCarOut.pic, pBuf, nSize);
 					tempCarOut.nCarColor = recogResult[i].nCarColor;
 					tempCarOut.nCarLogo = recogResult[i].nCarLogo;
 					tempCarOut.nSubCarLogo = recogResult[i].nCarType;
@@ -1017,7 +1086,7 @@ void CALLBACK PlateDataCallBack(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *
 		carInfoOut[nCurPutIndex].nPicType = 0; //JPG
 		carInfoOut[nCurPutIndex].nPicHeight = 1080;
 		carInfoOut[nCurPutIndex].nPicWidth = 1920;
-		memcpy(carInfoOut[nCurPutIndex].pic, struItsPlateResult.struPicInfo[0].pBuffer, struItsPlateResult.struPicInfo[0].dwDataLen);
+//		memcpy(carInfoOut[nCurPutIndex].pic, struItsPlateResult.struPicInfo[0].pBuffer, struItsPlateResult.struPicInfo[0].dwDataLen);
 		PostMessage(HWND_BROADCAST, WM_CARDATA, 0, 0);
 		//write_log_file("Debug.txt", MAX_FILE_SIZE, "post license massage done", strlen("post license massage done"), 3);
 		if (++nCurPutIndex == MAX_CAR_COUNT)
@@ -1183,29 +1252,29 @@ void CALLBACK DecCBFun_MultiChan(long nPort, char *pBuf, long nSize, FRAME_INFO 
 	
 	if (nLogLevel >= 4)
 	{
-		memset(debugInfo, 0, sizeof(debugInfo));
-		strcpy(debugInfo, "nPort");
-		_itoa(nPort, debugInfo + strlen(debugInfo), 10);
-		strcpy(debugInfo + strlen(debugInfo), "宽度");
-		_itoa(pFrameInfo->nWidth, debugInfo + strlen(debugInfo), 10);
-		strcpy(debugInfo + strlen(debugInfo), " 高度");
-		_itoa(pFrameInfo->nHeight, debugInfo + strlen(debugInfo), 10);
-		strcpy(debugInfo + strlen(debugInfo), " 视频格式");
-		_itoa(pFrameInfo->nType, debugInfo + strlen(debugInfo), 10);
+		memset(debugInfoThread, 0, sizeof(debugInfoThread));
+		strcpy(debugInfoThread, "nPort");
+		_itoa(nPort, debugInfoThread + strlen(debugInfoThread), 10);
+		strcpy(debugInfoThread + strlen(debugInfoThread), "宽度");
+		_itoa(pFrameInfo->nWidth, debugInfoThread + strlen(debugInfoThread), 10);
+		strcpy(debugInfoThread + strlen(debugInfoThread), " 高度");
+		_itoa(pFrameInfo->nHeight, debugInfoThread + strlen(debugInfoThread), 10);
+		strcpy(debugInfoThread + strlen(debugInfoThread), " 视频格式");
+		_itoa(pFrameInfo->nType, debugInfoThread + strlen(debugInfoThread), 10);
 		
 		switch (index)
 		{
 		case 0:
-			write_log_file("Dec0.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 4);
+			write_log_file("Dec0.txt", MAX_FILE_SIZE, debugInfoThread, strlen(debugInfoThread), 4);
 			break;
 		case 1:
-			write_log_file("Dec1.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 4);
+			write_log_file("Dec1.txt", MAX_FILE_SIZE, debugInfoThread, strlen(debugInfoThread), 4);
 			break;
 		case 2:
-			write_log_file("Dec2.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 4);
+			write_log_file("Dec2.txt", MAX_FILE_SIZE, debugInfoThread, strlen(debugInfoThread), 4);
 			break;
 		case 3:
-			write_log_file("Dec3.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 4);
+			write_log_file("Dec3.txt", MAX_FILE_SIZE, debugInfoThread, strlen(debugInfoThread), 4);
 			break;
 		default:
 			break;
@@ -1225,21 +1294,31 @@ void CALLBACK DecCBFun_MultiChan(long nPort, char *pBuf, long nSize, FRAME_INFO 
 
 		if (nCarNum > 0)
 		{
+			bool bMatch = false;
+			int areaNo = -1;
 			for (int i = 0; i<nCarNum; i++)
 			{
 				if (strlen(Result[i].license) < 5)
 				{
 					continue;
 				}
-				memset(debugInfo, 0, sizeof(debugInfo));
-				strcpy(debugInfo, "当前识别结果：");
-				memcpy(debugInfo + strlen(debugInfo), Result[i].license, strlen(Result[i].license));
-				strcpy(debugInfo + strlen(debugInfo), "当前识别通道：");
-				_itoa(playInfo[index].nVideoChan, debugInfo + strlen(debugInfo), 10);
-				strcpy(debugInfo + strlen(debugInfo), "  车牌置信度：");
-				_itoa(Result[i].nConfidence, debugInfo + strlen(debugInfo), 10);
-
-				switch (index)
+				memset(debugInfoThread, 0, sizeof(debugInfoThread));
+				strcpy(debugInfoThread, "当前识别结果：");
+				memcpy(debugInfoThread + strlen(debugInfoThread), Result[i].license, strlen(Result[i].license));
+				strcpy(debugInfoThread + strlen(debugInfoThread), "当前识别通道：");
+				_itoa(playInfo[index].nVideoChan, debugInfoThread + strlen(debugInfoThread), 10);
+				strcpy(debugInfoThread + strlen(debugInfoThread), "  车牌置信度：");
+				_itoa(Result[i].nConfidence, debugInfoThread + strlen(debugInfoThread), 10);
+				strcpy(debugInfoThread + strlen(debugInfoThread), "  车牌坐标：");
+				_itoa(Result[i].rcLocation.left, debugInfoThread + strlen(debugInfoThread), 10);
+				strcpy(debugInfoThread + strlen(debugInfoThread), " ");
+				_itoa(Result[i].rcLocation.right, debugInfoThread + strlen(debugInfoThread), 10);
+				strcpy(debugInfoThread + strlen(debugInfoThread), " ");
+				_itoa(Result[i].rcLocation.top, debugInfoThread + strlen(debugInfoThread), 10);
+				strcpy(debugInfoThread + strlen(debugInfoThread), "  ");
+				_itoa(Result[i].rcLocation.bottom, debugInfoThread + strlen(debugInfoThread), 10);
+				write_log_file("plate.txt", MAX_FILE_SIZE, debugInfoThread, strlen(debugInfoThread), 3);
+				/*switch (index)
 				{
 				case 0:
 					write_log_file("plate0.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
@@ -1256,31 +1335,57 @@ void CALLBACK DecCBFun_MultiChan(long nPort, char *pBuf, long nSize, FRAME_INFO 
 				default:
 					break;
 				}
+				*/
 				
-				//if (Result[i].nConfidence > tempCarOut.nConfidence &&recogResult[i].nConfidence >75
-				//	&& strcmp(recogResult[i].license, tempCarOut.license) != 0)
-				//{
-				//	write_log_file("Debug.txt", MAX_FILE_SIZE, "replace result", strlen("replace result"), 3);
-				//	//memcpy(lastLicense[nCurAreaIndex], recogResult[i].license, strlen(recogResult[i].license));
-				//	memcpy(tempCarOut.license, recogResult[i].license, strlen(recogResult[i].license));
-				//	memcpy(tempCarOut.color, recogResult[i].color, 8);
-				//	memcpy(tempCarOut.pic, pBuf, nSize);
-				//	tempCarOut.nCarColor = recogResult[i].nCarColor;
-				//	tempCarOut.nCarLogo = recogResult[i].nCarLogo;
-				//	tempCarOut.nSubCarLogo = recogResult[i].nCarType;
-				//	tempCarOut.nCarModel = recogResult[i].nCarModel;
-				//	tempCarOut.nColor = recogResult[i].nColor;
-				//	tempCarOut.nConfidence = recogResult[i].nConfidence;
-				//	tempCarOut.nPicLenth = nSize;
-				//	tempCarOut.nVideoChannel = areaInfo[nCurAreaIndex].videoChanNo;
-				//	tempCarOut.nAreaNo = areaInfo[nCurAreaIndex].areaNo;
-				//	tempCarOut.nPicType = T_YV12;
-				//	tempCarOut.nType = recogResult[i].nType;
-				//	tempCarOut.nPicWidth = pFrameInfo->nWidth;
-				//	tempCarOut.nPicHeight = pFrameInfo->nHeight;
-				//}
+				if (Result[i].nConfidence >= 70)
+					//&& strcmp(recogResult[i].license, tempCarOut.license) != 0)
+				{
+					
+					for (int j=0;j<videoInfo[index].nAreaCount;j++)
+					{
+						if (Result[i].rcLocation.left > videoInfo[index].areas[j].th_rect.left &&
+							Result[i].rcLocation.right < videoInfo[index].areas[j].th_rect.right &&
+							Result[i].rcLocation.top > videoInfo[index].areas[j].th_rect.top &&
+							Result[i].rcLocation.bottom < videoInfo[index].areas[j].th_rect.bottom)
+						{
+							areaNo = videoInfo[index].areas[j].areaNo;
+							write_log_file("plate.txt", MAX_FILE_SIZE, "matched area", strlen("matched area"), 3);
+							break;
+						}
+					}
+
+					if (areaNo < 0)
+					{
+						write_log_file("plate.txt", MAX_FILE_SIZE, "match area fail", strlen("match area fail"), 3);
+						continue;
+					}
+					memcpy(areaCar[areaNo - 1].license, Result[i].license, strlen(Result[i].license));
+					memcpy(areaCar[areaNo - 1].color, Result[i].color, 8);
+					//memcpy(areaCar[index - 1].pic, pBuf, nSize);
+					areaCar[areaNo - 1].nCarColor = Result[i].nCarColor;
+					areaCar[areaNo - 1].nCarLogo = Result[i].nCarLogo;
+					areaCar[areaNo - 1].nSubCarLogo = Result[i].nCarType;
+					areaCar[areaNo - 1].nCarModel = Result[i].nCarModel;
+					areaCar[areaNo - 1].nColor = Result[i].nColor;
+					areaCar[areaNo - 1].nConfidence = Result[i].nConfidence;
+					areaCar[areaNo - 1].nPicLenth = nSize;
+					areaCar[areaNo - 1].nVideoChannel = videoInfo[index].nChanNo;
+					areaCar[areaNo - 1].nAreaNo = areaNo;
+					areaCar[areaNo - 1].nPicType = T_YV12;
+					areaCar[areaNo - 1].nType = Result[i].nType;
+					areaCar[areaNo - 1].nPicWidth = pFrameInfo->nWidth;
+					areaCar[areaNo - 1].nPicHeight = pFrameInfo->nHeight;
+					bMatch = true;
+				}
+				
+			}
+			if (bMatch)
+			{
+				PostMessage(HWND_BROADCAST, WM_AREACAR, areaNo, videoInfo[index].nChanNo);
+				write_log_file("plate.txt", MAX_FILE_SIZE, "postmessage", strlen("postmessage"), 3);
 			}
 		}
+		
 	}
 	else
 	{

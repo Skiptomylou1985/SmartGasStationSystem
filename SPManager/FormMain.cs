@@ -43,11 +43,7 @@ namespace SPManager
             int ret = Init();
             if (ret == 0)
             {
-                if (Global.nRunMode == 4)
-                {
-                    SPlate.SP_BeginRecog_MultiChan();
-                }
-               
+                SPlate.SP_BeginRecog();
                 timerDataProc.Enabled = true;
                 return;
             }
@@ -118,7 +114,7 @@ namespace SPManager
             int ret = Init();
             if (ret == 0)
             {
-                SPlate.SP_BeginRecog(new IntPtr());
+                SPlate.SP_BeginRecog();
                 return;
             }
                 
@@ -185,6 +181,7 @@ namespace SPManager
         private void timerServiceStaus_Tick(object sender, EventArgs e)
         {
             this.showMemoryInfo();
+            this.showMatchRatio();
             gcCount++;
             if (gcCount > 60)
             {
@@ -213,30 +210,6 @@ namespace SPManager
         {
             showCarList();
             DateTime dt = DateTime.Now;
-            try
-            {
-                if (Global.exitLicenseList.Count > 20)
-                {
-                    foreach (string lic in Global.exitLicenseList)
-                    {
-                        if (Global.exitLicenseList.Count > 20)
-                        {
-                            Global.exitLicenseList.Remove(lic);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-            	
-            }
-            
-           
-            
         }
 
         private void btnSwitch_Click(object sender, EventArgs e)
@@ -246,11 +219,14 @@ namespace SPManager
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            int ret = SPlate.SP_InitNVR_HKCN("10.225.142.36", 8000, "admin", "sd123456");
-            if (ret != 0)
-            {
-                MessageBox.Show("初始化失败，返回值：" + ret.ToString());
-            }
+            showMatchRatio();
+            //int ret = SPlate.SP_InitNVR_HKCN("10.225.142.36", 8000, "admin", "sd123456");
+            //GetAreaCarFromDll(1);
+            //int ret = SPlate.SP_TestAPI();
+            //if (ret != 0)
+            //{
+            //    MessageBox.Show("初始化失败，返回值：" + ret.ToString());
+            //}
 //             ClsPicture pic = new ClsPicture();
 //             FileStream fs = new FileStream("C:\\lic.jpg",FileMode.Open);
 //             pic.picBufer = new byte[fs.Length];

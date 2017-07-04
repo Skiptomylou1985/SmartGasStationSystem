@@ -40,8 +40,7 @@
             this.comboLogLevel = new System.Windows.Forms.ComboBox();
             this.btnChangeLogLevel = new System.Windows.Forms.Button();
             this.statusSystem = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolCPU = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolMatchPoint = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolRAM = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnCloseMonitor = new System.Windows.Forms.Button();
@@ -67,13 +66,14 @@
             this.btnSwitch = new System.Windows.Forms.Button();
             this.richTextBoxDIT = new System.Windows.Forms.RichTextBox();
             this.listViewCache = new System.Windows.Forms.ListView();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.richTextBoxArea = new System.Windows.Forms.RichTextBox();
+            this.listViewArea = new System.Windows.Forms.ListView();
             this.notifyIconMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuExit = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.listViewArea = new System.Windows.Forms.ListView();
-            this.richTextBoxArea = new System.Windows.Forms.RichTextBox();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabPage1.SuspendLayout();
             this.statusSystem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMonitor)).BeginInit();
@@ -84,8 +84,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pBoxSocket)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.contextMenuExit.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.contextMenuExit.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerServiceStaus
@@ -118,7 +118,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(436, 286);
+            this.tabPage1.Size = new System.Drawing.Size(501, 286);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "运行状态";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -205,27 +205,21 @@
             // statusSystem
             // 
             this.statusSystem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
-            this.toolCPU,
+            this.toolMatchPoint,
             this.toolStripStatusLabel2,
-            this.toolRAM});
+            this.toolRAM,
+            this.toolStripStatusLabel3});
             this.statusSystem.Location = new System.Drawing.Point(0, 264);
             this.statusSystem.Name = "statusSystem";
-            this.statusSystem.Size = new System.Drawing.Size(436, 22);
+            this.statusSystem.Size = new System.Drawing.Size(501, 22);
             this.statusSystem.TabIndex = 25;
             this.statusSystem.Text = "statusStrip1";
             // 
-            // toolStripStatusLabel1
+            // toolMatchPoint
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(80, 17);
-            this.toolStripStatusLabel1.Text = "CPU占用率：";
-            // 
-            // toolCPU
-            // 
-            this.toolCPU.Name = "toolCPU";
-            this.toolCPU.Size = new System.Drawing.Size(26, 17);
-            this.toolCPU.Text = "0%";
+            this.toolMatchPoint.Name = "toolMatchPoint";
+            this.toolMatchPoint.Size = new System.Drawing.Size(26, 17);
+            this.toolMatchPoint.Text = "0%";
             // 
             // toolStripStatusLabel2
             // 
@@ -441,7 +435,7 @@
             this.tabPage2.Controls.Add(this.listViewCache);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(480, 286);
+            this.tabPage2.Size = new System.Drawing.Size(501, 286);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "油枪队列";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -474,6 +468,35 @@
             this.listViewCache.UseCompatibleStateImageBehavior = false;
             this.listViewCache.View = System.Windows.Forms.View.Details;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.richTextBoxArea);
+            this.tabPage3.Controls.Add(this.listViewArea);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(501, 286);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "识别区队列";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // richTextBoxArea
+            // 
+            this.richTextBoxArea.Location = new System.Drawing.Point(352, 0);
+            this.richTextBoxArea.Name = "richTextBoxArea";
+            this.richTextBoxArea.Size = new System.Drawing.Size(202, 337);
+            this.richTextBoxArea.TabIndex = 2;
+            this.richTextBoxArea.Text = "";
+            // 
+            // listViewArea
+            // 
+            this.listViewArea.GridLines = true;
+            this.listViewArea.Location = new System.Drawing.Point(0, 0);
+            this.listViewArea.Name = "listViewArea";
+            this.listViewArea.Size = new System.Drawing.Size(356, 340);
+            this.listViewArea.TabIndex = 1;
+            this.listViewArea.UseCompatibleStateImageBehavior = false;
+            this.listViewArea.View = System.Windows.Forms.View.Details;
+            // 
             // notifyIconMain
             // 
             this.notifyIconMain.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIconMain.Icon")));
@@ -501,34 +524,10 @@
             this.timerDataProc.Interval = 1000;
             this.timerDataProc.Tick += new System.EventHandler(this.timerDataProc_Tick);
             // 
-            // tabPage3
+            // toolStripStatusLabel3
             // 
-            this.tabPage3.Controls.Add(this.richTextBoxArea);
-            this.tabPage3.Controls.Add(this.listViewArea);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(501, 286);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "识别区队列";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // listViewArea
-            // 
-            this.listViewArea.GridLines = true;
-            this.listViewArea.Location = new System.Drawing.Point(0, 0);
-            this.listViewArea.Name = "listViewArea";
-            this.listViewArea.Size = new System.Drawing.Size(356, 340);
-            this.listViewArea.TabIndex = 1;
-            this.listViewArea.UseCompatibleStateImageBehavior = false;
-            this.listViewArea.View = System.Windows.Forms.View.Details;
-            // 
-            // richTextBoxArea
-            // 
-            this.richTextBoxArea.Location = new System.Drawing.Point(352, 0);
-            this.richTextBoxArea.Name = "richTextBoxArea";
-            this.richTextBoxArea.Size = new System.Drawing.Size(202, 337);
-            this.richTextBoxArea.TabIndex = 2;
-            this.richTextBoxArea.Text = "";
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(0, 17);
             // 
             // FormMain
             // 
@@ -557,8 +556,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pBoxSocket)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.contextMenuExit.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.contextMenuExit.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -569,8 +568,7 @@
         private System.Windows.Forms.ComboBox comboLogLevel;
         private System.Windows.Forms.Button btnChangeLogLevel;
         private System.Windows.Forms.StatusStrip statusSystem;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel toolCPU;
+        private System.Windows.Forms.ToolStripStatusLabel toolMatchPoint;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolRAM;
         private System.Windows.Forms.Button btnCloseMonitor;
@@ -608,6 +606,7 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.RichTextBox richTextBoxArea;
         private System.Windows.Forms.ListView listViewArea;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
     }
 }
 

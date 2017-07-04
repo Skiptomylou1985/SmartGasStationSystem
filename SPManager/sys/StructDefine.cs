@@ -56,6 +56,15 @@ namespace SPManager
         public struArea[] areas;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct struVideoChan
+    {
+        public int chanNo;
+        public int videoType;
+        public int areaCount;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        public struArea[] areas;
+    }
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct struCarInfoOut
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
@@ -75,8 +84,8 @@ namespace SPManager
         public int nPicWidth;
         public int nPicHeight;
         public int nPicLenth;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10 * 1024 * 1024)]
-        public byte[] pic;
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 10 * 1024 * 1024)]
+        //public byte[] pic;
 
     }
     public struct struCarInfoOut_V2

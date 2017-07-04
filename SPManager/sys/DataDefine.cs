@@ -299,6 +299,12 @@ public string getInsertString()
     //视频通道类
     public class ClsVideoChannel
     {
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private int _id = 0;
         public int channelNo
         {
             get { return _channelNo; }
@@ -345,6 +351,12 @@ public string getInsertString()
             set { _streamType = value; }
         }
         private int _streamType = 0;
+        //public List<int> locationNoList = new List<int>();
+       // public List<int> videoNoList = new List<int>();
+        public List<int> nozzleNoList = new List<int>();
+        public List<int> areaNoList = new List<int>();
+        public List<ClsCarInfo> carList = new List<ClsCarInfo>();
+
     }
 
     //油岛类，一个油岛可对应多个视频通道，包含多个油枪、识别区、加油位
