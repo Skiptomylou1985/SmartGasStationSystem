@@ -98,6 +98,9 @@ namespace ParamSet
         [DllImport("SPlate.dll")]
         public static extern int SP_PreviewInfo(ref NET_DVR_PREVIEWINFO previewInfo,int lenth);
         [DllImport("SPlate.dll")]
+        public static extern int SP_StopPreview(int lplayHandle);
+
+        [DllImport("SPlate.dll")]
         public static extern int SP_TestAPI();
         [DllImport("SPlate.dll")]
         public static extern int SP_GetNvrStatus();

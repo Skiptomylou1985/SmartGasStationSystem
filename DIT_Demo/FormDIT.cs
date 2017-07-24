@@ -148,5 +148,11 @@ namespace DIT_Demo
             Buffer.BlockCopy(byTime, 0, trade.sEndTime, 0, byTime.Length);
             HCNetSDK.NET_DVR_SendTrans(trade);
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string a = "鲁A12345";
+            MessageBox.Show(a.Substring(1));
+        }
     }
 }

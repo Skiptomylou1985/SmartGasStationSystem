@@ -16,6 +16,11 @@ namespace ParamSet
         public static int nLogLevel = 3;
         public static string iniPath ="config.ini";
         public static string basePicPath = "D:\\images\\";
+        public static int nAuthType = 0;  //算法授权模式 0本地授权 1 网络授权
+        public static int nCaptureFlag = 1; //
+        public static int nVideoRecogFlag = 1; 
+        public static int nVideoRecogType = 0; // 0 算法识别，1 海康超脑，2大华超脑
+        public static int nVideoSource = 0;  //0海康 1大华 2科达
         public static MysqlHelper mysqlHelper;
         public static ClsStationInfo stationInfo = new ClsStationInfo();
         public static List<ClsNVRInfo> nvrList = new List<ClsNVRInfo>();

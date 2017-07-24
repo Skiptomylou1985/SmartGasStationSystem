@@ -15,6 +15,7 @@ namespace ParamSet
         public struDraw struDrawInfo;
         public int nCurDrawIndex;
         private Graphics[] g = new Graphics[4];
+        private int lPlayHandle = -1;
         public FormMain()
         {
             InitializeComponent();
@@ -204,7 +205,13 @@ namespace ParamSet
                                 previewInfo.bBlocked = false; //0- 非阻塞取流，1- 阻塞取流
                                 previewInfo.dwDisplayBufNum = 15;
                                 int lenth = Marshal.SizeOf(previewInfo);
-                                SPlate.SP_PreviewInfo(ref previewInfo, lenth).ToString();
+                                if (lPlayHandle >= 0)
+                                {
+                                    SPlate.SP_StopPreview(lPlayHandle);
+                                    lPlayHandle = -1;
+                                }
+
+                                lPlayHandle = SPlate.SP_PreviewInfo(ref previewInfo, lenth);
 
                                 //更新当前被选中的视频线路
                                 Global.bVideoInShow = true;
@@ -247,7 +254,8 @@ namespace ParamSet
                                 {
                                 if ((Global.nCurStatus == 0 && (comboArea.Text == "全部" || video.areaList[i].id.ToString() == comboArea.Text.Trim())) ||
                                     Global.nCurStatus == 1 || (Global.nCurStatus == 2 && video.areaList[i].id.ToString() != comboArea.Text.Trim())||
-                                    (Global.nCurStatus == 3 && video.areaList[i].id.ToString() == comboMainArea.Text.Trim()))
+                                    (Global.nCurStatus == 3 && video.areaList[i].id.ToString() == comboMainArea.Text.Trim())||
+                                    (Global.nCurStatus == 3 && video.areaList[i].id.ToString() == comboMainArea2.Text.Trim()))
 
                                   {
                                     int X1 = (int)(video.areaList[i].left * videoBox.Width);
@@ -257,7 +265,8 @@ namespace ParamSet
                                         Graphics g = this.videoBox.CreateGraphics();
                                         g.DrawRectangle(new Pen(Color.Red), X1, Y1, X2 - X1, Y2 - Y1);
                                   }
-                                if (Global.nCurStatus == 3 && video.areaList[i].id.ToString() == comboSubArea.Text.Trim())
+                                if ((Global.nCurStatus == 3 && video.areaList[i].id.ToString() == comboSubArea.Text.Trim())||
+                                    Global.nCurStatus == 3 && video.areaList[i].id.ToString() == comboSubArea2.Text.Trim())
                                 {
                                     int X1 = (int)(video.areaList[i].left * videoBox.Width);
                                     int X2 = (int)(video.areaList[i].right * videoBox.Width);
@@ -279,6 +288,12 @@ namespace ParamSet
             FormNVR formnvr = new FormNVR();
             formnvr.ShowDialog();
             GetNVRListFromDB();
+            treeMain.Nodes[0].Nodes.Clear();
+            foreach (ClsNVRInfo nvr in Global.nvrList)
+            {
+                TreeNode nvrTree = new TreeNode(nvr.nvrName);
+                treeMain.Nodes[0].Nodes.Add(nvrTree);
+            }
         }
 
         private void deleteDevice_Click(object sender, EventArgs e)
@@ -499,7 +514,9 @@ namespace ParamSet
         {
             
             comboMainArea.Items.Clear();
+            comboMainArea2.Items.Clear();
             comboSubArea.Items.Clear();
+            comboSubArea2.Items.Clear();
             foreach (ClsVideoChannel video in Global.videoList)
             {
                 if (video.channelNo == Global.nCurSelectedVideoChan)
@@ -510,13 +527,19 @@ namespace ParamSet
                         return;
                     }
                     comboSubArea.Items.Add("不使用");
+                    comboMainArea2.Items.Add("不使用");
+                    comboSubArea2.Items.Add("不使用");
                     foreach (ClsRecogArea area in video.areaList)
                     {
                         comboMainArea.Items.Add(area.id.ToString());
+                        comboMainArea2.Items.Add(area.id.ToString());
                         comboSubArea.Items.Add(area.id.ToString());
+                        comboSubArea2.Items.Add(area.id.ToString());
                     }
                     comboMainArea.SelectedIndex = 0;
                     comboSubArea.SelectedIndex = 0;
+                    comboMainArea2.SelectedIndex = 0;
+                    comboSubArea2.SelectedIndex = 0;
                 }
             }
             comboNozzleNo.Items.Clear();

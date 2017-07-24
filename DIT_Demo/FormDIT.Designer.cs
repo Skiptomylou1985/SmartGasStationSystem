@@ -52,6 +52,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.textIP = new System.Windows.Forms.TextBox();
             this.btnSendTrade = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -320,11 +321,22 @@
             this.btnSendTrade.UseVisualStyleBackColor = true;
             this.btnSendTrade.Click += new System.EventHandler(this.btnSendTrade_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(284, 130);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(87, 49);
+            this.button3.TabIndex = 25;
+            this.button3.Text = "测试";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // FormDIT
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(373, 241);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.btnSendTrade);
             this.Controls.Add(this.textIP);
             this.Controls.Add(this.lblInOut);
@@ -383,6 +395,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textIP;
         private System.Windows.Forms.Button btnSendTrade;
+        private System.Windows.Forms.Button button3;
     }
 }
 

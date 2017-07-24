@@ -19,6 +19,7 @@ namespace SPManager
         public static int nVideoSource = 1;  //视频来源，1 海康 2 大华 3 科达
         public static int nVideoRocogMode = 1;//视频识别模式， 1 文通算法识别， 2 NVR识别
         public static string defaultProvice = "鲁"; //文通识别算法默认省份
+        public static int nMaxCarInSingleArea = 2; //单个识别区最多车牌数
         public static DateTime updateTime;  
         public static Log LogServer;
         public static int nLogLevel = 3;   //日志级别 

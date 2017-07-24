@@ -24,37 +24,19 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SPlate.h">
+    <ClInclude Include="dmu_sdk.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="TH_ErrorDef.h">
+    <ClInclude Include="player.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="TH_PlateID.h">
+    <ClInclude Include="cmu_sdk.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DataType.h">
+    <ClInclude Include="vtdu_sdk.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="HCNetSDK.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayM4.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DecodeCardSdk.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="plaympeg4.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="log.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="jpeglib.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="resource1.h">
+    <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,18 +44,15 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SPlate.cpp">
+    <ClCompile Include="SPlate_dh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="log.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="SPlate1.rc">
+    <ResourceCompile Include="SPlate_dh.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

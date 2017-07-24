@@ -107,7 +107,7 @@ namespace SPManager
                     MemoryStream ms = new MemoryStream(pic.picBufer);
                     Image img = Image.FromStream(ms);
                     //img.Save(path + pic.picName);
-                    img.Save("D:\\images\\"+pic.picName);
+                    img.Save("D:\\images\\"+DateTime.Now.ToString("yyyyMMddhhmmss")+".jpg");
                     ms.Dispose();
                     img.Dispose();
                 }

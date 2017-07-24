@@ -23,6 +23,16 @@ namespace ParamSet
                         Global.nLogLevel = int.Parse(paramValue);
                     if (paramName == "matchmode")
                         Global.nMatchMode = int.Parse(paramValue);
+                    if (paramName == "captureflag")
+                        Global.nCaptureFlag = int.Parse(paramValue);
+                    if (paramName == "videorecog")
+                        Global.nVideoRecogFlag = int.Parse(paramValue);
+                    if (paramName == "videorecogtype")
+                        Global.nVideoRecogType = int.Parse(paramValue);
+                    if (paramName == "videosource")
+                        Global.nVideoSource = int.Parse(paramValue);
+                    if (paramName == "authtype")
+                        Global.nAuthType = int.Parse(paramValue);
                     else if (paramName == "stationname")
                         Global.stationInfo.stationName = paramValue;
                     else if (paramName == "stationcode")
@@ -37,6 +47,7 @@ namespace ParamSet
                         Global.stationInfo.addr = paramValue;
                     else if (paramName == "picpath")
                         Global.basePicPath = paramValue;
+
                     //TODO 一系列参数的初始化
                 }
                 
@@ -307,6 +318,8 @@ namespace ParamSet
                     btnDeleteNozzle.Enabled = true;
                     comboMainArea.Enabled = false;
                     comboSubArea.Enabled = false;
+                    comboMainArea2.Enabled = false;
+                    comboSubArea2.Enabled = false;
                     break;
                 case 1: //正在添加
                     btnAddCurve.Enabled = false;
@@ -322,6 +335,8 @@ namespace ParamSet
                     btnDeleteNozzle.Enabled = false;
                     comboMainArea.Enabled = false;
                     comboSubArea.Enabled = false;
+                    comboMainArea2.Enabled = false;
+                    comboSubArea2.Enabled = false;
                     break;
                 case 2: //正在修改
                     btnAddCurve.Enabled = false;
@@ -337,6 +352,8 @@ namespace ParamSet
                     btnDeleteNozzle.Enabled = false;
                     comboMainArea.Enabled = false;
                     comboSubArea.Enabled = false;
+                    comboMainArea2.Enabled = false;
+                    comboSubArea2.Enabled = false;
                     break;
                 case 3: //正在添加油枪
                     btnAddCurve.Enabled = false;
@@ -352,6 +369,8 @@ namespace ParamSet
                     btnDeleteNozzle.Enabled = false;
                     comboMainArea.Enabled = true;
                     comboSubArea.Enabled = true;
+                    comboMainArea2.Enabled = true;
+                    comboSubArea2.Enabled = true;
                     break;
                 
             }
@@ -407,11 +426,29 @@ namespace ParamSet
                     nozzle.nozzleNo = int.Parse(comboNozzleNo.Text);
                     nozzle.oilType = comboOilType.SelectedIndex;
                     nozzle.areaid = int.Parse(comboMainArea.Text);
-                    if (comboSubArea.Text == "不使用")
-                        nozzle.subAreaid = 0;
-                    else
-                        nozzle.subAreaid = int.Parse(comboSubArea.Text);
                     nozzle.id = Global.mysqlHelper.ExecuteSql(nozzle.getInsertString());
+
+                    string linkSqlString = "insert into nozzle_area (nozzleNo,areaid,linkmode) values ("+nozzle.nozzleNo.ToString()+
+                        ","+comboMainArea.Text+",1)";
+                    nozzle.linkedMainAreaList.Add(int.Parse(comboMainArea.Text));
+                    if (comboMainArea2.Text != "不使用")
+                    {
+                        linkSqlString += ",(" + nozzle.nozzleNo.ToString() + "," + comboMainArea.Text + ",1)";
+                        nozzle.linkedMainAreaList.Add(int.Parse(comboMainArea2.Text));
+                    }
+                    if (comboSubArea.Text != "不使用")
+                    {
+                        linkSqlString += ",(" + nozzle.nozzleNo.ToString() + "," + comboSubArea.Text + ",2)";
+                        nozzle.linkedSubAreaList.Add(int.Parse(comboSubArea.Text));
+                    }
+                       
+                    if (comboSubArea2.Text != "不使用")
+                    {
+                        linkSqlString += ",(" + nozzle.nozzleNo.ToString() + "," + comboSubArea2.Text + ",2)";
+                        nozzle.linkedSubAreaList.Add(int.Parse(comboSubArea2.Text));
+                    }
+                        
+                    Global.mysqlHelper.ExecuteSql(linkSqlString);
                     Global.nozzleList.Add(nozzle);
                     break;
                 case 4:

@@ -111,6 +111,18 @@ namespace ParamSet
     }
     public class ClsNozzle
     {
+        //关联的主识别区
+        public List<int> linkedMainAreaList = new List<int>();
+        //关联的副识别区，油岛另外一侧 
+        public List<int> linkedSubAreaList = new List<int>();
+        //关联的油岛号
+        public int linkedIslandNo;
+        //当前油枪占位车辆信息
+        public ClsCarInfo nozzleCar = new ClsCarInfo();
+        //油枪状态 0空闲，1提枪 2 加油，3挂枪
+        public int curStatus = 0;
+        //当前油枪是否已匹配车辆
+        public bool bMatched = false;
         public int id
         {
             get { return _id; }
@@ -154,19 +166,6 @@ namespace ParamSet
                 oilType.ToString() + "," + areaid.ToString() + "," + subAreaid.ToString() + "," + parentid.ToString() + ")";
             return str;
         }
-        //public ClsRecogArea recogArea
-        //{
-        //    get { return _recogArea; }
-        //    set { _recogArea = value; }
-        //}
-        //private ClsRecogArea _recogArea = new ClsRecogArea();
-
-        //public int videoChanNo
-        //{
-        //    get { return _videoChanNo; }
-        //    set { _videoChanNo = value; }
-        //}
-        //private int _videoChanNo = 33;
     }
     public class ClsRecogArea
     {

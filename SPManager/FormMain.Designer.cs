@@ -43,6 +43,7 @@
             this.toolMatchPoint = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolRAM = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnCloseMonitor = new System.Windows.Forms.Button();
             this.btnOpenMonitor = new System.Windows.Forms.Button();
             this.pBoxMonitor = new System.Windows.Forms.PictureBox();
@@ -63,7 +64,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnSwitch = new System.Windows.Forms.Button();
             this.richTextBoxDIT = new System.Windows.Forms.RichTextBox();
             this.listViewCache = new System.Windows.Forms.ListView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -73,7 +73,6 @@
             this.contextMenuExit = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
-            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabPage1.SuspendLayout();
             this.statusSystem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMonitor)).BeginInit();
@@ -118,7 +117,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(501, 286);
+            this.tabPage1.Size = new System.Drawing.Size(600, 364);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "运行状态";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -126,7 +125,7 @@
             // btnTest
             // 
             this.btnTest.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnTest.Location = new System.Drawing.Point(353, 179);
+            this.btnTest.Location = new System.Drawing.Point(522, 180);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(75, 29);
             this.btnTest.TabIndex = 37;
@@ -137,7 +136,7 @@
             // btnUpdate
             // 
             this.btnUpdate.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnUpdate.Location = new System.Drawing.Point(265, 232);
+            this.btnUpdate.Location = new System.Drawing.Point(437, 179);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(78, 29);
             this.btnUpdate.TabIndex = 36;
@@ -148,7 +147,7 @@
             // btnShowData
             // 
             this.btnShowData.Font = new System.Drawing.Font("宋体", 9F);
-            this.btnShowData.Location = new System.Drawing.Point(175, 232);
+            this.btnShowData.Location = new System.Drawing.Point(356, 179);
             this.btnShowData.Name = "btnShowData";
             this.btnShowData.Size = new System.Drawing.Size(75, 29);
             this.btnShowData.TabIndex = 35;
@@ -209,9 +208,9 @@
             this.toolStripStatusLabel2,
             this.toolRAM,
             this.toolStripStatusLabel3});
-            this.statusSystem.Location = new System.Drawing.Point(0, 264);
+            this.statusSystem.Location = new System.Drawing.Point(0, 342);
             this.statusSystem.Name = "statusSystem";
-            this.statusSystem.Size = new System.Drawing.Size(501, 22);
+            this.statusSystem.Size = new System.Drawing.Size(600, 22);
             this.statusSystem.TabIndex = 25;
             this.statusSystem.Text = "statusStrip1";
             // 
@@ -232,6 +231,11 @@
             this.toolRAM.Name = "toolRAM";
             this.toolRAM.Size = new System.Drawing.Size(40, 17);
             this.toolRAM.Text = "100%";
+            // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(0, 17);
             // 
             // btnCloseMonitor
             // 
@@ -425,36 +429,25 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(509, 312);
+            this.tabControl1.Size = new System.Drawing.Size(608, 390);
             this.tabControl1.TabIndex = 18;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.btnSwitch);
             this.tabPage2.Controls.Add(this.richTextBoxDIT);
             this.tabPage2.Controls.Add(this.listViewCache);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(501, 286);
+            this.tabPage2.Size = new System.Drawing.Size(600, 364);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "油枪队列";
+            this.tabPage2.Text = "缓存队列";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // btnSwitch
-            // 
-            this.btnSwitch.Location = new System.Drawing.Point(221, 346);
-            this.btnSwitch.Name = "btnSwitch";
-            this.btnSwitch.Size = new System.Drawing.Size(75, 23);
-            this.btnSwitch.TabIndex = 2;
-            this.btnSwitch.Text = "切换视频";
-            this.btnSwitch.UseVisualStyleBackColor = true;
-            this.btnSwitch.Click += new System.EventHandler(this.btnSwitch_Click);
             // 
             // richTextBoxDIT
             // 
-            this.richTextBoxDIT.Location = new System.Drawing.Point(354, 0);
+            this.richTextBoxDIT.Location = new System.Drawing.Point(285, -5);
             this.richTextBoxDIT.Name = "richTextBoxDIT";
-            this.richTextBoxDIT.Size = new System.Drawing.Size(202, 337);
+            this.richTextBoxDIT.Size = new System.Drawing.Size(319, 358);
             this.richTextBoxDIT.TabIndex = 1;
             this.richTextBoxDIT.Text = "";
             // 
@@ -463,7 +456,7 @@
             this.listViewCache.GridLines = true;
             this.listViewCache.Location = new System.Drawing.Point(0, 0);
             this.listViewCache.Name = "listViewCache";
-            this.listViewCache.Size = new System.Drawing.Size(356, 340);
+            this.listViewCache.Size = new System.Drawing.Size(288, 353);
             this.listViewCache.TabIndex = 0;
             this.listViewCache.UseCompatibleStateImageBehavior = false;
             this.listViewCache.View = System.Windows.Forms.View.Details;
@@ -474,7 +467,7 @@
             this.tabPage3.Controls.Add(this.listViewArea);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(501, 286);
+            this.tabPage3.Size = new System.Drawing.Size(600, 364);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "识别区队列";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -483,7 +476,7 @@
             // 
             this.richTextBoxArea.Location = new System.Drawing.Point(352, 0);
             this.richTextBoxArea.Name = "richTextBoxArea";
-            this.richTextBoxArea.Size = new System.Drawing.Size(202, 337);
+            this.richTextBoxArea.Size = new System.Drawing.Size(252, 337);
             this.richTextBoxArea.TabIndex = 2;
             this.richTextBoxArea.Text = "";
             // 
@@ -524,16 +517,11 @@
             this.timerDataProc.Interval = 1000;
             this.timerDataProc.Tick += new System.EventHandler(this.timerDataProc_Tick);
             // 
-            // toolStripStatusLabel3
-            // 
-            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(0, 17);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(509, 312);
+            this.ClientSize = new System.Drawing.Size(608, 390);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
@@ -601,7 +589,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListView listViewCache;
         private System.Windows.Forms.RichTextBox richTextBoxDIT;
-        private System.Windows.Forms.Button btnSwitch;
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.RichTextBox richTextBoxArea;

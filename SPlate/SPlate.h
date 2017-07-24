@@ -141,6 +141,7 @@ extern "C" SPLATE_API int SP_InitNVR(char *IpAddress,LONG nPort,char *sAdmin,cha
 extern "C" SPLATE_API int SP_GetNvrCfg(NET_DVR_IPPARACFG_V40 *nvrCfg,int &lenth);
 extern "C" SPLATE_API int SP_Close();
 extern "C" SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo,int lenth);
+extern "C" SPLATE_API int SP_StopPreview(LONG lplayHandle);
 extern "C" SPLATE_API int SP_BeginRecog();
 extern "C" SPLATE_API int SP_InitAlg(TH_PlateIDCfg *th_plateIDCfg,int lenth);
 extern "C" SPLATE_API int SP_TestAPI();

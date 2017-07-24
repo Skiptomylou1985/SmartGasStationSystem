@@ -178,6 +178,7 @@ namespace SPManager
     public class ClsRecogArea
     {
         public List<ClsNozzle> nozzleList = new List<ClsNozzle>();
+        public Queue<ClsCarInfo> carQueue = new Queue<ClsCarInfo>();
         public int id
         {
             get { return _id; }
@@ -227,7 +228,7 @@ namespace SPManager
             set { _videoChannel = value; }
         }
         private int _videoChannel = 0;
-public string getInsertString()
+        public string getInsertString()
         {
             string str = "insert into analysisarea (x1,x2,y1,y2,vchid) values (" + left.ToString() + "," +
                 right.ToString() + "," + top.ToString() + "," + bottom.ToString() + "," + videoid.ToString() + ")";

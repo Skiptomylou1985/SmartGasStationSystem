@@ -117,11 +117,25 @@ SPLATE_API int SP_InitRunParam_Nozzle(unsigned char *pNozzleInfo, int nozzleCoun
 		_itoa(i, debugInfo + strlen(debugInfo), 10);
 		strcpy(debugInfo + strlen(debugInfo), "nozzleNo：");
 		_itoa(nozzleInfo[i].nozzleNo, debugInfo + strlen(debugInfo), 10);
-		strcpy(debugInfo + strlen(debugInfo), "areaCount：");
-		_itoa(nozzleInfo[i].areaCount, debugInfo + strlen(debugInfo), 10);
 		strcpy(debugInfo + strlen(debugInfo), " video：");
 		_itoa(nozzleInfo[i].videoChan, debugInfo + strlen(debugInfo), 10);
-		write_log_file("license.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+		strcpy(debugInfo + strlen(debugInfo), " areaCount：");
+		_itoa(nozzleInfo[i].areaCount, debugInfo + strlen(debugInfo), 10);
+		for (int j=0;j<nozzleInfo[i].areaCount;j++)
+		{
+			strcpy(debugInfo + strlen(debugInfo), " areaId：");
+			_itoa(nozzleInfo[i].areas[j].areaNo , debugInfo + strlen(debugInfo), 10);
+			strcpy(debugInfo + strlen(debugInfo), " rect：left ");
+			_itoa(nozzleInfo[i].areas[j].th_rect.left, debugInfo + strlen(debugInfo), 10);
+			strcpy(debugInfo + strlen(debugInfo), " right ");
+			_itoa(nozzleInfo[i].areas[j].th_rect.right, debugInfo + strlen(debugInfo), 10);
+			strcpy(debugInfo + strlen(debugInfo), " top ");
+			_itoa(nozzleInfo[i].areas[j].th_rect.top, debugInfo + strlen(debugInfo), 10);
+			strcpy(debugInfo + strlen(debugInfo), " bottom ");
+			_itoa(nozzleInfo[i].areas[j].th_rect.bottom, debugInfo + strlen(debugInfo), 10);
+		}
+		
+		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 
 	}
 	return SUCCESS;
@@ -244,6 +258,10 @@ SPLATE_API int SP_PreviewInfo(NET_DVR_PREVIEWINFO *preInfo, int lenth)
 		return NET_DVR_GetLastError();
 	}
 	return lplayHandle;
+}
+SPLATE_API int SP_StopPreview(LONG lplayHandle)
+{
+	return NET_DVR_StopRealPlay(lplayHandle);
 }
 //SPLATE_API int SP_BeginRecog(HWND hPlayHandle)
 //{
@@ -629,11 +647,13 @@ SPLATE_API int SP_Capture_V2(int nozzleNo, struMultiCarInfoOut *carInfo)
 	jpegPara.wPicSize = 0xFF; //当前码流分辨率；
 	DWORD x = 0;
 	LPDWORD retPicSize = &x;
-	write_log_file("snap.txt", MAX_FILE_SIZE, "begin", 5, 3);
+	write_log_file("Debug.txt", MAX_FILE_SIZE, "begin SP_Capture_V2", strlen("begin SP_Capture_V2"), 3);
 	NET_DVR_CaptureJPEGPicture_NEW(nvrInfo.m_lServerID, nozzleInfo[index].videoChan, &jpegPara, pBuffer, MAX_PIC_LENTH, retPicSize);
 	int lenth = *retPicSize;
 	memset(debugInfo, 0, sizeof(debugInfo));
-	strcpy(debugInfo, "抓拍通道:");
+	strcpy(debugInfo + strlen(debugInfo), "抓拍油枪:");
+	_itoa(nozzleNo, debugInfo + strlen(debugInfo), 10);
+	strcpy(debugInfo + strlen(debugInfo), "抓拍通道:");
 	_itoa(nozzleInfo[index].videoChan, debugInfo + strlen(debugInfo), 10);
 	strcpy(debugInfo + strlen(debugInfo), "图片长度:");
 	_itoa(lenth, debugInfo + strlen(debugInfo), 10);
@@ -675,7 +695,7 @@ SPLATE_API int SP_Capture_V2(int nozzleNo, struMultiCarInfoOut *carInfo)
 		memcpy(point, *buffer, width*depth);    //将buffer中的数据逐行给src_buff
 		point += width * depth;            //指针偏移一行
 	}
-	write_log_file("snap.txt", MAX_FILE_SIZE, "转码完毕", strlen("转码完毕"), 3);
+	write_log_file("Debug.txt", MAX_FILE_SIZE, "转码完毕", strlen("转码完毕"), 3);
 
 	memset(&carOutCache, 0, sizeof(carOutCache));
 	carOutCache.nPicHeight = height;
@@ -686,26 +706,41 @@ SPLATE_API int SP_Capture_V2(int nozzleNo, struMultiCarInfoOut *carInfo)
 
 	int licIndex = 0;
 	TH_SetImageFormat(ImageFormatRGB, false, false, &th_PlateIDCfg);
-	int nCarNum = 1;
+	int nCarNum = 2;
 	const unsigned char * src = (const unsigned char *)src_buff;
 	for (int i = 0;i<nozzleInfo[index].areaCount;i++)
 	{
 		memset(debugInfo, 0, sizeof(debugInfo));
-		strcpy(debugInfo, "识别区:");
+		strcpy(debugInfo + strlen(debugInfo), "识别区:");
 		_itoa(nozzleInfo[index].areas[i].areaNo, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), "图像宽度:");
+		_itoa(width, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), "图像高度:");
+		_itoa(height, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), "识别坐标:");
+		_itoa(nozzleInfo[index].areas[i].th_rect.left, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), " ");
+		_itoa(nozzleInfo[index].areas[i].th_rect.right, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), " ");
+		_itoa(nozzleInfo[index].areas[i].th_rect.top, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), " ");
+		_itoa(nozzleInfo[index].areas[i].th_rect.bottom, debugInfo + strlen(debugInfo), 10);
+
 		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 		nCarNum = 1;
+
+
 		TH_RecogImage(src, width, height, recogResult, &nCarNum, &nozzleInfo[index].areas[i].th_rect, &th_PlateIDCfg);
 
 		if (nCarNum > 0)
 		{
-			
-			
 			for (int j = 0; j < nCarNum; j++)
 			{
 				memset(debugInfo, 0, sizeof(debugInfo));
 				strcpy(debugInfo, "车牌:");
 				memcpy(debugInfo + strlen(debugInfo), recogResult[j].license, strlen(recogResult[j].license));
+				strcpy(debugInfo + strlen(debugInfo), "置信度:");
+				_itoa(recogResult[j].nConfidence, debugInfo + strlen(debugInfo), 10);
 				write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 				
 				if (strlen(recogResult[j].license) < 5 || recogResult[j].nConfidence < 70)
@@ -1343,6 +1378,20 @@ void CALLBACK DecCBFun_MultiChan(long nPort, char *pBuf, long nSize, FRAME_INFO 
 					
 					for (int j=0;j<videoInfo[index].nAreaCount;j++)
 					{
+						memset(debugInfoThread, 0, sizeof(debugInfoThread));
+						strcpy(debugInfoThread + strlen(debugInfoThread), " 比对识别区号：");
+						_itoa(videoInfo[index].areas[j].areaNo, debugInfoThread + strlen(debugInfoThread), 10);
+						strcpy(debugInfoThread + strlen(debugInfoThread), " 识别区坐标参数：");
+						_itoa(videoInfo[index].areas[j].th_rect.left, debugInfoThread + strlen(debugInfoThread), 10);
+						strcpy(debugInfoThread + strlen(debugInfoThread), " ");
+						_itoa(videoInfo[index].areas[j].th_rect.right, debugInfoThread + strlen(debugInfoThread), 10);
+						strcpy(debugInfoThread + strlen(debugInfoThread), " ");
+						_itoa(videoInfo[index].areas[j].th_rect.top, debugInfoThread + strlen(debugInfoThread), 10);
+						strcpy(debugInfoThread + strlen(debugInfoThread), "  ");
+						_itoa(videoInfo[index].areas[j].th_rect.bottom, debugInfoThread + strlen(debugInfoThread), 10);
+						write_log_file("plate.txt", MAX_FILE_SIZE, debugInfoThread, strlen(debugInfoThread), 3);
+
+
 						if (Result[i].rcLocation.left > videoInfo[index].areas[j].th_rect.left &&
 							Result[i].rcLocation.right < videoInfo[index].areas[j].th_rect.right &&
 							Result[i].rcLocation.top > videoInfo[index].areas[j].th_rect.top &&

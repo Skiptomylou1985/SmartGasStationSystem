@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -46,6 +47,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxSet = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.comboSubArea = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboMainArea = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.btnDeleteNozzle = new System.Windows.Forms.Button();
             this.btnAddNozzle = new System.Windows.Forms.Button();
@@ -72,12 +79,8 @@
             this.lblStationName = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblCurVideoNo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.comboMainArea = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.comboSubArea = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
+            this.comboMainArea2 = new System.Windows.Forms.ComboBox();
+            this.comboSubArea2 = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBoxSet.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -242,6 +245,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.comboSubArea2);
+            this.groupBox2.Controls.Add(this.comboMainArea2);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.comboSubArea);
@@ -269,6 +274,130 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "油枪出入口关联设置";
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(663, 87);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(17, 12);
+            this.label13.TabIndex = 33;
+            this.label13.Text = "蓝";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(663, 58);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(17, 12);
+            this.label12.TabIndex = 32;
+            this.label12.Text = "红";
+            // 
+            // comboSubArea
+            // 
+            this.comboSubArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboSubArea.FormattingEnabled = true;
+            this.comboSubArea.Items.AddRange(new object[] {
+            "入口",
+            "出口",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32"});
+            this.comboSubArea.Location = new System.Drawing.Point(497, 83);
+            this.comboSubArea.Name = "comboSubArea";
+            this.comboSubArea.Size = new System.Drawing.Size(75, 20);
+            this.comboSubArea.TabIndex = 31;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(435, 86);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 12);
+            this.label11.TabIndex = 30;
+            this.label11.Text = "辅识别区：";
+            // 
+            // comboMainArea
+            // 
+            this.comboMainArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboMainArea.FormattingEnabled = true;
+            this.comboMainArea.Items.AddRange(new object[] {
+            "入口",
+            "出口",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32"});
+            this.comboMainArea.Location = new System.Drawing.Point(497, 54);
+            this.comboMainArea.Name = "comboMainArea";
+            this.comboMainArea.Size = new System.Drawing.Size(75, 20);
+            this.comboMainArea.TabIndex = 29;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(435, 57);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(65, 12);
+            this.label10.TabIndex = 28;
+            this.label10.Text = "主识别区：";
             // 
             // label8
             // 
@@ -355,7 +484,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(723, 24);
+            this.btnCancel.Location = new System.Drawing.Point(723, 69);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 34);
             this.btnCancel.TabIndex = 21;
@@ -453,7 +582,7 @@
             // 
             // btnSaveCurve
             // 
-            this.btnSaveCurve.Location = new System.Drawing.Point(627, 24);
+            this.btnSaveCurve.Location = new System.Drawing.Point(723, 27);
             this.btnSaveCurve.Name = "btnSaveCurve";
             this.btnSaveCurve.Size = new System.Drawing.Size(75, 34);
             this.btnSaveCurve.TabIndex = 12;
@@ -544,7 +673,7 @@
             this.lblStationName,
             this.toolStripStatusLabel2,
             this.lblCurVideoNo});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 860);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 690);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1008, 22);
             this.statusStrip1.TabIndex = 5;
@@ -574,11 +703,11 @@
             this.lblCurVideoNo.Size = new System.Drawing.Size(68, 17);
             this.lblCurVideoNo.Text = "当前视频：";
             // 
-            // comboMainArea
+            // comboMainArea2
             // 
-            this.comboMainArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboMainArea.FormattingEnabled = true;
-            this.comboMainArea.Items.AddRange(new object[] {
+            this.comboMainArea2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboMainArea2.FormattingEnabled = true;
+            this.comboMainArea2.Items.AddRange(new object[] {
             "入口",
             "出口",
             "1",
@@ -613,25 +742,16 @@
             "30",
             "31",
             "32"});
-            this.comboMainArea.Location = new System.Drawing.Point(497, 54);
-            this.comboMainArea.Name = "comboMainArea";
-            this.comboMainArea.Size = new System.Drawing.Size(75, 20);
-            this.comboMainArea.TabIndex = 29;
+            this.comboMainArea2.Location = new System.Drawing.Point(582, 54);
+            this.comboMainArea2.Name = "comboMainArea2";
+            this.comboMainArea2.Size = new System.Drawing.Size(75, 20);
+            this.comboMainArea2.TabIndex = 34;
             // 
-            // label10
+            // comboSubArea2
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(435, 57);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(65, 12);
-            this.label10.TabIndex = 28;
-            this.label10.Text = "主识别区：";
-            // 
-            // comboSubArea
-            // 
-            this.comboSubArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboSubArea.FormattingEnabled = true;
-            this.comboSubArea.Items.AddRange(new object[] {
+            this.comboSubArea2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboSubArea2.FormattingEnabled = true;
+            this.comboSubArea2.Items.AddRange(new object[] {
             "入口",
             "出口",
             "1",
@@ -666,43 +786,16 @@
             "30",
             "31",
             "32"});
-            this.comboSubArea.Location = new System.Drawing.Point(497, 83);
-            this.comboSubArea.Name = "comboSubArea";
-            this.comboSubArea.Size = new System.Drawing.Size(75, 20);
-            this.comboSubArea.TabIndex = 31;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(435, 86);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 12);
-            this.label11.TabIndex = 30;
-            this.label11.Text = "辅识别区：";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(578, 60);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(17, 12);
-            this.label12.TabIndex = 32;
-            this.label12.Text = "红";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(578, 86);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(17, 12);
-            this.label13.TabIndex = 33;
-            this.label13.Text = "蓝";
+            this.comboSubArea2.Location = new System.Drawing.Point(581, 83);
+            this.comboSubArea2.Name = "comboSubArea2";
+            this.comboSubArea2.Size = new System.Drawing.Size(75, 20);
+            this.comboSubArea2.TabIndex = 35;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 882);
+            this.ClientSize = new System.Drawing.Size(1008, 712);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.treeMain);
             this.Controls.Add(this.groupBoxSet);
@@ -777,6 +870,8 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox comboSubArea2;
+        private System.Windows.Forms.ComboBox comboMainArea2;
     }
 }
 

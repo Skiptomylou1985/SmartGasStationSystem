@@ -83,7 +83,7 @@
             this.textPassword.Name = "textPassword";
             this.textPassword.Size = new System.Drawing.Size(101, 21);
             this.textPassword.TabIndex = 5;
-            this.textPassword.Text = "12345";
+            this.textPassword.Text = "sd20130419";
             // 
             // label3
             // 
