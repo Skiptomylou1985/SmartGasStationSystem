@@ -15,19 +15,24 @@ namespace Moniter
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            Thread.Sleep(1000);
+            int prcount = 0;
             foreach (Process prc in Process.GetProcesses())
             {
-                if (prc.ProcessName=="SPManager")
+                if (prc.ProcessName == Process.GetCurrentProcess().ProcessName)
                 {
-                    //if (!prc.CloseMainWindow())
-                   // prc.CloseMainWindow();
-                    prc.Kill(); //当发送关闭窗口命令无效时强行结束进程 
+                    prcount++;
                 }
             }
-            Application.Exit();
-            //Application.Run(new Form1());
+            if (1 < prcount)
+            {
+                //MessageBox.Show("该程序已经在运行中!", "提示");
+                Application.Exit();
+            }
+            else
+            {
+                Application.Run(new Kill.FormMain());
+            }
+            
         }
     }
 }

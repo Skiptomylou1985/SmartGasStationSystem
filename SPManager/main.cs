@@ -20,6 +20,8 @@ namespace SPManager
         static uint WM_CARDATA = RegisterWindowMessage("CARDATA");
         static uint WM_VIDEOCAR = RegisterWindowMessage("VIDEOCAR");
         static uint WM_AREACAR = RegisterWindowMessage("AREACAR");
+        static uint WM_KILLPROCESS = RegisterWindowMessage("KILLPROCESS");
+        static uint WM_HEARTBEAT = RegisterWindowMessage("HEARTBEAT");
         DateTime lastMessageTime = DateTime.Now;
         protected override void DefWndProc(ref Message m)
         {
@@ -200,6 +202,10 @@ namespace SPManager
                     string paramValue = dr["paramValue"].ToString();
                     if (paramName == "loglevel")
                         Global.nLogLevel = int.Parse(paramValue);
+                    if (paramName == "defaultwidth")
+                        Global.nDefaultWidth = int.Parse(paramValue);
+                    if (paramName == "defaultheight")
+                        Global.nDefaultHeight = int.Parse(paramValue);
                     else if (paramName == "stationname")
                         Global.stationInfo.stationName = paramValue;
                     else if (paramName == "stationcode")
@@ -902,7 +908,7 @@ namespace SPManager
             Marshal.FreeHGlobal(pCarOut);
             int index = Global.areaMap[areaNo];
             
-            string lic = Encoding.Default.GetString(struCarOut.license,0,getStrLength(struCarOut.license));
+            string lic = Encoding.UTF8.GetString(struCarOut.license,0,getStrLength(struCarOut.license));
            
             showRTBInfo("视频流车牌获取区域:" + areaNo.ToString()+"  获取车牌：" + lic);
             for (int i=0;i<Global.arrayAreaCar.Length;i++)
@@ -1857,12 +1863,12 @@ namespace SPManager
         }
         private void ExitApp()
         {
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = "Kill.exe";
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            Process.Start(psi);
-
+            //ProcessStartInfo psi = new ProcessStartInfo();
+            //psi.FileName = "Kill.exe";
+            //psi.UseShellExecute = false;
+            //psi.CreateNoWindow = true;
+            //Process.Start(psi);
+            SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)WM_KILLPROCESS, 0, 0);
             Global.socketTool.Close();
             SPlate.SP_Close();
             

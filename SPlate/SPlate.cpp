@@ -806,6 +806,7 @@ SPLATE_API int SP_InitNVR_HKCN(char *IpAddress, LONG nPort, char *sAdmin, char *
 	NET_DVR_SetupAlarmChan_V41(nvrInfo.m_lServerID, &alarm_Param);
 	//DWORD dwReturn = 0;
 	//NET_DVR_GetDVRConfig(nvrInfo.m_lServerID, NET_DVR_GET_IPPARACFG_V40, 0, &struIPPARACFG, sizeof(struIPPARACFG), &dwReturn);
+	
 	return SUCCESS;
 }
 int SwithNextArea(void)

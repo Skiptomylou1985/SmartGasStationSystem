@@ -44,7 +44,7 @@ namespace SPManager
         // public static QueueManager<ClsPicture> picQueue = new QueueManager<ClsPicture>();
         public static PictureWork picWork;
         public static int nDefaultWidth = 1920;
-        public static int nDefaultHeight = 1020;
+        public static int nDefaultHeight = 1080;
         public static NET_DVR_IPPARACFG_V40 net_dvr_cfg = new NET_DVR_IPPARACFG_V40();
         public static ClsServiceStatus clsServiceStatus = new ClsServiceStatus();
         public static int entryAreaID = 0;

@@ -41,6 +41,8 @@
             this.btnInit = new System.Windows.Forms.Button();
             this.comboChan = new System.Windows.Forms.ComboBox();
             this.btnView = new System.Windows.Forms.Button();
+            this.textPort = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -90,7 +92,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(41, 29);
+            this.label1.Location = new System.Drawing.Point(20, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(17, 12);
             this.label1.TabIndex = 4;
@@ -98,15 +100,15 @@
             // 
             // textIP
             // 
-            this.textIP.Location = new System.Drawing.Point(63, 25);
+            this.textIP.Location = new System.Drawing.Point(42, 25);
             this.textIP.Name = "textIP";
             this.textIP.Size = new System.Drawing.Size(100, 21);
             this.textIP.TabIndex = 5;
-            this.textIP.Text = "10.225.142.28";
+            this.textIP.Text = "127.0.0.1";
             // 
             // textUser
             // 
-            this.textUser.Location = new System.Drawing.Point(221, 25);
+            this.textUser.Location = new System.Drawing.Point(269, 25);
             this.textUser.Name = "textUser";
             this.textUser.Size = new System.Drawing.Size(67, 21);
             this.textUser.TabIndex = 7;
@@ -115,7 +117,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(187, 29);
+            this.label2.Location = new System.Drawing.Point(238, 29);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 6;
@@ -123,7 +125,7 @@
             // 
             // textPwd
             // 
-            this.textPwd.Location = new System.Drawing.Point(371, 25);
+            this.textPwd.Location = new System.Drawing.Point(378, 25);
             this.textPwd.Name = "textPwd";
             this.textPwd.Size = new System.Drawing.Size(73, 21);
             this.textPwd.TabIndex = 9;
@@ -132,7 +134,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(337, 29);
+            this.label3.Location = new System.Drawing.Point(344, 29);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 8;
@@ -176,11 +178,30 @@
             this.btnView.UseVisualStyleBackColor = true;
             this.btnView.Click += new System.EventHandler(this.btnView_Click);
             // 
+            // textPort
+            // 
+            this.textPort.Location = new System.Drawing.Point(174, 25);
+            this.textPort.Name = "textPort";
+            this.textPort.Size = new System.Drawing.Size(60, 21);
+            this.textPort.TabIndex = 14;
+            this.textPort.Text = "18090";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(146, 29);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(29, 12);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "端口";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(747, 530);
+            this.Controls.Add(this.textPort);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnView);
             this.Controls.Add(this.comboChan);
             this.Controls.Add(this.btnInit);
@@ -220,6 +241,8 @@
         private System.Windows.Forms.Button btnInit;
         private System.Windows.Forms.ComboBox comboChan;
         private System.Windows.Forms.Button btnView;
+        private System.Windows.Forms.TextBox textPort;
+        private System.Windows.Forms.Label label4;
     }
 }
 

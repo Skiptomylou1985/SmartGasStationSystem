@@ -31,7 +31,7 @@ namespace NVRTest
         
         private void btnInit_Click(object sender, EventArgs e)
         {
-            int i = SPlate.SP_InitNVR(textIP.Text.Trim(), 8000, textUser.Text.Trim(), textPwd.Text.Trim());
+            int i = SPlate.SP_InitNVR(textIP.Text.Trim(), int.Parse(textPort.Text.Trim()), textUser.Text.Trim(), textPwd.Text.Trim());
             if (i != 0)
             {
                 MessageBox.Show("初始化失败，返回值：" + i.ToString());

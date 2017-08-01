@@ -38,6 +38,7 @@ namespace SPManager
         {
             //TODO 临时返回
             //return;
+            startProtectProcess();//启动保护进程
             lastMessageTime = DateTime.Now;
             addListViewHead();
             int ret = Init();
@@ -97,9 +98,10 @@ namespace SPManager
 
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            SPlate.SP_Close();
-            if(Global.LogServer != null)
-            Global.LogServer.Stop();
+            ExitApp();
+            //SPlate.SP_Close();
+            //if(Global.LogServer != null)
+            //Global.LogServer.Stop();
         }
     
 
@@ -162,6 +164,7 @@ namespace SPManager
             {
                 this.toExit = true;
                 this.Close();
+                
             }
         }
 
@@ -182,6 +185,7 @@ namespace SPManager
         {
             this.showMemoryInfo();
             this.showMatchRatio();
+            SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)WM_HEARTBEAT, 0, 0);
             gcCount++;
             if (gcCount > 60)
             {
@@ -208,7 +212,9 @@ namespace SPManager
         
         private void timerDataProc_Tick(object sender, EventArgs e)
         {
+            
             showCarList();
+            
             DateTime dt = DateTime.Now;
         }
 
@@ -217,9 +223,18 @@ namespace SPManager
             SPlate.SP_TestAPI();
         }
 
+        private void startProtectProcess()
+        {
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = Application.StartupPath + "//Kill.exe";
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            Process.Start(psi);
+        }
         private void btnTest_Click(object sender, EventArgs e)
         {
-            showMatchRatio();
+            SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)WM_HEARTBEAT, 0, 0);
+            //showMatchRatio();
             //int ret = SPlate.SP_InitNVR_HKCN("10.225.142.36", 8000, "admin", "sd123456");
             //GetAreaCarFromDll(1);
             //int ret = SPlate.SP_TestAPI();
@@ -227,27 +242,27 @@ namespace SPManager
             //{
             //    MessageBox.Show("初始化失败，返回值：" + ret.ToString());
             //}
-//             ClsPicture pic = new ClsPicture();
-//             FileStream fs = new FileStream("C:\\lic.jpg",FileMode.Open);
-//             pic.picBufer = new byte[fs.Length];
-//             fs.Read(pic.picBufer, 0, (int)fs.Length);
-//             //pic.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
-//             pic.picPath = @"C:\\images" + @"\\"+DateTime.Now.ToString("yyyyMMdd") + @"\\";
-//             // Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath+ pic.picName, (int)EnumLogLevel.DEBUG));
-//             pic.picName = DateTime.Now.ToString("yyyyMMdd")+ ".jpg";
-//             pic.picWidth = 1920;
-//             pic.picHeight = 1088;
-//             pic.picType = 0;
-//             //Global.picWork.Add(pic);
-//             //string path = "C:\\images\\20170606\\鲁AP607K\\";
-//             //if (!Directory.Exists(path))
-//             //{
-//             //    Directory.CreateDirectory(path);
-//             //}
-//             MemoryStream ms = new MemoryStream(pic.picBufer);
-//             Image img = Image.FromStream(ms);
-//             //Image img = Image.FromFile("C:\\lic.jpg");
-//             img.Save(pic.picPath + pic.picName);
+            //             ClsPicture pic = new ClsPicture();
+            //             FileStream fs = new FileStream("C:\\lic.jpg",FileMode.Open);
+            //             pic.picBufer = new byte[fs.Length];
+            //             fs.Read(pic.picBufer, 0, (int)fs.Length);
+            //             //pic.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
+            //             pic.picPath = @"C:\\images" + @"\\"+DateTime.Now.ToString("yyyyMMdd") + @"\\";
+            //             // Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath+ pic.picName, (int)EnumLogLevel.DEBUG));
+            //             pic.picName = DateTime.Now.ToString("yyyyMMdd")+ ".jpg";
+            //             pic.picWidth = 1920;
+            //             pic.picHeight = 1088;
+            //             pic.picType = 0;
+            //             //Global.picWork.Add(pic);
+            //             //string path = "C:\\images\\20170606\\鲁AP607K\\";
+            //             //if (!Directory.Exists(path))
+            //             //{
+            //             //    Directory.CreateDirectory(path);
+            //             //}
+            //             MemoryStream ms = new MemoryStream(pic.picBufer);
+            //             Image img = Image.FromStream(ms);
+            //             //Image img = Image.FromFile("C:\\lic.jpg");
+            //             img.Save(pic.picPath + pic.picName);
 
         }
     }

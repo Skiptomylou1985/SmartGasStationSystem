@@ -86,21 +86,21 @@ namespace SPManager
         public void Close()
         {
             isRun = false;
-            TcpClient tcpClient = new TcpClient();
-            tcpClient.Connect(ip, port);
+           // TcpClient tcpClient = new TcpClient();
+           // tcpClient.Connect(ip, port);
 
-            NetworkStream ns = tcpClient.GetStream();
-            if (ns.CanWrite)
-            {
-                Byte[] sendBytes = Encoding.ASCII.GetBytes("Exit");
-                ns.Write(sendBytes, 0, sendBytes.Length);
-            }
-            else
-            {
-                return;
-            }
-            ns.Close();
-            tcpClient.Close();
+            //NetworkStream ns = tcpClient.GetStream();
+            //if (ns.CanWrite)
+            //{
+            //    Byte[] sendBytes = Encoding.ASCII.GetBytes("Exit");
+            //    ns.Write(sendBytes, 0, sendBytes.Length);
+            //}
+            //else
+            //{
+            //    return;
+            //}
+            //ns.Close();
+            //tcpClient.Close();
             if (null != sSocket)
             {
                 try
