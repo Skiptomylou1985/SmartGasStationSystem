@@ -516,117 +516,117 @@ SPLATE_API int SP_DecJpeg(const unsigned char * pJpegPic,int nJpegLenth,char *li
 	write_log_file("snap.txt", MAX_FILE_SIZE, "7", 1, 3);
 	return 0;
 }
-SPLATE_API int SP_Capture(int areaNo, struSingleCarInfoOut *carinfo)
-{
-	int index = -1;
-	for (int i = 0 ;i<nAreaCount;i++)
-	{
-		if (areaNo == areaInfo[i].areaNo)
-		{
-			index = i;
-			break;
-		}
-	}
-	if (index < 0)
-	{
-		return -1;
-	}
-	NET_DVR_JPEGPARA jpegPara;
-	jpegPara.wPicQuality = 0;
-	jpegPara.wPicSize = 0xFF; //当前码流分辨率；
-	DWORD x = 0;
-	LPDWORD retPicSize = &x;
-	write_log_file("snap.txt", MAX_FILE_SIZE, "begin", 5, 3);
-	NET_DVR_CaptureJPEGPicture_NEW(nvrInfo.m_lServerID, areaInfo[index].videoChanNo, &jpegPara, pBuffer, MAX_PIC_LENTH, retPicSize);
-	int lenth = *retPicSize;
-
-	memset(debugInfo, 0, sizeof(debugInfo));
-	strcpy(debugInfo, "图片长度:");
-	_itoa(lenth, debugInfo + strlen(debugInfo), 10);
-	write_log_file("snap.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
-	if (lenth < 1000)
-	{
-		return -2;
-	}
-	char *p1 = pBuffer;
-	unsigned char *p = (unsigned char *)p1;
-	const unsigned char *pp = (const unsigned char *)p;
-
-	struct jpeg_decompress_struct cinfo;//JPEG图像在解码过程中，使用jpeg_decompress_struct类型的结构体来表示，图像的所有信息都存储在结构体中
-	struct jpeg_error_mgr jerr;//定义一个标准的错误结构体，一旦程序出现错误就会调用exit()函数退出进程
-
-	cinfo.err = jpeg_std_error(&jerr);//绑定错误处理结构对象
-	jpeg_create_decompress(&cinfo);//初始化cinfo结构
-								   //jpeg_stdio_src()
-	jpeg_mem_src(&cinfo, pp, lenth);//指定解压缩数据源
-	jpeg_read_header(&cinfo, TRUE);//获取文件信息
-	jpeg_start_decompress(&cinfo);//开始解压缩
-	unsigned long width = cinfo.output_width;//图像宽度
-	unsigned long height = cinfo.output_height;//图像高度
-	unsigned short depth = cinfo.output_components;//图像深度
-	//memset(debugInfo, 0, sizeof(debugInfo));
-	//strcpy(debugInfo, "图片大小:");
-	//_itoa(lenth, debugInfo + strlen(debugInfo), 10);
-	//strcpy(debugInfo, "图片宽度:");
-	//_itoa(width, debugInfo + strlen(debugInfo), 10);
-	//strcpy(debugInfo, "图片高度:");
-	//_itoa(height, debugInfo + strlen(debugInfo), 10);
-	//strcpy(debugInfo, "图片深度:");
-	//_itoa(depth, debugInfo + strlen(debugInfo), 10);
-	//write_log_file("snap.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
-	unsigned char *src_buff;//用于存取解码之后的位图数据(RGB格式)
-	src_buff = (unsigned char *)malloc(width * height * depth);//分配位图数据空间
-	memset(src_buff, 0, sizeof(unsigned char) * width * height * depth);//清0
-
-																		//JSAMPARRAY buffer[1];//用于存取一行数据
-																		//JSAMPARRAY buffer = (JSAMPARRAY)malloc(width*depth);
-	JSAMPARRAY buffer;
-	buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr)&cinfo, JPOOL_IMAGE, width*depth, 1);//分配一行数据空间
-				
-	unsigned char *point = src_buff;
-	while (cinfo.output_scanline < height)//逐行读取位图数据
-	{
-		jpeg_read_scanlines(&cinfo, buffer, 1);    //读取一行jpg图像数据到buffer
-		memcpy(point, *buffer, width*depth);    //将buffer中的数据逐行给src_buff
-		point += width * depth;            //指针偏移一行
-	}
-
-	TH_SetImageFormat(ImageFormatRGB, false, false, &th_PlateIDCfg);
-	int nCarNum = 1;
-	const unsigned char * src = (const unsigned char *)src_buff;
-	TH_RecogImage(src, width, height, recogResult, &nCarNum, &areaInfo[index].th_rect, &th_PlateIDCfg);
-	if (nCarNum > 0)
-	{
-		memset(debugInfo, 0, sizeof(debugInfo));
-		strcpy(debugInfo, "车牌:");
-		memcpy(debugInfo + strlen(debugInfo), recogResult[0].license, strlen(recogResult[0].license));
-		write_log_file("snap.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
-		memset(&tempCarOut, 0, sizeof(tempCarOut));
-		memcpy(tempCarOut.license, recogResult[0].license, strlen(recogResult[0].license));
-		memcpy(tempCarOut.color, recogResult[0].color, 8);
-//		memcpy(tempCarOut.pic, pBuffer, lenth);
-		tempCarOut.nCarColor = recogResult[0].nCarColor;
-		tempCarOut.nCarLogo = recogResult[0].nCarLogo;
-		tempCarOut.nSubCarLogo = recogResult[0].nCarType;
-		tempCarOut.nCarModel = recogResult[0].nCarModel;
-		tempCarOut.nColor = recogResult[0].nColor;
-		tempCarOut.nConfidence = recogResult[0].nConfidence;
-		tempCarOut.nPicLenth = lenth;
-		tempCarOut.nVideoChannel = areaInfo[index].videoChanNo;
-		tempCarOut.nAreaNo = areaNo;
-		tempCarOut.nPicType = 0;
-		tempCarOut.nType = recogResult[0].nType;
-		tempCarOut.nPicWidth = width;
-		tempCarOut.nPicHeight = height;
-		memcpy(carinfo, &tempCarOut, sizeof(tempCarOut));
-	}
-	jpeg_finish_decompress(&cinfo);//解压缩完毕
-	jpeg_destroy_decompress(&cinfo);// 释放资源
-	free(src_buff);//释放资源
-	return 0;
-
-}
-SPLATE_API int SP_Capture_V2(int nozzleNo, struMultiCarInfoOut *carInfo)
+// SPLATE_API int SP_Capture(int areaNo, struSingleCarInfoOut *carinfo)
+// {
+// 	int index = -1;
+// 	for (int i = 0 ;i<nAreaCount;i++)
+// 	{
+// 		if (areaNo == areaInfo[i].areaNo)
+// 		{
+// 			index = i;
+// 			break;
+// 		}
+// 	}
+// 	if (index < 0)
+// 	{
+// 		return -1;
+// 	}
+// 	NET_DVR_JPEGPARA jpegPara;
+// 	jpegPara.wPicQuality = 0;
+// 	jpegPara.wPicSize = 0xFF; //当前码流分辨率；
+// 	DWORD x = 0;
+// 	LPDWORD retPicSize = &x;
+// 	write_log_file("snap.txt", MAX_FILE_SIZE, "begin", 5, 3);
+// 	NET_DVR_CaptureJPEGPicture_NEW(nvrInfo.m_lServerID, areaInfo[index].videoChanNo, &jpegPara, pBuffer, MAX_PIC_LENTH, retPicSize);
+// 	int lenth = *retPicSize;
+// 
+// 	memset(debugInfo, 0, sizeof(debugInfo));
+// 	strcpy(debugInfo, "图片长度:");
+// 	_itoa(lenth, debugInfo + strlen(debugInfo), 10);
+// 	write_log_file("snap.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+// 	if (lenth < 1000)
+// 	{
+// 		return -2;
+// 	}
+// 	char *p1 = pBuffer;
+// 	unsigned char *p = (unsigned char *)p1;
+// 	const unsigned char *pp = (const unsigned char *)p;
+// 
+// 	struct jpeg_decompress_struct cinfo;//JPEG图像在解码过程中，使用jpeg_decompress_struct类型的结构体来表示，图像的所有信息都存储在结构体中
+// 	struct jpeg_error_mgr jerr;//定义一个标准的错误结构体，一旦程序出现错误就会调用exit()函数退出进程
+// 
+// 	cinfo.err = jpeg_std_error(&jerr);//绑定错误处理结构对象
+// 	jpeg_create_decompress(&cinfo);//初始化cinfo结构
+// 								   //jpeg_stdio_src()
+// 	jpeg_mem_src(&cinfo, pp, lenth);//指定解压缩数据源
+// 	jpeg_read_header(&cinfo, TRUE);//获取文件信息
+// 	jpeg_start_decompress(&cinfo);//开始解压缩
+// 	unsigned long width = cinfo.output_width;//图像宽度
+// 	unsigned long height = cinfo.output_height;//图像高度
+// 	unsigned short depth = cinfo.output_components;//图像深度
+// 	//memset(debugInfo, 0, sizeof(debugInfo));
+// 	//strcpy(debugInfo, "图片大小:");
+// 	//_itoa(lenth, debugInfo + strlen(debugInfo), 10);
+// 	//strcpy(debugInfo, "图片宽度:");
+// 	//_itoa(width, debugInfo + strlen(debugInfo), 10);
+// 	//strcpy(debugInfo, "图片高度:");
+// 	//_itoa(height, debugInfo + strlen(debugInfo), 10);
+// 	//strcpy(debugInfo, "图片深度:");
+// 	//_itoa(depth, debugInfo + strlen(debugInfo), 10);
+// 	//write_log_file("snap.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+// 	unsigned char *src_buff;//用于存取解码之后的位图数据(RGB格式)
+// 	src_buff = (unsigned char *)malloc(width * height * depth);//分配位图数据空间
+// 	memset(src_buff, 0, sizeof(unsigned char) * width * height * depth);//清0
+// 
+// 																		//JSAMPARRAY buffer[1];//用于存取一行数据
+// 																		//JSAMPARRAY buffer = (JSAMPARRAY)malloc(width*depth);
+// 	JSAMPARRAY buffer;
+// 	buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr)&cinfo, JPOOL_IMAGE, width*depth, 1);//分配一行数据空间
+// 				
+// 	unsigned char *point = src_buff;
+// 	while (cinfo.output_scanline < height)//逐行读取位图数据
+// 	{
+// 		jpeg_read_scanlines(&cinfo, buffer, 1);    //读取一行jpg图像数据到buffer
+// 		memcpy(point, *buffer, width*depth);    //将buffer中的数据逐行给src_buff
+// 		point += width * depth;            //指针偏移一行
+// 	}
+// 
+// 	TH_SetImageFormat(ImageFormatRGB, false, false, &th_PlateIDCfg);
+// 	int nCarNum = 1;
+// 	const unsigned char * src = (const unsigned char *)src_buff;
+// 	TH_RecogImage(src, width, height, recogResult, &nCarNum, &areaInfo[index].th_rect, &th_PlateIDCfg);
+// 	if (nCarNum > 0)
+// 	{
+// 		memset(debugInfo, 0, sizeof(debugInfo));
+// 		strcpy(debugInfo, "车牌:");
+// 		memcpy(debugInfo + strlen(debugInfo), recogResult[0].license, strlen(recogResult[0].license));
+// 		write_log_file("snap.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+// 		memset(&tempCarOut, 0, sizeof(tempCarOut));
+// 		memcpy(tempCarOut.license, recogResult[0].license, strlen(recogResult[0].license));
+// 		memcpy(tempCarOut.color, recogResult[0].color, 8);
+// //		memcpy(tempCarOut.pic, pBuffer, lenth);
+// 		tempCarOut.nCarColor = recogResult[0].nCarColor;
+// 		tempCarOut.nCarLogo = recogResult[0].nCarLogo;
+// 		tempCarOut.nSubCarLogo = recogResult[0].nCarType;
+// 		tempCarOut.nCarModel = recogResult[0].nCarModel;
+// 		tempCarOut.nColor = recogResult[0].nColor;
+// 		tempCarOut.nConfidence = recogResult[0].nConfidence;
+// 		tempCarOut.nPicLenth = lenth;
+// 		tempCarOut.nVideoChannel = areaInfo[index].videoChanNo;
+// 		tempCarOut.nAreaNo = areaNo;
+// 		tempCarOut.nPicType = 0;
+// 		tempCarOut.nType = recogResult[0].nType;
+// 		tempCarOut.nPicWidth = width;
+// 		tempCarOut.nPicHeight = height;
+// 		memcpy(carinfo, &tempCarOut, sizeof(tempCarOut));
+// 	}
+// 	jpeg_finish_decompress(&cinfo);//解压缩完毕
+// 	jpeg_destroy_decompress(&cinfo);// 释放资源
+// 	free(src_buff);//释放资源
+// 	return 0;
+// 
+// }
+SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 {
 	int nLicCount = 0;
 	int index = -1;

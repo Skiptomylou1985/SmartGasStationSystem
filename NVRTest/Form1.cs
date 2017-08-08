@@ -65,5 +65,12 @@ namespace NVRTest
         {
             playWindow = pictureBox4.Handle;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            byte[] s = { 0xE9, 0xb2, 0x81, 0x48 };
+            string a = System.Text.Encoding.UTF8.GetString(s);
+            SPlate.SP_TestAPI();
+        }
     }
 }

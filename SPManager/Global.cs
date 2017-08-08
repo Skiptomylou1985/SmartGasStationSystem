@@ -4,6 +4,8 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Collections;
+
 namespace SPManager
 {
     public static class Global
@@ -53,6 +55,7 @@ namespace SPManager
         public static Dictionary<int, int> areaMap = new Dictionary<int, int>();
         public static Dictionary<int,int> nozzleMap = new Dictionary<int, int>();
         public static Dictionary<int, int> islandMap = new Dictionary<int, int>();
+        public static Hashtable carLogoHashtable = new Hashtable();
         public static ClsCarInfo[] arrayAreaCar;
         public static ClsCarInfo[] arrayNozzleCar;
         public static ClsGasIsland[] arrayIsland;

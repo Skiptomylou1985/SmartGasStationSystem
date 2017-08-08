@@ -184,10 +184,7 @@ namespace NVRTest
     #endregion
     class SPlate
     {
-        [DllImport("SPlate.dll")]
-        public static extern int SP_InitRunParam(byte[] nozzleInfo,int lenth);
-        [DllImport("SPlate.dll")]
-        public static extern int SP_InitRunParam_V2(byte[] nozzleInfo, int lenth);
+        
         [DllImport("SPlate.dll")]
         public static extern int SP_InitNVR(string ipAddress, int nPort, string sAdmin, string sPassword);
         [DllImport("SPlate.dll")]
@@ -212,19 +209,12 @@ namespace NVRTest
         public static extern int SP_GetNvrStatus();
         [DllImport("SPlate.dll")]
         public static extern int SP_SetLogLevel(int loglevel);
+       
+        
         [DllImport("SPlate.dll")]
-        public static extern int SP_SetSwitchFlag(int frameCount);
-        [DllImport("SPlate.dll")]
-        public static extern int SP_DecJpeg(IntPtr pJpegPic, int nJpegLenth, ref string license);
-        [DllImport("SPlate.dll")]
-        public static extern int SP_Snap(int videoChan, IntPtr lic,byte[] pic,ref int picLenth);
-        [DllImport("SPlate.dll")]
-        public static extern int SP_Capture(int areaNo, IntPtr carinfo);
-        [DllImport("SPlate.dll")]
-        public static extern int SP_Capture_V2(int nozzleNo, IntPtr carinfo);
+        public static extern int SP_Capture(int nozzleNo, IntPtr carinfo);
 
-        [DllImport("SPlate.dll")]
-        public static extern int SP_InitNVR_HKCN(string ipAddress, int nPort, string sAdmin, string sPassword);
+       
 
     }
 }

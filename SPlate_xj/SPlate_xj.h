@@ -20,7 +20,7 @@
 #define MAX_PIC_LENTH (10*1024*1024)
 #define MAX_CAR_COUNT 10  //缓存最大车辆数
 #define MAX_VIDEO_CHANNEL_COUNT 16  //最多通道数
-#define MAX_AREA_COUNT 32    //最大识别区数
+#define MAX_AREA_COUNT 64    //最大识别区数
 #define MAX_NOZZLE_COUNT 32  //最多油枪数
 
 
@@ -137,7 +137,7 @@ typedef struct
 	int areaNo;
 	LONG videoChanNo;
 	TH_RECT th_rect;
-	int areaFlag;
+	int videoLaneNo;  //视频通道中的识别区号
 } struAreaInfo;
 typedef struct
 {
@@ -172,10 +172,5 @@ extern "C" SPLATE_API int SP_GetCarInfo(struSingleCarInfoOut *carinfo, int carCo
 extern "C" SPLATE_API int SP_GetAreaCarInfo(struSingleCarInfoOut *carinfo, int areaNo);
 extern "C" SPLATE_API int SP_GetNvrStatus();
 extern "C" SPLATE_API int SP_SetLogLevel(int loglevel);
-extern "C" SPLATE_API int SP_SetSwitchCount(int frameCount);
-extern "C" SPLATE_API int SP_Snap(int videoChan, char *lic, unsigned char * picBuffer, int &picLenth);
-extern "C" SPLATE_API int SP_Capture(int areaNo, struSingleCarInfoOut *carinfo);
-extern "C" SPLATE_API int SP_Capture_V2(int nozzleNo, struMultiCarInfoOut *carInfo);
-extern "C" SPLATE_API int SP_DecJpeg(const unsigned char * pJpegPic, int nJpegLenth, char *license);
-extern "C" SPLATE_API int SP_InitNVR_HKCN(char *IpAddress, LONG nPort, char *sAdmin, char *sPassword);
+extern "C" SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo);
 

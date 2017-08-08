@@ -206,10 +206,22 @@ namespace ParamSet
             set { _right = value; }
         }
         private double _right = 0;
+        public int videoChannel
+        {
+            get { return _videoChannel; }
+            set { _videoChannel = value; }
+        }
+        private int _videoChannel = 0;
+        public int videoLaneNo
+        {
+            get { return _videoLaneNo; }
+            set { _videoLaneNo = value; }
+        }
+        private int _videoLaneNo = 0;
         public string getInsertString()
         {
-            string str = "insert into analysisarea (x1,x2,y1,y2,vchid) values (" + left.ToString() + "," +
-                right.ToString() + "," + top.ToString() + "," + bottom.ToString() + "," + videoid.ToString() + ")";
+            string str = "insert into analysisarea (x1,x2,y1,y2,vchid,vcharea) values (" + left.ToString() + "," +
+                right.ToString() + "," + top.ToString() + "," + bottom.ToString() + "," + videoid.ToString() + "," + videoLaneNo.ToString() + ")";
             return str;
         }
         public string getUpdateString()

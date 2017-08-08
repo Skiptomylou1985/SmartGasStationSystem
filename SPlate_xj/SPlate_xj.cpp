@@ -479,19 +479,10 @@ SPLATE_API int SP_SetLogLevel(int loglevel)
 	set_log_level(loglevel);
 	return SUCCESS;
 }
-SPLATE_API int SP_SetSwitchCount(int frameCount)
-{
-	return INVALID_METHOD;
-}
-SPLATE_API int SP_Snap(int videoChan, char *lic, unsigned char * picBuffer, int &picLenth)
-{
-	return INVALID_METHOD;
-}
-SPLATE_API int SP_Capture(int areaNo, struSingleCarInfoOut *carinfo)
-{
-	return INVALID_METHOD;
-}
-SPLATE_API int SP_Capture_V2(int nozzleNo, struMultiCarInfoOut *carInfo)
+
+
+
+SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 {
 	ResetEvent(snapEvent);
 	if (SUCCESS == SendSnapToXJ(nozzleNo))
@@ -522,14 +513,7 @@ SPLATE_API int SP_Capture_V2(int nozzleNo, struMultiCarInfoOut *carInfo)
 	}
 	
 }
-SPLATE_API int SP_DecJpeg(const unsigned char * pJpegPic, int nJpegLenth, char *license)
-{
-	return INVALID_METHOD;
-}
-SPLATE_API int SP_InitNVR_HKCN(char *IpAddress, LONG nPort, char *sAdmin, char *sPassword)
-{
-	return INVALID_METHOD;
-}
+
 
 
 

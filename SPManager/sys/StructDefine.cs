@@ -44,7 +44,7 @@ namespace SPManager
         public int top;
         public int right;
         public int bottom;
-        public int areaFlag;
+        public int videoLaneNo;  //视频通道中的识别区号
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct struNozzleRecog
@@ -59,7 +59,7 @@ namespace SPManager
     public struct struVideoChan
     {
         public int chanNo;
-        public int videoType;
+        public int videoType;  //视频通道类型  0 加油岛  1 入口  2 出口
         public int areaCount;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         public struArea[] areas;

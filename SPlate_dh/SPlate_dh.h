@@ -130,7 +130,7 @@ typedef struct
 	int areaNo;
 	LONG videoChanNo;
 	TH_RECT th_rect;
-	int areaFlag;
+	int videoLaneNo;  //视频通道中的识别区号
 } struAreaInfo;
 typedef struct
 {

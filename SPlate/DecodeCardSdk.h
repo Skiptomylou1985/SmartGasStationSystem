@@ -7,7 +7,7 @@
 
 #include "datatype.h"
 
-#define DLLEXPORT_API  extern "C"__declspec(dllexport) 
+#define DLLEXPORT_API  extern "C" __declspec(dllexport) 
 #define ERR_WAIT_TIMEOUT                0xc0000001
 #define ERR_INVALID_HANDLE                0xc0000002
 #define ERR_INVALID_ARGUMENT                0xc0000003
@@ -304,7 +304,7 @@ DLLEXPORT_API int __stdcall SetPreviewOverlayMode(BOOL bTrue);
 
 //DECODE functions for DS4002MD
 #if defined( _WINDLL)
-    #define PLAYER_API  extern "C"__declspec(dllexport) 
+    #define PLAYER_API  extern "C" __declspec(dllexport) 
 #else
     #define PLAYER_API  extern "C" __declspec(dllimport) 
 #endif

@@ -117,7 +117,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(600, 364);
+            this.tabPage1.Size = new System.Drawing.Size(635, 356);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "运行状态";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -208,9 +208,9 @@
             this.toolStripStatusLabel2,
             this.toolRAM,
             this.toolStripStatusLabel3});
-            this.statusSystem.Location = new System.Drawing.Point(0, 342);
+            this.statusSystem.Location = new System.Drawing.Point(0, 334);
             this.statusSystem.Name = "statusSystem";
-            this.statusSystem.Size = new System.Drawing.Size(600, 22);
+            this.statusSystem.Size = new System.Drawing.Size(635, 22);
             this.statusSystem.TabIndex = 25;
             this.statusSystem.Text = "statusStrip1";
             // 
@@ -429,7 +429,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(608, 390);
+            this.tabControl1.Size = new System.Drawing.Size(643, 382);
             this.tabControl1.TabIndex = 18;
             // 
             // tabPage2
@@ -438,16 +438,16 @@
             this.tabPage2.Controls.Add(this.listViewCache);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(600, 364);
+            this.tabPage2.Size = new System.Drawing.Size(635, 356);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "缓存队列";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // richTextBoxDIT
             // 
-            this.richTextBoxDIT.Location = new System.Drawing.Point(285, -5);
+            this.richTextBoxDIT.Location = new System.Drawing.Point(357, 0);
             this.richTextBoxDIT.Name = "richTextBoxDIT";
-            this.richTextBoxDIT.Size = new System.Drawing.Size(319, 358);
+            this.richTextBoxDIT.Size = new System.Drawing.Size(295, 358);
             this.richTextBoxDIT.TabIndex = 1;
             this.richTextBoxDIT.Text = "";
             // 
@@ -456,7 +456,7 @@
             this.listViewCache.GridLines = true;
             this.listViewCache.Location = new System.Drawing.Point(0, 0);
             this.listViewCache.Name = "listViewCache";
-            this.listViewCache.Size = new System.Drawing.Size(288, 353);
+            this.listViewCache.Size = new System.Drawing.Size(357, 353);
             this.listViewCache.TabIndex = 0;
             this.listViewCache.UseCompatibleStateImageBehavior = false;
             this.listViewCache.View = System.Windows.Forms.View.Details;
@@ -467,7 +467,7 @@
             this.tabPage3.Controls.Add(this.listViewArea);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(600, 364);
+            this.tabPage3.Size = new System.Drawing.Size(635, 356);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "识别区队列";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -476,7 +476,7 @@
             // 
             this.richTextBoxArea.Location = new System.Drawing.Point(352, 0);
             this.richTextBoxArea.Name = "richTextBoxArea";
-            this.richTextBoxArea.Size = new System.Drawing.Size(252, 337);
+            this.richTextBoxArea.Size = new System.Drawing.Size(287, 371);
             this.richTextBoxArea.TabIndex = 2;
             this.richTextBoxArea.Text = "";
             // 
@@ -485,7 +485,7 @@
             this.listViewArea.GridLines = true;
             this.listViewArea.Location = new System.Drawing.Point(0, 0);
             this.listViewArea.Name = "listViewArea";
-            this.listViewArea.Size = new System.Drawing.Size(356, 340);
+            this.listViewArea.Size = new System.Drawing.Size(356, 371);
             this.listViewArea.TabIndex = 1;
             this.listViewArea.UseCompatibleStateImageBehavior = false;
             this.listViewArea.View = System.Windows.Forms.View.Details;
@@ -521,7 +521,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 390);
+            this.ClientSize = new System.Drawing.Size(643, 382);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
