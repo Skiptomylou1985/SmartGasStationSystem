@@ -38,8 +38,8 @@ namespace SPManager
                     areaNo.ToString() + "  视频通道:" + m.LParam.ToString();
                 Global.LogServer.Add(new LogInfo("Debug", info, (int)EnumLogLevel.DEBUG));
                 showRTBInfo(info);
-
                 GetAreaCarFromDll(areaNo);
+                showAreaCarList();
             }
             else if (m.Msg == Convert.ToInt32(Global.WM_CARSNAP))
             {
@@ -59,6 +59,7 @@ namespace SPManager
                 {
                     ProcSnapFromDIT_WithoutCap(nNozzleID, nNozzleStatus);
                 }
+                showNozzleCarList();
             }
             else 
             {
@@ -743,12 +744,14 @@ namespace SPManager
                                     Global.arrayAreaCar[i].license = "";
                                     Global.arrayAreaCar[i].nozzleNo = 0;
                                     Global.arrayAreaCar[i].matchFlag = 0;
+                                    Global.arrayAreaCar[i].carLogo = 0;
+                                    Global.arrayAreaCar[i].subCarLogo = 0;
                                 }
                             }
                             nozzle.bMatched = false;
                             nozzle.nozzleCar.license = "";
                             nozzle.curStatus = 0;
-
+                            setDGV(dgvShow);
                             //Global.arrayAreaCar[index].
                             break;
                         default:
@@ -786,6 +789,10 @@ namespace SPManager
                                 ClsCarInfo Car = new ClsCarInfo();
                                 Car.license = Global.arrayAreaCar[areaIndex].license;
                                 Car.arriveTime = Global.arrayAreaCar[areaIndex].arriveTime;
+                                Car.carLogo = Global.arrayAreaCar[areaIndex].carLogo;
+                                Car.subCarLogo = Global.arrayAreaCar[areaIndex].subCarLogo;
+                                Car.licenseColor = Global.arrayAreaCar[areaIndex].licenseColor;
+                                Car.carColor = Global.arrayAreaCar[areaIndex].carColor;
                                 return Car;
                             //bMatched = true;
                             //break;
@@ -937,6 +944,8 @@ namespace SPManager
                 {
                     Global.arrayAreaCar[i].license = "";
                     Global.arrayAreaCar[i].matchFlag = 0;
+                    Global.arrayAreaCar[i].carLogo = 0;
+                    Global.arrayAreaCar[i].subCarLogo = 0;
                 }
             }
             //if (checkRepeatLicense(struCarOut.nAreaNo, license))
@@ -1018,8 +1027,12 @@ namespace SPManager
 
         private bool checkDBcarRepeat(string license)
         {
+            if (license.Length < 5)
+            {
+                return true;
+            }
             DateTime leave = DateTime.Now;
-            string sql = "select count(*) as count from carlog where carnumber like '%"+license.Substring(1)+"%' and leavetime > '" + 
+            string sql = "select count(*) as count from carlog where carnumber = '"+license+"' and leavetime > '" + 
                 leave.AddMinutes(-10).ToString("yyyy-MM-dd HH:mm:ss")+"'";
             Global.LogServer.Add(new LogInfo("Debug", "Main->checkDBcarRepeat: query string :" + sql, (int)EnumLogLevel.DEBUG));
             DataTable dt = Global.mysqlHelper.GetDataTable(sql);
@@ -1096,21 +1109,56 @@ namespace SPManager
 
         }
 
-        private void showCarArray()
+        private void showNozzleCarList()
         {
             listViewCache.Items.Clear();
             listViewCache.BeginUpdate();
-            for (int i= 0;i<Global.arrayAreaCar.Length;i++)
+            //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList Length:" + Global.arrayNozzleCar.Length.ToString(), (int)EnumLogLevel.DEBUG));
+            for (int i = 0; i < Global.nozzleList.Count; i++)
             {
+                //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList arrayNozzleCar:" + i.ToString(), (int)EnumLogLevel.DEBUG));
                 ListViewItem lvi = new ListViewItem();
-                lvi.Text = (i+1).ToString();
-                lvi.SubItems.Add(Global.arrayAreaCar[i].areaNo.ToString());
-                lvi.SubItems.Add(Global.arrayAreaCar[i].license);
-                lvi.SubItems.Add(Global.arrayAreaCar[i].nozzleNo.ToString());
-                lvi.SubItems.Add(Global.arrayAreaCar[i].matchFlag.ToString());
+                lvi.Text = Global.nozzleList[i].nozzleNo.ToString();
+                lvi.SubItems.Add(Global.nozzleList[i].nozzleCar.license);
+                lvi.SubItems.Add(Global.nozzleList[i].curStatus.ToString());
+                string carlogoKey = Global.nozzleList[i].nozzleCar.carLogo.ToString() + "-" + Global.nozzleList[i].nozzleCar.subCarLogo.ToString();
+                string carlogo = "未知";
+                if (Global.carLogoHashtable.Contains(carlogoKey))
+                {
+                    carlogo = (string)Global.carLogoHashtable[carlogoKey];
+                }
+                //lvi.SubItems.Add(Global.nozzleList[i].nozzleCar.carLogo.ToString());
+                lvi.SubItems.Add(carlogo);
                 listViewCache.Items.Add(lvi);
             }
             listViewCache.EndUpdate();
+        }
+
+        private void showAreaCarList()
+        {
+            listViewArea.Items.Clear();
+            listViewArea.BeginUpdate();
+            //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList Length:" + Global.arrayNozzleCar.Length.ToString(), (int)EnumLogLevel.DEBUG));
+            for (int i = 0; i < Global.arrayAreaCar.Length; i++)
+            {
+                //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList arrayNozzleCar:" + i.ToString(), (int)EnumLogLevel.DEBUG));
+                ListViewItem lvi = new ListViewItem();
+                lvi.Text = Global.arrayAreaCar[i].areaNo.ToString();
+                lvi.SubItems.Add(Global.arrayAreaCar[i].license);
+                string carlogoKey = Global.arrayAreaCar[i].carLogo.ToString() + "-" + Global.arrayAreaCar[i].subCarLogo.ToString();
+                string carlogo = "未知";
+                if (Global.carLogoHashtable.Contains(carlogoKey))
+                {
+                    carlogo = (string)Global.carLogoHashtable[carlogoKey];
+                }
+                //lvi.SubItems.Add(Global.nozzleList[i].nozzleCar.carLogo.ToString());
+                lvi.SubItems.Add(carlogo);
+                // lvi.SubItems.Add(Global.arrayAreaCar[i].carLogo.ToString());
+                //lvi.SubItems.Add(Global.arrayAreaCar[i].subCarLogo.ToString());
+
+                listViewArea.Items.Add(lvi);
+            }
+            listViewArea.EndUpdate();
         }
         private void AddNewCarToList(struCarInfoOut carOut)
         {
@@ -1678,6 +1726,7 @@ namespace SPManager
                         showRTBInfo("抓拍匹配失败，从视频流车牌中匹配车牌:" + car.license);
                         Global.nozzleList[index].nozzleCar = car;
                         Global.nozzleList[index].nozzleCar.matchFlag = nozzleStatus;
+                        
                     }
                 }
                 if (car != null)
@@ -1753,6 +1802,7 @@ namespace SPManager
                     Global.nozzleList[index].nozzleCar.matchFlag = 0;
                     Global.nozzleList[index].nozzleCar.carLogo = 0;
                     Global.nozzleList[index].nozzleCar.subCarLogo = 0;
+                    setDGV(dgvShow);
                     break;
                 default:
                     break;
@@ -1997,18 +2047,18 @@ namespace SPManager
         private void addListViewHead()
         {
             listViewCache.View = View.Details;
-            listViewCache.Columns.Add("油枪号", 50);
+            listViewCache.Columns.Add("油枪号", 60);
             //listViewCache.Columns.Add("识别区", 60);
             listViewCache.Columns.Add("车牌", 100);
            // listViewCache.Columns.Add("当前油枪", 60);
-            listViewCache.Columns.Add("油枪状态", 60);
+            listViewCache.Columns.Add("油枪状态", 80);
             listViewCache.Columns.Add("车辆品牌型号", 160);
             //listViewCache.Columns.Add("车辆子品牌", 80);
             listViewArea.View = View.Details;
-            listViewArea.Columns.Add("识别区号", 60);
+            listViewArea.Columns.Add("识别区号", 80);
             //listViewCache.Columns.Add("识别区", 60);
             listViewArea.Columns.Add("车牌", 100);
-            listViewArea.Columns.Add("车辆品牌型号", 200);
+            listViewArea.Columns.Add("车辆品牌型号", 160);
             // listViewCache.Columns.Add("当前油枪", 60);
            // listViewArea.Columns.Add("车辆子品牌", 100);
 
@@ -2039,6 +2089,38 @@ namespace SPManager
                 }
             }
             return lenth;
+        }
+        public void setDGV(DataGridView dgv)
+        {
+            string sql = "select id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath from carlog order by id desc limit 0,100";
+            DataTable dt = Global.mysqlHelper.GetDataTable(sql);
+            if (dt == null || dt.Rows.Count <1)
+            {
+                return;
+            }
+            dgv.DataSource = dt;
+
+            dgv.Columns[0].HeaderText = "序号";
+            dgv.Columns[1].HeaderText = "车牌号";
+            dgv.Columns[2].HeaderText = "油枪号";
+            dgv.Columns[3].HeaderText = "油类型";
+            dgv.Columns[4].HeaderText = "进站时间";
+            dgv.Columns[5].HeaderText = "加油时间";
+            dgv.Columns[6].HeaderText = "出站时间";
+            dgv.Columns[7].HeaderText = "车辆品牌";
+            dgv.Columns[8].HeaderText = "车辆颜色";
+            dgv.Columns[9].Visible = false;
+            dgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //dgv.AllowUserToAddRows = false;
+            //dgv.AllowUserToResizeRows = false;
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            foreach (DataGridViewColumn item in dgv.Columns)
+            {
+                item.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                
+                item.ReadOnly = true;
+            }
         }
     }
 }

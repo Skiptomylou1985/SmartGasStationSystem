@@ -38,14 +38,18 @@ namespace SPManager
         {
             //TODO 临时返回
             //return;
+
             startProtectProcess();//启动保护进程
             lastMessageTime = DateTime.Now;
             addListViewHead();
             int ret = Init();
+            setDGV(dgvShow);
+            toolStationName.Text = "站点名称:"+Global.stationInfo.stationName+"   ";
             if (ret == 0)
             {
                 SPlate.SP_BeginRecog();
-                timerDataProc.Enabled = true;
+                showCarList();
+                //timerDataProc.Enabled = true;
                 return;
             }
             if ((ret & 0x01) == 0x01)
@@ -72,7 +76,7 @@ namespace SPManager
             {
                 MessageBox.Show("网络服务初始化失败");
             }
-
+            
         }
 
         private void notifyIconMain_DoubleClick(object sender, EventArgs e)
@@ -233,8 +237,12 @@ namespace SPManager
         }
         private void btnTest_Click(object sender, EventArgs e)
         {
-            SPlate.SP_TestAPI();
-            SPlate.SP_Capture(1, new IntPtr());
+            setDGV(dgvShow);
+
+        }
+
+        private void btnOpenMain_Click(object sender, EventArgs e)
+        {
 
         }
     }

@@ -4,3 +4,4 @@ ipch
 *.opendb
 *.log
 log
+*.txt

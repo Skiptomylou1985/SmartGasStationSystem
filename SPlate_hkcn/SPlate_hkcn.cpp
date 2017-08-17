@@ -247,6 +247,10 @@ SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPass
 }
 SPLATE_API int SP_GetNvrCfg(BYTE *nvrCfg, int &lenth)
 {
+	DWORD dwReturn = 0;
+	NET_DVR_GetDVRConfig(nvrInfo.m_lServerID, NET_DVR_GET_IPPARACFG_V40, 0, &struIPPARACFG, sizeof(struIPPARACFG), &dwReturn);
+	lenth = sizeof(struIPPARACFG);
+	memcpy(nvrCfg, &struIPPARACFG, sizeof(struIPPARACFG));
 	return 0;
 }
 SPLATE_API int SP_Close()
