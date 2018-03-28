@@ -220,7 +220,7 @@ namespace ParamSet
         private int _videoLaneNo = 0;
         public string getInsertString()
         {
-            string str = "insert into analysisarea (x1,x2,y1,y2,vchid,vcharea) values (" + left.ToString() + "," +
+            string str = "insert into analysisarea (x1,x2,y1,y2,vchid,vchlane) values (" + left.ToString() + "," +
                 right.ToString() + "," + top.ToString() + "," + bottom.ToString() + "," + videoid.ToString() + "," + videoLaneNo.ToString() + ")";
             return str;
         }

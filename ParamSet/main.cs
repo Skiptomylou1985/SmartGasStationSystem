@@ -104,6 +104,7 @@ namespace ParamSet
         {
             string queryString = "select * from videohost";
             Global.stationInfo.nvrList.Clear();
+            Global.nvrList.Clear();
             try
             {
                
@@ -205,6 +206,7 @@ namespace ParamSet
                     area.right = double.Parse(dr["X2"].ToString());
                     area.top = double.Parse(dr["Y1"].ToString());
                     area.bottom = double.Parse(dr["Y2"].ToString());
+                    area.videoLaneNo = int.Parse(dr["vchlane"].ToString());
                     foreach (ClsNozzle nozzle in Global.nozzleList)
                     {
                         if (nozzle.areaid == area.id)
@@ -399,6 +401,7 @@ namespace ParamSet
                                     area.right = (double)Math.Round((decimal)struDrawInfo.end.X / this.videoBox.Width, 4);
                                     area.top = (double)Math.Round((decimal)struDrawInfo.start.Y / this.videoBox.Height, 4);
                                     area.bottom = (double)Math.Round((decimal)struDrawInfo.end.Y / this.videoBox.Height, 4);
+                                    area.videoLaneNo = comboHKArea.SelectedIndex + 1;
                                     area.id = Global.mysqlHelper.ExecuteSql(area.getInsertString());
                                     Global.recogAreaList.Add(area);
                                     video.areaList.Add(area);
@@ -458,20 +461,135 @@ namespace ParamSet
                     break;
 
             }
-            if (AoU == 1) //add 
-            {
-                
-            }  
-            else if(AoU == 2) //update
-            {
-                
-
-            }
 
         }
 
        
+        private bool HK_AddNozzleAndArea(int videoChan,int hkArea,int nozzleNo,int linkMode)
+        {
+            string sql = "select id from vch where vchno = " + videoChan.ToString();
+            DataTable dt = Global.mysqlHelper.GetDataTable(sql);
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                return false;
+            }
+            int videoid = int.Parse(dt.Rows[0]["id"].ToString());
+            
+            return true;
+        }
 
+
+        private int HK_FindRecogAreaInVideoChan(int videoChan,int vchlane)
+        {
+            foreach (ClsRecogArea area in Global.recogAreaList)
+            {
+                if (area.videoChannel == videoChan && area.videoLaneNo == vchlane)
+                {
+                    return area.id;
+                }
+            }
+
+            //没有匹配上，说明此识别区没有添加过，关联视频通道进行添加
+            foreach (ClsVideoChannel video in Global.videoList)
+            {
+                if (video.channelNo == videoChan)
+                {
+                    ClsRecogArea area = new ClsRecogArea();
+                    area.videoid = video.id;
+                    area.left = 0;
+                    area.right = 0;
+                    area.top = 0;
+                    area.bottom = 0;
+                    area.videoLaneNo = vchlane;
+                    area.videoChannel = videoChan;
+                    area.id = Global.mysqlHelper.ExecuteSql(area.getInsertString());
+                    Global.recogAreaList.Add(area);
+                    video.areaList.Add(area);
+                    return area.id;
+                }
+            }
+            return -1;
+        }
+
+        private void InitHKGroupBoard()
+        {
+
+            group_hkcn.Enabled = true;
+            hk_comboMainVideoChan1.Items.Clear();
+            hk_comboMainVideoChan2.Items.Clear();
+            hk_comboSubVideoChan1.Items.Clear();
+            hk_comboSubVideoChan2.Items.Clear();
+            if (Global.nMatchMode == 2 )
+            {
+                lblEntryExit.Visible = false;
+            }
+            hk_comboMainVideoChan2.Items.Add("不启用");
+            hk_comboSubVideoChan1.Items.Add("不启用");
+            hk_comboSubVideoChan2.Items.Add("不启用");
+            foreach (ClsVideoChannel video in Global.videoList)
+            {
+                hk_comboMainVideoChan1.Items.Add(video.channelNo.ToString());
+                hk_comboMainVideoChan2.Items.Add(video.channelNo.ToString());
+                hk_comboSubVideoChan1.Items.Add(video.channelNo.ToString());
+                hk_comboSubVideoChan2.Items.Add(video.channelNo.ToString());
+            }
+            if (hk_comboMainVideoChan1.Items.Count > 0)
+            {
+                hk_comboMainVideoChan1.SelectedIndex = 0;
+            }
+            
+            hk_comboMainVideoChan2.SelectedIndex = 0;
+            hk_comboSubVideoChan1.SelectedIndex = 0;
+            hk_comboSubVideoChan2.SelectedIndex = 0;
+
+            hk_comboSubVideoArea1.SelectedIndex = 0;
+            hk_comboSubVideoArea2.SelectedIndex = 0;
+            hk_comboMainVideoArea1.SelectedIndex = 0;
+            hk_comboMainVideoArea2.SelectedIndex = 0;
+
+            hk_comboNoz.SelectedIndex = 0;
+            hk_comboOilType.SelectedIndex = 0;
+            FlushDGV_HK();
+            
+        }
+
+        private void FlushDGV_HK()
+        {
+            string sql = "select a.nozzleNo as noz, c.vchno as vchno, b.vchlane as vchlane ," +
+                          "( case when a.linkmode = '1' then '主识别区' when a.linkmode = '2' then '副识别区' end) as linkmode" +
+                        " FROM nozzle_area a, analysisarea as b , vch c" +
+                        " where a.areaid = b.id and b.vchid = c.id order by a.nozzleNo asc";
+            DataTable dt = Global.mysqlHelper.GetDataTable(sql);
+            hk_DGV.DataSource = dt;
+            hk_DGV.Columns[0].HeaderText = "油枪号";
+            hk_DGV.Columns[1].HeaderText = "视频通道";
+            hk_DGV.Columns[2].HeaderText = "识别区";
+            hk_DGV.Columns[3].HeaderText = "关联类型";
+            hk_DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            hk_DGV.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //dgv.AllowUserToAddRows = false;
+            //dgv.AllowUserToResizeRows = false;
+            hk_DGV.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            foreach (DataGridViewColumn item in hk_DGV.Columns)
+            {
+                item.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+               // item.ReadOnly = true;
+            }
+        }
+
+        private bool FindVideoChanInList(int chanNo, string ip)
+        {
+            bool ret = false;
+            foreach(ClsVideoChannel video in Global.videoList)
+            {
+                if (video.channelNo == chanNo && video.ip == ip)
+                {
+                    ret = true;
+                }
+            }
+            return ret;
+
+        }
     }
    
 }

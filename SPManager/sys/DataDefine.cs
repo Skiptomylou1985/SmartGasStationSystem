@@ -263,6 +263,14 @@ namespace SPManager
             set { _stationName = value; }
         }
         private string _stationName = "";
+
+        public string stationIP
+        {
+            get { return _stationIP; }
+            set { _stationIP = value; }
+        }
+        private string _stationIP = "";
+
         public string province
         {
             get { return _province; }

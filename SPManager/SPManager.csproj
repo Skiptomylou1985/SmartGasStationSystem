@@ -38,13 +38,18 @@
     <ApplicationIcon>display.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Emgu.CV, Version=2.0.1.0, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Debug\Emgu.CV.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\Debug\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\MySQL\MySQL Connector Net 6.9.9\Assemblies\v4.5\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Debug\Newtonsoft.Json.DLL</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -52,6 +57,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormSearchData.cs">
@@ -74,9 +80,11 @@
     <Compile Include="sys\DBHelper.cs" />
     <Compile Include="sys\Enum.cs" />
     <Compile Include="sys\QueueManager.cs" />
+    <Compile Include="sys\StationInfo.cs" />
     <Compile Include="sys\StructDefine.cs" />
     <Compile Include="sys\XMLUnit.cs" />
     <Compile Include="tool\INIUnit.cs" />
+    <Compile Include="tool\JsonHelper.cs" />
     <Compile Include="tool\Log.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

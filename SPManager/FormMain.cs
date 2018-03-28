@@ -19,6 +19,7 @@ namespace SPManager
         private bool toExit = false;
         private DateTime lastUpdateTime = DateTime.Now;
         int gcCount = 0;
+        int statusCount = 0;
         public FormMain()
         {
             InitializeComponent();
@@ -42,6 +43,8 @@ namespace SPManager
             startProtectProcess();//启动保护进程
             lastMessageTime = DateTime.Now;
             addListViewHead();
+            Global.softVersion = INIUnit.GetINIValue(Application.StartupPath+"//version.ini", "main", "version");
+            this.Text = "加油站智能信息管理系统SPManager " + Global.softVersion;
             int ret = Init();
             setDGV(dgvShow);
             toolStationName.Text = "站点名称:"+Global.stationInfo.stationName+"   ";
@@ -196,6 +199,12 @@ namespace SPManager
                 gcCount = 0;
                 GC.Collect();
             }
+            statusCount++;
+             if (statusCount > 3)
+            {
+                statusCount = 0;
+                sendStatusToRemote();
+            }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -216,9 +225,9 @@ namespace SPManager
         
         private void timerDataProc_Tick(object sender, EventArgs e)
         {
-            
+
             showCarList();
-            
+            //showCarListTest();
             DateTime dt = DateTime.Now;
         }
 
@@ -242,6 +251,11 @@ namespace SPManager
         }
 
         private void btnOpenMain_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void statusSystem_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
         }

@@ -418,11 +418,13 @@ SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 		return -1;
 	}
 	memset(&carOutCache, 0, sizeof(carOutCache));
-	char url[100] = "GET /ISAPI/Traffic/channels/";
-	_itoa(nozzleInfo[index].videoChan, url + strlen(url), 10);
-	strcpy(url + strlen(url), "/vehicleDetect/manualTrigger/");
+	
+	int licIndex = 0;
 	for (int i = 0; i < nozzleInfo[index].areaCount; i++)
 	{
+		char url[100] = "GET /ISAPI/Traffic/channels/";
+		_itoa(nozzleInfo[index].videoChan, url + strlen(url), 10);
+		strcpy(url + strlen(url), "/vehicleDetect/manualTrigger/");
 		struInput.dwSize = sizeof(NET_DVR_XML_CONFIG_INPUT);
 		_itoa(nozzleInfo[index].areas[i].videoLaneNo, url + strlen(url), 10);
 		write_log_file("manualTrigger.txt", MAX_FILE_SIZE, url, strlen(url), 3);
@@ -441,7 +443,7 @@ SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 		_itoa(struOuput.dwReturnedXMLSize, debugInfo + strlen(debugInfo), 10);
 		write_log_file("manualTrigger.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 		write_log_file("manualTrigger.txt", MAX_FILE_SIZE, outBuf, strlen(outBuf), 3);
-		int licIndex = 0;
+		
 		CMarkup xml;
 		xml.SetDoc(outBuf);
 		xml.ResetMainPos();
@@ -495,9 +497,10 @@ SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 						}
 
 					}
+					carOutCache.nLicenseCount += 1;
+					licIndex += 1;
 				}
-				carOutCache.nLicenseCount += 1;
-				licIndex += 1;
+				
 			}
 		}
 	}

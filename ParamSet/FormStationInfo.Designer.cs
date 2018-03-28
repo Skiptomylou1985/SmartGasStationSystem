@@ -41,17 +41,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.btnSet = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.comboAuthType = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.comboCapture = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboVideoRecog = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.comboVideoRecogType = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.comboVideoRecog = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboCapture = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -183,16 +182,6 @@
             this.btnSet.UseVisualStyleBackColor = true;
             this.btnSet.Click += new System.EventHandler(this.btnSet_Click);
             // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(368, 24);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(73, 23);
-            this.btnCancel.TabIndex = 36;
-            this.btnCancel.Text = "退  出";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
             // comboAuthType
             // 
             this.comboAuthType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -243,7 +232,6 @@
             this.groupBox2.Controls.Add(this.comboMatchMode);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.btnSetRecogInfo);
-            this.groupBox2.Controls.Add(this.btnCancel);
             this.groupBox2.Controls.Add(this.comboAuthType);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(12, 179);
@@ -253,48 +241,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "识别参数";
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
-            // 
-            // comboCapture
-            // 
-            this.comboCapture.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboCapture.FormattingEnabled = true;
-            this.comboCapture.Items.AddRange(new object[] {
-            "关闭",
-            "开启"});
-            this.comboCapture.Location = new System.Drawing.Point(280, 32);
-            this.comboCapture.Name = "comboCapture";
-            this.comboCapture.Size = new System.Drawing.Size(73, 20);
-            this.comboCapture.TabIndex = 40;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(215, 36);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 39;
-            this.label3.Text = "抓拍使能：";
-            // 
-            // comboVideoRecog
-            // 
-            this.comboVideoRecog.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboVideoRecog.FormattingEnabled = true;
-            this.comboVideoRecog.Items.AddRange(new object[] {
-            "关闭",
-            "开启"});
-            this.comboVideoRecog.Location = new System.Drawing.Point(106, 72);
-            this.comboVideoRecog.Name = "comboVideoRecog";
-            this.comboVideoRecog.Size = new System.Drawing.Size(79, 20);
-            this.comboVideoRecog.TabIndex = 42;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(41, 76);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 12);
-            this.label4.TabIndex = 41;
-            this.label4.Text = "视频识别：";
             // 
             // comboVideoRecogType
             // 
@@ -317,6 +263,48 @@
             this.label5.Size = new System.Drawing.Size(89, 12);
             this.label5.TabIndex = 43;
             this.label5.Text = "视频识别方式：";
+            // 
+            // comboVideoRecog
+            // 
+            this.comboVideoRecog.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboVideoRecog.FormattingEnabled = true;
+            this.comboVideoRecog.Items.AddRange(new object[] {
+            "关闭",
+            "开启"});
+            this.comboVideoRecog.Location = new System.Drawing.Point(106, 72);
+            this.comboVideoRecog.Name = "comboVideoRecog";
+            this.comboVideoRecog.Size = new System.Drawing.Size(79, 20);
+            this.comboVideoRecog.TabIndex = 42;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(41, 76);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 41;
+            this.label4.Text = "视频识别：";
+            // 
+            // comboCapture
+            // 
+            this.comboCapture.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboCapture.FormattingEnabled = true;
+            this.comboCapture.Items.AddRange(new object[] {
+            "关闭",
+            "开启"});
+            this.comboCapture.Location = new System.Drawing.Point(280, 32);
+            this.comboCapture.Name = "comboCapture";
+            this.comboCapture.Size = new System.Drawing.Size(73, 20);
+            this.comboCapture.TabIndex = 40;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(215, 36);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.TabIndex = 39;
+            this.label3.Text = "抓拍使能：";
             // 
             // FormStationInfo
             // 
@@ -356,7 +344,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnSet;
-        private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ComboBox comboAuthType;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;

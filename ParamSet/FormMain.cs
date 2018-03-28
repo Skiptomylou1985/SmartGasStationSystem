@@ -35,6 +35,8 @@ namespace ParamSet
             treeMain.Nodes.Add("设备");
             btnClose.Enabled = false;
             btnSetInfo.Enabled = false;
+            group_hkcn.Enabled = false;
+            group_wentong.Enabled = false;
             SwithFormStat(0);
         }
 
@@ -55,6 +57,7 @@ namespace ParamSet
                 if (!Global.mysqlHelper.ConnectDB())
                 {
                     MessageBox.Show("数据库连接失败！");
+                    return;
                 }
                 GetMainParam();
                 Global.LogServer.Add(new LogInfo("ParamSet-Debug", "main->btnOpen_Click->GetMainParam done", (int)EnumLogLevel.DEBUG));
@@ -72,6 +75,18 @@ namespace ParamSet
                 btnOpen.Enabled = false;
                 btnSetInfo.Enabled = true;
                 lblStationName.Text = Global.stationInfo.stationName;
+
+                if (Global.nVideoRecogType == 0 )
+                {
+                    group_wentong.Enabled = true;
+                }
+                else if(Global.nVideoRecogType == 1 && Global.videoList.Count > 0)
+                {
+                    InitHKGroupBoard();
+                }
+
+
+                
             }
             catch (System.Exception ex)
             {
@@ -168,15 +183,31 @@ namespace ParamSet
                                 int lenth = 0;
                                 SPlate.SP_GetNvrCfg(ip, ref lenth);
                                 nvr.config = (NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ip, typeof(NET_DVR_IPPARACFG_V40));
-
                                 for (int i = 0; i < nvr.config.dwDChanNum; i++)
                                 {
                                     Global.LogServer.Add(new LogInfo("ParamSet-Debug", "dwDChanNum:" + i.ToString(), (int)EnumLogLevel.DEBUG));
                                     if (nvr.config.struIPDevInfo[i].byEnable == 1)
                                     {
+                                        ClsVideoChannel videoChan = new ClsVideoChannel();
+                                        videoChan.ip = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].struIP.sIpV4);
+                                        videoChan.channelNo = i;
+                                        videoChan.loginName = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].sUserName);
+                                        videoChan.password = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].sPassword);
+                                        videoChan.port = nvr.config.struIPDevInfo[i].wDVRPort;
+                                        videoChan.streamType = nvr.config.struStreamMode[i].byGetStreamType; 
+                                        videoChan.parentID = nvr.id;
+
+                                        if (!FindVideoChanInList(videoChan.channelNo,videoChan.ip))
+                                        {
+                                            videoChan.id = Global.mysqlHelper.ExecuteSql(videoChan.getInsertString());
+                                            Global.videoList.Add(videoChan);
+                                            nvr.videoList.Add(videoChan);
+                                        }
+                                        
                                         TreeNode cNode = new TreeNode();
                                         cNode.Text = "Video" + i.ToString();
                                         node.Nodes.Add(cNode);
+
                                         Global.LogServer.Add(new LogInfo("ParamSet-Debug", "struIPDevInfo.byEnable true", (int)EnumLogLevel.DEBUG));
 
                                     }
@@ -189,6 +220,12 @@ namespace ParamSet
                         {
                             Global.LogServer.Add(new LogInfo("ParamSet-Error", "FormMain->treeMain_DoubleClick", (int)EnumLogLevel.ERROR));
                         }
+
+                        if (Global.nVideoRecogType == 1)
+                        {
+                            InitHKGroupBoard();
+                        }
+                        
 
                     }
                     else
@@ -293,6 +330,13 @@ namespace ParamSet
             {
                 TreeNode nvrTree = new TreeNode(nvr.nvrName);
                 treeMain.Nodes[0].Nodes.Add(nvrTree);
+            }
+            if (Global.nVideoRecogType == 1)
+            {
+                InitHKGroupBoard();
+            }else if (Global.nVideoRecogType == 0)
+            {
+                group_wentong.Enabled = true;
             }
         }
 
@@ -559,7 +603,9 @@ namespace ParamSet
         {
             if (DialogResult.Yes == MessageBox.Show("确认删除油枪" + comboNozzleNo.Text.ToString() + "?", "提示", MessageBoxButtons.YesNo))
             {
-                string sqlString = "delete from nozzle where nozzleno = " + comboNozzleNo.Text;
+                string sqlString = "delete from nozzle_area where nozzleNo = " + comboNozzleNo.Text;
+                Global.mysqlHelper.ExecuteSql(sqlString);
+                sqlString = "delete from nozzle where nozzleno = " + comboNozzleNo.Text;
                 Global.mysqlHelper.ExecuteSql(sqlString);
                 foreach (ClsNozzle nozz in Global.nozzleList)
                 {
@@ -571,6 +617,229 @@ namespace ParamSet
                 }
 
             }
+        }
+
+        private void btn_reset_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("确认删除所有识别区及油枪配置?", "提示", MessageBoxButtons.YesNo))
+            {
+                string sql = "truncate table nozzle_area ";
+                Global.mysqlHelper.ExecuteSql(sql);
+                sql = "truncate table nozzle ";
+                Global.mysqlHelper.ExecuteSql(sql);
+                sql = "truncate table analysisarea";
+                Global.mysqlHelper.ExecuteSql(sql);
+                MessageBox.Show("重置完毕！");
+            }
+        }
+
+        private void hk_btnAdd_Click(object sender, EventArgs e)
+        {
+            if (hk_comboNoz.SelectedIndex < 2)
+            {
+                if (hk_comboMainVideoChan1.Text != "")
+                {
+                    int videoChan = int.Parse(hk_comboMainVideoChan1.Text);
+                    int vchLane = hk_comboMainVideoArea1.SelectedIndex + 1;
+                    int id = HK_FindRecogAreaInVideoChan(videoChan, vchLane);
+                    int nozNo = hk_comboNoz.SelectedIndex + 98;  //入口99 出口100
+                    if (id > 0)
+                    {
+                        string sql = "insert into nozzle_area (nozzleNo,areaid,linkmode) values (" + nozNo.ToString()
+                            + "," + id.ToString() + ",1)";
+                        Global.mysqlHelper.ExecuteSql(sql);
+                        FlushDGV_HK();
+                        MessageBox.Show("添加出入口成功!");
+                    }
+                }
+                return;
+            }
+            ClsNozzle nozzle = new ClsNozzle();
+            nozzle.nozzleNo = int.Parse(hk_comboNoz.Text);
+            nozzle.oilType = hk_comboOilType.SelectedIndex;
+            nozzle.areaid = 0;
+            nozzle.subAreaid = 0;
+            nozzle.id = Global.mysqlHelper.ExecuteSql(nozzle.getInsertString());
+            Global.nozzleList.Add(nozzle);
+            StringBuilder sbSql = new StringBuilder();
+            sbSql.Append("insert into nozzle_area (nozzleNo,areaid,linkmode) values");
+            
+            if (hk_comboMainVideoChan1.Text != "")
+            {
+                int videoChan = int.Parse(hk_comboMainVideoChan1.Text);
+                int vchLane = hk_comboMainVideoArea1.SelectedIndex + 1;
+                int id = HK_FindRecogAreaInVideoChan(videoChan, vchLane);
+                if (id > 0)
+                {
+                    sbSql.Append(" ( " + nozzle.nozzleNo.ToString() + "," + id.ToString() + ",1)");
+                }
+            }
+            
+
+            if (hk_comboMainVideoChan2.SelectedIndex != 0)
+            {
+                int videoChan = int.Parse(hk_comboMainVideoChan2.Text);
+                int vchLane = hk_comboMainVideoArea2.SelectedIndex+1;
+                int id = HK_FindRecogAreaInVideoChan(videoChan, vchLane);
+                if (id > 0)
+                {
+                    sbSql.Append(" ,( " + nozzle.nozzleNo.ToString() + "," + id.ToString() + ",1)");
+                }
+            }
+
+            if (hk_comboSubVideoChan1.SelectedIndex != 0)
+            {
+                int videoChan = int.Parse(hk_comboSubVideoChan1.Text);
+                int vchLane = hk_comboSubVideoArea1.SelectedIndex + 1;
+                int id = HK_FindRecogAreaInVideoChan(videoChan, vchLane);
+                if (id > 0)
+                {
+                    sbSql.Append(" ,( " + nozzle.nozzleNo.ToString() + "," + id.ToString() + ",2)");
+                }
+            }
+            if (hk_comboSubVideoChan2.SelectedIndex != 0)
+            {
+                int videoChan = int.Parse(hk_comboSubVideoChan2.Text);
+                int vchLane = hk_comboSubVideoArea2.SelectedIndex + 1;
+                int id = HK_FindRecogAreaInVideoChan(videoChan, vchLane);
+                if (id > 0)
+                {
+                    sbSql.Append(" ,( " + nozzle.nozzleNo.ToString() + "," + id.ToString() + ",2)");
+                }
+            }
+
+            Global.mysqlHelper.ExecuteSql(sbSql.ToString());
+
+            FlushDGV_HK();
+            hk_btnAdd.Enabled = false;
+            hk_btnDelete.Enabled = true;
+            Global.LogServer.Add(new LogInfo("ParamSet-Debug", sbSql.ToString(), (int)EnumLogLevel.DEBUG));
+            MessageBox.Show("油枪添加成功!");
+        }
+
+        private void hk_btnClear_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void hk_btnReset_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == MessageBox.Show("确认重置所有匹配信息？","提示",MessageBoxButtons.OKCancel))
+            {
+                Global.mysqlHelper.ExecuteSql("truncate table nozzle_area");
+                Global.mysqlHelper.ExecuteSql("truncate table analysisarea");
+                Global.mysqlHelper.ExecuteSql("truncate table nozzle");
+                GetParamFromDB();
+                FlushDGV_HK();
+
+            } 
+        }
+
+        private void hk_comboMainVideoChan1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void hk_comboMainVideoChan2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (hk_comboMainVideoChan2.SelectedIndex == 0)
+            {
+                hk_comboMainVideoArea2.Enabled = false;
+            }
+            else
+            {
+                hk_comboMainVideoArea2.Enabled = true;
+            }
+        }
+
+        private void hk_comboSubVideoChan1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (hk_comboSubVideoChan1.SelectedIndex == 0)
+            {
+                hk_comboSubVideoArea1.Enabled = false;
+            }
+            else
+            {
+                hk_comboSubVideoArea1.Enabled = true;
+            }
+        }
+
+        private void hk_comboSubVideoChan2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (hk_comboSubVideoChan2.SelectedIndex == 0)
+            {
+                hk_comboSubVideoArea2.Enabled = false;
+            }
+            else
+            {
+                hk_comboSubVideoArea2.Enabled = true;
+            }
+        }
+
+        private void hk_comboNoz_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (hk_comboNoz.SelectedIndex < 2)
+            {
+                hk_btnDelete.Enabled = true;
+                hk_btnAdd.Enabled = true;
+                return;
+            }
+            int nozNo = int.Parse(hk_comboNoz.Text);
+            bool assigned = false;
+            for (int i=0;i<Global.nozzleList.Count;i++)
+            {
+                if (Global.nozzleList[i].nozzleNo == nozNo)
+                {
+                    assigned = true;
+                }
+            }
+            
+            if (assigned)
+            {
+                hk_btnDelete.Enabled = true;
+                hk_btnAdd.Enabled = false;
+            }
+            else
+            {
+                hk_btnDelete.Enabled = false;
+                hk_btnAdd.Enabled = true;
+            }
+            
+        }
+
+        private void hk_btnDelete_Click(object sender, EventArgs e)
+        {
+            int nozNo = 0;
+            if (hk_comboNoz.SelectedIndex < 2) //出入口
+                nozNo = hk_comboNoz.SelectedIndex + 98;
+            else
+                nozNo = int.Parse(hk_comboNoz.Text);
+            foreach (ClsNozzle noz in Global.nozzleList)
+            {
+                if (noz.nozzleNo == nozNo)
+                {
+                    Global.nozzleList.Remove(noz);
+                    break;
+                }
+            }
+
+            Global.mysqlHelper.ExecuteSql("delete from nozzle_area where nozzleNo = " + nozNo.ToString());
+            Global.mysqlHelper.ExecuteSql("delete from nozzle where nozzleNo = " + nozNo.ToString());
+            FlushDGV_HK();
+            hk_btnAdd.Enabled = true;
+            hk_btnDelete.Enabled = false;
+            MessageBox.Show("删除成功！");
+            
+        }
+
+        private void textDBIP_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void contextTreeAdd_Opening(object sender, CancelEventArgs e)
+        {
+
         }
     }
 }

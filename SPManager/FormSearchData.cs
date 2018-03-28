@@ -22,15 +22,24 @@ namespace SPManager
 
         private void btnQuery_Click(object sender, EventArgs e)
         {
-            
+
+            string columns = "id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath";
+            dataGridCar.DataSource = queryData(columns,true);
+            setDGV(dataGridCar);
+        }
+
+        public DataTable queryData(string columns,bool limit)
+        {
             string arriveBegin = dateArriveBegin.Value.ToString("yyyy-MM-dd") + timeArriveBegin.Value.ToString(" HH:mm:ss");
             string arriveEnd = dateArriveEnd.Value.ToString("yyyy-MM-dd") + timeArriveEnd.Value.ToString(" HH:mm:ss");
             string leaveBegin = dateLeaveBegin.Value.ToString("yyyy-MM-dd") + timeLeaveBegin.Value.ToString(" HH:mm:ss");
             string leaveEnd = dateLeaveEnd.Value.ToString("yyyy-MM-dd") + timeLeaveEnd.Value.ToString(" HH:mm:ss");
             StringBuilder sbQuery = new StringBuilder();
-            sbQuery.Append("select id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath from carlog ");
+            sbQuery.Append("select ");
+            sbQuery.Append(columns);
+            sbQuery.Append(" from carlog");
             sbQuery.Append(" where 1 = 1");
-            if (textLicense.Text.Trim().Length >0)
+            if (textLicense.Text.Trim().Length > 0)
             {
                 sbQuery.Append(" and carnumber like '%" + textLicense.Text.Trim() + "%'");
             }
@@ -42,11 +51,16 @@ namespace SPManager
             {
                 sbQuery.Append(" and (leavetime between '" + leaveBegin + "' and '" + leaveEnd + "')");
             }
-            sbQuery.Append(" order by leavetime desc limit 0,500");
-            DataTable dt = Global.mysqlHelper.GetDataTable(sbQuery.ToString());
-            dataGridCar.DataSource = dt;
-            setDGV(dataGridCar);
+            sbQuery.Append(" order by leavetime desc");
+            if (limit)
+            {
+                sbQuery.Append("  limit 0,500");
+            }
+            return Global.mysqlHelper.GetDataTable(sbQuery.ToString());
+
         }
+
+
         public void setDGV(DataGridView dgv)
         {
             
@@ -126,6 +140,37 @@ namespace SPManager
             	
             }
             
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+
+            FolderBrowserDialog folder = new FolderBrowserDialog();
+            if (DialogResult.OK == folder.ShowDialog())
+            {
+                String path = folder.SelectedPath + "\\车辆检测数据" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
+                string columns = "id,carnumber,nozzleno,arrivetime,begintime,leavetime,carlogo,subcarlogo";
+                DataTable dt = queryData(columns,false);
+                dt.Columns.Add("carbrand",typeof(string));
+                for (int i= 0;i<dt.Rows.Count;i++)
+                {
+                    string carlogoKey = dt.Rows[i]["carlogo"].ToString() + "-" + dt.Rows[i]["subcarlogo"].ToString();
+                    string carlogo = "未知";
+                    if (Global.carLogoHashtable.Contains(carlogoKey))
+                    {
+                        carlogo = (string)Global.carLogoHashtable[carlogoKey];
+                    }
+                    dt.Rows[i]["carbrand"] = carlogo;
+                }
+
+                if (SystemUnit.ExportDataToExcel(dt, path))
+                   MessageBox.Show("导出数据成功");
+                else
+                    MessageBox.Show("导出数据失败");
+
+            }
+            
+           ;
         }
     }
 }

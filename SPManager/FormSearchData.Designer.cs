@@ -80,6 +80,7 @@
             this.lblMatchCar = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblUnMatchCar = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnExport = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -129,6 +130,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.SkyBlue;
+            this.panel2.Controls.Add(this.btnExport);
             this.panel2.Controls.Add(this.btnQuery);
             this.panel2.Controls.Add(this.checkBoxLeaveTime);
             this.panel2.Controls.Add(this.checkBoxArriveTime);
@@ -591,6 +593,16 @@
             this.lblUnMatchCar.Size = new System.Drawing.Size(15, 17);
             this.lblUnMatchCar.Text = "0";
             // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(927, 26);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(75, 50);
+            this.btnExport.TabIndex = 20;
+            this.btnExport.Text = "导  出";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
             // FormSearchData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -680,5 +692,6 @@
         private System.Windows.Forms.ToolStripStatusLabel lblMatchCar;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.ToolStripStatusLabel lblUnMatchCar;
+        private System.Windows.Forms.Button btnExport;
     }
 }

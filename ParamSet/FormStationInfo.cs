@@ -35,8 +35,7 @@ namespace ParamSet
             updateParam("stationname", Global.stationInfo.stationName);
             Global.stationInfo.stationCode = textStationCode.Text.Trim();
             updateParam("stationcode", Global.stationInfo.stationCode);
-            Global.nMatchMode = comboMatchMode.SelectedIndex + 1;
-            updateParam("matchmode", Global.nMatchMode.ToString());
+           
             Global.nLogLevel = comboLogLevel.SelectedIndex + 1;
             updateParam("loglevel", Global.nLogLevel.ToString());
             Global.basePicPath = textPicPath.Text.Trim();
@@ -83,6 +82,8 @@ namespace ParamSet
             updateParam("videorecog", Global.nVideoRecogFlag.ToString());
             Global.nVideoRecogType = comboVideoRecogType.SelectedIndex; // 0 算法识别，1 海康超脑，2大华超脑
             updateParam("videorecogtype", Global.nVideoRecogType.ToString());
+            Global.nMatchMode = comboMatchMode.SelectedIndex + 1;
+            updateParam("matchmode", Global.nMatchMode.ToString());
             try
             {
                 if (File.Exists(Application.StartupPath + @"//TH_PLATEID.dll"))

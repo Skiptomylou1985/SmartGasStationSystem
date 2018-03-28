@@ -9,6 +9,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Net;
+using System.Net.Sockets;
 
 namespace SPManager
 {
@@ -188,6 +190,7 @@ namespace SPManager
             GetVideoChanParam();
             GetNozzleParam();
             GetAreaParam();
+            GetEntryAndExit();
             return true;
         }
        
@@ -212,6 +215,8 @@ namespace SPManager
                         Global.stationInfo.stationName = paramValue;
                     else if (paramName == "stationcode")
                         Global.stationInfo.stationCode = paramValue;
+                    else if (paramName == "stationip")
+                        Global.stationInfo.stationIP = paramValue;
                     else if (paramName == "province")
                         Global.stationInfo.province = paramValue;
                     else if (paramName == "city")
@@ -230,8 +235,8 @@ namespace SPManager
                         Global.nCaptureFlag = int.Parse(paramValue);
                     else if (paramName == "videorecog")
                         Global.nVideoRecogFlag = int.Parse(paramValue);
-                    else if (paramName == "videorecogmode")
-                        Global.nVideoRocogMode = int.Parse(paramValue);
+                    else if (paramName == "videorecogtype")
+                        Global.nVideoRecogType = int.Parse(paramValue);
                     else if (paramName == "videosource")
                         Global.nVideoSource = int.Parse(paramValue);
                     else if (paramName == "defaultprovince")
@@ -457,6 +462,26 @@ namespace SPManager
             return true;
 
         }
+
+        private void GetEntryAndExit()
+        {
+            DataTable dt = Global.mysqlHelper.GetDataTable("select * from nozzle_area where nozzleNo in (98,99)");
+            if (dt != null && dt.Rows.Count > 0)
+            {
+               for (int i=0;i<dt.Rows.Count;i++)
+               {
+                    if ("98" == dt.Rows[i]["nozzleNo"].ToString())
+                    {
+                        Global.entryAreaID = int.Parse(dt.Rows[i]["areaid"].ToString());
+                    } else if ("99" == dt.Rows[i]["nozzleNo"].ToString())
+                    {
+                        Global.exitAreaID = int.Parse(dt.Rows[i]["areaid"].ToString());
+                    }
+               }
+            }
+        }
+
+
         private bool InitSocket()
         {
             Global.socketTool = new SocketTool(Global.socketIP, Global.socketPort);
@@ -933,10 +958,20 @@ namespace SPManager
             SPlate.SP_GetAreaCarInfo(pCarOut, areaNo);
             struCarOut = (struCarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(struCarInfoOut));
             Marshal.FreeHGlobal(pCarOut);
-            
-            
             string lic = Encoding.Default.GetString(struCarOut.license,0,getStrLength(struCarOut.license));
-           
+            if (Global.entryAreaID == areaNo)
+            {
+                sendCallbackInfo(struCarOut, 1);
+                showRTBInfo("获取入口车牌：" + lic + " 车辆品牌:" + struCarOut.nCarLogo.ToString() + " 车辆子品牌:" + struCarOut.nSubCarLogo.ToString());
+                return;
+            }else if (Global.exitAreaID == areaNo)
+            {
+                sendCallbackInfo(struCarOut, 2);
+                showRTBInfo("获取出口车牌：" + lic + " 车辆品牌:" + struCarOut.nCarLogo.ToString() + " 车辆子品牌:" + struCarOut.nSubCarLogo.ToString());
+                return;
+            }
+
+
             showRTBInfo("视频流车牌获取区域:" + areaNo.ToString()+"  获取车牌：" + lic+" 车辆品牌:" + struCarOut.nCarLogo.ToString() + " 车辆子品牌:" + struCarOut.nSubCarLogo.ToString());
             for (int i=0;i<Global.arrayAreaCar.Length;i++)
             {   
@@ -1090,6 +1125,7 @@ namespace SPManager
                 //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList arrayNozzleCar:" + i.ToString(), (int)EnumLogLevel.DEBUG));
                 ListViewItem lvi = new ListViewItem();
                 lvi.Text = Global.arrayAreaCar[i].areaNo.ToString();
+                
                 lvi.SubItems.Add(Global.arrayAreaCar[i].license);
                 string carlogoKey = Global.arrayAreaCar[i].carLogo.ToString() + "-" + Global.arrayAreaCar[i].subCarLogo.ToString();
                 string carlogo = "未知";
@@ -1097,18 +1133,84 @@ namespace SPManager
                 {
                     carlogo = (string)Global.carLogoHashtable[carlogoKey];
                 }
-                //lvi.SubItems.Add(Global.nozzleList[i].nozzleCar.carLogo.ToString());
                 lvi.SubItems.Add(carlogo);
-               // lvi.SubItems.Add(Global.arrayAreaCar[i].carLogo.ToString());
-                //lvi.SubItems.Add(Global.arrayAreaCar[i].subCarLogo.ToString());
-                
                 listViewArea.Items.Add(lvi);
             }
             listViewArea.EndUpdate();
 
 
         }
+        private void showCarListTest()
+        {
+            listViewCache.Items.Clear();
+            listViewCache.BeginUpdate();
+            //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList Length:" + Global.arrayNozzleCar.Length.ToString(), (int)EnumLogLevel.DEBUG));
+            for (int i = 0; i < 16; i++)
+            {
+                //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList arrayNozzleCar:" + i.ToString(), (int)EnumLogLevel.DEBUG));
+                ListViewItem lvi = new ListViewItem();
+                lvi.Text = (i+1).ToString();
+                if (i == 0)
+                {
+                    lvi.SubItems.Add("鲁AQ6452");
+                    lvi.SubItems.Add("加油");
+                }else if (i == 4)
+                {
+                    lvi.SubItems.Add("鲁A87J66");
+                    lvi.SubItems.Add("加油");
+                }
+                else if (i == 6)
+                {
+                    lvi.SubItems.Add("鲁A28478");
+                    lvi.SubItems.Add("加油");
+                }
 
+                listViewCache.Items.Add(lvi);
+            }
+            listViewCache.EndUpdate();
+
+            listViewArea.Items.Clear();
+            listViewArea.BeginUpdate();
+            //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList Length:" + Global.arrayNozzleCar.Length.ToString(), (int)EnumLogLevel.DEBUG));
+            for (int i = 0; i < 16; i++)
+            {
+                //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList arrayNozzleCar:" + i.ToString(), (int)EnumLogLevel.DEBUG));
+                ListViewItem lvi = new ListViewItem();
+                lvi.Text = (i + 1).ToString(); ;
+                if (i == 0)
+                {
+                    lvi.SubItems.Add("鲁AQ6452");
+                }
+                else if (i == 4)
+                {
+                    lvi.SubItems.Add("鲁A87J66");
+                }
+                else if (i == 6)
+                {
+                    lvi.SubItems.Add("鲁A28478");
+                }
+                else if (i == 10)
+                {
+                    lvi.SubItems.Add("鲁A7J628");
+                }
+                else if (i == 13)
+                {
+                    lvi.SubItems.Add("鲁A982N6");
+                }
+                //string carlogoKey = Global.arrayAreaCar[i].carLogo.ToString() + "-" + Global.arrayAreaCar[i].subCarLogo.ToString();
+                string carlogo = "未知";
+                
+                //lvi.SubItems.Add(Global.nozzleList[i].nozzleCar.carLogo.ToString());
+               // lvi.SubItems.Add(carlogo);
+                // lvi.SubItems.Add(Global.arrayAreaCar[i].carLogo.ToString());
+                //lvi.SubItems.Add(Global.arrayAreaCar[i].subCarLogo.ToString());
+
+                listViewArea.Items.Add(lvi);
+            }
+            listViewArea.EndUpdate();
+
+
+        }
         private void showNozzleCarList()
         {
             listViewCache.Items.Clear();
@@ -1817,7 +1919,7 @@ namespace SPManager
             int nCurConfidence = 0;
             for (int i=0;i<struCarInfo.nLicenseCount;i++)
             {
-               
+                //string license = System.Text.Encoding.UTF8.GetString(struCarInfo.license[index].license,0,getStrLength(struCarInfo.license[index].license));
                 string license = System.Text.Encoding.Default.GetString(struCarInfo.license[i].license,0,getStrLength(struCarInfo.license[i].license));
                 Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 车牌号：" + 
                     license+" 置信度："+ struCarInfo.license[i].nConfidence.ToString() + " 识别区："+ 
@@ -1836,8 +1938,9 @@ namespace SPManager
 
             if (nCurConfidence > 75)
             {
-                car.license = System.Text.Encoding.Default.GetString(struCarInfo.license[index].license,0,getStrLength(struCarInfo.license[index].license));
-                // car.license = System.Text.Encoding.Default.GetString(struCarInfo.license[index].license,0,);
+                
+                //car.license = System.Text.Encoding.UTF8.GetString(struCarInfo.license[index].license,0,getStrLength(struCarInfo.license[index].license));
+                 car.license = System.Text.Encoding.Default.GetString(struCarInfo.license[index].license,0, getStrLength(struCarInfo.license[index].license));
                 car.licenseColor = struCarInfo.license[index].nColor;
                 car.carColor = struCarInfo.license[index].nCarColor;
                 car.carLogo = struCarInfo.license[index].nCarLogo;
@@ -1928,18 +2031,33 @@ namespace SPManager
 
         private void showMatchRatio()
         {
-            string sqlString = "select count(*) as total from carlog where leavetime > '" + DateTime.Now.ToString("yyyy-MM-dd ") + "00:00:00'";
+            string sqlString = "select max(id) as id from carlog";
             DataTable dt = Global.mysqlHelper.GetDataTable(sqlString);
-            int total = int.Parse(dt.Rows[0]["total"].ToString());
+            Global.nTotalCount = int.Parse(dt.Rows[0]["id"].ToString());
+
+            sqlString = "select count(*) as matchcount from carlog where LENGTH(carnumber) > 5";
+            dt = Global.mysqlHelper.GetDataTable(sqlString);
+            int totalmatch = int.Parse(dt.Rows[0]["matchcount"].ToString());
+
+            if (Global.nTotalCount > 0)
+            {
+                Global.nTotalRatio = (totalmatch * 100) / Global.nTotalCount;
+            }
+
+
+            sqlString = "select count(*) as total from carlog where leavetime > '" + DateTime.Now.ToString("yyyy-MM-dd ") + "00:00:00'";
+            dt = Global.mysqlHelper.GetDataTable(sqlString);
+            Global.nCurrentCount = int.Parse(dt.Rows[0]["total"].ToString());
             sqlString = "select count(*) as matchcount from carlog where LENGTH(carnumber) > 5 and leavetime > '" + DateTime.Now.ToString("yyyy-MM-dd ") + "00:00:00'";
             DataTable dtt = Global.mysqlHelper.GetDataTable(sqlString);
             int match = int.Parse(dtt.Rows[0]["matchcount"].ToString());
-            int ratio = 0;
-            if (total > 0)
+           // int ratio = 0;
+            if (Global.nCurrentCount > 0)
             {
-                ratio = (match * 100) / total;
+                Global.nCurrenrRatio = (match * 100) / Global.nCurrentCount;
             }
-            toolMatchPoint.Text = "当天车辆总数：" + total.ToString() + " 匹配数：" + match.ToString() + " 匹配率:" + ratio.ToString()+"%";
+            toolMatchPoint.Text = "当天车辆总数:" + Global.nCurrentCount.ToString() + "   当天匹配数:" + match.ToString() + "   当天匹配率:" + Global.nCurrenrRatio.ToString()+"%"
+                                    + "   历史车辆总数:" + Global.nTotalCount.ToString() + "   总匹配率:" + Global.nTotalRatio.ToString()+"%";
 
         }
         private void checkSoftUpdate()
@@ -2121,6 +2239,42 @@ namespace SPManager
                 
                 item.ReadOnly = true;
             }
+        }
+
+        private void sendStatusToRemote()
+        {
+            try
+            {
+                //创建负责通信的Socket
+                Socket socketSend = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPAddress ipa = IPAddress.Parse(Global.remoteIP);
+                IPEndPoint point = new IPEndPoint(ipa, Global.remotePort);
+                //获得要连接的远程服务器应用程序的IP地址和端口号
+                socketSend.Connect(point);
+                StationInfo info = new StationInfo();
+                info.StationName = Global.stationInfo.stationName;
+                info.StationCode = Global.stationInfo.stationCode;
+                info.IP = Global.stationInfo.stationIP;
+                info.Status = Global.nStatus;
+                info.CurrentRatio = Global.nCurrenrRatio;
+                info.TotalRatio = Global.nTotalRatio;
+                info.CurrentCount = Global.nCurrentCount;
+                info.TotalCount = Global.nTotalCount;
+                info.SoftVersion = Global.softVersion;
+                string json = JsonHelper.SerializeObject(info);
+                byte[] data = System.Text.Encoding.UTF8.GetBytes(json);
+                byte[] sendbuff = new byte[256];
+                sendbuff[0] = 0xff;
+                sendbuff[1] = 0xff;
+                sendbuff[2] = 0x01;
+                Buffer.BlockCopy(data, 0, sendbuff, 3, data.Length);
+                socketSend.Send(sendbuff, data.Length + 3, SocketFlags.None);
+                socketSend.Close();
+            }
+            catch
+            {
+            }
+
         }
     }
 }

@@ -15,11 +15,18 @@ namespace SPManager
         static extern uint RegisterWindowMessage(string lpString);
         public static uint WM_CARSNAP = RegisterWindowMessage("CARSNAP");    //抓拍
         public static string softVersion;  //软件版本
+        public static string remoteIP = "127.0.0.1";
+        public static int remotePort = 6700;
+        public static int nTotalCount = 0;
+        public static int nCurrentCount = 0;
+        public static int nTotalRatio = 0;
+        public static int nCurrenrRatio = 0;
+        public static int nStatus = 0;
         public static int nRunMode = 4;//运行模式，1，抓图实时识别，无视频流 2、海康超脑 3、大华超脑 4、多路视频流识别
         public static int nCaptureFlag = 1;  //抓拍使能; 0 关闭 1开启
         public static int nVideoRecogFlag = 1; //视频识别是否开启，0 关闭，1开启
         public static int nVideoSource = 1;  //视频来源，1 海康 2 大华 3 科达
-        public static int nVideoRocogMode = 1;//视频识别模式， 1 文通算法识别， 2 NVR识别
+        public static int nVideoRecogType = 1;//视频识别模式， 1 文通算法识别， 2 NVR识别
         public static string defaultProvice = "鲁"; //文通识别算法默认省份
         public static int nMaxCarInSingleArea = 2; //单个识别区最多车牌数
         public static DateTime updateTime;  
