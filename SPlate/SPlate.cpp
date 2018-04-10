@@ -702,6 +702,7 @@ SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 	carOutCache.nPicType = 0;
 	carOutCache.nPicWidth = width;
 	carOutCache.nVideoChannel = nozzleInfo[index].videoChan;
+	carOutCache.nPicLenth = lenth;
 	memcpy(carOutCache.pic, pBuffer, lenth);
 
 	int licIndex = 0;

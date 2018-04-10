@@ -231,6 +231,12 @@ namespace SPServer
 
         private void btnTest_Click(object sender, EventArgs e)
         {
+            string path = Application.StartupPath;
+            using (FileStream file = new FileStream("c://test.jpg", FileMode.Open))
+            {
+                Image img = Image.FromStream(file);
+                img.Save("C://images//test.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
         }
 
         private void checkLog_CheckedChanged(object sender, EventArgs e)
@@ -260,6 +266,30 @@ namespace SPServer
             this.richTextLog.Select(this.richTextLog.TextLength, 0);
             //滚动到控件光标处
             this.richTextLog.ScrollToCaret();
+        }
+
+        Point pt;
+        bool moves = true;
+        private void button1_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void button1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                int px = Cursor.Position.X - pt.X;
+                int py = Cursor.Position.Y - pt.Y;
+                button1.Location = new Point(button1.Location.X + px, button1.Location.Y + py);
+                pt = Cursor.Position;
+                moves = false;
+            }
+        }
+
+        private void button1_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
         }
     }
 }

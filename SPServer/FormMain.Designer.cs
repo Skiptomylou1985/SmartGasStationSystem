@@ -34,6 +34,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkAutoFlush = new System.Windows.Forms.CheckBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.comboStauts = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -41,15 +42,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.dgvStation = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.timerGetInfo = new System.Windows.Forms.Timer(this.components);
-            this.timerShowData = new System.Windows.Forms.Timer(this.components);
-            this.checkAutoFlush = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnTest = new System.Windows.Forms.Button();
             this.checkLog = new System.Windows.Forms.CheckBox();
             this.richTextLog = new System.Windows.Forms.RichTextBox();
-            this.btnTest = new System.Windows.Forms.Button();
+            this.timerGetInfo = new System.Windows.Forms.Timer(this.components);
+            this.timerShowData = new System.Windows.Forms.Timer(this.components);
             this.timerShowLog = new System.Windows.Forms.Timer(this.components);
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -59,6 +61,7 @@
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -72,19 +75,20 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1548, 936);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1444, 882);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1548, 936);
+            this.tabControl1.Size = new System.Drawing.Size(1444, 882);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -93,7 +97,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1540, 910);
+            this.tabPage1.Size = new System.Drawing.Size(1436, 856);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "实时信息";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -110,7 +114,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1534, 904);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1430, 850);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // panel1
@@ -126,8 +130,19 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1534, 40);
+            this.panel1.Size = new System.Drawing.Size(1430, 40);
             this.panel1.TabIndex = 0;
+            // 
+            // checkAutoFlush
+            // 
+            this.checkAutoFlush.AutoSize = true;
+            this.checkAutoFlush.Location = new System.Drawing.Point(52, 12);
+            this.checkAutoFlush.Name = "checkAutoFlush";
+            this.checkAutoFlush.Size = new System.Drawing.Size(96, 16);
+            this.checkAutoFlush.TabIndex = 5;
+            this.checkAutoFlush.Text = "开启自动刷新";
+            this.checkAutoFlush.UseVisualStyleBackColor = true;
+            this.checkAutoFlush.CheckedChanged += new System.EventHandler(this.checkAutoFlush_CheckedChanged);
             // 
             // btnSearch
             // 
@@ -187,7 +202,7 @@
             this.dgvStation.Margin = new System.Windows.Forms.Padding(0);
             this.dgvStation.Name = "dgvStation";
             this.dgvStation.RowTemplate.Height = 23;
-            this.dgvStation.Size = new System.Drawing.Size(1534, 864);
+            this.dgvStation.Size = new System.Drawing.Size(1430, 810);
             this.dgvStation.TabIndex = 1;
             // 
             // tabPage2
@@ -196,32 +211,10 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1540, 910);
+            this.tabPage2.Size = new System.Drawing.Size(1436, 856);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "运行日志";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // timerGetInfo
-            // 
-            this.timerGetInfo.Enabled = true;
-            this.timerGetInfo.Interval = 1000;
-            this.timerGetInfo.Tick += new System.EventHandler(this.timerGetInfo_Tick);
-            // 
-            // timerShowData
-            // 
-            this.timerShowData.Interval = 3000;
-            this.timerShowData.Tick += new System.EventHandler(this.timerShow_Tick);
-            // 
-            // checkAutoFlush
-            // 
-            this.checkAutoFlush.AutoSize = true;
-            this.checkAutoFlush.Location = new System.Drawing.Point(52, 12);
-            this.checkAutoFlush.Name = "checkAutoFlush";
-            this.checkAutoFlush.Size = new System.Drawing.Size(96, 16);
-            this.checkAutoFlush.TabIndex = 5;
-            this.checkAutoFlush.Text = "开启自动刷新";
-            this.checkAutoFlush.UseVisualStyleBackColor = true;
-            this.checkAutoFlush.CheckedChanged += new System.EventHandler(this.checkAutoFlush_CheckedChanged);
             // 
             // tableLayoutPanel3
             // 
@@ -235,7 +228,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1534, 904);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1430, 850);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // panel2
@@ -247,8 +240,18 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1534, 40);
+            this.panel2.Size = new System.Drawing.Size(1430, 40);
             this.panel2.TabIndex = 1;
+            // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(142, 8);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(75, 23);
+            this.btnTest.TabIndex = 6;
+            this.btnTest.Text = "button1";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // checkLog
             // 
@@ -267,29 +270,52 @@
             this.richTextLog.Location = new System.Drawing.Point(0, 40);
             this.richTextLog.Margin = new System.Windows.Forms.Padding(0);
             this.richTextLog.Name = "richTextLog";
-            this.richTextLog.Size = new System.Drawing.Size(1534, 864);
+            this.richTextLog.Size = new System.Drawing.Size(1430, 810);
             this.richTextLog.TabIndex = 2;
             this.richTextLog.Text = "";
             // 
-            // btnTest
+            // timerGetInfo
             // 
-            this.btnTest.Location = new System.Drawing.Point(142, 8);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(75, 23);
-            this.btnTest.TabIndex = 6;
-            this.btnTest.Text = "button1";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            this.timerGetInfo.Enabled = true;
+            this.timerGetInfo.Interval = 1000;
+            this.timerGetInfo.Tick += new System.EventHandler(this.timerGetInfo_Tick);
+            // 
+            // timerShowData
+            // 
+            this.timerShowData.Interval = 3000;
+            this.timerShowData.Tick += new System.EventHandler(this.timerShow_Tick);
             // 
             // timerShowLog
             // 
             this.timerShowLog.Tick += new System.EventHandler(this.timerShowLog_Tick);
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.button1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(1436, 856);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "测试页面";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(176, 77);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
+            this.button1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.button1_MouseMove);
+            this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button1_MouseUp);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1548, 936);
+            this.ClientSize = new System.Drawing.Size(1444, 882);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "FormMain";
             this.Text = "富林思博站点监控平台";
@@ -307,6 +333,7 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -334,6 +361,8 @@
         private System.Windows.Forms.RichTextBox richTextLog;
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Timer timerShowLog;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Button button1;
     }
 }
 

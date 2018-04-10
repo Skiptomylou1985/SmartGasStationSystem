@@ -324,7 +324,7 @@ namespace ParamSet
         {
             FormNVR formnvr = new FormNVR();
             formnvr.ShowDialog();
-            GetNVRListFromDB();
+            GetParamFromDB();
             treeMain.Nodes[0].Nodes.Clear();
             foreach (ClsNVRInfo nvr in Global.nvrList)
             {

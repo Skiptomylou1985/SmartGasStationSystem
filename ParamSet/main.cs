@@ -146,6 +146,7 @@ namespace ParamSet
             string queryString = "select * from vch ";
             try
             {
+                Global.videoList.Clear();
                 DataTable dt = Global.mysqlHelper.GetDataTable(queryString);
                 if (dt == null || dt.Rows.Count < 1)
                 {
@@ -192,6 +193,7 @@ namespace ParamSet
             string queryString = "select * from analysisarea";
             try
             {
+                Global.recogAreaList.Clear();
                 DataTable dt = Global.mysqlHelper.GetDataTable(queryString);
                 if (dt == null || dt.Rows.Count < 1)
                 {
@@ -234,6 +236,7 @@ namespace ParamSet
             string queryString = "select * from nozzle";
             try
             {
+                Global.nozzleList.Clear();
                 DataTable dt = Global.mysqlHelper.GetDataTable(queryString);
                 if (dt == null || dt.Rows.Count < 1)
                 {

@@ -15,6 +15,7 @@ namespace SPManager
         static extern uint RegisterWindowMessage(string lpString);
         public static uint WM_CARSNAP = RegisterWindowMessage("CARSNAP");    //抓拍
         public static string softVersion;  //软件版本
+        public static string dllEncoder = "utf8"; //
         public static string remoteIP = "127.0.0.1";
         public static int remotePort = 6700;
         public static int nTotalCount = 0;

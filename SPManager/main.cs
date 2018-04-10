@@ -142,7 +142,8 @@ namespace SPManager
                 Global.LogServer.Add(new LogInfo("Debug", "main->InitDatabase param value" +
                    Global.iniPath + " " + info.type + " " + info.ip + " " + info.dbname + " " + info.username + " " + info.password, (int)EnumLogLevel.DEBUG));
                 Global.mysqlHelper = new MysqlHelper(info);
-               
+                
+                Global.dllEncoder = INIUnit.GetINIValue(Global.iniPath, "main", "encode");
             }
             catch (System.Exception ex)
             {
@@ -805,7 +806,8 @@ namespace SPManager
                             if (Global.arrayAreaCar[areaIndex].matchFlag == 0 && Global.arrayAreaCar[areaIndex].license != ""
                                 && LicenseIsMatched(Global.arrayAreaCar[areaIndex].license, nozzleNo) == 0)
                             {
-                                Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 匹配到车辆，车牌：" +
+                                showRTBInfo("油枪号：" + nozzleNo.ToString() + " 视频流主识别区匹配车牌成功，识别区：" + areaIndex.ToString());
+                                Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 主识别区匹配到车辆，车牌：" +
                                 Global.arrayAreaCar[areaIndex].license + " 识别区：" + areaIndex.ToString(), (int)EnumLogLevel.DEBUG));
                                 nozzle.bMatched = true;
                                 Global.arrayAreaCar[areaIndex].matchFlag = 1;
@@ -834,6 +836,9 @@ namespace SPManager
                             if (Global.arrayAreaCar[areaIndex].matchFlag == 0 && Global.arrayAreaCar[areaIndex].license != ""
                         && LicenseIsMatched(Global.arrayAreaCar[areaIndex].license, nozzleNo) == 0)
                             {
+                                showRTBInfo("油枪号：" + nozzleNo.ToString() + " 视频流副识别区匹配车牌成功，识别区：" + areaIndex.ToString());
+                                Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 副识别区匹配到车辆，车牌：" +
+                               Global.arrayAreaCar[areaIndex].license + " 识别区：" + areaIndex.ToString(), (int)EnumLogLevel.DEBUG));
                                 nozzle.bMatched = true;
                                 Global.arrayAreaCar[areaIndex].matchFlag = 1;
                                 Global.arrayAreaCar[areaIndex].nozzleNo = nozzleNo;
@@ -946,7 +951,7 @@ namespace SPManager
                 pic.picHeight = struCarOut.nPicHeight;
                 pic.picType = struCarOut.nPicType;
                 Global.picWork.Add(pic);
-                Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll_Array: 车辆图片入队列,图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
+                Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll_Array: 车辆图片入队列,图片类型:"+ struCarOut.nPicType.ToString()+"  图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
 
             }
         }
@@ -985,7 +990,6 @@ namespace SPManager
             }
             //if (checkRepeatLicense(struCarOut.nAreaNo, license))
             //{
-            //    return;
             //}
             if (checkDBcarRepeat(lic))
             {
@@ -1805,30 +1809,34 @@ namespace SPManager
             {
                 IntPtr pCarOut = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(struCarInfoOut_V2)));
                 Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 开始抓拍，油枪号：" + nozzleNo.ToString(), (int)EnumLogLevel.DEBUG));
-                showRTBInfo("Main->ProcSnapFromDIT_Capture_V2: 开始抓拍，油枪号：" + nozzleNo.ToString());
+                showRTBInfo("油枪号：" + nozzleNo.ToString()+ " 开始抓拍");
                 SPlate.SP_Capture(nozzleNo, pCarOut);
                 struCarInfoOut_V2 struCarOut;
                 struCarOut = (struCarInfoOut_V2)Marshal.PtrToStructure(pCarOut, typeof(struCarInfoOut_V2));
                 Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 识别车牌数量：" + struCarOut.nLicenseCount.ToString(), (int)EnumLogLevel.DEBUG));
-                showRTBInfo("Main->ProcSnapFromDIT_Capture_V2: 识别车牌数量：" + struCarOut.nLicenseCount.ToString());
+                showRTBInfo("油枪号：" + nozzleNo.ToString()+" 抓拍完成，识别车牌数量：" + struCarOut.nLicenseCount.ToString());
                 Marshal.FreeHGlobal(pCarOut);
 
                 ClsCarInfo car = MatchCar(struCarOut, nozzleNo);
-                if (car != null) //抓拍未匹配到车辆
+                if (car != null) //抓拍匹配到车辆
                 {
-                    showRTBInfo("匹配抓拍车牌:" + car.license +" 车辆品牌:"+car.carLogo.ToString() + " 车辆子品牌:"+ car.subCarLogo.ToString());
+                    showRTBInfo("油枪号：" + nozzleNo.ToString() + " 匹配抓拍车牌:" + car.license +" 车辆品牌:"+car.carLogo.ToString() + " 车辆子品牌:"+ car.subCarLogo.ToString());
                     Global.nozzleList[index].nozzleCar = car;
                     Global.nozzleList[index].nozzleCar.matchFlag = nozzleStatus;
                 }
                 else if (Global.nVideoRecogFlag == 1) //如开启了视频识别，从视频识别结果中查找车牌
                 {
+                    showRTBInfo("油枪号：" + nozzleNo.ToString() + " 抓拍匹配失败，从视频流车牌中匹配车牌");
                     car = FindCarInAreaCarList(nozzleNo);
                     if (car != null)
                     {
-                        showRTBInfo("抓拍匹配失败，从视频流车牌中匹配车牌:" + car.license);
+                        showRTBInfo("油枪号：" + nozzleNo.ToString() + " 视频流匹配车牌成功，匹配车牌:" + car.license);
                         Global.nozzleList[index].nozzleCar = car;
                         Global.nozzleList[index].nozzleCar.matchFlag = nozzleStatus;
-                        
+                    }
+                    else
+                    {
+                        showRTBInfo("油枪号：" + nozzleNo.ToString() + " 视频流匹配车牌失败");
                     }
                 }
                 if (car != null)
@@ -1848,12 +1856,15 @@ namespace SPManager
                 //pic.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
                 pic.picPath = Global.basePicPath + DateTime.Now.ToString("yyyyMMdd") + @"\\";
                 // Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath+ pic.picName, (int)EnumLogLevel.DEBUG));
-                pic.picName = DateTime.Now.ToString("HHmmss") + ".jpg";
+                pic.picName = Global.nozzleList[index].nozzleNo.ToString()+"_"+DateTime.Now.ToString("HHmmss") + ".jpg";
                 pic.picWidth = struCarOut.nPicWidth;
                 pic.picHeight = struCarOut.nPicHeight;
                 pic.picType = struCarOut.nPicType;
                 Global.picWork.Add(pic);
-                Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
+                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 车辆图片入队列,图片长度：" +struCarOut.nPicLenth.ToString(), (int)EnumLogLevel.DEBUG));
+
+                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 车辆图片入队列,图片类型："+ pic.picBufer[0].ToString() + pic.picBufer[1].ToString()+
+                    "图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
             }
             //int index = Global.nozzleMap[nozzleNo];
             
@@ -1872,6 +1883,8 @@ namespace SPManager
 
             
             DateTime dt = DateTime.Now;
+
+            Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2:进入油枪状态判断处理，油枪状态："+ nozzleStatus.ToString(), (int)EnumLogLevel.DEBUG));
             switch (nozzleStatus)
             {
                 case 0:  //不生效 默认开始时间
@@ -1892,11 +1905,12 @@ namespace SPManager
                     Global.nozzleList[index].nozzleCar.leaveTime = dt;
                     break;
                 case 3: //挂枪
-
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2:进入挂枪处理" , (int)EnumLogLevel.DEBUG));
                     Global.nozzleList[index].nozzleCar.endTime = dt;
                     Global.nozzleList[index].nozzleCar.leaveTime = dt;
                     Global.nozzleList[index].nozzleCar.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
                     Global.mysqlHelper.ExecuteSql(Global.nozzleList[index].nozzleCar.toSaveSqlString());
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2:数据存储执行完毕,SQL:"+ Global.nozzleList[index].nozzleCar.toSaveSqlString(), (int)EnumLogLevel.DEBUG));
                     if (Global.nMatchMode == 1 && Global.nozzleList[index].nozzleCar.license != "")
                         sendCallbackInfo(Global.nozzleList[index].nozzleCar, 2);
                     //Global.arrayAreaCar[index].
@@ -1919,8 +1933,17 @@ namespace SPManager
             int nCurConfidence = 0;
             for (int i=0;i<struCarInfo.nLicenseCount;i++)
             {
-                //string license = System.Text.Encoding.UTF8.GetString(struCarInfo.license[index].license,0,getStrLength(struCarInfo.license[index].license));
-                string license = System.Text.Encoding.Default.GetString(struCarInfo.license[i].license,0,getStrLength(struCarInfo.license[i].license));
+                //TODO 编码问题
+                string license;
+                if (Global.dllEncoder == "utf8")
+                {
+                    license = System.Text.Encoding.UTF8.GetString(struCarInfo.license[i].license, 0, getStrLength(struCarInfo.license[i].license));
+                } 
+                else
+                {
+                    license = System.Text.Encoding.Default.GetString(struCarInfo.license[i].license, 0, getStrLength(struCarInfo.license[i].license));
+                }
+               
                 Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_V2: 车牌号：" + 
                     license+" 置信度："+ struCarInfo.license[i].nConfidence.ToString() + " 识别区："+ 
                     struCarInfo.license[i].nAreaNo.ToString(), (int)EnumLogLevel.DEBUG));
@@ -1938,9 +1961,16 @@ namespace SPManager
 
             if (nCurConfidence > 75)
             {
+                if (Global.dllEncoder == "utf8")
+                {
+                    car.license = System.Text.Encoding.UTF8.GetString(struCarInfo.license[index].license, 0, getStrLength(struCarInfo.license[index].license));
+                }
+                else
+                {
+                    car.license = System.Text.Encoding.Default.GetString(struCarInfo.license[index].license, 0, getStrLength(struCarInfo.license[index].license));
+                }
+
                 
-                //car.license = System.Text.Encoding.UTF8.GetString(struCarInfo.license[index].license,0,getStrLength(struCarInfo.license[index].license));
-                 car.license = System.Text.Encoding.Default.GetString(struCarInfo.license[index].license,0, getStrLength(struCarInfo.license[index].license));
                 car.licenseColor = struCarInfo.license[index].nColor;
                 car.carColor = struCarInfo.license[index].nCarColor;
                 car.carLogo = struCarInfo.license[index].nCarLogo;
@@ -2031,30 +2061,56 @@ namespace SPManager
 
         private void showMatchRatio()
         {
-            string sqlString = "select max(id) as id from carlog";
-            DataTable dt = Global.mysqlHelper.GetDataTable(sqlString);
-            Global.nTotalCount = int.Parse(dt.Rows[0]["id"].ToString());
-
-            sqlString = "select count(*) as matchcount from carlog where LENGTH(carnumber) > 5";
-            dt = Global.mysqlHelper.GetDataTable(sqlString);
-            int totalmatch = int.Parse(dt.Rows[0]["matchcount"].ToString());
-
-            if (Global.nTotalCount > 0)
+            int match = 0;
+            try
             {
-                Global.nTotalRatio = (totalmatch * 100) / Global.nTotalCount;
+                string sqlString = "select max(id) as id from carlog";
+                DataTable dt = Global.mysqlHelper.GetDataTable(sqlString);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    Global.nTotalCount = int.Parse(dt.Rows[0]["id"].ToString());
+                }
+
+
+                sqlString = "select count(*) as matchcount from carlog where LENGTH(carnumber) > 5";
+                dt = Global.mysqlHelper.GetDataTable(sqlString);
+                int totalmatch = 0;
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    totalmatch = int.Parse(dt.Rows[0]["matchcount"].ToString());
+                }
+
+
+                if (Global.nTotalCount > 0)
+                {
+                    Global.nTotalRatio = (totalmatch * 100) / Global.nTotalCount;
+                }
+
+
+                sqlString = "select count(*) as total from carlog where leavetime > '" + DateTime.Now.ToString("yyyy-MM-dd ") + "00:00:00'";
+                dt = Global.mysqlHelper.GetDataTable(sqlString);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    Global.nCurrentCount = int.Parse(dt.Rows[0]["total"].ToString());
+                }
+
+                sqlString = "select count(*) as matchcount from carlog where LENGTH(carnumber) > 5 and leavetime > '" + DateTime.Now.ToString("yyyy-MM-dd ") + "00:00:00'";
+                dt = Global.mysqlHelper.GetDataTable(sqlString);
+                
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    match = int.Parse(dt.Rows[0]["matchcount"].ToString());
+                }
+
+                // int ratio = 0;
+                if (Global.nCurrentCount > 0)
+                {
+                    Global.nCurrenrRatio = (match * 100) / Global.nCurrentCount;
+                }
             }
-
-
-            sqlString = "select count(*) as total from carlog where leavetime > '" + DateTime.Now.ToString("yyyy-MM-dd ") + "00:00:00'";
-            dt = Global.mysqlHelper.GetDataTable(sqlString);
-            Global.nCurrentCount = int.Parse(dt.Rows[0]["total"].ToString());
-            sqlString = "select count(*) as matchcount from carlog where LENGTH(carnumber) > 5 and leavetime > '" + DateTime.Now.ToString("yyyy-MM-dd ") + "00:00:00'";
-            DataTable dtt = Global.mysqlHelper.GetDataTable(sqlString);
-            int match = int.Parse(dtt.Rows[0]["matchcount"].ToString());
-           // int ratio = 0;
-            if (Global.nCurrentCount > 0)
+            catch (System.Exception ex)
             {
-                Global.nCurrenrRatio = (match * 100) / Global.nCurrentCount;
+            	
             }
             toolMatchPoint.Text = "当天车辆总数:" + Global.nCurrentCount.ToString() + "   当天匹配数:" + match.ToString() + "   当天匹配率:" + Global.nCurrenrRatio.ToString()+"%"
                                     + "   历史车辆总数:" + Global.nTotalCount.ToString() + "   总匹配率:" + Global.nTotalRatio.ToString()+"%";
@@ -2184,17 +2240,34 @@ namespace SPManager
 
         private void showRTBInfo(string infoString)
         {
-            if (richTextBoxDIT.Lines.Length > 500)
+//             if (richTextBoxDIT.Lines.Length > 2000)
+//             {
+//                 richTextBoxDIT.Clear();
+//             }
+//             richTextBoxDIT.AppendText(infoString + "\n");
+//             //让文本框获取焦点
+//             this.richTextBoxDIT.Focus();
+//             //设置光标的位置到文本尾
+//             this.richTextBoxDIT.Select(this.richTextBoxDIT.TextLength, 0);
+//             //滚动到控件光标处
+//             this.richTextBoxDIT.ScrollToCaret();
+
+
+            if (RTBLog.Lines.Length > 2000)
             {
-                richTextBoxDIT.Clear();
+                List<string> temp = new List<string>();
+                temp.AddRange(RTBLog.Lines);
+                RTBLog.Lines = temp.GetRange(temp.Count - 500, 500).ToArray();
+                
+                //RTBLog.Clear();
             }
-            richTextBoxDIT.AppendText(infoString + "\n");
+            RTBLog.AppendText(infoString + "\n");
             //让文本框获取焦点
-            this.richTextBoxDIT.Focus();
+            this.RTBLog.Focus();
             //设置光标的位置到文本尾
-            this.richTextBoxDIT.Select(this.richTextBoxDIT.TextLength, 0);
+            this.RTBLog.Select(this.richTextBoxDIT.TextLength, 0);
             //滚动到控件光标处
-            this.richTextBoxDIT.ScrollToCaret();
+            this.RTBLog.ScrollToCaret();
         }
         private int getStrLength(byte[] src)
         {

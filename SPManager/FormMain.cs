@@ -48,6 +48,7 @@ namespace SPManager
             int ret = Init();
             setDGV(dgvShow);
             toolStationName.Text = "站点名称:"+Global.stationInfo.stationName+"   ";
+            comboLogLevel.SelectedIndex = Global.nLogLevel - 1;
             if (ret == 0)
             {
                 SPlate.SP_BeginRecog();
@@ -114,7 +115,7 @@ namespace SPManager
 
         private void btnChangeLogLevel_Click(object sender, EventArgs e)
         {
-            
+            Global.nLogLevel = comboLogLevel.SelectedIndex + 1;
             SPlate.SP_SetLogLevel(comboLogLevel.SelectedIndex + 1);
         }
 
@@ -217,10 +218,16 @@ namespace SPManager
             }
         }
 
+       // private int bas = 0;
         private void btnShowData_Click(object sender, EventArgs e)
         {
             FormSearchData searchData = new FormSearchData();
             searchData.Show();
+//             for (int i=0;i<1000;i++)
+//             {
+//                 bas++;
+//                 showRTBInfo("显示第" + bas.ToString() + "行测试数据");
+//             }
         }
         
         private void timerDataProc_Tick(object sender, EventArgs e)
