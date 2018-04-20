@@ -37,6 +37,9 @@
   <PropertyGroup>
     <ApplicationIcon>display.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -61,16 +64,29 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoardTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BoardTest.Designer.cs">
+      <DependentUpon>BoardTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSearchData.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormSearchData.Designer.cs">
       <DependentUpon>FormSearchData.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSet.Designer.cs">
+      <DependentUpon>FormSet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="sys\ControlBoard.cs" />
     <Compile Include="sys\DataDefine.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
@@ -94,11 +110,17 @@
     <Compile Include="tool\PictureWork.cs" />
     <Compile Include="tool\SocketTool.cs" />
     <Compile Include="tool\winsock.cs" />
+    <EmbeddedResource Include="BoardTest.resx">
+      <DependentUpon>BoardTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSearchData.resx">
       <DependentUpon>FormSearchData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSet.resx">
+      <DependentUpon>FormSet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

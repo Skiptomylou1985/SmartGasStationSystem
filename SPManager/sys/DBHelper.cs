@@ -168,9 +168,43 @@ namespace SPManager
                 return;
             }
         }
+        public int ExecuteSqlGetId(string sqlstr)
+        {
+            if (this.DBConn == null)
+            {
+                Global.LogServer.Add(new LogInfo("Error", "DBUnit:ExecuteSql 数据库连接对象为空", (int)EnumLogLevel.ERROR));
+                return 0;
+            }
+            try
+            {
+                if (this.DBConn.State == System.Data.ConnectionState.Closed)
+                {
+                    this.DBConn.Open();
+                }
+                if (this.DBConn.State == ConnectionState.Open)
+                {
+                    //using(System.Data.IDbCommand cmd = this.DBConn.CreateCommand())
+                    //{
+                    MySqlCommand cmd = new MySqlCommand();
+                    cmd.Connection = this.DBConn;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = sqlstr;
+                    cmd.ExecuteNonQuery();
+                    return (int)cmd.LastInsertedId;
+                    // }                    
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Global.LogServer.Add(new LogInfo("Error", "DBUnit:ExecuteSql 执行sql语句失败！sql: " + sqlstr + "错误信息：" + ex.Message, (int)EnumLogLevel.ERROR));
+                return 0;
+            }
+        }
     }
+}
 
-    public class DBInfo
+public class DBInfo
     {
         public DBInfo(string Type,string DBName,string IP,int Port,string Username,string Password)
         {
@@ -221,4 +255,4 @@ namespace SPManager
         }
         private string _password = "";
     }
-}
+

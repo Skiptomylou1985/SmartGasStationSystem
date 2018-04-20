@@ -15,14 +15,16 @@ namespace SPManager
         static extern uint RegisterWindowMessage(string lpString);
         public static uint WM_CARSNAP = RegisterWindowMessage("CARSNAP");    //抓拍
         public static string softVersion;  //软件版本
-        public static string dllEncoder = "utf8"; //
-        public static string remoteIP = "127.0.0.1";
-        public static int remotePort = 6700;
-        public static int nTotalCount = 0;
-        public static int nCurrentCount = 0;
-        public static int nTotalRatio = 0;
-        public static int nCurrenrRatio = 0;
-        public static int nStatus = 0;
+        public static string dllEncoder = "utf8"; //从动态库获取车牌的编码方式
+        public static int nStationBoardMode = 1;  //站点面板模式 1 运行  2 设置
+        public static int nStationBoardDirection = 1; //站点面板排布方向 1 水平 2 垂直
+        public static string remoteIP = "127.0.0.1"; //远程服务器IP
+        public static int remotePort = 6700; //远程服务器端口
+        public static int nTotalCount = 0;  //车辆总数
+        public static int nCurrentCount = 0; //当天过车量
+        public static int nTotalRatio = 0;   //总匹配率
+        public static int nCurrentRatio = 0; //当天匹配率
+        public static int nStatus = 0;   //当前运行状态
         public static int nRunMode = 4;//运行模式，1，抓图实时识别，无视频流 2、海康超脑 3、大华超脑 4、多路视频流识别
         public static int nCaptureFlag = 1;  //抓拍使能; 0 关闭 1开启
         public static int nVideoRecogFlag = 1; //视频识别是否开启，0 关闭，1开启
@@ -63,10 +65,14 @@ namespace SPManager
         public static Dictionary<int, int> areaMap = new Dictionary<int, int>();
         public static Dictionary<int,int> nozzleMap = new Dictionary<int, int>();
         public static Dictionary<int, int> islandMap = new Dictionary<int, int>();
+        public static Dictionary<string, string> controlMap = new Dictionary<string, string>();
         public static Hashtable carLogoHashtable = new Hashtable();
         public static ClsCarInfo[] arrayAreaCar;
         public static ClsCarInfo[] arrayNozzleCar;
         public static ClsGasIsland[] arrayIsland;
+        public static List<ControlBoard> listControls = new List<ControlBoard>();
+        
+
     }
     
 }

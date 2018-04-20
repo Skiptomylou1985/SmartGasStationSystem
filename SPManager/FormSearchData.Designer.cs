@@ -32,6 +32,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnExport = new System.Windows.Forms.Button();
             this.btnQuery = new System.Windows.Forms.Button();
             this.checkBoxLeaveTime = new System.Windows.Forms.CheckBox();
             this.checkBoxArriveTime = new System.Windows.Forms.CheckBox();
@@ -80,7 +81,6 @@
             this.lblMatchCar = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblUnMatchCar = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnExport = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -151,6 +151,16 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1412, 89);
             this.panel2.TabIndex = 0;
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(927, 26);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(75, 50);
+            this.btnExport.TabIndex = 20;
+            this.btnExport.Text = "导  出";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // btnQuery
             // 
@@ -592,16 +602,6 @@
             this.lblUnMatchCar.Name = "lblUnMatchCar";
             this.lblUnMatchCar.Size = new System.Drawing.Size(15, 17);
             this.lblUnMatchCar.Text = "0";
-            // 
-            // btnExport
-            // 
-            this.btnExport.Location = new System.Drawing.Point(927, 26);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(75, 50);
-            this.btnExport.TabIndex = 20;
-            this.btnExport.Text = "导  出";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // FormSearchData
             // 

@@ -87,6 +87,8 @@ namespace SPManager
                 ret += 1 << 2;
                 //return ret;
             }
+            //TODO 临时返回
+            return ret;
             if (!InitDev())
             {
                 ret += 1 << 4;
@@ -777,7 +779,7 @@ namespace SPManager
                             nozzle.bMatched = false;
                             nozzle.nozzleCar.license = "";
                             nozzle.curStatus = 0;
-                            setDGV(dgvShow);
+                            setRealtimeDGV(dataGridRealtime);
                             //Global.arrayAreaCar[index].
                             break;
                         default:
@@ -1108,7 +1110,20 @@ namespace SPManager
                 ListViewItem lvi = new ListViewItem();
                 lvi.Text = Global.nozzleList[i].nozzleNo.ToString();
                 lvi.SubItems.Add(Global.nozzleList[i].nozzleCar.license);
-                lvi.SubItems.Add(Global.nozzleList[i].curStatus.ToString());
+                if (Global.nozzleList[i].curStatus == 1)
+                {
+                    lvi.SubItems.Add("已提枪");
+                } 
+                else if (Global.nozzleList[i].curStatus == 2)
+                {
+                    lvi.SubItems.Add("加油中");
+                } 
+                else
+                {
+                    lvi.SubItems.Add("空闲");
+                }
+                
+
                 string carlogoKey = Global.nozzleList[i].nozzleCar.carLogo.ToString() +"-"+ Global.nozzleList[i].nozzleCar.subCarLogo.ToString();
                 string carlogo = "未知";
                 if (Global.carLogoHashtable.Contains(carlogoKey))
@@ -1129,6 +1144,15 @@ namespace SPManager
                 //Global.LogServer.Add(new LogInfo("Debug", "main->showCarList arrayNozzleCar:" + i.ToString(), (int)EnumLogLevel.DEBUG));
                 ListViewItem lvi = new ListViewItem();
                 lvi.Text = Global.arrayAreaCar[i].areaNo.ToString();
+                for (int j=0;j<Global.areaList.Count;j++)
+                {
+                    if (Global.arrayAreaCar[i].areaNo == Global.areaList[j].id)
+                    {
+                        lvi.SubItems.Add(Global.areaList[j].videoChannel.ToString());
+                        lvi.SubItems.Add(Global.areaList[j].videoLaneNo.ToString());
+                        break;
+                    }
+                }
                 
                 lvi.SubItems.Add(Global.arrayAreaCar[i].license);
                 string carlogoKey = Global.arrayAreaCar[i].carLogo.ToString() + "-" + Global.arrayAreaCar[i].subCarLogo.ToString();
@@ -1918,7 +1942,7 @@ namespace SPManager
                     Global.nozzleList[index].nozzleCar.matchFlag = 0;
                     Global.nozzleList[index].nozzleCar.carLogo = 0;
                     Global.nozzleList[index].nozzleCar.subCarLogo = 0;
-                    setDGV(dgvShow);
+                    setRealtimeDGV(dataGridRealtime);
                     break;
                 default:
                     break;
@@ -2105,15 +2129,19 @@ namespace SPManager
                 // int ratio = 0;
                 if (Global.nCurrentCount > 0)
                 {
-                    Global.nCurrenrRatio = (match * 100) / Global.nCurrentCount;
+                    Global.nCurrentRatio = (match * 100) / Global.nCurrentCount;
                 }
             }
             catch (System.Exception ex)
             {
             	
             }
-            toolMatchPoint.Text = "当天车辆总数:" + Global.nCurrentCount.ToString() + "   当天匹配数:" + match.ToString() + "   当天匹配率:" + Global.nCurrenrRatio.ToString()+"%"
-                                    + "   历史车辆总数:" + Global.nTotalCount.ToString() + "   总匹配率:" + Global.nTotalRatio.ToString()+"%";
+
+            lblTotalCount.Text = Global.nTotalCount.ToString();
+            lblCurCount.Text = Global.nCurrentRatio.ToString();
+            lblCurRatio.Text = Global.nCurrentRatio.ToString() + "%";
+//             toolMatchPoint.Text = "当天车辆总数:" + Global.nCurrentCount.ToString() + "   当天匹配数:" + match.ToString() + "   当天匹配率:" + Global.nCurrenrRatio.ToString()+"%"
+//                                     + "   历史车辆总数:" + Global.nTotalCount.ToString() + "   总匹配率:" + Global.nTotalRatio.ToString()+"%";
 
         }
         private void checkSoftUpdate()
@@ -2230,9 +2258,12 @@ namespace SPManager
             //listViewCache.Columns.Add("车辆子品牌", 80);
             listViewArea.View = View.Details;
             listViewArea.Columns.Add("识别区号", 80);
+            listViewArea.Columns.Add("视频通道", 80);
+            listViewArea.Columns.Add("子识别区", 80);
             //listViewCache.Columns.Add("识别区", 60);
             listViewArea.Columns.Add("车牌", 100);
             listViewArea.Columns.Add("车辆品牌型号", 160);
+            
             // listViewCache.Columns.Add("当前油枪", 60);
            // listViewArea.Columns.Add("车辆子品牌", 100);
 
@@ -2257,6 +2288,7 @@ namespace SPManager
             {
                 List<string> temp = new List<string>();
                 temp.AddRange(RTBLog.Lines);
+                RTBLog.Clear();
                 RTBLog.Lines = temp.GetRange(temp.Count - 500, 500).ToArray();
                 
                 //RTBLog.Clear();
@@ -2265,7 +2297,7 @@ namespace SPManager
             //让文本框获取焦点
             this.RTBLog.Focus();
             //设置光标的位置到文本尾
-            this.RTBLog.Select(this.richTextBoxDIT.TextLength, 0);
+            this.RTBLog.Select(this.RTBLog.TextLength, 0);
             //滚动到控件光标处
             this.RTBLog.ScrollToCaret();
         }
@@ -2281,7 +2313,7 @@ namespace SPManager
             }
             return lenth;
         }
-        public void setDGV(DataGridView dgv)
+        public void setRealtimeDGV(DataGridView dgv)
         {
             string sql = "select id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath from carlog order by id desc limit 0,100";
             DataTable dt = Global.mysqlHelper.GetDataTable(sql);
@@ -2329,7 +2361,7 @@ namespace SPManager
                 info.StationCode = Global.stationInfo.stationCode;
                 info.IP = Global.stationInfo.stationIP;
                 info.Status = Global.nStatus;
-                info.CurrentRatio = Global.nCurrenrRatio;
+                info.CurrentRatio = Global.nCurrentRatio;
                 info.TotalRatio = Global.nTotalRatio;
                 info.CurrentCount = Global.nCurrentCount;
                 info.TotalCount = Global.nTotalCount;
@@ -2349,5 +2381,173 @@ namespace SPManager
             }
 
         }
+        public DataTable queryData(string columns, bool limit)
+        {
+            string arriveBegin = dateArriveBegin.Value.ToString("yyyy-MM-dd") + timeArriveBegin.Value.ToString(" HH:mm:ss");
+            string arriveEnd = dateArriveEnd.Value.ToString("yyyy-MM-dd") + timeArriveEnd.Value.ToString(" HH:mm:ss");
+            string leaveBegin = dateLeaveBegin.Value.ToString("yyyy-MM-dd") + timeLeaveBegin.Value.ToString(" HH:mm:ss");
+            string leaveEnd = dateLeaveEnd.Value.ToString("yyyy-MM-dd") + timeLeaveEnd.Value.ToString(" HH:mm:ss");
+            StringBuilder sbQuery = new StringBuilder();
+            sbQuery.Append("select ");
+            sbQuery.Append(columns);
+            sbQuery.Append(" from carlog");
+            sbQuery.Append(" where 1 = 1");
+            if (textLicense.Text.Trim().Length > 0)
+            {
+                sbQuery.Append(" and carnumber like '%" + textLicense.Text.Trim() + "%'");
+            }
+            if (checkBoxArriveTime.Checked)
+            {
+                sbQuery.Append(" and (arrivetime between '" + arriveBegin + "' and '" + arriveEnd + "')");
+            }
+            if (checkBoxLeaveTime.Checked)
+            {
+                sbQuery.Append(" and (leavetime between '" + leaveBegin + "' and '" + leaveEnd + "')");
+            }
+            if (comboNozzle.SelectedIndex > 0)
+            {
+                sbQuery.Append(" and nozzleno = " + comboNozzle.Text);
+            }
+            sbQuery.Append(" order by leavetime desc");
+            if (limit)
+            {
+                sbQuery.Append("  limit 0,500");
+            }
+            return Global.mysqlHelper.GetDataTable(sbQuery.ToString());
+
+        }
+        public void setSearchDGV(DataGridView dgv)
+        {
+
+            dgv.Columns[0].HeaderText = "序号";
+            dgv.Columns[1].HeaderText = "车牌号";
+            dgv.Columns[2].HeaderText = "油枪号";
+            dgv.Columns[3].HeaderText = "油类型";
+            dgv.Columns[4].HeaderText = "进站时间";
+            dgv.Columns[5].HeaderText = "加油时间";
+            dgv.Columns[6].HeaderText = "出站时间";
+            dgv.Columns[7].HeaderText = "车辆品牌";
+            dgv.Columns[8].HeaderText = "车辆颜色";
+            dgv.Columns[9].Visible = false;
+            dgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //dgv.AllowUserToAddRows = false;
+            //dgv.AllowUserToResizeRows = false;
+            foreach (DataGridViewColumn item in dgv.Columns)
+            {
+                item.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                item.ReadOnly = true;
+            }
+        }
+        private void FlushSearchDataDetailBoard()
+        {
+            lblLicense.Text = "";
+            lblNozzleNo.Text = "";
+            lblOilType.Text = "";
+            lblArriveTime.Text = "";
+            lblLeaveTime.Text = "";
+            lblCarLogo.Text = "";
+            pictureBoxArrive.Image = null;
+            pictureBoxLeave.Image = null;
+            pictureBoxPump.Image = null;
+        }
+        private void SetStationBoardControls(string linkkind,string controlName,bool bMustShow)
+        {
+            
+//             Control control = (Control)this.GetType().GetField(controlName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.IgnoreCase).GetValue(this);
+//             if (control == null)
+//             {
+//                 return;
+//             }
+            FormSet set = new FormSet(linkkind, bMustShow);
+            DialogResult dr = set.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                for (int i=0;i<Global.listControls.Count;i++)
+                {
+                    if (Global.listControls[i].ControlName == controlName)
+                    {
+                        Global.listControls[i].Visible = set.bShow;
+                        Global.listControls[i].LinkIndex = int.Parse(set.Value);
+                        Global.listControls[i].LinkKind = linkkind;
+                       // Global.listControls[i].ShowText = 
+                    }
+                }
+            }
+        }
+
+        private void ControlMove(Control con, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                int px = Cursor.Position.X - pt.X;
+                int py = Cursor.Position.Y - pt.Y;
+                con.Location = new Point(con.Location.X + px, con.Location.Y + py);
+                pt = Cursor.Position;
+                moves = false;
+            }
+
+        }
+        private void EnumControls(Control cointainer,int level,int parentid)
+        {
+            foreach (Control con in cointainer.Controls)
+            {
+                ControlBoard cb = new ControlBoard();
+                cb.LocationX = con.Location.X;
+                cb.LocationY = con.Location.Y;
+                cb.ShowText = con.Text.Trim();
+                cb.Visible = con.Visible;
+                cb.Editable = con.Enabled;
+                cb.BaseColor = con.BackColor.ToString();
+                cb.ControlName = con.Name;
+                cb.ControlType = con.GetType().ToString();
+                cb.level = level;
+                cb.ParentId = parentid;
+                cb.id = Global.mysqlHelper.ExecuteSqlGetId(cb.getInsertSQL());
+                if (cb.Visible)
+                {
+                    EnumControls(con, level + 1,cb.id);
+                }
+            }
+        }
+
+        private void InitBoardControls()
+        {
+            string sql = "select * from board_param where name = ";
+            if (Global.nStationBoardDirection == 1)
+                sql = sql + "'StationBoardHorizon'";
+            else
+                sql = sql + "'StationBoardVertical'";
+            DataTable dt = Global.mysqlHelper.GetDataTable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                ControlBoard cb = new ControlBoard(dt.Rows[0]);
+                Global.listControls.Add(cb);
+                GetControlByParentId(cb.id);
+                
+            }
+        }
+
+        private void GetControlByParentId(int parentid)
+        {
+            string sql = "select * from board_param where parentid = " + parentid.ToString();
+            DataTable dt = Global.mysqlHelper.GetDataTable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ControlBoard cb = new ControlBoard(dr);
+                    Global.listControls.Add(cb);
+                    if (cb.LinkIndex > 0)
+                    {
+                        Global.controlMap.Add(cb.LinkKind + cb.LinkIndex.ToString(), cb.ControlName);
+                    }
+                    GetControlByParentId(cb.id);
+                }
+            }
+
+        }
+
     }
+
 }

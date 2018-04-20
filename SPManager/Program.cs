@@ -31,6 +31,7 @@ namespace SPManager
             else
             {
                 Application.Run(new FormMain());
+               // Application.Run(new BoardTest());
             }
         }
     }

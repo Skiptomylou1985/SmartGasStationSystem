@@ -175,7 +175,7 @@ HCNETSDK_API BOOL NET_DVR_Cleanup()
 	write_log_file("NET_DVR_Cleanup Begin", strlen("NET_DVR_Cleanup Begin"));
 	socketIsConnected = false;
 	bReconnetSocket = false;
-	msgCallBack_V31 = nullptr;
+	//msgCallBack_V31 = nullptr;
 	if (NULL != socketThreadHwd)
 	{
 		TerminateThread((HANDLE)socketThreadHwd, NULL);
@@ -196,6 +196,7 @@ HCNETSDK_API BOOL NET_DVR_Cleanup()
 }
 HCNETSDK_API LONG NET_DVR_Login_V30(char  *sDVRIP,WORD wDVRPort,char  *sUserName,char  *sPassWord,LPNET_DVR_DEVICEINFO_V30 lpDeviceInfo)
 {
+	write_log_file("NET_DVR_Login_V30 Begin", strlen("NET_DVR_Login_V30 Begin"));
 	memcpy(ip, sDVRIP, strlen(sDVRIP));
 	port = wDVRPort;
 	sclient = getSocketConnect(sDVRIP, wDVRPort);

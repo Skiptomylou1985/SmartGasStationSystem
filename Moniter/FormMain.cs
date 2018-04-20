@@ -34,7 +34,7 @@ namespace Kill
         public FormMain()
         {
             InitializeComponent();
-            
+            this.Visible = false;
         }
         protected override void DefWndProc(ref Message m)
         {

@@ -47,11 +47,11 @@
             this.btnTest = new System.Windows.Forms.Button();
             this.checkLog = new System.Windows.Forms.CheckBox();
             this.richTextLog = new System.Windows.Forms.RichTextBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.timerGetInfo = new System.Windows.Forms.Timer(this.components);
             this.timerShowData = new System.Windows.Forms.Timer(this.components);
             this.timerShowLog = new System.Windows.Forms.Timer(this.components);
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -75,7 +75,7 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1444, 882);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1436, 874);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tabControl1
@@ -88,7 +88,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1444, 882);
+            this.tabControl1.Size = new System.Drawing.Size(1436, 874);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -97,7 +97,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1436, 856);
+            this.tabPage1.Size = new System.Drawing.Size(1428, 848);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "实时信息";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -114,7 +114,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1430, 850);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1422, 842);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // panel1
@@ -130,7 +130,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1430, 40);
+            this.panel1.Size = new System.Drawing.Size(1422, 40);
             this.panel1.TabIndex = 0;
             // 
             // checkAutoFlush
@@ -202,7 +202,7 @@
             this.dgvStation.Margin = new System.Windows.Forms.Padding(0);
             this.dgvStation.Name = "dgvStation";
             this.dgvStation.RowTemplate.Height = 23;
-            this.dgvStation.Size = new System.Drawing.Size(1430, 810);
+            this.dgvStation.Size = new System.Drawing.Size(1422, 802);
             this.dgvStation.TabIndex = 1;
             // 
             // tabPage2
@@ -274,6 +274,29 @@
             this.richTextLog.TabIndex = 2;
             this.richTextLog.Text = "";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.button1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(1428, 848);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "测试页面";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(176, 77);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
+            this.button1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.button1_MouseMove);
+            this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button1_MouseUp);
+            // 
             // timerGetInfo
             // 
             this.timerGetInfo.Enabled = true;
@@ -289,33 +312,11 @@
             // 
             this.timerShowLog.Tick += new System.EventHandler(this.timerShowLog_Tick);
             // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.button1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1436, 856);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "测试页面";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(176, 77);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
-            this.button1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.button1_MouseMove);
-            this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button1_MouseUp);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1444, 882);
+            this.ClientSize = new System.Drawing.Size(1436, 874);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "FormMain";
             this.Text = "富林思博站点监控平台";
