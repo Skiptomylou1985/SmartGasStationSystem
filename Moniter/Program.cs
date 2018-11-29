@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
-namespace Moniter
+namespace SPMonitor
 {
     static class Program
     {
@@ -30,7 +30,7 @@ namespace Moniter
             }
             else
             {
-                Application.Run(new Kill.FormMain());
+                Application.Run(new SPMonitor.FormMain());
             }
             
         }

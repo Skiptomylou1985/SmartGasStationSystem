@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btn_test = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSetInfo = new System.Windows.Forms.Button();
             this.textDBName = new System.Windows.Forms.TextBox();
@@ -60,6 +61,7 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.hk_DGV = new System.Windows.Forms.DataGridView();
             this.group_hkcn = new System.Windows.Forms.GroupBox();
+            this.lblEntryExit = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -109,7 +111,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.videoBox = new System.Windows.Forms.PictureBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.lblEntryExit = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.contextTreeAdd.SuspendLayout();
             this.contextMenuDelete.SuspendLayout();
@@ -127,6 +129,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btn_test);
             this.groupBox1.Controls.Add(this.btnClose);
             this.groupBox1.Controls.Add(this.btnSetInfo);
             this.groupBox1.Controls.Add(this.textDBName);
@@ -146,6 +149,16 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "数据库";
+            // 
+            // btn_test
+            // 
+            this.btn_test.Location = new System.Drawing.Point(727, 46);
+            this.btn_test.Name = "btn_test";
+            this.btn_test.Size = new System.Drawing.Size(75, 23);
+            this.btn_test.TabIndex = 23;
+            this.btn_test.Text = "测试";
+            this.btn_test.UseVisualStyleBackColor = true;
+            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
             // 
             // btnClose
             // 
@@ -173,7 +186,7 @@
             this.textDBName.Name = "textDBName";
             this.textDBName.Size = new System.Drawing.Size(71, 21);
             this.textDBName.TabIndex = 10;
-            this.textDBName.Text = "gsims";
+            this.textDBName.Text = "ynss";
             // 
             // label5
             // 
@@ -222,7 +235,7 @@
             this.textDBPwd.Name = "textDBPwd";
             this.textDBPwd.Size = new System.Drawing.Size(84, 21);
             this.textDBPwd.TabIndex = 5;
-            this.textDBPwd.Text = "12345";
+            this.textDBPwd.Text = "root";
             this.textDBPwd.UseSystemPasswordChar = true;
             // 
             // label3
@@ -257,7 +270,7 @@
             this.textDBIP.Name = "textDBIP";
             this.textDBIP.Size = new System.Drawing.Size(86, 21);
             this.textDBIP.TabIndex = 1;
-            this.textDBIP.Text = "127.0.0.1";
+            this.textDBIP.Text = "47.95.13.182";
             this.textDBIP.TextChanged += new System.EventHandler(this.textDBIP_TextChanged);
             // 
             // label1
@@ -424,6 +437,16 @@
             this.group_hkcn.TabIndex = 2;
             this.group_hkcn.TabStop = false;
             this.group_hkcn.Text = "油枪关联设置";
+            // 
+            // lblEntryExit
+            // 
+            this.lblEntryExit.AutoSize = true;
+            this.lblEntryExit.ForeColor = System.Drawing.Color.OrangeRed;
+            this.lblEntryExit.Location = new System.Drawing.Point(17, 91);
+            this.lblEntryExit.Name = "lblEntryExit";
+            this.lblEntryExit.Size = new System.Drawing.Size(293, 12);
+            this.lblEntryExit.TabIndex = 60;
+            this.lblEntryExit.Text = "下方配置信息表中，油枪98代表入口，油枪99代表出口";
             // 
             // label18
             // 
@@ -1188,15 +1211,9 @@
             this.videoBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.videoBox_MouseMove);
             this.videoBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.videoBox_MouseUp);
             // 
-            // lblEntryExit
+            // timer1
             // 
-            this.lblEntryExit.AutoSize = true;
-            this.lblEntryExit.ForeColor = System.Drawing.Color.OrangeRed;
-            this.lblEntryExit.Location = new System.Drawing.Point(17, 91);
-            this.lblEntryExit.Name = "lblEntryExit";
-            this.lblEntryExit.Size = new System.Drawing.Size(293, 12);
-            this.lblEntryExit.TabIndex = 60;
-            this.lblEntryExit.Text = "下方配置信息表中，油枪98代表入口，油枪99代表出口";
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // FormMain
             // 
@@ -1316,6 +1333,8 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label lblEntryExit;
+        private System.Windows.Forms.Button btn_test;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

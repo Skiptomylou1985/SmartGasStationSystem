@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 
-namespace Kill
+namespace SPMonitor
 {
     public partial class FormMain : Form
     {

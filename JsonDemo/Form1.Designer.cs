@@ -34,6 +34,12 @@
             this.txtPort = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textTotalCount = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textCurrentCount = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textVersion = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.comboStatus = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.textTotal = new System.Windows.Forms.TextBox();
@@ -46,18 +52,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textVersion = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textTotalCount = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textCurrentCount = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_test
             // 
-            this.btn_test.Location = new System.Drawing.Point(270, 22);
+            this.btn_test.Location = new System.Drawing.Point(367, 21);
             this.btn_test.Name = "btn_test";
             this.btn_test.Size = new System.Drawing.Size(75, 21);
             this.btn_test.TabIndex = 0;
@@ -73,6 +73,7 @@
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 1;
             this.label1.Text = "服务IP：";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txtIP
             // 
@@ -81,6 +82,7 @@
             this.txtIP.Size = new System.Drawing.Size(86, 21);
             this.txtIP.TabIndex = 2;
             this.txtIP.Text = "127.0.0.1";
+            this.txtIP.TextChanged += new System.EventHandler(this.txtIP_TextChanged);
             // 
             // txtPort
             // 
@@ -89,6 +91,7 @@
             this.txtPort.Size = new System.Drawing.Size(45, 21);
             this.txtPort.TabIndex = 4;
             this.txtPort.Text = "6700";
+            this.txtPort.TextChanged += new System.EventHandler(this.txtPort_TextChanged);
             // 
             // label2
             // 
@@ -98,6 +101,7 @@
             this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 3;
             this.label2.Text = "端口：";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // groupBox1
             // 
@@ -125,6 +129,57 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "订单数据";
+            // 
+            // textTotalCount
+            // 
+            this.textTotalCount.Location = new System.Drawing.Point(299, 108);
+            this.textTotalCount.Name = "textTotalCount";
+            this.textTotalCount.Size = new System.Drawing.Size(131, 21);
+            this.textTotalCount.TabIndex = 22;
+            this.textTotalCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(226, 113);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(59, 12);
+            this.label10.TabIndex = 21;
+            this.label10.Text = "车辆总数:";
+            // 
+            // textCurrentCount
+            // 
+            this.textCurrentCount.Location = new System.Drawing.Point(81, 108);
+            this.textCurrentCount.Name = "textCurrentCount";
+            this.textCurrentCount.Size = new System.Drawing.Size(131, 21);
+            this.textCurrentCount.TabIndex = 20;
+            this.textCurrentCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(8, 113);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(71, 12);
+            this.label11.TabIndex = 19;
+            this.label11.Text = "当天车辆数:";
+            // 
+            // textVersion
+            // 
+            this.textVersion.Location = new System.Drawing.Point(81, 179);
+            this.textVersion.Name = "textVersion";
+            this.textVersion.Size = new System.Drawing.Size(131, 21);
+            this.textVersion.TabIndex = 18;
+            this.textVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(8, 184);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(59, 12);
+            this.label8.TabIndex = 17;
+            this.label8.Text = "软件版本:";
             // 
             // comboStatus
             // 
@@ -232,57 +287,6 @@
             this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 3;
             this.label3.Text = "站点名称:";
-            // 
-            // textVersion
-            // 
-            this.textVersion.Location = new System.Drawing.Point(81, 179);
-            this.textVersion.Name = "textVersion";
-            this.textVersion.Size = new System.Drawing.Size(131, 21);
-            this.textVersion.TabIndex = 18;
-            this.textVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 184);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(59, 12);
-            this.label8.TabIndex = 17;
-            this.label8.Text = "软件版本:";
-            // 
-            // textTotalCount
-            // 
-            this.textTotalCount.Location = new System.Drawing.Point(299, 108);
-            this.textTotalCount.Name = "textTotalCount";
-            this.textTotalCount.Size = new System.Drawing.Size(131, 21);
-            this.textTotalCount.TabIndex = 22;
-            this.textTotalCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(226, 113);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 12);
-            this.label10.TabIndex = 21;
-            this.label10.Text = "车辆总数:";
-            // 
-            // textCurrentCount
-            // 
-            this.textCurrentCount.Location = new System.Drawing.Point(81, 108);
-            this.textCurrentCount.Name = "textCurrentCount";
-            this.textCurrentCount.Size = new System.Drawing.Size(131, 21);
-            this.textCurrentCount.TabIndex = 20;
-            this.textCurrentCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(8, 113);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(71, 12);
-            this.label11.TabIndex = 19;
-            this.label11.Text = "当天车辆数:";
             // 
             // Form1
             // 

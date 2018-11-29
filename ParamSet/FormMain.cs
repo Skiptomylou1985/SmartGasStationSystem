@@ -841,5 +841,34 @@ namespace ParamSet
         {
 
         }
+
+        private void btn_test_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
+//             for(int i = 1;i<563;i++)
+//             {
+//                 string sql =
+//                 "INSERT into pos(station_code, material_code, price, endtime, pump_sn, pay_type) select '" +
+//                i.ToString() + "',material_code,price,endtime,pump_sn,pay_type from pos2";
+//                 sql = "INSERT into storage(station_code,oiltank_sn,volume,picktime,oil_name) select '" +
+//                i.ToString() + "',oiltank_sn,volume,picktime,oil_name from storage_bak";
+//                 Global.mysqlHelper.ExecuteSql(sql);
+//             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            DateTime dt = DateTime.Now;
+            int sec = 3600 * dt.Hour + 60 * dt.Minute + dt.Second;
+            double chunqiang = sec * 0.071;
+            int renshu = (int)(sec * 1.8);
+            double feiyou = 0.0031 * sec;
+            string sql = "update ynss.daping_title set value = " + chunqiang.ToString()+" where title = '当日纯枪销量'";
+            Global.mysqlHelper.ExecuteSql(sql);
+            sql = "update ynss.daping_title set value = " + renshu.ToString() + " where title = '当日提枪次数'";
+            Global.mysqlHelper.ExecuteSql(sql);
+            sql = "update ynss.daping_title set value = " + feiyou.ToString() + " where title = '当日非油收入'";
+            Global.mysqlHelper.ExecuteSql(sql);
+        }
     }
 }

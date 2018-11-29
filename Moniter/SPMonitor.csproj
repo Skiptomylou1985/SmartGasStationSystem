@@ -7,8 +7,8 @@
     <ProjectGuid>{C6DF001D-AC42-46F6-8692-A76DFB937439}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kill</RootNamespace>
-    <AssemblyName>Kill</AssemblyName>
+    <RootNamespace>SPMonitor</RootNamespace>
+    <AssemblyName>SPMonitor</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

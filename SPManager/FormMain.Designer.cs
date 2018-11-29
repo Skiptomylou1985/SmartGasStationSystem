@@ -30,9 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.timerServiceStaus = new System.Windows.Forms.Timer(this.components);
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -47,7 +48,7 @@
             this.I6_Noz3 = new System.Windows.Forms.Button();
             this.I6_ImageTanker = new System.Windows.Forms.Panel();
             this.I6_ImageVideo = new System.Windows.Forms.Panel();
-            this.I6_VideoChan = new System.Windows.Forms.Label();
+            this.Island6_Text = new System.Windows.Forms.Label();
             this.I6_Noz5 = new System.Windows.Forms.Button();
             this.I6_Noz4 = new System.Windows.Forms.Button();
             this.I6_Noz2 = new System.Windows.Forms.Button();
@@ -62,7 +63,7 @@
             this.I5_Noz3 = new System.Windows.Forms.Button();
             this.I5_ImageTanker = new System.Windows.Forms.Panel();
             this.I5_ImageVideo = new System.Windows.Forms.Panel();
-            this.I5_VideoChan = new System.Windows.Forms.Label();
+            this.Island5_Text = new System.Windows.Forms.Label();
             this.I5_Noz5 = new System.Windows.Forms.Button();
             this.I5_Noz4 = new System.Windows.Forms.Button();
             this.I5_Noz2 = new System.Windows.Forms.Button();
@@ -77,7 +78,7 @@
             this.I3_Noz3 = new System.Windows.Forms.Button();
             this.I3_ImageTanker = new System.Windows.Forms.Panel();
             this.I3_ImageVideo = new System.Windows.Forms.Panel();
-            this.I3_VideoChan = new System.Windows.Forms.Label();
+            this.Island3_Text = new System.Windows.Forms.Label();
             this.I3_Noz5 = new System.Windows.Forms.Button();
             this.I3_Noz4 = new System.Windows.Forms.Button();
             this.I3_Noz2 = new System.Windows.Forms.Button();
@@ -92,7 +93,7 @@
             this.I4_Noz3 = new System.Windows.Forms.Button();
             this.I4_ImageTanker = new System.Windows.Forms.Panel();
             this.I4_ImageVideo = new System.Windows.Forms.Panel();
-            this.I4_VideoChan = new System.Windows.Forms.Label();
+            this.Island4_Text = new System.Windows.Forms.Label();
             this.I4_Noz5 = new System.Windows.Forms.Button();
             this.I4_Noz4 = new System.Windows.Forms.Button();
             this.I4_Noz2 = new System.Windows.Forms.Button();
@@ -107,7 +108,7 @@
             this.I2_Noz3 = new System.Windows.Forms.Button();
             this.I2_ImageTanker = new System.Windows.Forms.Panel();
             this.I2_ImageVideo = new System.Windows.Forms.Panel();
-            this.I2_VideoChan = new System.Windows.Forms.Label();
+            this.Island2_Text = new System.Windows.Forms.Label();
             this.I2_Noz5 = new System.Windows.Forms.Button();
             this.I2_Noz4 = new System.Windows.Forms.Button();
             this.I2_Noz2 = new System.Windows.Forms.Button();
@@ -122,7 +123,7 @@
             this.I1_Noz3 = new System.Windows.Forms.Button();
             this.I1_ImageTanker = new System.Windows.Forms.Panel();
             this.I1_ImageVideo = new System.Windows.Forms.Panel();
-            this.I1_VideoChan = new System.Windows.Forms.Label();
+            this.Island1_Text = new System.Windows.Forms.Label();
             this.I1_Noz5 = new System.Windows.Forms.Button();
             this.I1_Noz4 = new System.Windows.Forms.Button();
             this.I1_Noz2 = new System.Windows.Forms.Button();
@@ -132,10 +133,100 @@
             this.I1_Area3 = new System.Windows.Forms.Button();
             this.I1_Area4 = new System.Windows.Forms.Button();
             this.StationBoardVertical = new System.Windows.Forms.Panel();
+            this.Ver_Island6 = new System.Windows.Forms.Panel();
+            this.Ver_I6_image = new System.Windows.Forms.Panel();
+            this.Ver_I6_Noz6 = new System.Windows.Forms.Button();
+            this.Ver_I6_Noz5 = new System.Windows.Forms.Button();
+            this.Ver_I6_ImageTanker = new System.Windows.Forms.Panel();
+            this.Ver_Island6_Text = new System.Windows.Forms.Label();
+            this.Ver_I6_Noz4 = new System.Windows.Forms.Button();
+            this.Ver_I6_Noz2 = new System.Windows.Forms.Button();
+            this.Ver_I6_Noz3 = new System.Windows.Forms.Button();
+            this.Ver_I6_Noz1 = new System.Windows.Forms.Button();
+            this.Ver_I6_Area1 = new System.Windows.Forms.Button();
+            this.Ver_I6_Area4 = new System.Windows.Forms.Button();
+            this.Ver_I6_Area3 = new System.Windows.Forms.Button();
+            this.Ver_I6_Area2 = new System.Windows.Forms.Button();
+            this.Ver_Island4 = new System.Windows.Forms.Panel();
+            this.Ver_I4_image = new System.Windows.Forms.Panel();
+            this.Ver_I4_Noz6 = new System.Windows.Forms.Button();
+            this.Ver_I4_Noz5 = new System.Windows.Forms.Button();
+            this.Ver_I4_ImageTanker = new System.Windows.Forms.Panel();
+            this.Ver_Island4_Text = new System.Windows.Forms.Label();
+            this.Ver_I4_Noz4 = new System.Windows.Forms.Button();
+            this.Ver_I4_Noz2 = new System.Windows.Forms.Button();
+            this.Ver_I4_Noz3 = new System.Windows.Forms.Button();
+            this.Ver_I4_Noz1 = new System.Windows.Forms.Button();
+            this.Ver_I4_Area1 = new System.Windows.Forms.Button();
+            this.Ver_I4_Area4 = new System.Windows.Forms.Button();
+            this.Ver_I4_Area3 = new System.Windows.Forms.Button();
+            this.Ver_I4_Area2 = new System.Windows.Forms.Button();
+            this.Ver_Island3 = new System.Windows.Forms.Panel();
+            this.Ver_I3_image = new System.Windows.Forms.Panel();
+            this.Ver_I3_Noz6 = new System.Windows.Forms.Button();
+            this.Ver_I3_Noz5 = new System.Windows.Forms.Button();
+            this.Ver_I3_ImageTanker = new System.Windows.Forms.Panel();
+            this.Ver_Island3_Text = new System.Windows.Forms.Label();
+            this.Ver_I3_Noz4 = new System.Windows.Forms.Button();
+            this.Ver_I3_Noz2 = new System.Windows.Forms.Button();
+            this.Ver_I3_Noz3 = new System.Windows.Forms.Button();
+            this.Ver_I3_Noz1 = new System.Windows.Forms.Button();
+            this.Ver_I3_Area1 = new System.Windows.Forms.Button();
+            this.Ver_I3_Area4 = new System.Windows.Forms.Button();
+            this.Ver_I3_Area3 = new System.Windows.Forms.Button();
+            this.Ver_I3_Area2 = new System.Windows.Forms.Button();
+            this.Ver_Island2 = new System.Windows.Forms.Panel();
+            this.Ver_I2_image = new System.Windows.Forms.Panel();
+            this.Ver_I2_Noz6 = new System.Windows.Forms.Button();
+            this.Ver_I2_Noz5 = new System.Windows.Forms.Button();
+            this.Ver_I2_ImageTanker = new System.Windows.Forms.Panel();
+            this.Ver_Island2_Text = new System.Windows.Forms.Label();
+            this.Ver_I2_Noz4 = new System.Windows.Forms.Button();
+            this.Ver_I2_Noz2 = new System.Windows.Forms.Button();
+            this.Ver_I2_Noz3 = new System.Windows.Forms.Button();
+            this.Ver_I2_Noz1 = new System.Windows.Forms.Button();
+            this.Ver_I2_Area1 = new System.Windows.Forms.Button();
+            this.Ver_I2_Area4 = new System.Windows.Forms.Button();
+            this.Ver_I2_Area3 = new System.Windows.Forms.Button();
+            this.Ver_I2_Area2 = new System.Windows.Forms.Button();
+            this.Ver_Island5 = new System.Windows.Forms.Panel();
+            this.Ver_I5_image = new System.Windows.Forms.Panel();
+            this.Ver_I5_Noz6 = new System.Windows.Forms.Button();
+            this.Ver_I5_Noz5 = new System.Windows.Forms.Button();
+            this.Ver_I5_ImageTanker = new System.Windows.Forms.Panel();
+            this.Ver_Island5_Text = new System.Windows.Forms.Label();
+            this.Ver_I5_Noz4 = new System.Windows.Forms.Button();
+            this.Ver_I5_Noz2 = new System.Windows.Forms.Button();
+            this.Ver_I5_Noz3 = new System.Windows.Forms.Button();
+            this.Ver_I5_Noz1 = new System.Windows.Forms.Button();
+            this.Ver_I5_Area1 = new System.Windows.Forms.Button();
+            this.Ver_I5_Area4 = new System.Windows.Forms.Button();
+            this.Ver_I5_Area3 = new System.Windows.Forms.Button();
+            this.Ver_I5_Area2 = new System.Windows.Forms.Button();
+            this.Ver_btnExit = new System.Windows.Forms.Button();
+            this.Ver_btnEntrance = new System.Windows.Forms.Button();
+            this.Ver_btnStore = new System.Windows.Forms.Button();
+            this.Ver_Island1 = new System.Windows.Forms.Panel();
+            this.Ver_I1_image = new System.Windows.Forms.Panel();
+            this.Ver_I1_Noz6 = new System.Windows.Forms.Button();
+            this.Ver_I1_Noz5 = new System.Windows.Forms.Button();
+            this.Ver_I1_ImageTanker = new System.Windows.Forms.Panel();
+            this.Ver_Island1_Text = new System.Windows.Forms.Label();
+            this.Ver_I1_Noz4 = new System.Windows.Forms.Button();
+            this.Ver_I1_Noz2 = new System.Windows.Forms.Button();
+            this.Ver_I1_Noz3 = new System.Windows.Forms.Button();
+            this.Ver_I1_Noz1 = new System.Windows.Forms.Button();
+            this.Ver_I1_Area1 = new System.Windows.Forms.Button();
+            this.Ver_I1_Area4 = new System.Windows.Forms.Button();
+            this.Ver_I1_Area3 = new System.Windows.Forms.Button();
+            this.Ver_I1_Area2 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label18 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btnTest = new System.Windows.Forms.Button();
+            this.checkShowStationBoard = new System.Windows.Forms.CheckBox();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.comboStationDirection = new System.Windows.Forms.ComboBox();
+            this.btnSetStaionBoard = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pBoxMain = new System.Windows.Forms.PictureBox();
             this.pBoxUpdate = new System.Windows.Forms.PictureBox();
@@ -249,14 +340,16 @@
             this.lblLogLevel = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridRealtime = new System.Windows.Forms.DataGridView();
+            this.panel50 = new System.Windows.Forms.Panel();
+            this.chartStatistics = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.notifyIconMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuExit = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
+            this.timerClearCarlist = new System.Windows.Forms.Timer(this.components);
             this.tabPage1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.StationBoard.SuspendLayout();
@@ -273,6 +366,19 @@
             this.I2_image.SuspendLayout();
             this.Island1.SuspendLayout();
             this.I1_image.SuspendLayout();
+            this.StationBoardVertical.SuspendLayout();
+            this.Ver_Island6.SuspendLayout();
+            this.Ver_I6_image.SuspendLayout();
+            this.Ver_Island4.SuspendLayout();
+            this.Ver_I4_image.SuspendLayout();
+            this.Ver_Island3.SuspendLayout();
+            this.Ver_I3_image.SuspendLayout();
+            this.Ver_Island2.SuspendLayout();
+            this.Ver_I2_image.SuspendLayout();
+            this.Ver_Island5.SuspendLayout();
+            this.Ver_I5_image.SuspendLayout();
+            this.Ver_Island1.SuspendLayout();
+            this.Ver_I1_image.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxMain)).BeginInit();
@@ -322,10 +428,11 @@
             this.panel45.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridRealtime)).BeginInit();
+            this.panel50.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartStatistics)).BeginInit();
             this.contextMenuExit.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -343,7 +450,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(1252, 836);
+            this.tabPage1.Size = new System.Drawing.Size(1292, 848);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "运行信息";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -370,7 +477,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1252, 814);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1292, 826);
             this.tableLayoutPanel2.TabIndex = 26;
             // 
             // StationBoard
@@ -381,7 +488,7 @@
             this.StationBoard.Location = new System.Drawing.Point(0, 280);
             this.StationBoard.Margin = new System.Windows.Forms.Padding(0);
             this.StationBoard.Name = "StationBoard";
-            this.StationBoard.Size = new System.Drawing.Size(1252, 534);
+            this.StationBoard.Size = new System.Drawing.Size(1292, 546);
             this.StationBoard.TabIndex = 45;
             // 
             // StationBoardHorizon
@@ -398,7 +505,7 @@
             this.StationBoardHorizon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StationBoardHorizon.Location = new System.Drawing.Point(0, 0);
             this.StationBoardHorizon.Name = "StationBoardHorizon";
-            this.StationBoardHorizon.Size = new System.Drawing.Size(1252, 534);
+            this.StationBoardHorizon.Size = new System.Drawing.Size(1292, 546);
             this.StationBoardHorizon.TabIndex = 0;
             // 
             // btnExit
@@ -412,6 +519,9 @@
             this.btnExit.TabIndex = 61;
             this.btnExit.Text = "出 口";
             this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnExit_MouseDown);
+            this.btnExit.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btnExit_MouseMove);
+            this.btnExit.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnExit_MouseUp);
             // 
             // btnEntrance
             // 
@@ -424,6 +534,9 @@
             this.btnEntrance.TabIndex = 60;
             this.btnEntrance.Text = "入 口";
             this.btnEntrance.UseVisualStyleBackColor = false;
+            this.btnEntrance.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnEntrance_MouseDown);
+            this.btnEntrance.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btnEntrance_MouseMove);
+            this.btnEntrance.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnEntrance_MouseUp);
             // 
             // btnStore
             // 
@@ -436,6 +549,9 @@
             this.btnStore.TabIndex = 39;
             this.btnStore.Text = "便利店";
             this.btnStore.UseVisualStyleBackColor = false;
+            this.btnStore.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnStore_MouseDown);
+            this.btnStore.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btnStore_MouseMove);
+            this.btnStore.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnStore_MouseUp);
             // 
             // Island6
             // 
@@ -462,7 +578,7 @@
             this.I6_image.Controls.Add(this.I6_Noz3);
             this.I6_image.Controls.Add(this.I6_ImageTanker);
             this.I6_image.Controls.Add(this.I6_ImageVideo);
-            this.I6_image.Controls.Add(this.I6_VideoChan);
+            this.I6_image.Controls.Add(this.Island6_Text);
             this.I6_image.Controls.Add(this.I6_Noz5);
             this.I6_image.Controls.Add(this.I6_Noz4);
             this.I6_image.Controls.Add(this.I6_Noz2);
@@ -477,29 +593,31 @@
             this.I6_Noz6.BackColor = System.Drawing.Color.Lime;
             this.I6_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I6_Noz6.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I6_Noz6.Location = new System.Drawing.Point(146, 80);
+            this.I6_Noz6.Location = new System.Drawing.Point(154, 80);
             this.I6_Noz6.Name = "I6_Noz6";
             this.I6_Noz6.Size = new System.Drawing.Size(35, 30);
             this.I6_Noz6.TabIndex = 50;
             this.I6_Noz6.UseVisualStyleBackColor = false;
+            this.I6_Noz6.Click += new System.EventHandler(this.I6_Noz6_Click);
             // 
             // I6_Noz3
             // 
             this.I6_Noz3.BackColor = System.Drawing.Color.Lime;
             this.I6_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I6_Noz3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I6_Noz3.Location = new System.Drawing.Point(145, 2);
+            this.I6_Noz3.Location = new System.Drawing.Point(153, 2);
             this.I6_Noz3.Name = "I6_Noz3";
             this.I6_Noz3.Size = new System.Drawing.Size(35, 30);
             this.I6_Noz3.TabIndex = 49;
             this.I6_Noz3.UseVisualStyleBackColor = false;
+            this.I6_Noz3.Click += new System.EventHandler(this.I6_Noz3_Click);
             // 
             // I6_ImageTanker
             // 
             this.I6_ImageTanker.BackColor = System.Drawing.Color.Transparent;
             this.I6_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I6_ImageTanker.BackgroundImage")));
             this.I6_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I6_ImageTanker.Location = new System.Drawing.Point(3, 29);
+            this.I6_ImageTanker.Location = new System.Drawing.Point(13, 32);
             this.I6_ImageTanker.Name = "I6_ImageTanker";
             this.I6_ImageTanker.Size = new System.Drawing.Size(48, 49);
             this.I6_ImageTanker.TabIndex = 3;
@@ -509,54 +627,57 @@
             this.I6_ImageVideo.BackColor = System.Drawing.Color.Transparent;
             this.I6_ImageVideo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I6_ImageVideo.BackgroundImage")));
             this.I6_ImageVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I6_ImageVideo.Location = new System.Drawing.Point(59, 38);
+            this.I6_ImageVideo.Location = new System.Drawing.Point(111, 38);
             this.I6_ImageVideo.Name = "I6_ImageVideo";
             this.I6_ImageVideo.Size = new System.Drawing.Size(37, 34);
             this.I6_ImageVideo.TabIndex = 2;
             // 
-            // I6_VideoChan
+            // Island6_Text
             // 
-            this.I6_VideoChan.AutoSize = true;
-            this.I6_VideoChan.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I6_VideoChan.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.I6_VideoChan.Location = new System.Drawing.Point(98, 42);
-            this.I6_VideoChan.Name = "I6_VideoChan";
-            this.I6_VideoChan.Size = new System.Drawing.Size(28, 26);
-            this.I6_VideoChan.TabIndex = 48;
-            this.I6_VideoChan.Text = "--";
+            this.Island6_Text.AutoSize = true;
+            this.Island6_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Island6_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Island6_Text.Location = new System.Drawing.Point(73, 43);
+            this.Island6_Text.Name = "Island6_Text";
+            this.Island6_Text.Size = new System.Drawing.Size(28, 26);
+            this.Island6_Text.TabIndex = 48;
+            this.Island6_Text.Text = "--";
             // 
             // I6_Noz5
             // 
             this.I6_Noz5.BackColor = System.Drawing.Color.Lime;
             this.I6_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I6_Noz5.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I6_Noz5.Location = new System.Drawing.Point(105, 80);
+            this.I6_Noz5.Location = new System.Drawing.Point(113, 80);
             this.I6_Noz5.Name = "I6_Noz5";
             this.I6_Noz5.Size = new System.Drawing.Size(35, 30);
             this.I6_Noz5.TabIndex = 47;
             this.I6_Noz5.UseVisualStyleBackColor = false;
+            this.I6_Noz5.Click += new System.EventHandler(this.I6_Noz5_Click);
             // 
             // I6_Noz4
             // 
             this.I6_Noz4.BackColor = System.Drawing.Color.Lime;
             this.I6_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I6_Noz4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I6_Noz4.Location = new System.Drawing.Point(66, 80);
+            this.I6_Noz4.Location = new System.Drawing.Point(74, 80);
             this.I6_Noz4.Name = "I6_Noz4";
             this.I6_Noz4.Size = new System.Drawing.Size(35, 30);
             this.I6_Noz4.TabIndex = 46;
             this.I6_Noz4.UseVisualStyleBackColor = false;
+            this.I6_Noz4.Click += new System.EventHandler(this.I6_Noz4_Click);
             // 
             // I6_Noz2
             // 
             this.I6_Noz2.BackColor = System.Drawing.Color.Lime;
             this.I6_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I6_Noz2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I6_Noz2.Location = new System.Drawing.Point(105, 2);
+            this.I6_Noz2.Location = new System.Drawing.Point(113, 2);
             this.I6_Noz2.Name = "I6_Noz2";
             this.I6_Noz2.Size = new System.Drawing.Size(35, 30);
             this.I6_Noz2.TabIndex = 45;
             this.I6_Noz2.UseVisualStyleBackColor = false;
+            this.I6_Noz2.Click += new System.EventHandler(this.I6_Noz2_Click);
             // 
             // I6_Noz1
             // 
@@ -564,11 +685,12 @@
             this.I6_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.I6_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I6_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I6_Noz1.Location = new System.Drawing.Point(66, 2);
+            this.I6_Noz1.Location = new System.Drawing.Point(74, 2);
             this.I6_Noz1.Name = "I6_Noz1";
             this.I6_Noz1.Size = new System.Drawing.Size(35, 30);
             this.I6_Noz1.TabIndex = 44;
             this.I6_Noz1.UseVisualStyleBackColor = false;
+            this.I6_Noz1.Click += new System.EventHandler(this.I6_Noz1_Click);
             // 
             // I6_Area1
             // 
@@ -580,6 +702,7 @@
             this.I6_Area1.Size = new System.Drawing.Size(100, 40);
             this.I6_Area1.TabIndex = 0;
             this.I6_Area1.UseVisualStyleBackColor = false;
+            this.I6_Area1.Click += new System.EventHandler(this.I6_Area1_Click);
             // 
             // I6_Area2
             // 
@@ -591,6 +714,7 @@
             this.I6_Area2.Size = new System.Drawing.Size(100, 40);
             this.I6_Area2.TabIndex = 36;
             this.I6_Area2.UseVisualStyleBackColor = false;
+            this.I6_Area2.Click += new System.EventHandler(this.I6_Area2_Click);
             // 
             // I6_Area3
             // 
@@ -602,6 +726,7 @@
             this.I6_Area3.Size = new System.Drawing.Size(100, 40);
             this.I6_Area3.TabIndex = 37;
             this.I6_Area3.UseVisualStyleBackColor = false;
+            this.I6_Area3.Click += new System.EventHandler(this.I6_Area3_Click);
             // 
             // I6_Area4
             // 
@@ -613,6 +738,7 @@
             this.I6_Area4.Size = new System.Drawing.Size(100, 40);
             this.I6_Area4.TabIndex = 38;
             this.I6_Area4.UseVisualStyleBackColor = false;
+            this.I6_Area4.Click += new System.EventHandler(this.I6_Area4_Click);
             // 
             // Island5
             // 
@@ -639,7 +765,7 @@
             this.I5_image.Controls.Add(this.I5_Noz3);
             this.I5_image.Controls.Add(this.I5_ImageTanker);
             this.I5_image.Controls.Add(this.I5_ImageVideo);
-            this.I5_image.Controls.Add(this.I5_VideoChan);
+            this.I5_image.Controls.Add(this.Island5_Text);
             this.I5_image.Controls.Add(this.I5_Noz5);
             this.I5_image.Controls.Add(this.I5_Noz4);
             this.I5_image.Controls.Add(this.I5_Noz2);
@@ -654,29 +780,31 @@
             this.I5_Noz6.BackColor = System.Drawing.Color.Lime;
             this.I5_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I5_Noz6.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I5_Noz6.Location = new System.Drawing.Point(146, 80);
+            this.I5_Noz6.Location = new System.Drawing.Point(154, 80);
             this.I5_Noz6.Name = "I5_Noz6";
             this.I5_Noz6.Size = new System.Drawing.Size(35, 30);
             this.I5_Noz6.TabIndex = 50;
             this.I5_Noz6.UseVisualStyleBackColor = false;
+            this.I5_Noz6.Click += new System.EventHandler(this.I5_Noz6_Click);
             // 
             // I5_Noz3
             // 
             this.I5_Noz3.BackColor = System.Drawing.Color.Lime;
             this.I5_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I5_Noz3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I5_Noz3.Location = new System.Drawing.Point(145, 2);
+            this.I5_Noz3.Location = new System.Drawing.Point(153, 2);
             this.I5_Noz3.Name = "I5_Noz3";
             this.I5_Noz3.Size = new System.Drawing.Size(35, 30);
             this.I5_Noz3.TabIndex = 49;
             this.I5_Noz3.UseVisualStyleBackColor = false;
+            this.I5_Noz3.Click += new System.EventHandler(this.I5_Noz3_Click);
             // 
             // I5_ImageTanker
             // 
             this.I5_ImageTanker.BackColor = System.Drawing.Color.Transparent;
             this.I5_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I5_ImageTanker.BackgroundImage")));
             this.I5_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I5_ImageTanker.Location = new System.Drawing.Point(3, 29);
+            this.I5_ImageTanker.Location = new System.Drawing.Point(13, 32);
             this.I5_ImageTanker.Name = "I5_ImageTanker";
             this.I5_ImageTanker.Size = new System.Drawing.Size(48, 49);
             this.I5_ImageTanker.TabIndex = 3;
@@ -686,54 +814,57 @@
             this.I5_ImageVideo.BackColor = System.Drawing.Color.Transparent;
             this.I5_ImageVideo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I5_ImageVideo.BackgroundImage")));
             this.I5_ImageVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I5_ImageVideo.Location = new System.Drawing.Point(59, 38);
+            this.I5_ImageVideo.Location = new System.Drawing.Point(111, 38);
             this.I5_ImageVideo.Name = "I5_ImageVideo";
             this.I5_ImageVideo.Size = new System.Drawing.Size(37, 34);
             this.I5_ImageVideo.TabIndex = 2;
             // 
-            // I5_VideoChan
+            // Island5_Text
             // 
-            this.I5_VideoChan.AutoSize = true;
-            this.I5_VideoChan.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I5_VideoChan.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.I5_VideoChan.Location = new System.Drawing.Point(98, 42);
-            this.I5_VideoChan.Name = "I5_VideoChan";
-            this.I5_VideoChan.Size = new System.Drawing.Size(28, 26);
-            this.I5_VideoChan.TabIndex = 48;
-            this.I5_VideoChan.Text = "--";
+            this.Island5_Text.AutoSize = true;
+            this.Island5_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Island5_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Island5_Text.Location = new System.Drawing.Point(73, 43);
+            this.Island5_Text.Name = "Island5_Text";
+            this.Island5_Text.Size = new System.Drawing.Size(28, 26);
+            this.Island5_Text.TabIndex = 48;
+            this.Island5_Text.Text = "--";
             // 
             // I5_Noz5
             // 
             this.I5_Noz5.BackColor = System.Drawing.Color.Lime;
             this.I5_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I5_Noz5.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I5_Noz5.Location = new System.Drawing.Point(105, 80);
+            this.I5_Noz5.Location = new System.Drawing.Point(113, 80);
             this.I5_Noz5.Name = "I5_Noz5";
             this.I5_Noz5.Size = new System.Drawing.Size(35, 30);
             this.I5_Noz5.TabIndex = 47;
             this.I5_Noz5.UseVisualStyleBackColor = false;
+            this.I5_Noz5.Click += new System.EventHandler(this.I5_Noz5_Click);
             // 
             // I5_Noz4
             // 
             this.I5_Noz4.BackColor = System.Drawing.Color.Lime;
             this.I5_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I5_Noz4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I5_Noz4.Location = new System.Drawing.Point(66, 80);
+            this.I5_Noz4.Location = new System.Drawing.Point(74, 80);
             this.I5_Noz4.Name = "I5_Noz4";
             this.I5_Noz4.Size = new System.Drawing.Size(35, 30);
             this.I5_Noz4.TabIndex = 46;
             this.I5_Noz4.UseVisualStyleBackColor = false;
+            this.I5_Noz4.Click += new System.EventHandler(this.I5_Noz4_Click);
             // 
             // I5_Noz2
             // 
             this.I5_Noz2.BackColor = System.Drawing.Color.Lime;
             this.I5_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I5_Noz2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I5_Noz2.Location = new System.Drawing.Point(105, 2);
+            this.I5_Noz2.Location = new System.Drawing.Point(113, 2);
             this.I5_Noz2.Name = "I5_Noz2";
             this.I5_Noz2.Size = new System.Drawing.Size(35, 30);
             this.I5_Noz2.TabIndex = 45;
             this.I5_Noz2.UseVisualStyleBackColor = false;
+            this.I5_Noz2.Click += new System.EventHandler(this.I5_Noz2_Click);
             // 
             // I5_Noz1
             // 
@@ -741,11 +872,12 @@
             this.I5_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.I5_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I5_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I5_Noz1.Location = new System.Drawing.Point(66, 2);
+            this.I5_Noz1.Location = new System.Drawing.Point(74, 2);
             this.I5_Noz1.Name = "I5_Noz1";
             this.I5_Noz1.Size = new System.Drawing.Size(35, 30);
             this.I5_Noz1.TabIndex = 44;
             this.I5_Noz1.UseVisualStyleBackColor = false;
+            this.I5_Noz1.Click += new System.EventHandler(this.I5_Noz1_Click);
             // 
             // I5_Area1
             // 
@@ -757,6 +889,7 @@
             this.I5_Area1.Size = new System.Drawing.Size(100, 40);
             this.I5_Area1.TabIndex = 0;
             this.I5_Area1.UseVisualStyleBackColor = false;
+            this.I5_Area1.Click += new System.EventHandler(this.I5_Area1_Click);
             // 
             // I5_Area2
             // 
@@ -768,6 +901,7 @@
             this.I5_Area2.Size = new System.Drawing.Size(100, 40);
             this.I5_Area2.TabIndex = 36;
             this.I5_Area2.UseVisualStyleBackColor = false;
+            this.I5_Area2.Click += new System.EventHandler(this.I5_Area2_Click);
             // 
             // I5_Area3
             // 
@@ -779,6 +913,7 @@
             this.I5_Area3.Size = new System.Drawing.Size(100, 40);
             this.I5_Area3.TabIndex = 37;
             this.I5_Area3.UseVisualStyleBackColor = false;
+            this.I5_Area3.Click += new System.EventHandler(this.I5_Area3_Click);
             // 
             // I5_Area4
             // 
@@ -790,6 +925,7 @@
             this.I5_Area4.Size = new System.Drawing.Size(100, 40);
             this.I5_Area4.TabIndex = 38;
             this.I5_Area4.UseVisualStyleBackColor = false;
+            this.I5_Area4.Click += new System.EventHandler(this.I5_Area4_Click);
             // 
             // Island3
             // 
@@ -816,7 +952,7 @@
             this.I3_image.Controls.Add(this.I3_Noz3);
             this.I3_image.Controls.Add(this.I3_ImageTanker);
             this.I3_image.Controls.Add(this.I3_ImageVideo);
-            this.I3_image.Controls.Add(this.I3_VideoChan);
+            this.I3_image.Controls.Add(this.Island3_Text);
             this.I3_image.Controls.Add(this.I3_Noz5);
             this.I3_image.Controls.Add(this.I3_Noz4);
             this.I3_image.Controls.Add(this.I3_Noz2);
@@ -831,29 +967,31 @@
             this.I3_Noz6.BackColor = System.Drawing.Color.Lime;
             this.I3_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I3_Noz6.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I3_Noz6.Location = new System.Drawing.Point(146, 80);
+            this.I3_Noz6.Location = new System.Drawing.Point(154, 80);
             this.I3_Noz6.Name = "I3_Noz6";
             this.I3_Noz6.Size = new System.Drawing.Size(35, 30);
             this.I3_Noz6.TabIndex = 50;
             this.I3_Noz6.UseVisualStyleBackColor = false;
+            this.I3_Noz6.Click += new System.EventHandler(this.I3_Noz6_Click);
             // 
             // I3_Noz3
             // 
             this.I3_Noz3.BackColor = System.Drawing.Color.Lime;
             this.I3_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I3_Noz3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I3_Noz3.Location = new System.Drawing.Point(145, 2);
+            this.I3_Noz3.Location = new System.Drawing.Point(153, 2);
             this.I3_Noz3.Name = "I3_Noz3";
             this.I3_Noz3.Size = new System.Drawing.Size(35, 30);
             this.I3_Noz3.TabIndex = 49;
             this.I3_Noz3.UseVisualStyleBackColor = false;
+            this.I3_Noz3.Click += new System.EventHandler(this.I3_Noz3_Click);
             // 
             // I3_ImageTanker
             // 
             this.I3_ImageTanker.BackColor = System.Drawing.Color.Transparent;
             this.I3_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I3_ImageTanker.BackgroundImage")));
             this.I3_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I3_ImageTanker.Location = new System.Drawing.Point(3, 29);
+            this.I3_ImageTanker.Location = new System.Drawing.Point(13, 32);
             this.I3_ImageTanker.Name = "I3_ImageTanker";
             this.I3_ImageTanker.Size = new System.Drawing.Size(48, 49);
             this.I3_ImageTanker.TabIndex = 3;
@@ -863,54 +1001,57 @@
             this.I3_ImageVideo.BackColor = System.Drawing.Color.Transparent;
             this.I3_ImageVideo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I3_ImageVideo.BackgroundImage")));
             this.I3_ImageVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I3_ImageVideo.Location = new System.Drawing.Point(59, 38);
+            this.I3_ImageVideo.Location = new System.Drawing.Point(111, 38);
             this.I3_ImageVideo.Name = "I3_ImageVideo";
             this.I3_ImageVideo.Size = new System.Drawing.Size(37, 34);
             this.I3_ImageVideo.TabIndex = 2;
             // 
-            // I3_VideoChan
+            // Island3_Text
             // 
-            this.I3_VideoChan.AutoSize = true;
-            this.I3_VideoChan.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I3_VideoChan.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.I3_VideoChan.Location = new System.Drawing.Point(98, 42);
-            this.I3_VideoChan.Name = "I3_VideoChan";
-            this.I3_VideoChan.Size = new System.Drawing.Size(28, 26);
-            this.I3_VideoChan.TabIndex = 48;
-            this.I3_VideoChan.Text = "--";
+            this.Island3_Text.AutoSize = true;
+            this.Island3_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Island3_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Island3_Text.Location = new System.Drawing.Point(73, 43);
+            this.Island3_Text.Name = "Island3_Text";
+            this.Island3_Text.Size = new System.Drawing.Size(28, 26);
+            this.Island3_Text.TabIndex = 48;
+            this.Island3_Text.Text = "--";
             // 
             // I3_Noz5
             // 
             this.I3_Noz5.BackColor = System.Drawing.Color.Lime;
             this.I3_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I3_Noz5.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I3_Noz5.Location = new System.Drawing.Point(105, 80);
+            this.I3_Noz5.Location = new System.Drawing.Point(113, 80);
             this.I3_Noz5.Name = "I3_Noz5";
             this.I3_Noz5.Size = new System.Drawing.Size(35, 30);
             this.I3_Noz5.TabIndex = 47;
             this.I3_Noz5.UseVisualStyleBackColor = false;
+            this.I3_Noz5.Click += new System.EventHandler(this.I3_Noz5_Click);
             // 
             // I3_Noz4
             // 
             this.I3_Noz4.BackColor = System.Drawing.Color.Lime;
             this.I3_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I3_Noz4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I3_Noz4.Location = new System.Drawing.Point(66, 80);
+            this.I3_Noz4.Location = new System.Drawing.Point(74, 80);
             this.I3_Noz4.Name = "I3_Noz4";
             this.I3_Noz4.Size = new System.Drawing.Size(35, 30);
             this.I3_Noz4.TabIndex = 46;
             this.I3_Noz4.UseVisualStyleBackColor = false;
+            this.I3_Noz4.Click += new System.EventHandler(this.I3_Noz4_Click);
             // 
             // I3_Noz2
             // 
             this.I3_Noz2.BackColor = System.Drawing.Color.Lime;
             this.I3_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I3_Noz2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I3_Noz2.Location = new System.Drawing.Point(105, 2);
+            this.I3_Noz2.Location = new System.Drawing.Point(113, 2);
             this.I3_Noz2.Name = "I3_Noz2";
             this.I3_Noz2.Size = new System.Drawing.Size(35, 30);
             this.I3_Noz2.TabIndex = 45;
             this.I3_Noz2.UseVisualStyleBackColor = false;
+            this.I3_Noz2.Click += new System.EventHandler(this.I3_Noz2_Click);
             // 
             // I3_Noz1
             // 
@@ -918,11 +1059,12 @@
             this.I3_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.I3_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I3_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I3_Noz1.Location = new System.Drawing.Point(66, 2);
+            this.I3_Noz1.Location = new System.Drawing.Point(74, 2);
             this.I3_Noz1.Name = "I3_Noz1";
             this.I3_Noz1.Size = new System.Drawing.Size(35, 30);
             this.I3_Noz1.TabIndex = 44;
             this.I3_Noz1.UseVisualStyleBackColor = false;
+            this.I3_Noz1.Click += new System.EventHandler(this.I3_Noz1_Click);
             // 
             // I3_Area1
             // 
@@ -934,6 +1076,7 @@
             this.I3_Area1.Size = new System.Drawing.Size(100, 40);
             this.I3_Area1.TabIndex = 0;
             this.I3_Area1.UseVisualStyleBackColor = false;
+            this.I3_Area1.Click += new System.EventHandler(this.I3_Area1_Click);
             // 
             // I3_Area2
             // 
@@ -945,6 +1088,7 @@
             this.I3_Area2.Size = new System.Drawing.Size(100, 40);
             this.I3_Area2.TabIndex = 36;
             this.I3_Area2.UseVisualStyleBackColor = false;
+            this.I3_Area2.Click += new System.EventHandler(this.I3_Area2_Click);
             // 
             // I3_Area3
             // 
@@ -956,6 +1100,7 @@
             this.I3_Area3.Size = new System.Drawing.Size(100, 40);
             this.I3_Area3.TabIndex = 37;
             this.I3_Area3.UseVisualStyleBackColor = false;
+            this.I3_Area3.Click += new System.EventHandler(this.I3_Area3_Click);
             // 
             // I3_Area4
             // 
@@ -967,6 +1112,7 @@
             this.I3_Area4.Size = new System.Drawing.Size(100, 40);
             this.I3_Area4.TabIndex = 38;
             this.I3_Area4.UseVisualStyleBackColor = false;
+            this.I3_Area4.Click += new System.EventHandler(this.I3_Area4_Click);
             // 
             // Island4
             // 
@@ -993,7 +1139,7 @@
             this.I4_image.Controls.Add(this.I4_Noz3);
             this.I4_image.Controls.Add(this.I4_ImageTanker);
             this.I4_image.Controls.Add(this.I4_ImageVideo);
-            this.I4_image.Controls.Add(this.I4_VideoChan);
+            this.I4_image.Controls.Add(this.Island4_Text);
             this.I4_image.Controls.Add(this.I4_Noz5);
             this.I4_image.Controls.Add(this.I4_Noz4);
             this.I4_image.Controls.Add(this.I4_Noz2);
@@ -1008,29 +1154,31 @@
             this.I4_Noz6.BackColor = System.Drawing.Color.Lime;
             this.I4_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I4_Noz6.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I4_Noz6.Location = new System.Drawing.Point(146, 80);
+            this.I4_Noz6.Location = new System.Drawing.Point(154, 80);
             this.I4_Noz6.Name = "I4_Noz6";
             this.I4_Noz6.Size = new System.Drawing.Size(35, 30);
             this.I4_Noz6.TabIndex = 50;
             this.I4_Noz6.UseVisualStyleBackColor = false;
+            this.I4_Noz6.Click += new System.EventHandler(this.I4_Noz6_Click);
             // 
             // I4_Noz3
             // 
             this.I4_Noz3.BackColor = System.Drawing.Color.Lime;
             this.I4_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I4_Noz3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I4_Noz3.Location = new System.Drawing.Point(145, 2);
+            this.I4_Noz3.Location = new System.Drawing.Point(153, 2);
             this.I4_Noz3.Name = "I4_Noz3";
             this.I4_Noz3.Size = new System.Drawing.Size(35, 30);
             this.I4_Noz3.TabIndex = 49;
             this.I4_Noz3.UseVisualStyleBackColor = false;
+            this.I4_Noz3.Click += new System.EventHandler(this.I4_Noz3_Click);
             // 
             // I4_ImageTanker
             // 
             this.I4_ImageTanker.BackColor = System.Drawing.Color.Transparent;
             this.I4_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I4_ImageTanker.BackgroundImage")));
             this.I4_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I4_ImageTanker.Location = new System.Drawing.Point(3, 29);
+            this.I4_ImageTanker.Location = new System.Drawing.Point(13, 32);
             this.I4_ImageTanker.Name = "I4_ImageTanker";
             this.I4_ImageTanker.Size = new System.Drawing.Size(48, 49);
             this.I4_ImageTanker.TabIndex = 3;
@@ -1040,54 +1188,57 @@
             this.I4_ImageVideo.BackColor = System.Drawing.Color.Transparent;
             this.I4_ImageVideo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I4_ImageVideo.BackgroundImage")));
             this.I4_ImageVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I4_ImageVideo.Location = new System.Drawing.Point(59, 38);
+            this.I4_ImageVideo.Location = new System.Drawing.Point(111, 38);
             this.I4_ImageVideo.Name = "I4_ImageVideo";
             this.I4_ImageVideo.Size = new System.Drawing.Size(37, 34);
             this.I4_ImageVideo.TabIndex = 2;
             // 
-            // I4_VideoChan
+            // Island4_Text
             // 
-            this.I4_VideoChan.AutoSize = true;
-            this.I4_VideoChan.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I4_VideoChan.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.I4_VideoChan.Location = new System.Drawing.Point(98, 42);
-            this.I4_VideoChan.Name = "I4_VideoChan";
-            this.I4_VideoChan.Size = new System.Drawing.Size(28, 26);
-            this.I4_VideoChan.TabIndex = 48;
-            this.I4_VideoChan.Text = "--";
+            this.Island4_Text.AutoSize = true;
+            this.Island4_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Island4_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Island4_Text.Location = new System.Drawing.Point(73, 43);
+            this.Island4_Text.Name = "Island4_Text";
+            this.Island4_Text.Size = new System.Drawing.Size(28, 26);
+            this.Island4_Text.TabIndex = 48;
+            this.Island4_Text.Text = "--";
             // 
             // I4_Noz5
             // 
             this.I4_Noz5.BackColor = System.Drawing.Color.Lime;
             this.I4_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I4_Noz5.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I4_Noz5.Location = new System.Drawing.Point(105, 80);
+            this.I4_Noz5.Location = new System.Drawing.Point(113, 80);
             this.I4_Noz5.Name = "I4_Noz5";
             this.I4_Noz5.Size = new System.Drawing.Size(35, 30);
             this.I4_Noz5.TabIndex = 47;
             this.I4_Noz5.UseVisualStyleBackColor = false;
+            this.I4_Noz5.Click += new System.EventHandler(this.I4_Noz5_Click);
             // 
             // I4_Noz4
             // 
             this.I4_Noz4.BackColor = System.Drawing.Color.Lime;
             this.I4_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I4_Noz4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I4_Noz4.Location = new System.Drawing.Point(66, 80);
+            this.I4_Noz4.Location = new System.Drawing.Point(74, 80);
             this.I4_Noz4.Name = "I4_Noz4";
             this.I4_Noz4.Size = new System.Drawing.Size(35, 30);
             this.I4_Noz4.TabIndex = 46;
             this.I4_Noz4.UseVisualStyleBackColor = false;
+            this.I4_Noz4.Click += new System.EventHandler(this.I4_Noz4_Click);
             // 
             // I4_Noz2
             // 
             this.I4_Noz2.BackColor = System.Drawing.Color.Lime;
             this.I4_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I4_Noz2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I4_Noz2.Location = new System.Drawing.Point(105, 2);
+            this.I4_Noz2.Location = new System.Drawing.Point(113, 2);
             this.I4_Noz2.Name = "I4_Noz2";
             this.I4_Noz2.Size = new System.Drawing.Size(35, 30);
             this.I4_Noz2.TabIndex = 45;
             this.I4_Noz2.UseVisualStyleBackColor = false;
+            this.I4_Noz2.Click += new System.EventHandler(this.I4_Noz2_Click);
             // 
             // I4_Noz1
             // 
@@ -1095,11 +1246,12 @@
             this.I4_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.I4_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I4_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I4_Noz1.Location = new System.Drawing.Point(66, 2);
+            this.I4_Noz1.Location = new System.Drawing.Point(74, 2);
             this.I4_Noz1.Name = "I4_Noz1";
             this.I4_Noz1.Size = new System.Drawing.Size(35, 30);
             this.I4_Noz1.TabIndex = 44;
             this.I4_Noz1.UseVisualStyleBackColor = false;
+            this.I4_Noz1.Click += new System.EventHandler(this.I4_Noz1_Click);
             // 
             // I4_Area1
             // 
@@ -1111,6 +1263,7 @@
             this.I4_Area1.Size = new System.Drawing.Size(100, 40);
             this.I4_Area1.TabIndex = 0;
             this.I4_Area1.UseVisualStyleBackColor = false;
+            this.I4_Area1.Click += new System.EventHandler(this.I4_Area1_Click);
             // 
             // I4_Area2
             // 
@@ -1122,6 +1275,7 @@
             this.I4_Area2.Size = new System.Drawing.Size(100, 40);
             this.I4_Area2.TabIndex = 36;
             this.I4_Area2.UseVisualStyleBackColor = false;
+            this.I4_Area2.Click += new System.EventHandler(this.I4_Area2_Click);
             // 
             // I4_Area3
             // 
@@ -1133,6 +1287,7 @@
             this.I4_Area3.Size = new System.Drawing.Size(100, 40);
             this.I4_Area3.TabIndex = 37;
             this.I4_Area3.UseVisualStyleBackColor = false;
+            this.I4_Area3.Click += new System.EventHandler(this.I4_Area3_Click);
             // 
             // I4_Area4
             // 
@@ -1144,6 +1299,7 @@
             this.I4_Area4.Size = new System.Drawing.Size(100, 40);
             this.I4_Area4.TabIndex = 38;
             this.I4_Area4.UseVisualStyleBackColor = false;
+            this.I4_Area4.Click += new System.EventHandler(this.I4_Area4_Click);
             // 
             // Island2
             // 
@@ -1170,7 +1326,7 @@
             this.I2_image.Controls.Add(this.I2_Noz3);
             this.I2_image.Controls.Add(this.I2_ImageTanker);
             this.I2_image.Controls.Add(this.I2_ImageVideo);
-            this.I2_image.Controls.Add(this.I2_VideoChan);
+            this.I2_image.Controls.Add(this.Island2_Text);
             this.I2_image.Controls.Add(this.I2_Noz5);
             this.I2_image.Controls.Add(this.I2_Noz4);
             this.I2_image.Controls.Add(this.I2_Noz2);
@@ -1185,29 +1341,31 @@
             this.I2_Noz6.BackColor = System.Drawing.Color.Lime;
             this.I2_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I2_Noz6.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I2_Noz6.Location = new System.Drawing.Point(146, 80);
+            this.I2_Noz6.Location = new System.Drawing.Point(154, 80);
             this.I2_Noz6.Name = "I2_Noz6";
             this.I2_Noz6.Size = new System.Drawing.Size(35, 30);
             this.I2_Noz6.TabIndex = 50;
             this.I2_Noz6.UseVisualStyleBackColor = false;
+            this.I2_Noz6.Click += new System.EventHandler(this.I2_Noz6_Click);
             // 
             // I2_Noz3
             // 
             this.I2_Noz3.BackColor = System.Drawing.Color.Lime;
             this.I2_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I2_Noz3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I2_Noz3.Location = new System.Drawing.Point(145, 2);
+            this.I2_Noz3.Location = new System.Drawing.Point(153, 2);
             this.I2_Noz3.Name = "I2_Noz3";
             this.I2_Noz3.Size = new System.Drawing.Size(35, 30);
             this.I2_Noz3.TabIndex = 49;
             this.I2_Noz3.UseVisualStyleBackColor = false;
+            this.I2_Noz3.Click += new System.EventHandler(this.I2_Noz3_Click);
             // 
             // I2_ImageTanker
             // 
             this.I2_ImageTanker.BackColor = System.Drawing.Color.Transparent;
             this.I2_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I2_ImageTanker.BackgroundImage")));
             this.I2_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I2_ImageTanker.Location = new System.Drawing.Point(3, 29);
+            this.I2_ImageTanker.Location = new System.Drawing.Point(13, 32);
             this.I2_ImageTanker.Name = "I2_ImageTanker";
             this.I2_ImageTanker.Size = new System.Drawing.Size(48, 49);
             this.I2_ImageTanker.TabIndex = 3;
@@ -1217,54 +1375,57 @@
             this.I2_ImageVideo.BackColor = System.Drawing.Color.Transparent;
             this.I2_ImageVideo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I2_ImageVideo.BackgroundImage")));
             this.I2_ImageVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I2_ImageVideo.Location = new System.Drawing.Point(59, 38);
+            this.I2_ImageVideo.Location = new System.Drawing.Point(111, 38);
             this.I2_ImageVideo.Name = "I2_ImageVideo";
             this.I2_ImageVideo.Size = new System.Drawing.Size(37, 34);
             this.I2_ImageVideo.TabIndex = 2;
             // 
-            // I2_VideoChan
+            // Island2_Text
             // 
-            this.I2_VideoChan.AutoSize = true;
-            this.I2_VideoChan.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I2_VideoChan.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.I2_VideoChan.Location = new System.Drawing.Point(98, 42);
-            this.I2_VideoChan.Name = "I2_VideoChan";
-            this.I2_VideoChan.Size = new System.Drawing.Size(28, 26);
-            this.I2_VideoChan.TabIndex = 48;
-            this.I2_VideoChan.Text = "--";
+            this.Island2_Text.AutoSize = true;
+            this.Island2_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Island2_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Island2_Text.Location = new System.Drawing.Point(73, 43);
+            this.Island2_Text.Name = "Island2_Text";
+            this.Island2_Text.Size = new System.Drawing.Size(28, 26);
+            this.Island2_Text.TabIndex = 48;
+            this.Island2_Text.Text = "--";
             // 
             // I2_Noz5
             // 
             this.I2_Noz5.BackColor = System.Drawing.Color.Lime;
             this.I2_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I2_Noz5.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I2_Noz5.Location = new System.Drawing.Point(105, 80);
+            this.I2_Noz5.Location = new System.Drawing.Point(113, 80);
             this.I2_Noz5.Name = "I2_Noz5";
             this.I2_Noz5.Size = new System.Drawing.Size(35, 30);
             this.I2_Noz5.TabIndex = 47;
             this.I2_Noz5.UseVisualStyleBackColor = false;
+            this.I2_Noz5.Click += new System.EventHandler(this.I2_Noz5_Click);
             // 
             // I2_Noz4
             // 
             this.I2_Noz4.BackColor = System.Drawing.Color.Lime;
             this.I2_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I2_Noz4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I2_Noz4.Location = new System.Drawing.Point(66, 80);
+            this.I2_Noz4.Location = new System.Drawing.Point(74, 80);
             this.I2_Noz4.Name = "I2_Noz4";
             this.I2_Noz4.Size = new System.Drawing.Size(35, 30);
             this.I2_Noz4.TabIndex = 46;
             this.I2_Noz4.UseVisualStyleBackColor = false;
+            this.I2_Noz4.Click += new System.EventHandler(this.I2_Noz4_Click);
             // 
             // I2_Noz2
             // 
             this.I2_Noz2.BackColor = System.Drawing.Color.Lime;
             this.I2_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I2_Noz2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I2_Noz2.Location = new System.Drawing.Point(105, 2);
+            this.I2_Noz2.Location = new System.Drawing.Point(113, 2);
             this.I2_Noz2.Name = "I2_Noz2";
             this.I2_Noz2.Size = new System.Drawing.Size(35, 30);
             this.I2_Noz2.TabIndex = 45;
             this.I2_Noz2.UseVisualStyleBackColor = false;
+            this.I2_Noz2.Click += new System.EventHandler(this.I2_Noz2_Click);
             // 
             // I2_Noz1
             // 
@@ -1272,11 +1433,12 @@
             this.I2_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.I2_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I2_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I2_Noz1.Location = new System.Drawing.Point(66, 2);
+            this.I2_Noz1.Location = new System.Drawing.Point(74, 2);
             this.I2_Noz1.Name = "I2_Noz1";
             this.I2_Noz1.Size = new System.Drawing.Size(35, 30);
             this.I2_Noz1.TabIndex = 44;
             this.I2_Noz1.UseVisualStyleBackColor = false;
+            this.I2_Noz1.Click += new System.EventHandler(this.I2_Noz1_Click);
             // 
             // I2_Area1
             // 
@@ -1288,6 +1450,7 @@
             this.I2_Area1.Size = new System.Drawing.Size(100, 40);
             this.I2_Area1.TabIndex = 0;
             this.I2_Area1.UseVisualStyleBackColor = false;
+            this.I2_Area1.Click += new System.EventHandler(this.I2_Area1_Click);
             // 
             // I2_Area2
             // 
@@ -1299,6 +1462,7 @@
             this.I2_Area2.Size = new System.Drawing.Size(100, 40);
             this.I2_Area2.TabIndex = 36;
             this.I2_Area2.UseVisualStyleBackColor = false;
+            this.I2_Area2.Click += new System.EventHandler(this.I2_Area2_Click);
             // 
             // I2_Area3
             // 
@@ -1310,6 +1474,7 @@
             this.I2_Area3.Size = new System.Drawing.Size(100, 40);
             this.I2_Area3.TabIndex = 37;
             this.I2_Area3.UseVisualStyleBackColor = false;
+            this.I2_Area3.Click += new System.EventHandler(this.I2_Area3_Click);
             // 
             // I2_Area4
             // 
@@ -1321,6 +1486,7 @@
             this.I2_Area4.Size = new System.Drawing.Size(100, 40);
             this.I2_Area4.TabIndex = 38;
             this.I2_Area4.UseVisualStyleBackColor = false;
+            this.I2_Area4.Click += new System.EventHandler(this.I2_Area4_Click);
             // 
             // Island1
             // 
@@ -1347,7 +1513,7 @@
             this.I1_image.Controls.Add(this.I1_Noz3);
             this.I1_image.Controls.Add(this.I1_ImageTanker);
             this.I1_image.Controls.Add(this.I1_ImageVideo);
-            this.I1_image.Controls.Add(this.I1_VideoChan);
+            this.I1_image.Controls.Add(this.Island1_Text);
             this.I1_image.Controls.Add(this.I1_Noz5);
             this.I1_image.Controls.Add(this.I1_Noz4);
             this.I1_image.Controls.Add(this.I1_Noz2);
@@ -1362,29 +1528,31 @@
             this.I1_Noz6.BackColor = System.Drawing.Color.Lime;
             this.I1_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I1_Noz6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I1_Noz6.Location = new System.Drawing.Point(146, 80);
+            this.I1_Noz6.Location = new System.Drawing.Point(154, 80);
             this.I1_Noz6.Name = "I1_Noz6";
             this.I1_Noz6.Size = new System.Drawing.Size(35, 30);
             this.I1_Noz6.TabIndex = 50;
             this.I1_Noz6.UseVisualStyleBackColor = false;
+            this.I1_Noz6.Click += new System.EventHandler(this.I1_Noz6_Click);
             // 
             // I1_Noz3
             // 
             this.I1_Noz3.BackColor = System.Drawing.Color.Lime;
             this.I1_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I1_Noz3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I1_Noz3.Location = new System.Drawing.Point(145, 2);
+            this.I1_Noz3.Location = new System.Drawing.Point(153, 2);
             this.I1_Noz3.Name = "I1_Noz3";
             this.I1_Noz3.Size = new System.Drawing.Size(35, 30);
             this.I1_Noz3.TabIndex = 49;
             this.I1_Noz3.UseVisualStyleBackColor = false;
+            this.I1_Noz3.Click += new System.EventHandler(this.I1_Noz3_Click);
             // 
             // I1_ImageTanker
             // 
             this.I1_ImageTanker.BackColor = System.Drawing.Color.Transparent;
             this.I1_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I1_ImageTanker.BackgroundImage")));
             this.I1_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I1_ImageTanker.Location = new System.Drawing.Point(3, 29);
+            this.I1_ImageTanker.Location = new System.Drawing.Point(13, 32);
             this.I1_ImageTanker.Name = "I1_ImageTanker";
             this.I1_ImageTanker.Size = new System.Drawing.Size(48, 49);
             this.I1_ImageTanker.TabIndex = 3;
@@ -1394,54 +1562,57 @@
             this.I1_ImageVideo.BackColor = System.Drawing.Color.Transparent;
             this.I1_ImageVideo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("I1_ImageVideo.BackgroundImage")));
             this.I1_ImageVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.I1_ImageVideo.Location = new System.Drawing.Point(59, 38);
+            this.I1_ImageVideo.Location = new System.Drawing.Point(111, 38);
             this.I1_ImageVideo.Name = "I1_ImageVideo";
             this.I1_ImageVideo.Size = new System.Drawing.Size(37, 34);
             this.I1_ImageVideo.TabIndex = 2;
             // 
-            // I1_VideoChan
+            // Island1_Text
             // 
-            this.I1_VideoChan.AutoSize = true;
-            this.I1_VideoChan.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I1_VideoChan.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.I1_VideoChan.Location = new System.Drawing.Point(98, 42);
-            this.I1_VideoChan.Name = "I1_VideoChan";
-            this.I1_VideoChan.Size = new System.Drawing.Size(28, 26);
-            this.I1_VideoChan.TabIndex = 48;
-            this.I1_VideoChan.Text = "--";
+            this.Island1_Text.AutoSize = true;
+            this.Island1_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Island1_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Island1_Text.Location = new System.Drawing.Point(73, 43);
+            this.Island1_Text.Name = "Island1_Text";
+            this.Island1_Text.Size = new System.Drawing.Size(28, 26);
+            this.Island1_Text.TabIndex = 48;
+            this.Island1_Text.Text = "--";
             // 
             // I1_Noz5
             // 
             this.I1_Noz5.BackColor = System.Drawing.Color.Lime;
             this.I1_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I1_Noz5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I1_Noz5.Location = new System.Drawing.Point(105, 80);
+            this.I1_Noz5.Location = new System.Drawing.Point(113, 80);
             this.I1_Noz5.Name = "I1_Noz5";
             this.I1_Noz5.Size = new System.Drawing.Size(35, 30);
             this.I1_Noz5.TabIndex = 47;
             this.I1_Noz5.UseVisualStyleBackColor = false;
+            this.I1_Noz5.Click += new System.EventHandler(this.I1_Noz5_Click);
             // 
             // I1_Noz4
             // 
             this.I1_Noz4.BackColor = System.Drawing.Color.Lime;
             this.I1_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I1_Noz4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I1_Noz4.Location = new System.Drawing.Point(66, 80);
+            this.I1_Noz4.Location = new System.Drawing.Point(74, 80);
             this.I1_Noz4.Name = "I1_Noz4";
             this.I1_Noz4.Size = new System.Drawing.Size(35, 30);
             this.I1_Noz4.TabIndex = 46;
             this.I1_Noz4.UseVisualStyleBackColor = false;
+            this.I1_Noz4.Click += new System.EventHandler(this.I1_Noz4_Click);
             // 
             // I1_Noz2
             // 
             this.I1_Noz2.BackColor = System.Drawing.Color.Lime;
             this.I1_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I1_Noz2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I1_Noz2.Location = new System.Drawing.Point(105, 2);
+            this.I1_Noz2.Location = new System.Drawing.Point(113, 2);
             this.I1_Noz2.Name = "I1_Noz2";
             this.I1_Noz2.Size = new System.Drawing.Size(35, 30);
             this.I1_Noz2.TabIndex = 45;
             this.I1_Noz2.UseVisualStyleBackColor = false;
+            this.I1_Noz2.Click += new System.EventHandler(this.I1_Noz2_Click);
             // 
             // I1_Noz1
             // 
@@ -1449,11 +1620,12 @@
             this.I1_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.I1_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.I1_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.I1_Noz1.Location = new System.Drawing.Point(66, 2);
+            this.I1_Noz1.Location = new System.Drawing.Point(74, 2);
             this.I1_Noz1.Name = "I1_Noz1";
             this.I1_Noz1.Size = new System.Drawing.Size(35, 30);
             this.I1_Noz1.TabIndex = 44;
             this.I1_Noz1.UseVisualStyleBackColor = false;
+            this.I1_Noz1.Click += new System.EventHandler(this.I1_Noz1_Click);
             // 
             // I1_Area1
             // 
@@ -1465,6 +1637,7 @@
             this.I1_Area1.Size = new System.Drawing.Size(100, 40);
             this.I1_Area1.TabIndex = 0;
             this.I1_Area1.UseVisualStyleBackColor = false;
+            this.I1_Area1.Click += new System.EventHandler(this.I1_Area1_Click);
             // 
             // I1_Area2
             // 
@@ -1476,6 +1649,7 @@
             this.I1_Area2.Size = new System.Drawing.Size(100, 40);
             this.I1_Area2.TabIndex = 36;
             this.I1_Area2.UseVisualStyleBackColor = false;
+            this.I1_Area2.Click += new System.EventHandler(this.I1_Area2_Click);
             // 
             // I1_Area3
             // 
@@ -1487,6 +1661,7 @@
             this.I1_Area3.Size = new System.Drawing.Size(100, 40);
             this.I1_Area3.TabIndex = 37;
             this.I1_Area3.UseVisualStyleBackColor = false;
+            this.I1_Area3.Click += new System.EventHandler(this.I1_Area3_Click);
             // 
             // I1_Area4
             // 
@@ -1498,14 +1673,1113 @@
             this.I1_Area4.Size = new System.Drawing.Size(100, 40);
             this.I1_Area4.TabIndex = 38;
             this.I1_Area4.UseVisualStyleBackColor = false;
+            this.I1_Area4.Click += new System.EventHandler(this.I1_Area4_Click);
             // 
             // StationBoardVertical
             // 
+            this.StationBoardVertical.Controls.Add(this.Ver_Island6);
+            this.StationBoardVertical.Controls.Add(this.Ver_Island4);
+            this.StationBoardVertical.Controls.Add(this.Ver_Island3);
+            this.StationBoardVertical.Controls.Add(this.Ver_Island2);
+            this.StationBoardVertical.Controls.Add(this.Ver_Island5);
+            this.StationBoardVertical.Controls.Add(this.Ver_btnExit);
+            this.StationBoardVertical.Controls.Add(this.Ver_btnEntrance);
+            this.StationBoardVertical.Controls.Add(this.Ver_btnStore);
+            this.StationBoardVertical.Controls.Add(this.Ver_Island1);
             this.StationBoardVertical.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StationBoardVertical.Location = new System.Drawing.Point(0, 0);
             this.StationBoardVertical.Name = "StationBoardVertical";
-            this.StationBoardVertical.Size = new System.Drawing.Size(1252, 534);
+            this.StationBoardVertical.Size = new System.Drawing.Size(1292, 546);
             this.StationBoardVertical.TabIndex = 62;
+            // 
+            // Ver_Island6
+            // 
+            this.Ver_Island6.Controls.Add(this.Ver_I6_image);
+            this.Ver_Island6.Controls.Add(this.Ver_I6_Area1);
+            this.Ver_Island6.Controls.Add(this.Ver_I6_Area4);
+            this.Ver_Island6.Controls.Add(this.Ver_I6_Area3);
+            this.Ver_Island6.Controls.Add(this.Ver_I6_Area2);
+            this.Ver_Island6.Location = new System.Drawing.Point(783, 248);
+            this.Ver_Island6.Name = "Ver_Island6";
+            this.Ver_Island6.Size = new System.Drawing.Size(247, 242);
+            this.Ver_Island6.TabIndex = 65;
+            this.Ver_Island6.DoubleClick += new System.EventHandler(this.Ver_Island6_DoubleClick);
+            this.Ver_Island6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ver_Island6_MouseDown);
+            this.Ver_Island6.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ver_Island6_MouseMove);
+            this.Ver_Island6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ver_Island6_MouseUp);
+            // 
+            // Ver_I6_image
+            // 
+            this.Ver_I6_image.BackColor = System.Drawing.Color.Khaki;
+            this.Ver_I6_image.Controls.Add(this.Ver_I6_Noz6);
+            this.Ver_I6_image.Controls.Add(this.Ver_I6_Noz5);
+            this.Ver_I6_image.Controls.Add(this.Ver_I6_ImageTanker);
+            this.Ver_I6_image.Controls.Add(this.Ver_Island6_Text);
+            this.Ver_I6_image.Controls.Add(this.Ver_I6_Noz4);
+            this.Ver_I6_image.Controls.Add(this.Ver_I6_Noz2);
+            this.Ver_I6_image.Controls.Add(this.Ver_I6_Noz3);
+            this.Ver_I6_image.Controls.Add(this.Ver_I6_Noz1);
+            this.Ver_I6_image.Location = new System.Drawing.Point(64, 28);
+            this.Ver_I6_image.Name = "Ver_I6_image";
+            this.Ver_I6_image.Size = new System.Drawing.Size(120, 188);
+            this.Ver_I6_image.TabIndex = 35;
+            // 
+            // Ver_I6_Noz6
+            // 
+            this.Ver_I6_Noz6.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I6_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Noz6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Noz6.Location = new System.Drawing.Point(73, 143);
+            this.Ver_I6_Noz6.Name = "Ver_I6_Noz6";
+            this.Ver_I6_Noz6.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I6_Noz6.TabIndex = 50;
+            this.Ver_I6_Noz6.UseVisualStyleBackColor = false;
+            this.Ver_I6_Noz6.Click += new System.EventHandler(this.Ver_I6_Noz6_Click);
+            // 
+            // Ver_I6_Noz5
+            // 
+            this.Ver_I6_Noz5.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I6_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Noz5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Noz5.Location = new System.Drawing.Point(22, 143);
+            this.Ver_I6_Noz5.Name = "Ver_I6_Noz5";
+            this.Ver_I6_Noz5.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I6_Noz5.TabIndex = 49;
+            this.Ver_I6_Noz5.UseVisualStyleBackColor = false;
+            this.Ver_I6_Noz5.Click += new System.EventHandler(this.Ver_I6_Noz5_Click);
+            // 
+            // Ver_I6_ImageTanker
+            // 
+            this.Ver_I6_ImageTanker.BackColor = System.Drawing.Color.Transparent;
+            this.Ver_I6_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ver_I6_ImageTanker.BackgroundImage")));
+            this.Ver_I6_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I6_ImageTanker.Location = new System.Drawing.Point(22, 4);
+            this.Ver_I6_ImageTanker.Name = "Ver_I6_ImageTanker";
+            this.Ver_I6_ImageTanker.Size = new System.Drawing.Size(48, 49);
+            this.Ver_I6_ImageTanker.TabIndex = 3;
+            // 
+            // Ver_Island6_Text
+            // 
+            this.Ver_Island6_Text.AutoSize = true;
+            this.Ver_Island6_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_Island6_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Ver_Island6_Text.Location = new System.Drawing.Point(76, 16);
+            this.Ver_Island6_Text.Name = "Ver_Island6_Text";
+            this.Ver_Island6_Text.Size = new System.Drawing.Size(28, 26);
+            this.Ver_Island6_Text.TabIndex = 48;
+            this.Ver_Island6_Text.Text = "--";
+            // 
+            // Ver_I6_Noz4
+            // 
+            this.Ver_I6_Noz4.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I6_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Noz4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Noz4.Location = new System.Drawing.Point(73, 104);
+            this.Ver_I6_Noz4.Name = "Ver_I6_Noz4";
+            this.Ver_I6_Noz4.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I6_Noz4.TabIndex = 47;
+            this.Ver_I6_Noz4.UseVisualStyleBackColor = false;
+            this.Ver_I6_Noz4.Click += new System.EventHandler(this.Ver_I6_Noz4_Click);
+            // 
+            // Ver_I6_Noz2
+            // 
+            this.Ver_I6_Noz2.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I6_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Noz2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Noz2.Location = new System.Drawing.Point(73, 66);
+            this.Ver_I6_Noz2.Name = "Ver_I6_Noz2";
+            this.Ver_I6_Noz2.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I6_Noz2.TabIndex = 46;
+            this.Ver_I6_Noz2.UseVisualStyleBackColor = false;
+            this.Ver_I6_Noz2.Click += new System.EventHandler(this.Ver_I6_Noz2_Click);
+            // 
+            // Ver_I6_Noz3
+            // 
+            this.Ver_I6_Noz3.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I6_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Noz3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Noz3.Location = new System.Drawing.Point(22, 104);
+            this.Ver_I6_Noz3.Name = "Ver_I6_Noz3";
+            this.Ver_I6_Noz3.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I6_Noz3.TabIndex = 45;
+            this.Ver_I6_Noz3.UseVisualStyleBackColor = false;
+            this.Ver_I6_Noz3.Click += new System.EventHandler(this.Ver_I6_Noz3_Click);
+            // 
+            // Ver_I6_Noz1
+            // 
+            this.Ver_I6_Noz1.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I6_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I6_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Noz1.Location = new System.Drawing.Point(22, 66);
+            this.Ver_I6_Noz1.Name = "Ver_I6_Noz1";
+            this.Ver_I6_Noz1.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I6_Noz1.TabIndex = 44;
+            this.Ver_I6_Noz1.UseVisualStyleBackColor = false;
+            this.Ver_I6_Noz1.Click += new System.EventHandler(this.Ver_I6_Noz1_Click);
+            // 
+            // Ver_I6_Area1
+            // 
+            this.Ver_I6_Area1.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I6_Area1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Area1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Area1.Location = new System.Drawing.Point(12, 23);
+            this.Ver_I6_Area1.Name = "Ver_I6_Area1";
+            this.Ver_I6_Area1.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I6_Area1.TabIndex = 0;
+            this.Ver_I6_Area1.UseVisualStyleBackColor = false;
+            this.Ver_I6_Area1.Click += new System.EventHandler(this.Ver_I6_Area1_Click);
+            // 
+            // Ver_I6_Area4
+            // 
+            this.Ver_I6_Area4.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I6_Area4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Area4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Area4.Location = new System.Drawing.Point(186, 123);
+            this.Ver_I6_Area4.Name = "Ver_I6_Area4";
+            this.Ver_I6_Area4.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I6_Area4.TabIndex = 36;
+            this.Ver_I6_Area4.UseVisualStyleBackColor = false;
+            this.Ver_I6_Area4.Click += new System.EventHandler(this.Ver_I6_Area4_Click);
+            // 
+            // Ver_I6_Area3
+            // 
+            this.Ver_I6_Area3.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I6_Area3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Area3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Area3.Location = new System.Drawing.Point(12, 123);
+            this.Ver_I6_Area3.Name = "Ver_I6_Area3";
+            this.Ver_I6_Area3.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I6_Area3.TabIndex = 37;
+            this.Ver_I6_Area3.UseVisualStyleBackColor = false;
+            this.Ver_I6_Area3.Click += new System.EventHandler(this.Ver_I6_Area3_Click);
+            // 
+            // Ver_I6_Area2
+            // 
+            this.Ver_I6_Area2.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I6_Area2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I6_Area2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I6_Area2.Location = new System.Drawing.Point(186, 23);
+            this.Ver_I6_Area2.Name = "Ver_I6_Area2";
+            this.Ver_I6_Area2.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I6_Area2.TabIndex = 38;
+            this.Ver_I6_Area2.UseVisualStyleBackColor = false;
+            this.Ver_I6_Area2.Click += new System.EventHandler(this.Ver_I6_Area2_Click);
+            // 
+            // Ver_Island4
+            // 
+            this.Ver_Island4.Controls.Add(this.Ver_I4_image);
+            this.Ver_Island4.Controls.Add(this.Ver_I4_Area1);
+            this.Ver_Island4.Controls.Add(this.Ver_I4_Area4);
+            this.Ver_Island4.Controls.Add(this.Ver_I4_Area3);
+            this.Ver_Island4.Controls.Add(this.Ver_I4_Area2);
+            this.Ver_Island4.Location = new System.Drawing.Point(117, 248);
+            this.Ver_Island4.Name = "Ver_Island4";
+            this.Ver_Island4.Size = new System.Drawing.Size(247, 240);
+            this.Ver_Island4.TabIndex = 64;
+            this.Ver_Island4.DoubleClick += new System.EventHandler(this.Ver_Island4_DoubleClick);
+            this.Ver_Island4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ver_Island4_MouseDown);
+            this.Ver_Island4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ver_Island4_MouseMove);
+            this.Ver_Island4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ver_Island4_MouseUp);
+            // 
+            // Ver_I4_image
+            // 
+            this.Ver_I4_image.BackColor = System.Drawing.Color.Khaki;
+            this.Ver_I4_image.Controls.Add(this.Ver_I4_Noz6);
+            this.Ver_I4_image.Controls.Add(this.Ver_I4_Noz5);
+            this.Ver_I4_image.Controls.Add(this.Ver_I4_ImageTanker);
+            this.Ver_I4_image.Controls.Add(this.Ver_Island4_Text);
+            this.Ver_I4_image.Controls.Add(this.Ver_I4_Noz4);
+            this.Ver_I4_image.Controls.Add(this.Ver_I4_Noz2);
+            this.Ver_I4_image.Controls.Add(this.Ver_I4_Noz3);
+            this.Ver_I4_image.Controls.Add(this.Ver_I4_Noz1);
+            this.Ver_I4_image.Location = new System.Drawing.Point(64, 28);
+            this.Ver_I4_image.Name = "Ver_I4_image";
+            this.Ver_I4_image.Size = new System.Drawing.Size(120, 188);
+            this.Ver_I4_image.TabIndex = 35;
+            // 
+            // Ver_I4_Noz6
+            // 
+            this.Ver_I4_Noz6.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I4_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Noz6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Noz6.Location = new System.Drawing.Point(73, 143);
+            this.Ver_I4_Noz6.Name = "Ver_I4_Noz6";
+            this.Ver_I4_Noz6.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I4_Noz6.TabIndex = 50;
+            this.Ver_I4_Noz6.UseVisualStyleBackColor = false;
+            this.Ver_I4_Noz6.Click += new System.EventHandler(this.Ver_I4_Noz6_Click);
+            // 
+            // Ver_I4_Noz5
+            // 
+            this.Ver_I4_Noz5.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I4_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Noz5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Noz5.Location = new System.Drawing.Point(22, 143);
+            this.Ver_I4_Noz5.Name = "Ver_I4_Noz5";
+            this.Ver_I4_Noz5.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I4_Noz5.TabIndex = 49;
+            this.Ver_I4_Noz5.UseVisualStyleBackColor = false;
+            this.Ver_I4_Noz5.Click += new System.EventHandler(this.Ver_I4_Noz5_Click);
+            // 
+            // Ver_I4_ImageTanker
+            // 
+            this.Ver_I4_ImageTanker.BackColor = System.Drawing.Color.Transparent;
+            this.Ver_I4_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ver_I4_ImageTanker.BackgroundImage")));
+            this.Ver_I4_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I4_ImageTanker.Location = new System.Drawing.Point(22, 4);
+            this.Ver_I4_ImageTanker.Name = "Ver_I4_ImageTanker";
+            this.Ver_I4_ImageTanker.Size = new System.Drawing.Size(48, 49);
+            this.Ver_I4_ImageTanker.TabIndex = 3;
+            // 
+            // Ver_Island4_Text
+            // 
+            this.Ver_Island4_Text.AutoSize = true;
+            this.Ver_Island4_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_Island4_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Ver_Island4_Text.Location = new System.Drawing.Point(80, 8);
+            this.Ver_Island4_Text.Name = "Ver_Island4_Text";
+            this.Ver_Island4_Text.Size = new System.Drawing.Size(28, 26);
+            this.Ver_Island4_Text.TabIndex = 48;
+            this.Ver_Island4_Text.Text = "--";
+            // 
+            // Ver_I4_Noz4
+            // 
+            this.Ver_I4_Noz4.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I4_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Noz4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Noz4.Location = new System.Drawing.Point(73, 104);
+            this.Ver_I4_Noz4.Name = "Ver_I4_Noz4";
+            this.Ver_I4_Noz4.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I4_Noz4.TabIndex = 47;
+            this.Ver_I4_Noz4.UseVisualStyleBackColor = false;
+            this.Ver_I4_Noz4.Click += new System.EventHandler(this.Ver_I4_Noz4_Click);
+            // 
+            // Ver_I4_Noz2
+            // 
+            this.Ver_I4_Noz2.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I4_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Noz2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Noz2.Location = new System.Drawing.Point(73, 66);
+            this.Ver_I4_Noz2.Name = "Ver_I4_Noz2";
+            this.Ver_I4_Noz2.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I4_Noz2.TabIndex = 46;
+            this.Ver_I4_Noz2.UseVisualStyleBackColor = false;
+            this.Ver_I4_Noz2.Click += new System.EventHandler(this.Ver_I4_Noz2_Click);
+            // 
+            // Ver_I4_Noz3
+            // 
+            this.Ver_I4_Noz3.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I4_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Noz3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Noz3.Location = new System.Drawing.Point(22, 104);
+            this.Ver_I4_Noz3.Name = "Ver_I4_Noz3";
+            this.Ver_I4_Noz3.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I4_Noz3.TabIndex = 45;
+            this.Ver_I4_Noz3.UseVisualStyleBackColor = false;
+            this.Ver_I4_Noz3.Click += new System.EventHandler(this.Ver_I4_Noz3_Click);
+            // 
+            // Ver_I4_Noz1
+            // 
+            this.Ver_I4_Noz1.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I4_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I4_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Noz1.Location = new System.Drawing.Point(22, 66);
+            this.Ver_I4_Noz1.Name = "Ver_I4_Noz1";
+            this.Ver_I4_Noz1.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I4_Noz1.TabIndex = 44;
+            this.Ver_I4_Noz1.UseVisualStyleBackColor = false;
+            this.Ver_I4_Noz1.Click += new System.EventHandler(this.Ver_I4_Noz1_Click);
+            // 
+            // Ver_I4_Area1
+            // 
+            this.Ver_I4_Area1.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I4_Area1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Area1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Area1.Location = new System.Drawing.Point(12, 23);
+            this.Ver_I4_Area1.Name = "Ver_I4_Area1";
+            this.Ver_I4_Area1.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I4_Area1.TabIndex = 0;
+            this.Ver_I4_Area1.UseVisualStyleBackColor = false;
+            this.Ver_I4_Area1.Click += new System.EventHandler(this.Ver_I4_Area1_Click);
+            // 
+            // Ver_I4_Area4
+            // 
+            this.Ver_I4_Area4.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I4_Area4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Area4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Area4.Location = new System.Drawing.Point(186, 123);
+            this.Ver_I4_Area4.Name = "Ver_I4_Area4";
+            this.Ver_I4_Area4.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I4_Area4.TabIndex = 36;
+            this.Ver_I4_Area4.UseVisualStyleBackColor = false;
+            this.Ver_I4_Area4.Click += new System.EventHandler(this.Ver_I4_Area4_Click);
+            // 
+            // Ver_I4_Area3
+            // 
+            this.Ver_I4_Area3.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I4_Area3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Area3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Area3.Location = new System.Drawing.Point(12, 123);
+            this.Ver_I4_Area3.Name = "Ver_I4_Area3";
+            this.Ver_I4_Area3.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I4_Area3.TabIndex = 37;
+            this.Ver_I4_Area3.UseVisualStyleBackColor = false;
+            this.Ver_I4_Area3.Click += new System.EventHandler(this.Ver_I4_Area3_Click);
+            // 
+            // Ver_I4_Area2
+            // 
+            this.Ver_I4_Area2.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I4_Area2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I4_Area2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I4_Area2.Location = new System.Drawing.Point(186, 23);
+            this.Ver_I4_Area2.Name = "Ver_I4_Area2";
+            this.Ver_I4_Area2.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I4_Area2.TabIndex = 38;
+            this.Ver_I4_Area2.UseVisualStyleBackColor = false;
+            this.Ver_I4_Area2.Click += new System.EventHandler(this.Ver_I4_Area2_Click);
+            // 
+            // Ver_Island3
+            // 
+            this.Ver_Island3.Controls.Add(this.Ver_I3_image);
+            this.Ver_Island3.Controls.Add(this.Ver_I3_Area1);
+            this.Ver_Island3.Controls.Add(this.Ver_I3_Area4);
+            this.Ver_Island3.Controls.Add(this.Ver_I3_Area3);
+            this.Ver_Island3.Controls.Add(this.Ver_I3_Area2);
+            this.Ver_Island3.Location = new System.Drawing.Point(783, 8);
+            this.Ver_Island3.Name = "Ver_Island3";
+            this.Ver_Island3.Size = new System.Drawing.Size(247, 240);
+            this.Ver_Island3.TabIndex = 64;
+            this.Ver_Island3.DoubleClick += new System.EventHandler(this.Ver_Island3_DoubleClick);
+            this.Ver_Island3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ver_Island3_MouseDown);
+            this.Ver_Island3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ver_Island3_MouseMove);
+            this.Ver_Island3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ver_Island3_MouseUp);
+            // 
+            // Ver_I3_image
+            // 
+            this.Ver_I3_image.BackColor = System.Drawing.Color.Khaki;
+            this.Ver_I3_image.Controls.Add(this.Ver_I3_Noz6);
+            this.Ver_I3_image.Controls.Add(this.Ver_I3_Noz5);
+            this.Ver_I3_image.Controls.Add(this.Ver_I3_ImageTanker);
+            this.Ver_I3_image.Controls.Add(this.Ver_Island3_Text);
+            this.Ver_I3_image.Controls.Add(this.Ver_I3_Noz4);
+            this.Ver_I3_image.Controls.Add(this.Ver_I3_Noz2);
+            this.Ver_I3_image.Controls.Add(this.Ver_I3_Noz3);
+            this.Ver_I3_image.Controls.Add(this.Ver_I3_Noz1);
+            this.Ver_I3_image.Location = new System.Drawing.Point(64, 28);
+            this.Ver_I3_image.Name = "Ver_I3_image";
+            this.Ver_I3_image.Size = new System.Drawing.Size(120, 188);
+            this.Ver_I3_image.TabIndex = 35;
+            // 
+            // Ver_I3_Noz6
+            // 
+            this.Ver_I3_Noz6.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I3_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Noz6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Noz6.Location = new System.Drawing.Point(73, 143);
+            this.Ver_I3_Noz6.Name = "Ver_I3_Noz6";
+            this.Ver_I3_Noz6.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I3_Noz6.TabIndex = 50;
+            this.Ver_I3_Noz6.UseVisualStyleBackColor = false;
+            this.Ver_I3_Noz6.Click += new System.EventHandler(this.Ver_I3_Noz6_Click);
+            // 
+            // Ver_I3_Noz5
+            // 
+            this.Ver_I3_Noz5.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I3_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Noz5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Noz5.Location = new System.Drawing.Point(22, 143);
+            this.Ver_I3_Noz5.Name = "Ver_I3_Noz5";
+            this.Ver_I3_Noz5.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I3_Noz5.TabIndex = 49;
+            this.Ver_I3_Noz5.UseVisualStyleBackColor = false;
+            this.Ver_I3_Noz5.Click += new System.EventHandler(this.Ver_I3_Noz5_Click);
+            // 
+            // Ver_I3_ImageTanker
+            // 
+            this.Ver_I3_ImageTanker.BackColor = System.Drawing.Color.Transparent;
+            this.Ver_I3_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ver_I3_ImageTanker.BackgroundImage")));
+            this.Ver_I3_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I3_ImageTanker.Location = new System.Drawing.Point(22, 4);
+            this.Ver_I3_ImageTanker.Name = "Ver_I3_ImageTanker";
+            this.Ver_I3_ImageTanker.Size = new System.Drawing.Size(48, 49);
+            this.Ver_I3_ImageTanker.TabIndex = 3;
+            // 
+            // Ver_Island3_Text
+            // 
+            this.Ver_Island3_Text.AutoSize = true;
+            this.Ver_Island3_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_Island3_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Ver_Island3_Text.Location = new System.Drawing.Point(80, 8);
+            this.Ver_Island3_Text.Name = "Ver_Island3_Text";
+            this.Ver_Island3_Text.Size = new System.Drawing.Size(28, 26);
+            this.Ver_Island3_Text.TabIndex = 48;
+            this.Ver_Island3_Text.Text = "--";
+            // 
+            // Ver_I3_Noz4
+            // 
+            this.Ver_I3_Noz4.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I3_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Noz4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Noz4.Location = new System.Drawing.Point(73, 104);
+            this.Ver_I3_Noz4.Name = "Ver_I3_Noz4";
+            this.Ver_I3_Noz4.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I3_Noz4.TabIndex = 47;
+            this.Ver_I3_Noz4.UseVisualStyleBackColor = false;
+            this.Ver_I3_Noz4.Click += new System.EventHandler(this.Ver_I3_Noz4_Click);
+            // 
+            // Ver_I3_Noz2
+            // 
+            this.Ver_I3_Noz2.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I3_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Noz2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Noz2.Location = new System.Drawing.Point(73, 66);
+            this.Ver_I3_Noz2.Name = "Ver_I3_Noz2";
+            this.Ver_I3_Noz2.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I3_Noz2.TabIndex = 46;
+            this.Ver_I3_Noz2.UseVisualStyleBackColor = false;
+            this.Ver_I3_Noz2.Click += new System.EventHandler(this.Ver_I3_Noz2_Click);
+            // 
+            // Ver_I3_Noz3
+            // 
+            this.Ver_I3_Noz3.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I3_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Noz3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Noz3.Location = new System.Drawing.Point(22, 104);
+            this.Ver_I3_Noz3.Name = "Ver_I3_Noz3";
+            this.Ver_I3_Noz3.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I3_Noz3.TabIndex = 45;
+            this.Ver_I3_Noz3.UseVisualStyleBackColor = false;
+            this.Ver_I3_Noz3.Click += new System.EventHandler(this.Ver_I3_Noz3_Click);
+            // 
+            // Ver_I3_Noz1
+            // 
+            this.Ver_I3_Noz1.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I3_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I3_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Noz1.Location = new System.Drawing.Point(22, 66);
+            this.Ver_I3_Noz1.Name = "Ver_I3_Noz1";
+            this.Ver_I3_Noz1.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I3_Noz1.TabIndex = 44;
+            this.Ver_I3_Noz1.UseVisualStyleBackColor = false;
+            this.Ver_I3_Noz1.Click += new System.EventHandler(this.Ver_I3_Noz1_Click);
+            // 
+            // Ver_I3_Area1
+            // 
+            this.Ver_I3_Area1.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I3_Area1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Area1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Area1.Location = new System.Drawing.Point(12, 23);
+            this.Ver_I3_Area1.Name = "Ver_I3_Area1";
+            this.Ver_I3_Area1.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I3_Area1.TabIndex = 0;
+            this.Ver_I3_Area1.UseVisualStyleBackColor = false;
+            this.Ver_I3_Area1.Click += new System.EventHandler(this.Ver_I3_Area1_Click);
+            // 
+            // Ver_I3_Area4
+            // 
+            this.Ver_I3_Area4.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I3_Area4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Area4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Area4.Location = new System.Drawing.Point(186, 123);
+            this.Ver_I3_Area4.Name = "Ver_I3_Area4";
+            this.Ver_I3_Area4.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I3_Area4.TabIndex = 36;
+            this.Ver_I3_Area4.UseVisualStyleBackColor = false;
+            this.Ver_I3_Area4.Click += new System.EventHandler(this.Ver_I3_Area4_Click);
+            // 
+            // Ver_I3_Area3
+            // 
+            this.Ver_I3_Area3.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I3_Area3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Area3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Area3.Location = new System.Drawing.Point(12, 123);
+            this.Ver_I3_Area3.Name = "Ver_I3_Area3";
+            this.Ver_I3_Area3.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I3_Area3.TabIndex = 37;
+            this.Ver_I3_Area3.UseVisualStyleBackColor = false;
+            this.Ver_I3_Area3.Click += new System.EventHandler(this.Ver_I3_Area3_Click);
+            // 
+            // Ver_I3_Area2
+            // 
+            this.Ver_I3_Area2.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I3_Area2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I3_Area2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I3_Area2.Location = new System.Drawing.Point(186, 23);
+            this.Ver_I3_Area2.Name = "Ver_I3_Area2";
+            this.Ver_I3_Area2.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I3_Area2.TabIndex = 38;
+            this.Ver_I3_Area2.UseVisualStyleBackColor = false;
+            this.Ver_I3_Area2.Click += new System.EventHandler(this.Ver_I3_Area2_Click);
+            // 
+            // Ver_Island2
+            // 
+            this.Ver_Island2.Controls.Add(this.Ver_I2_image);
+            this.Ver_Island2.Controls.Add(this.Ver_I2_Area1);
+            this.Ver_Island2.Controls.Add(this.Ver_I2_Area4);
+            this.Ver_Island2.Controls.Add(this.Ver_I2_Area3);
+            this.Ver_Island2.Controls.Add(this.Ver_I2_Area2);
+            this.Ver_Island2.Location = new System.Drawing.Point(447, 8);
+            this.Ver_Island2.Name = "Ver_Island2";
+            this.Ver_Island2.Size = new System.Drawing.Size(247, 240);
+            this.Ver_Island2.TabIndex = 64;
+            this.Ver_Island2.DoubleClick += new System.EventHandler(this.Ver_Island2_DoubleClick);
+            this.Ver_Island2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ver_Island2_MouseDown);
+            this.Ver_Island2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ver_Island2_MouseMove);
+            this.Ver_Island2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ver_Island2_MouseUp);
+            // 
+            // Ver_I2_image
+            // 
+            this.Ver_I2_image.BackColor = System.Drawing.Color.Khaki;
+            this.Ver_I2_image.Controls.Add(this.Ver_I2_Noz6);
+            this.Ver_I2_image.Controls.Add(this.Ver_I2_Noz5);
+            this.Ver_I2_image.Controls.Add(this.Ver_I2_ImageTanker);
+            this.Ver_I2_image.Controls.Add(this.Ver_Island2_Text);
+            this.Ver_I2_image.Controls.Add(this.Ver_I2_Noz4);
+            this.Ver_I2_image.Controls.Add(this.Ver_I2_Noz2);
+            this.Ver_I2_image.Controls.Add(this.Ver_I2_Noz3);
+            this.Ver_I2_image.Controls.Add(this.Ver_I2_Noz1);
+            this.Ver_I2_image.Location = new System.Drawing.Point(64, 28);
+            this.Ver_I2_image.Name = "Ver_I2_image";
+            this.Ver_I2_image.Size = new System.Drawing.Size(120, 188);
+            this.Ver_I2_image.TabIndex = 35;
+            // 
+            // Ver_I2_Noz6
+            // 
+            this.Ver_I2_Noz6.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I2_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Noz6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Noz6.Location = new System.Drawing.Point(73, 143);
+            this.Ver_I2_Noz6.Name = "Ver_I2_Noz6";
+            this.Ver_I2_Noz6.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I2_Noz6.TabIndex = 50;
+            this.Ver_I2_Noz6.UseVisualStyleBackColor = false;
+            this.Ver_I2_Noz6.Click += new System.EventHandler(this.Ver_I2_Noz6_Click);
+            // 
+            // Ver_I2_Noz5
+            // 
+            this.Ver_I2_Noz5.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I2_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Noz5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Noz5.Location = new System.Drawing.Point(22, 143);
+            this.Ver_I2_Noz5.Name = "Ver_I2_Noz5";
+            this.Ver_I2_Noz5.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I2_Noz5.TabIndex = 49;
+            this.Ver_I2_Noz5.UseVisualStyleBackColor = false;
+            this.Ver_I2_Noz5.Click += new System.EventHandler(this.Ver_I2_Noz5_Click);
+            // 
+            // Ver_I2_ImageTanker
+            // 
+            this.Ver_I2_ImageTanker.BackColor = System.Drawing.Color.Transparent;
+            this.Ver_I2_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ver_I2_ImageTanker.BackgroundImage")));
+            this.Ver_I2_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I2_ImageTanker.Location = new System.Drawing.Point(22, 4);
+            this.Ver_I2_ImageTanker.Name = "Ver_I2_ImageTanker";
+            this.Ver_I2_ImageTanker.Size = new System.Drawing.Size(48, 49);
+            this.Ver_I2_ImageTanker.TabIndex = 3;
+            // 
+            // Ver_Island2_Text
+            // 
+            this.Ver_Island2_Text.AutoSize = true;
+            this.Ver_Island2_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_Island2_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Ver_Island2_Text.Location = new System.Drawing.Point(80, 8);
+            this.Ver_Island2_Text.Name = "Ver_Island2_Text";
+            this.Ver_Island2_Text.Size = new System.Drawing.Size(28, 26);
+            this.Ver_Island2_Text.TabIndex = 48;
+            this.Ver_Island2_Text.Text = "--";
+            // 
+            // Ver_I2_Noz4
+            // 
+            this.Ver_I2_Noz4.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I2_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Noz4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Noz4.Location = new System.Drawing.Point(73, 104);
+            this.Ver_I2_Noz4.Name = "Ver_I2_Noz4";
+            this.Ver_I2_Noz4.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I2_Noz4.TabIndex = 47;
+            this.Ver_I2_Noz4.UseVisualStyleBackColor = false;
+            this.Ver_I2_Noz4.Click += new System.EventHandler(this.Ver_I2_Noz4_Click);
+            // 
+            // Ver_I2_Noz2
+            // 
+            this.Ver_I2_Noz2.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I2_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Noz2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Noz2.Location = new System.Drawing.Point(73, 66);
+            this.Ver_I2_Noz2.Name = "Ver_I2_Noz2";
+            this.Ver_I2_Noz2.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I2_Noz2.TabIndex = 46;
+            this.Ver_I2_Noz2.UseVisualStyleBackColor = false;
+            this.Ver_I2_Noz2.Click += new System.EventHandler(this.Ver_I2_Noz2_Click);
+            // 
+            // Ver_I2_Noz3
+            // 
+            this.Ver_I2_Noz3.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I2_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Noz3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Noz3.Location = new System.Drawing.Point(22, 104);
+            this.Ver_I2_Noz3.Name = "Ver_I2_Noz3";
+            this.Ver_I2_Noz3.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I2_Noz3.TabIndex = 45;
+            this.Ver_I2_Noz3.UseVisualStyleBackColor = false;
+            this.Ver_I2_Noz3.Click += new System.EventHandler(this.Ver_I2_Noz3_Click);
+            // 
+            // Ver_I2_Noz1
+            // 
+            this.Ver_I2_Noz1.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I2_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I2_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Noz1.Location = new System.Drawing.Point(22, 66);
+            this.Ver_I2_Noz1.Name = "Ver_I2_Noz1";
+            this.Ver_I2_Noz1.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I2_Noz1.TabIndex = 44;
+            this.Ver_I2_Noz1.UseVisualStyleBackColor = false;
+            this.Ver_I2_Noz1.Click += new System.EventHandler(this.Ver_I2_Noz1_Click);
+            // 
+            // Ver_I2_Area1
+            // 
+            this.Ver_I2_Area1.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I2_Area1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Area1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Area1.Location = new System.Drawing.Point(12, 23);
+            this.Ver_I2_Area1.Name = "Ver_I2_Area1";
+            this.Ver_I2_Area1.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I2_Area1.TabIndex = 0;
+            this.Ver_I2_Area1.UseVisualStyleBackColor = false;
+            this.Ver_I2_Area1.Click += new System.EventHandler(this.Ver_I2_Area1_Click);
+            // 
+            // Ver_I2_Area4
+            // 
+            this.Ver_I2_Area4.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I2_Area4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Area4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Area4.Location = new System.Drawing.Point(186, 123);
+            this.Ver_I2_Area4.Name = "Ver_I2_Area4";
+            this.Ver_I2_Area4.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I2_Area4.TabIndex = 36;
+            this.Ver_I2_Area4.UseVisualStyleBackColor = false;
+            this.Ver_I2_Area4.Click += new System.EventHandler(this.Ver_I2_Area4_Click);
+            // 
+            // Ver_I2_Area3
+            // 
+            this.Ver_I2_Area3.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I2_Area3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Area3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Area3.Location = new System.Drawing.Point(12, 123);
+            this.Ver_I2_Area3.Name = "Ver_I2_Area3";
+            this.Ver_I2_Area3.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I2_Area3.TabIndex = 37;
+            this.Ver_I2_Area3.UseVisualStyleBackColor = false;
+            this.Ver_I2_Area3.Click += new System.EventHandler(this.Ver_I2_Area3_Click);
+            // 
+            // Ver_I2_Area2
+            // 
+            this.Ver_I2_Area2.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I2_Area2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I2_Area2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I2_Area2.Location = new System.Drawing.Point(186, 23);
+            this.Ver_I2_Area2.Name = "Ver_I2_Area2";
+            this.Ver_I2_Area2.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I2_Area2.TabIndex = 38;
+            this.Ver_I2_Area2.UseVisualStyleBackColor = false;
+            this.Ver_I2_Area2.Click += new System.EventHandler(this.Ver_I2_Area2_Click);
+            // 
+            // Ver_Island5
+            // 
+            this.Ver_Island5.Controls.Add(this.Ver_I5_image);
+            this.Ver_Island5.Controls.Add(this.Ver_I5_Area1);
+            this.Ver_Island5.Controls.Add(this.Ver_I5_Area4);
+            this.Ver_Island5.Controls.Add(this.Ver_I5_Area3);
+            this.Ver_Island5.Controls.Add(this.Ver_I5_Area2);
+            this.Ver_Island5.Location = new System.Drawing.Point(447, 248);
+            this.Ver_Island5.Name = "Ver_Island5";
+            this.Ver_Island5.Size = new System.Drawing.Size(247, 242);
+            this.Ver_Island5.TabIndex = 64;
+            this.Ver_Island5.DoubleClick += new System.EventHandler(this.Ver_Island5_DoubleClick);
+            this.Ver_Island5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ver_Island5_MouseDown);
+            this.Ver_Island5.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ver_Island5_MouseMove);
+            this.Ver_Island5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ver_Island5_MouseUp);
+            // 
+            // Ver_I5_image
+            // 
+            this.Ver_I5_image.BackColor = System.Drawing.Color.Khaki;
+            this.Ver_I5_image.Controls.Add(this.Ver_I5_Noz6);
+            this.Ver_I5_image.Controls.Add(this.Ver_I5_Noz5);
+            this.Ver_I5_image.Controls.Add(this.Ver_I5_ImageTanker);
+            this.Ver_I5_image.Controls.Add(this.Ver_Island5_Text);
+            this.Ver_I5_image.Controls.Add(this.Ver_I5_Noz4);
+            this.Ver_I5_image.Controls.Add(this.Ver_I5_Noz2);
+            this.Ver_I5_image.Controls.Add(this.Ver_I5_Noz3);
+            this.Ver_I5_image.Controls.Add(this.Ver_I5_Noz1);
+            this.Ver_I5_image.Location = new System.Drawing.Point(64, 28);
+            this.Ver_I5_image.Name = "Ver_I5_image";
+            this.Ver_I5_image.Size = new System.Drawing.Size(120, 188);
+            this.Ver_I5_image.TabIndex = 35;
+            // 
+            // Ver_I5_Noz6
+            // 
+            this.Ver_I5_Noz6.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I5_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Noz6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Noz6.Location = new System.Drawing.Point(73, 143);
+            this.Ver_I5_Noz6.Name = "Ver_I5_Noz6";
+            this.Ver_I5_Noz6.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I5_Noz6.TabIndex = 50;
+            this.Ver_I5_Noz6.UseVisualStyleBackColor = false;
+            this.Ver_I5_Noz6.Click += new System.EventHandler(this.Ver_I5_Noz6_Click);
+            // 
+            // Ver_I5_Noz5
+            // 
+            this.Ver_I5_Noz5.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I5_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Noz5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Noz5.Location = new System.Drawing.Point(22, 143);
+            this.Ver_I5_Noz5.Name = "Ver_I5_Noz5";
+            this.Ver_I5_Noz5.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I5_Noz5.TabIndex = 49;
+            this.Ver_I5_Noz5.UseVisualStyleBackColor = false;
+            this.Ver_I5_Noz5.Click += new System.EventHandler(this.Ver_I5_Noz5_Click);
+            // 
+            // Ver_I5_ImageTanker
+            // 
+            this.Ver_I5_ImageTanker.BackColor = System.Drawing.Color.Transparent;
+            this.Ver_I5_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ver_I5_ImageTanker.BackgroundImage")));
+            this.Ver_I5_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I5_ImageTanker.Location = new System.Drawing.Point(22, 4);
+            this.Ver_I5_ImageTanker.Name = "Ver_I5_ImageTanker";
+            this.Ver_I5_ImageTanker.Size = new System.Drawing.Size(48, 49);
+            this.Ver_I5_ImageTanker.TabIndex = 3;
+            // 
+            // Ver_Island5_Text
+            // 
+            this.Ver_Island5_Text.AutoSize = true;
+            this.Ver_Island5_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_Island5_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Ver_Island5_Text.Location = new System.Drawing.Point(76, 16);
+            this.Ver_Island5_Text.Name = "Ver_Island5_Text";
+            this.Ver_Island5_Text.Size = new System.Drawing.Size(28, 26);
+            this.Ver_Island5_Text.TabIndex = 48;
+            this.Ver_Island5_Text.Text = "--";
+            // 
+            // Ver_I5_Noz4
+            // 
+            this.Ver_I5_Noz4.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I5_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Noz4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Noz4.Location = new System.Drawing.Point(73, 104);
+            this.Ver_I5_Noz4.Name = "Ver_I5_Noz4";
+            this.Ver_I5_Noz4.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I5_Noz4.TabIndex = 47;
+            this.Ver_I5_Noz4.UseVisualStyleBackColor = false;
+            this.Ver_I5_Noz4.Click += new System.EventHandler(this.Ver_I5_Noz4_Click);
+            // 
+            // Ver_I5_Noz2
+            // 
+            this.Ver_I5_Noz2.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I5_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Noz2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Noz2.Location = new System.Drawing.Point(73, 66);
+            this.Ver_I5_Noz2.Name = "Ver_I5_Noz2";
+            this.Ver_I5_Noz2.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I5_Noz2.TabIndex = 46;
+            this.Ver_I5_Noz2.UseVisualStyleBackColor = false;
+            this.Ver_I5_Noz2.Click += new System.EventHandler(this.Ver_I5_Noz2_Click);
+            // 
+            // Ver_I5_Noz3
+            // 
+            this.Ver_I5_Noz3.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I5_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Noz3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Noz3.Location = new System.Drawing.Point(22, 104);
+            this.Ver_I5_Noz3.Name = "Ver_I5_Noz3";
+            this.Ver_I5_Noz3.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I5_Noz3.TabIndex = 45;
+            this.Ver_I5_Noz3.UseVisualStyleBackColor = false;
+            this.Ver_I5_Noz3.Click += new System.EventHandler(this.Ver_I5_Noz3_Click);
+            // 
+            // Ver_I5_Noz1
+            // 
+            this.Ver_I5_Noz1.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I5_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I5_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Noz1.Location = new System.Drawing.Point(22, 66);
+            this.Ver_I5_Noz1.Name = "Ver_I5_Noz1";
+            this.Ver_I5_Noz1.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I5_Noz1.TabIndex = 44;
+            this.Ver_I5_Noz1.UseVisualStyleBackColor = false;
+            this.Ver_I5_Noz1.Click += new System.EventHandler(this.Ver_I5_Noz1_Click);
+            // 
+            // Ver_I5_Area1
+            // 
+            this.Ver_I5_Area1.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I5_Area1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Area1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Area1.Location = new System.Drawing.Point(12, 23);
+            this.Ver_I5_Area1.Name = "Ver_I5_Area1";
+            this.Ver_I5_Area1.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I5_Area1.TabIndex = 0;
+            this.Ver_I5_Area1.UseVisualStyleBackColor = false;
+            this.Ver_I5_Area1.Click += new System.EventHandler(this.Ver_I5_Area1_Click);
+            // 
+            // Ver_I5_Area4
+            // 
+            this.Ver_I5_Area4.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I5_Area4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Area4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Area4.Location = new System.Drawing.Point(186, 123);
+            this.Ver_I5_Area4.Name = "Ver_I5_Area4";
+            this.Ver_I5_Area4.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I5_Area4.TabIndex = 36;
+            this.Ver_I5_Area4.UseVisualStyleBackColor = false;
+            this.Ver_I5_Area4.Click += new System.EventHandler(this.Ver_I5_Area4_Click);
+            // 
+            // Ver_I5_Area3
+            // 
+            this.Ver_I5_Area3.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I5_Area3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Area3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Area3.Location = new System.Drawing.Point(12, 123);
+            this.Ver_I5_Area3.Name = "Ver_I5_Area3";
+            this.Ver_I5_Area3.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I5_Area3.TabIndex = 37;
+            this.Ver_I5_Area3.UseVisualStyleBackColor = false;
+            this.Ver_I5_Area3.Click += new System.EventHandler(this.Ver_I5_Area3_Click);
+            // 
+            // Ver_I5_Area2
+            // 
+            this.Ver_I5_Area2.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I5_Area2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I5_Area2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I5_Area2.Location = new System.Drawing.Point(186, 23);
+            this.Ver_I5_Area2.Name = "Ver_I5_Area2";
+            this.Ver_I5_Area2.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I5_Area2.TabIndex = 38;
+            this.Ver_I5_Area2.UseVisualStyleBackColor = false;
+            this.Ver_I5_Area2.Click += new System.EventHandler(this.Ver_I5_Area2_Click);
+            // 
+            // Ver_btnExit
+            // 
+            this.Ver_btnExit.BackColor = System.Drawing.Color.Aqua;
+            this.Ver_btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_btnExit.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_btnExit.Location = new System.Drawing.Point(863, 491);
+            this.Ver_btnExit.Name = "Ver_btnExit";
+            this.Ver_btnExit.Size = new System.Drawing.Size(132, 40);
+            this.Ver_btnExit.TabIndex = 70;
+            this.Ver_btnExit.Text = "出 口";
+            this.Ver_btnExit.UseVisualStyleBackColor = false;
+            this.Ver_btnExit.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ver_btnExit_MouseDown);
+            this.Ver_btnExit.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ver_btnExit_MouseMove);
+            this.Ver_btnExit.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ver_btnExit_MouseUp);
+            // 
+            // Ver_btnEntrance
+            // 
+            this.Ver_btnEntrance.BackColor = System.Drawing.Color.Aqua;
+            this.Ver_btnEntrance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_btnEntrance.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_btnEntrance.Location = new System.Drawing.Point(333, 491);
+            this.Ver_btnEntrance.Name = "Ver_btnEntrance";
+            this.Ver_btnEntrance.Size = new System.Drawing.Size(132, 40);
+            this.Ver_btnEntrance.TabIndex = 69;
+            this.Ver_btnEntrance.Text = "入 口";
+            this.Ver_btnEntrance.UseVisualStyleBackColor = false;
+            this.Ver_btnEntrance.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ver_btnEntrance_MouseDown);
+            this.Ver_btnEntrance.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ver_btnEntrance_MouseMove);
+            this.Ver_btnEntrance.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ver_btnEntrance_MouseUp);
+            // 
+            // Ver_btnStore
+            // 
+            this.Ver_btnStore.BackColor = System.Drawing.Color.Orange;
+            this.Ver_btnStore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_btnStore.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_btnStore.Location = new System.Drawing.Point(571, 491);
+            this.Ver_btnStore.Name = "Ver_btnStore";
+            this.Ver_btnStore.Size = new System.Drawing.Size(187, 40);
+            this.Ver_btnStore.TabIndex = 62;
+            this.Ver_btnStore.Text = "便利店";
+            this.Ver_btnStore.UseVisualStyleBackColor = false;
+            this.Ver_btnStore.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ver_btnStore_MouseDown);
+            this.Ver_btnStore.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ver_btnStore_MouseMove);
+            this.Ver_btnStore.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ver_btnStore_MouseUp);
+            // 
+            // Ver_Island1
+            // 
+            this.Ver_Island1.Controls.Add(this.Ver_I1_image);
+            this.Ver_Island1.Controls.Add(this.Ver_I1_Area1);
+            this.Ver_Island1.Controls.Add(this.Ver_I1_Area4);
+            this.Ver_Island1.Controls.Add(this.Ver_I1_Area3);
+            this.Ver_Island1.Controls.Add(this.Ver_I1_Area2);
+            this.Ver_Island1.Location = new System.Drawing.Point(117, 8);
+            this.Ver_Island1.Name = "Ver_Island1";
+            this.Ver_Island1.Size = new System.Drawing.Size(247, 240);
+            this.Ver_Island1.TabIndex = 63;
+            this.Ver_Island1.DoubleClick += new System.EventHandler(this.Ver_Island1_DoubleClick);
+            this.Ver_Island1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ver_Island1_MouseDown);
+            this.Ver_Island1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ver_Island1_MouseMove);
+            this.Ver_Island1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ver_Island1_MouseUp);
+            // 
+            // Ver_I1_image
+            // 
+            this.Ver_I1_image.BackColor = System.Drawing.Color.Khaki;
+            this.Ver_I1_image.Controls.Add(this.Ver_I1_Noz6);
+            this.Ver_I1_image.Controls.Add(this.Ver_I1_Noz5);
+            this.Ver_I1_image.Controls.Add(this.Ver_I1_ImageTanker);
+            this.Ver_I1_image.Controls.Add(this.Ver_Island1_Text);
+            this.Ver_I1_image.Controls.Add(this.Ver_I1_Noz4);
+            this.Ver_I1_image.Controls.Add(this.Ver_I1_Noz2);
+            this.Ver_I1_image.Controls.Add(this.Ver_I1_Noz3);
+            this.Ver_I1_image.Controls.Add(this.Ver_I1_Noz1);
+            this.Ver_I1_image.Location = new System.Drawing.Point(64, 28);
+            this.Ver_I1_image.Name = "Ver_I1_image";
+            this.Ver_I1_image.Size = new System.Drawing.Size(120, 188);
+            this.Ver_I1_image.TabIndex = 35;
+            // 
+            // Ver_I1_Noz6
+            // 
+            this.Ver_I1_Noz6.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I1_Noz6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Noz6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Noz6.Location = new System.Drawing.Point(73, 143);
+            this.Ver_I1_Noz6.Name = "Ver_I1_Noz6";
+            this.Ver_I1_Noz6.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I1_Noz6.TabIndex = 50;
+            this.Ver_I1_Noz6.UseVisualStyleBackColor = false;
+            this.Ver_I1_Noz6.Click += new System.EventHandler(this.Ver_I1_Noz6_Click);
+            // 
+            // Ver_I1_Noz5
+            // 
+            this.Ver_I1_Noz5.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I1_Noz5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Noz5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Noz5.Location = new System.Drawing.Point(22, 143);
+            this.Ver_I1_Noz5.Name = "Ver_I1_Noz5";
+            this.Ver_I1_Noz5.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I1_Noz5.TabIndex = 49;
+            this.Ver_I1_Noz5.UseVisualStyleBackColor = false;
+            this.Ver_I1_Noz5.Click += new System.EventHandler(this.Ver_I1_Noz5_Click);
+            // 
+            // Ver_I1_ImageTanker
+            // 
+            this.Ver_I1_ImageTanker.BackColor = System.Drawing.Color.Transparent;
+            this.Ver_I1_ImageTanker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ver_I1_ImageTanker.BackgroundImage")));
+            this.Ver_I1_ImageTanker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I1_ImageTanker.Location = new System.Drawing.Point(22, 4);
+            this.Ver_I1_ImageTanker.Name = "Ver_I1_ImageTanker";
+            this.Ver_I1_ImageTanker.Size = new System.Drawing.Size(48, 49);
+            this.Ver_I1_ImageTanker.TabIndex = 3;
+            // 
+            // Ver_Island1_Text
+            // 
+            this.Ver_Island1_Text.AutoSize = true;
+            this.Ver_Island1_Text.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_Island1_Text.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Ver_Island1_Text.Location = new System.Drawing.Point(80, 8);
+            this.Ver_Island1_Text.Name = "Ver_Island1_Text";
+            this.Ver_Island1_Text.Size = new System.Drawing.Size(28, 26);
+            this.Ver_Island1_Text.TabIndex = 48;
+            this.Ver_Island1_Text.Text = "--";
+            // 
+            // Ver_I1_Noz4
+            // 
+            this.Ver_I1_Noz4.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I1_Noz4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Noz4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Noz4.Location = new System.Drawing.Point(73, 104);
+            this.Ver_I1_Noz4.Name = "Ver_I1_Noz4";
+            this.Ver_I1_Noz4.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I1_Noz4.TabIndex = 47;
+            this.Ver_I1_Noz4.UseVisualStyleBackColor = false;
+            this.Ver_I1_Noz4.Click += new System.EventHandler(this.Ver_I1_Noz4_Click);
+            // 
+            // Ver_I1_Noz2
+            // 
+            this.Ver_I1_Noz2.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I1_Noz2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Noz2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Noz2.Location = new System.Drawing.Point(73, 66);
+            this.Ver_I1_Noz2.Name = "Ver_I1_Noz2";
+            this.Ver_I1_Noz2.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I1_Noz2.TabIndex = 46;
+            this.Ver_I1_Noz2.UseVisualStyleBackColor = false;
+            this.Ver_I1_Noz2.Click += new System.EventHandler(this.Ver_I1_Noz2_Click);
+            // 
+            // Ver_I1_Noz3
+            // 
+            this.Ver_I1_Noz3.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I1_Noz3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Noz3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Noz3.Location = new System.Drawing.Point(22, 104);
+            this.Ver_I1_Noz3.Name = "Ver_I1_Noz3";
+            this.Ver_I1_Noz3.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I1_Noz3.TabIndex = 45;
+            this.Ver_I1_Noz3.UseVisualStyleBackColor = false;
+            this.Ver_I1_Noz3.Click += new System.EventHandler(this.Ver_I1_Noz3_Click);
+            // 
+            // Ver_I1_Noz1
+            // 
+            this.Ver_I1_Noz1.BackColor = System.Drawing.Color.Lime;
+            this.Ver_I1_Noz1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ver_I1_Noz1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Noz1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Noz1.Location = new System.Drawing.Point(22, 66);
+            this.Ver_I1_Noz1.Name = "Ver_I1_Noz1";
+            this.Ver_I1_Noz1.Size = new System.Drawing.Size(35, 30);
+            this.Ver_I1_Noz1.TabIndex = 44;
+            this.Ver_I1_Noz1.UseVisualStyleBackColor = false;
+            this.Ver_I1_Noz1.Click += new System.EventHandler(this.Ver_I1_Noz1_Click);
+            // 
+            // Ver_I1_Area1
+            // 
+            this.Ver_I1_Area1.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I1_Area1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Area1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Area1.Location = new System.Drawing.Point(12, 23);
+            this.Ver_I1_Area1.Name = "Ver_I1_Area1";
+            this.Ver_I1_Area1.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I1_Area1.TabIndex = 0;
+            this.Ver_I1_Area1.UseVisualStyleBackColor = false;
+            this.Ver_I1_Area1.Click += new System.EventHandler(this.Ver_I1_Area1_Click);
+            // 
+            // Ver_I1_Area4
+            // 
+            this.Ver_I1_Area4.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I1_Area4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Area4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Area4.Location = new System.Drawing.Point(186, 123);
+            this.Ver_I1_Area4.Name = "Ver_I1_Area4";
+            this.Ver_I1_Area4.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I1_Area4.TabIndex = 36;
+            this.Ver_I1_Area4.UseVisualStyleBackColor = false;
+            this.Ver_I1_Area4.Click += new System.EventHandler(this.Ver_I1_Area4_Click);
+            // 
+            // Ver_I1_Area3
+            // 
+            this.Ver_I1_Area3.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I1_Area3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Area3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Area3.Location = new System.Drawing.Point(12, 123);
+            this.Ver_I1_Area3.Name = "Ver_I1_Area3";
+            this.Ver_I1_Area3.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I1_Area3.TabIndex = 37;
+            this.Ver_I1_Area3.UseVisualStyleBackColor = false;
+            this.Ver_I1_Area3.Click += new System.EventHandler(this.Ver_I1_Area3_Click);
+            // 
+            // Ver_I1_Area2
+            // 
+            this.Ver_I1_Area2.BackColor = System.Drawing.Color.LightGreen;
+            this.Ver_I1_Area2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Ver_I1_Area2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_I1_Area2.Location = new System.Drawing.Point(186, 23);
+            this.Ver_I1_Area2.Name = "Ver_I1_Area2";
+            this.Ver_I1_Area2.Size = new System.Drawing.Size(50, 100);
+            this.Ver_I1_Area2.TabIndex = 38;
+            this.Ver_I1_Area2.UseVisualStyleBackColor = false;
+            this.Ver_I1_Area2.Click += new System.EventHandler(this.Ver_I1_Area2_Click);
             // 
             // panel1
             // 
@@ -1515,7 +2789,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 5);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1252, 30);
+            this.panel1.Size = new System.Drawing.Size(1292, 30);
             this.panel1.TabIndex = 43;
             // 
             // label18
@@ -1530,7 +2804,10 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.btnTest);
+            this.panel3.Controls.Add(this.checkShowStationBoard);
+            this.panel3.Controls.Add(this.btnReset);
+            this.panel3.Controls.Add(this.comboStationDirection);
+            this.panel3.Controls.Add(this.btnSetStaionBoard);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.pBoxMain);
             this.panel3.Controls.Add(this.pBoxUpdate);
@@ -1543,18 +2820,52 @@
             this.panel3.Location = new System.Drawing.Point(0, 35);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1252, 50);
+            this.panel3.Size = new System.Drawing.Size(1292, 50);
             this.panel3.TabIndex = 44;
             // 
-            // btnTest
+            // checkShowStationBoard
             // 
-            this.btnTest.Location = new System.Drawing.Point(775, 9);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(75, 32);
-            this.btnTest.TabIndex = 8;
-            this.btnTest.Text = "测试";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click_1);
+            this.checkShowStationBoard.AutoSize = true;
+            this.checkShowStationBoard.Location = new System.Drawing.Point(1014, 12);
+            this.checkShowStationBoard.Name = "checkShowStationBoard";
+            this.checkShowStationBoard.Size = new System.Drawing.Size(93, 25);
+            this.checkShowStationBoard.TabIndex = 12;
+            this.checkShowStationBoard.Text = "显示面板";
+            this.checkShowStationBoard.UseVisualStyleBackColor = true;
+            this.checkShowStationBoard.CheckedChanged += new System.EventHandler(this.checkShowStationBoard_CheckedChanged);
+            // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(917, 9);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(75, 32);
+            this.btnReset.TabIndex = 11;
+            this.btnReset.Text = "重置";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // comboStationDirection
+            // 
+            this.comboStationDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboStationDirection.FormattingEnabled = true;
+            this.comboStationDirection.Items.AddRange(new object[] {
+            "站点横向布局",
+            "站点纵向布局"});
+            this.comboStationDirection.Location = new System.Drawing.Point(1117, 9);
+            this.comboStationDirection.Name = "comboStationDirection";
+            this.comboStationDirection.Size = new System.Drawing.Size(121, 29);
+            this.comboStationDirection.TabIndex = 10;
+            this.comboStationDirection.SelectedIndexChanged += new System.EventHandler(this.comboStationDirection_SelectedIndexChanged);
+            // 
+            // btnSetStaionBoard
+            // 
+            this.btnSetStaionBoard.Location = new System.Drawing.Point(795, 9);
+            this.btnSetStaionBoard.Name = "btnSetStaionBoard";
+            this.btnSetStaionBoard.Size = new System.Drawing.Size(89, 32);
+            this.btnSetStaionBoard.TabIndex = 9;
+            this.btnSetStaionBoard.Text = "设置站点";
+            this.btnSetStaionBoard.UseVisualStyleBackColor = true;
+            this.btnSetStaionBoard.Click += new System.EventHandler(this.btnSetStaionBoard_Click);
             // 
             // label1
             // 
@@ -1640,7 +2951,7 @@
             this.panel7.Location = new System.Drawing.Point(0, 250);
             this.panel7.Margin = new System.Windows.Forms.Padding(0);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(1252, 30);
+            this.panel7.Size = new System.Drawing.Size(1292, 30);
             this.panel7.TabIndex = 46;
             // 
             // label12
@@ -1660,7 +2971,7 @@
             this.panel16.Location = new System.Drawing.Point(0, 85);
             this.panel16.Margin = new System.Windows.Forms.Padding(0);
             this.panel16.Name = "panel16";
-            this.panel16.Size = new System.Drawing.Size(1252, 5);
+            this.panel16.Size = new System.Drawing.Size(1292, 5);
             this.panel16.TabIndex = 47;
             // 
             // panel17
@@ -1673,7 +2984,7 @@
             this.panel17.Location = new System.Drawing.Point(0, 90);
             this.panel17.Margin = new System.Windows.Forms.Padding(0);
             this.panel17.Name = "panel17";
-            this.panel17.Size = new System.Drawing.Size(1252, 160);
+            this.panel17.Size = new System.Drawing.Size(1292, 160);
             this.panel17.TabIndex = 48;
             // 
             // panel26
@@ -1795,7 +3106,7 @@
             this.lblWaitTime.Name = "lblWaitTime";
             this.lblWaitTime.Size = new System.Drawing.Size(139, 38);
             this.lblWaitTime.TabIndex = 39;
-            this.lblWaitTime.Text = "120秒";
+            this.lblWaitTime.Text = "--";
             this.lblWaitTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel22
@@ -1928,9 +3239,9 @@
             this.toolStripStatusLabel2,
             this.toolRAM,
             this.toolStripStatusLabel3});
-            this.statusSystem.Location = new System.Drawing.Point(0, 814);
+            this.statusSystem.Location = new System.Drawing.Point(0, 826);
             this.statusSystem.Name = "statusSystem";
-            this.statusSystem.Size = new System.Drawing.Size(1252, 22);
+            this.statusSystem.Size = new System.Drawing.Size(1292, 22);
             this.statusSystem.TabIndex = 25;
             this.statusSystem.Text = "statusStrip1";
             this.statusSystem.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusSystem_ItemClicked);
@@ -1968,7 +3279,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1260, 862);
+            this.tabControl1.Size = new System.Drawing.Size(1300, 874);
             this.tabControl1.TabIndex = 18;
             // 
             // tabPage2
@@ -1976,7 +3287,7 @@
             this.tabPage2.Controls.Add(this.tableLayoutPanel3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(1252, 836);
+            this.tabPage2.Size = new System.Drawing.Size(1292, 856);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "车辆查询";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1999,7 +3310,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1252, 836);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1292, 856);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // panel5
@@ -2026,7 +3337,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(3, 38);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1246, 94);
+            this.panel5.Size = new System.Drawing.Size(1286, 94);
             this.panel5.TabIndex = 1;
             // 
             // comboNozzle
@@ -2228,16 +3539,16 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1252, 671);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1292, 691);
             this.tableLayoutPanel4.TabIndex = 2;
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.panel6);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(755, 3);
+            this.groupBox3.Location = new System.Drawing.Point(795, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(494, 665);
+            this.groupBox3.Size = new System.Drawing.Size(494, 685);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "车辆详情";
@@ -2264,7 +3575,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(3, 17);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(488, 645);
+            this.panel6.Size = new System.Drawing.Size(488, 665);
             this.panel6.TabIndex = 0;
             // 
             // lblBeginTime
@@ -2479,7 +3790,7 @@
             this.dataGridSearch.Location = new System.Drawing.Point(3, 3);
             this.dataGridSearch.Name = "dataGridSearch";
             this.dataGridSearch.RowTemplate.Height = 23;
-            this.dataGridSearch.Size = new System.Drawing.Size(746, 665);
+            this.dataGridSearch.Size = new System.Drawing.Size(786, 685);
             this.dataGridSearch.TabIndex = 1;
             this.dataGridSearch.SelectionChanged += new System.EventHandler(this.dataGridCar_SelectionChanged);
             // 
@@ -2491,7 +3802,7 @@
             this.panel8.Location = new System.Drawing.Point(0, 5);
             this.panel8.Margin = new System.Windows.Forms.Padding(0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(1252, 30);
+            this.panel8.Size = new System.Drawing.Size(1292, 30);
             this.panel8.TabIndex = 3;
             // 
             // label19
@@ -2512,7 +3823,7 @@
             this.panel9.Location = new System.Drawing.Point(0, 135);
             this.panel9.Margin = new System.Windows.Forms.Padding(0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(1252, 30);
+            this.panel9.Size = new System.Drawing.Size(1292, 30);
             this.panel9.TabIndex = 4;
             // 
             // label20
@@ -2530,7 +3841,7 @@
             this.tabPage3.Controls.Add(this.tableLayoutPanel5);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1252, 836);
+            this.tabPage3.Size = new System.Drawing.Size(1292, 856);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "运行日志";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -2548,7 +3859,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1252, 836);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1292, 856);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // RTBLog
@@ -2556,7 +3867,7 @@
             this.RTBLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RTBLog.Location = new System.Drawing.Point(3, 3);
             this.RTBLog.Name = "RTBLog";
-            this.RTBLog.Size = new System.Drawing.Size(746, 830);
+            this.RTBLog.Size = new System.Drawing.Size(786, 850);
             this.RTBLog.TabIndex = 1;
             this.RTBLog.Text = "";
             // 
@@ -2571,7 +3882,7 @@
             this.tableLayoutPanel6.Controls.Add(this.panel15, 0, 5);
             this.tableLayoutPanel6.Controls.Add(this.panel45, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(752, 0);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(792, 0);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 6;
@@ -2581,7 +3892,7 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(500, 836);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(500, 856);
             this.tableLayoutPanel6.TabIndex = 2;
             // 
             // panel12
@@ -2600,7 +3911,7 @@
             this.panel11.Location = new System.Drawing.Point(0, 75);
             this.panel11.Margin = new System.Windows.Forms.Padding(0);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(500, 365);
+            this.panel11.Size = new System.Drawing.Size(500, 375);
             this.panel11.TabIndex = 0;
             // 
             // listViewCache
@@ -2610,7 +3921,7 @@
             this.listViewCache.GridLines = true;
             this.listViewCache.Location = new System.Drawing.Point(0, 0);
             this.listViewCache.Name = "listViewCache";
-            this.listViewCache.Size = new System.Drawing.Size(500, 365);
+            this.listViewCache.Size = new System.Drawing.Size(500, 375);
             this.listViewCache.TabIndex = 2;
             this.listViewCache.UseCompatibleStateImageBehavior = false;
             this.listViewCache.View = System.Windows.Forms.View.Details;
@@ -2641,7 +3952,7 @@
             this.panel14.BackColor = System.Drawing.Color.PapayaWhip;
             this.panel14.Controls.Add(this.label22);
             this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel14.Location = new System.Drawing.Point(0, 440);
+            this.panel14.Location = new System.Drawing.Point(0, 450);
             this.panel14.Margin = new System.Windows.Forms.Padding(0);
             this.panel14.Name = "panel14";
             this.panel14.Size = new System.Drawing.Size(500, 30);
@@ -2661,10 +3972,10 @@
             // 
             this.panel15.Controls.Add(this.listViewArea);
             this.panel15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel15.Location = new System.Drawing.Point(0, 470);
+            this.panel15.Location = new System.Drawing.Point(0, 480);
             this.panel15.Margin = new System.Windows.Forms.Padding(0);
             this.panel15.Name = "panel15";
-            this.panel15.Size = new System.Drawing.Size(500, 366);
+            this.panel15.Size = new System.Drawing.Size(500, 376);
             this.panel15.TabIndex = 4;
             // 
             // listViewArea
@@ -2674,7 +3985,7 @@
             this.listViewArea.GridLines = true;
             this.listViewArea.Location = new System.Drawing.Point(0, 0);
             this.listViewArea.Name = "listViewArea";
-            this.listViewArea.Size = new System.Drawing.Size(500, 366);
+            this.listViewArea.Size = new System.Drawing.Size(500, 376);
             this.listViewArea.TabIndex = 4;
             this.listViewArea.UseCompatibleStateImageBehavior = false;
             this.listViewArea.View = System.Windows.Forms.View.Details;
@@ -2743,7 +4054,7 @@
             this.tabPage4.Controls.Add(this.tableLayoutPanel1);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1252, 836);
+            this.tabPage4.Size = new System.Drawing.Size(1292, 856);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "统计信息";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -2751,43 +4062,26 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1576F));
-            this.tableLayoutPanel1.Controls.Add(this.chart1, 0, 0);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel50, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1252, 836);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1292, 856);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // chart1
-            // 
-            chartArea5.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea5);
-            this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend5.Name = "Legend1";
-            this.chart1.Legends.Add(legend5);
-            this.chart1.Location = new System.Drawing.Point(3, 3);
-            this.chart1.Name = "chart1";
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.chart1.Series.Add(series5);
-            this.chart1.Size = new System.Drawing.Size(1570, 412);
-            this.chart1.TabIndex = 19;
-            this.chart1.Text = "chart1";
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.groupBox2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 418);
+            this.panel2.Location = new System.Drawing.Point(0, 428);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1576, 418);
+            this.panel2.Size = new System.Drawing.Size(1292, 428);
             this.panel2.TabIndex = 20;
             // 
             // groupBox2
@@ -2796,7 +4090,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1576, 418);
+            this.groupBox2.Size = new System.Drawing.Size(1292, 428);
             this.groupBox2.TabIndex = 39;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "检测数据";
@@ -2808,8 +4102,50 @@
             this.dataGridRealtime.Location = new System.Drawing.Point(3, 17);
             this.dataGridRealtime.Name = "dataGridRealtime";
             this.dataGridRealtime.RowTemplate.Height = 23;
-            this.dataGridRealtime.Size = new System.Drawing.Size(1570, 398);
+            this.dataGridRealtime.Size = new System.Drawing.Size(1286, 408);
             this.dataGridRealtime.TabIndex = 0;
+            // 
+            // panel50
+            // 
+            this.panel50.Controls.Add(this.chartStatistics);
+            this.panel50.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel50.Location = new System.Drawing.Point(3, 3);
+            this.panel50.Name = "panel50";
+            this.panel50.Size = new System.Drawing.Size(1286, 422);
+            this.panel50.TabIndex = 21;
+            // 
+            // chartStatistics
+            // 
+            this.chartStatistics.BackColor = System.Drawing.Color.Transparent;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisY.MajorGrid.Enabled = false;
+            chartArea1.AxisY2.MajorGrid.Enabled = false;
+            chartArea1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            chartArea1.Name = "ChartArea1";
+            this.chartStatistics.ChartAreas.Add(chartArea1);
+            this.chartStatistics.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Name = "Legend1";
+            this.chartStatistics.Legends.Add(legend1);
+            this.chartStatistics.Location = new System.Drawing.Point(0, 0);
+            this.chartStatistics.Name = "chartStatistics";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.IsValueShownAsLabel = true;
+            series1.LabelToolTip = "\"时间:#VALX 值#VALY\"";
+            series1.Legend = "Legend1";
+            series1.Name = "进站车辆";
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.LabelToolTip = "\"时间:#VALX 值#VALY\"";
+            series2.Legend = "Legend1";
+            series2.Name = "平均等待时长";
+            series2.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            this.chartStatistics.Series.Add(series1);
+            this.chartStatistics.Series.Add(series2);
+            this.chartStatistics.Size = new System.Drawing.Size(1286, 422);
+            this.chartStatistics.TabIndex = 20;
+            this.chartStatistics.Text = "chart1";
             // 
             // notifyIconMain
             // 
@@ -2836,14 +4172,20 @@
             // 
             // timerDataProc
             // 
+            this.timerDataProc.Enabled = true;
             this.timerDataProc.Interval = 1000;
             this.timerDataProc.Tick += new System.EventHandler(this.timerDataProc_Tick);
+            // 
+            // timerClearCarlist
+            // 
+            this.timerClearCarlist.Interval = 10000;
+            this.timerClearCarlist.Tick += new System.EventHandler(this.timerClearCarlist_Tick);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1260, 862);
+            this.ClientSize = new System.Drawing.Size(1300, 874);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
@@ -2875,6 +4217,25 @@
             this.Island1.ResumeLayout(false);
             this.I1_image.ResumeLayout(false);
             this.I1_image.PerformLayout();
+            this.StationBoardVertical.ResumeLayout(false);
+            this.Ver_Island6.ResumeLayout(false);
+            this.Ver_I6_image.ResumeLayout(false);
+            this.Ver_I6_image.PerformLayout();
+            this.Ver_Island4.ResumeLayout(false);
+            this.Ver_I4_image.ResumeLayout(false);
+            this.Ver_I4_image.PerformLayout();
+            this.Ver_Island3.ResumeLayout(false);
+            this.Ver_I3_image.ResumeLayout(false);
+            this.Ver_I3_image.PerformLayout();
+            this.Ver_Island2.ResumeLayout(false);
+            this.Ver_I2_image.ResumeLayout(false);
+            this.Ver_I2_image.PerformLayout();
+            this.Ver_Island5.ResumeLayout(false);
+            this.Ver_I5_image.ResumeLayout(false);
+            this.Ver_I5_image.PerformLayout();
+            this.Ver_Island1.ResumeLayout(false);
+            this.Ver_I1_image.ResumeLayout(false);
+            this.Ver_I1_image.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -2939,10 +4300,11 @@
             this.panel45.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridRealtime)).EndInit();
+            this.panel50.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chartStatistics)).EndInit();
             this.contextMenuExit.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -2965,7 +4327,6 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DataGridView dataGridRealtime;
@@ -3055,7 +4416,7 @@
         private System.Windows.Forms.Button I1_Noz5;
         private System.Windows.Forms.Button I1_Noz4;
         private System.Windows.Forms.Button I1_Noz2;
-        private System.Windows.Forms.Label I1_VideoChan;
+        private System.Windows.Forms.Label Island1_Text;
         private System.Windows.Forms.Panel panel16;
         private System.Windows.Forms.Panel panel17;
         private System.Windows.Forms.Panel panel19;
@@ -3092,14 +4453,13 @@
         private System.Windows.Forms.Button I1_Noz6;
         private System.Windows.Forms.Button I1_Noz3;
         private System.Windows.Forms.Panel Island1;
-        private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Panel Island2;
         private System.Windows.Forms.Panel I2_image;
         private System.Windows.Forms.Button I2_Noz6;
         private System.Windows.Forms.Button I2_Noz3;
         private System.Windows.Forms.Panel I2_ImageTanker;
         private System.Windows.Forms.Panel I2_ImageVideo;
-        private System.Windows.Forms.Label I2_VideoChan;
+        private System.Windows.Forms.Label Island2_Text;
         private System.Windows.Forms.Button I2_Noz5;
         private System.Windows.Forms.Button I2_Noz4;
         private System.Windows.Forms.Button I2_Noz2;
@@ -3114,7 +4474,7 @@
         private System.Windows.Forms.Button I6_Noz3;
         private System.Windows.Forms.Panel I6_ImageTanker;
         private System.Windows.Forms.Panel I6_ImageVideo;
-        private System.Windows.Forms.Label I6_VideoChan;
+        private System.Windows.Forms.Label Island6_Text;
         private System.Windows.Forms.Button I6_Noz5;
         private System.Windows.Forms.Button I6_Noz4;
         private System.Windows.Forms.Button I6_Noz2;
@@ -3129,7 +4489,7 @@
         private System.Windows.Forms.Button I5_Noz3;
         private System.Windows.Forms.Panel I5_ImageTanker;
         private System.Windows.Forms.Panel I5_ImageVideo;
-        private System.Windows.Forms.Label I5_VideoChan;
+        private System.Windows.Forms.Label Island5_Text;
         private System.Windows.Forms.Button I5_Noz5;
         private System.Windows.Forms.Button I5_Noz4;
         private System.Windows.Forms.Button I5_Noz2;
@@ -3144,7 +4504,7 @@
         private System.Windows.Forms.Button I3_Noz3;
         private System.Windows.Forms.Panel I3_ImageTanker;
         private System.Windows.Forms.Panel I3_ImageVideo;
-        private System.Windows.Forms.Label I3_VideoChan;
+        private System.Windows.Forms.Label Island3_Text;
         private System.Windows.Forms.Button I3_Noz5;
         private System.Windows.Forms.Button I3_Noz4;
         private System.Windows.Forms.Button I3_Noz2;
@@ -3159,7 +4519,7 @@
         private System.Windows.Forms.Button I4_Noz3;
         private System.Windows.Forms.Panel I4_ImageTanker;
         private System.Windows.Forms.Panel I4_ImageVideo;
-        private System.Windows.Forms.Label I4_VideoChan;
+        private System.Windows.Forms.Label Island4_Text;
         private System.Windows.Forms.Button I4_Noz5;
         private System.Windows.Forms.Button I4_Noz4;
         private System.Windows.Forms.Button I4_Noz2;
@@ -3173,6 +4533,100 @@
         private System.Windows.Forms.Button btnStore;
         private System.Windows.Forms.Panel StationBoardVertical;
         private System.Windows.Forms.Panel StationBoardHorizon;
+        private System.Windows.Forms.Button btnSetStaionBoard;
+        private System.Windows.Forms.ComboBox comboStationDirection;
+        private System.Windows.Forms.Button Ver_btnExit;
+        private System.Windows.Forms.Button Ver_btnEntrance;
+        private System.Windows.Forms.Button Ver_btnStore;
+        private System.Windows.Forms.Panel Ver_Island1;
+        private System.Windows.Forms.Panel Ver_I1_image;
+        private System.Windows.Forms.Button Ver_I1_Noz6;
+        private System.Windows.Forms.Button Ver_I1_Noz5;
+        private System.Windows.Forms.Panel Ver_I1_ImageTanker;
+        private System.Windows.Forms.Label Ver_Island1_Text;
+        private System.Windows.Forms.Button Ver_I1_Noz4;
+        private System.Windows.Forms.Button Ver_I1_Noz2;
+        private System.Windows.Forms.Button Ver_I1_Noz3;
+        private System.Windows.Forms.Button Ver_I1_Noz1;
+        private System.Windows.Forms.Button Ver_I1_Area1;
+        private System.Windows.Forms.Button Ver_I1_Area4;
+        private System.Windows.Forms.Button Ver_I1_Area3;
+        private System.Windows.Forms.Button Ver_I1_Area2;
+        private System.Windows.Forms.Panel Ver_Island5;
+        private System.Windows.Forms.Panel Ver_I5_image;
+        private System.Windows.Forms.Button Ver_I5_Noz6;
+        private System.Windows.Forms.Button Ver_I5_Noz5;
+        private System.Windows.Forms.Panel Ver_I5_ImageTanker;
+        private System.Windows.Forms.Label Ver_Island5_Text;
+        private System.Windows.Forms.Button Ver_I5_Noz4;
+        private System.Windows.Forms.Button Ver_I5_Noz2;
+        private System.Windows.Forms.Button Ver_I5_Noz3;
+        private System.Windows.Forms.Button Ver_I5_Noz1;
+        private System.Windows.Forms.Button Ver_I5_Area1;
+        private System.Windows.Forms.Button Ver_I5_Area4;
+        private System.Windows.Forms.Button Ver_I5_Area3;
+        private System.Windows.Forms.Button Ver_I5_Area2;
+        private System.Windows.Forms.Panel Ver_Island6;
+        private System.Windows.Forms.Panel Ver_I6_image;
+        private System.Windows.Forms.Button Ver_I6_Noz6;
+        private System.Windows.Forms.Button Ver_I6_Noz5;
+        private System.Windows.Forms.Panel Ver_I6_ImageTanker;
+        private System.Windows.Forms.Label Ver_Island6_Text;
+        private System.Windows.Forms.Button Ver_I6_Noz4;
+        private System.Windows.Forms.Button Ver_I6_Noz2;
+        private System.Windows.Forms.Button Ver_I6_Noz3;
+        private System.Windows.Forms.Button Ver_I6_Noz1;
+        private System.Windows.Forms.Button Ver_I6_Area1;
+        private System.Windows.Forms.Button Ver_I6_Area4;
+        private System.Windows.Forms.Button Ver_I6_Area3;
+        private System.Windows.Forms.Button Ver_I6_Area2;
+        private System.Windows.Forms.Panel Ver_Island4;
+        private System.Windows.Forms.Panel Ver_I4_image;
+        private System.Windows.Forms.Button Ver_I4_Noz6;
+        private System.Windows.Forms.Button Ver_I4_Noz5;
+        private System.Windows.Forms.Panel Ver_I4_ImageTanker;
+        private System.Windows.Forms.Label Ver_Island4_Text;
+        private System.Windows.Forms.Button Ver_I4_Noz4;
+        private System.Windows.Forms.Button Ver_I4_Noz2;
+        private System.Windows.Forms.Button Ver_I4_Noz3;
+        private System.Windows.Forms.Button Ver_I4_Noz1;
+        private System.Windows.Forms.Button Ver_I4_Area1;
+        private System.Windows.Forms.Button Ver_I4_Area4;
+        private System.Windows.Forms.Button Ver_I4_Area3;
+        private System.Windows.Forms.Button Ver_I4_Area2;
+        private System.Windows.Forms.Panel Ver_Island3;
+        private System.Windows.Forms.Panel Ver_I3_image;
+        private System.Windows.Forms.Button Ver_I3_Noz6;
+        private System.Windows.Forms.Button Ver_I3_Noz5;
+        private System.Windows.Forms.Panel Ver_I3_ImageTanker;
+        private System.Windows.Forms.Label Ver_Island3_Text;
+        private System.Windows.Forms.Button Ver_I3_Noz4;
+        private System.Windows.Forms.Button Ver_I3_Noz2;
+        private System.Windows.Forms.Button Ver_I3_Noz3;
+        private System.Windows.Forms.Button Ver_I3_Noz1;
+        private System.Windows.Forms.Button Ver_I3_Area1;
+        private System.Windows.Forms.Button Ver_I3_Area4;
+        private System.Windows.Forms.Button Ver_I3_Area3;
+        private System.Windows.Forms.Button Ver_I3_Area2;
+        private System.Windows.Forms.Panel Ver_Island2;
+        private System.Windows.Forms.Panel Ver_I2_image;
+        private System.Windows.Forms.Button Ver_I2_Noz6;
+        private System.Windows.Forms.Button Ver_I2_Noz5;
+        private System.Windows.Forms.Panel Ver_I2_ImageTanker;
+        private System.Windows.Forms.Label Ver_Island2_Text;
+        private System.Windows.Forms.Button Ver_I2_Noz4;
+        private System.Windows.Forms.Button Ver_I2_Noz2;
+        private System.Windows.Forms.Button Ver_I2_Noz3;
+        private System.Windows.Forms.Button Ver_I2_Noz1;
+        private System.Windows.Forms.Button Ver_I2_Area1;
+        private System.Windows.Forms.Button Ver_I2_Area4;
+        private System.Windows.Forms.Button Ver_I2_Area3;
+        private System.Windows.Forms.Button Ver_I2_Area2;
+        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Panel panel50;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartStatistics;
+        private System.Windows.Forms.CheckBox checkShowStationBoard;
+        private System.Windows.Forms.Timer timerClearCarlist;
     }
 }
 

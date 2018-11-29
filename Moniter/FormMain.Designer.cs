@@ -1,4 +1,4 @@
-﻿namespace Kill
+﻿namespace SPMonitor
 {
     partial class FormMain
     {

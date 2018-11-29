@@ -64,11 +64,14 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoardTest.cs">
+    <Compile Include="BoardProc.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BoardTest.Designer.cs">
-      <DependentUpon>BoardTest.cs</DependentUpon>
+    <Compile Include="FormPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPassword.Designer.cs">
+      <DependentUpon>FormPassword.cs</DependentUpon>
     </Compile>
     <Compile Include="FormSearchData.cs">
       <SubType>Form</SubType>
@@ -83,6 +86,9 @@
       <DependentUpon>FormSet.cs</DependentUpon>
     </Compile>
     <Compile Include="Global.cs" />
+    <Compile Include="Init.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,11 +116,11 @@
     <Compile Include="tool\PictureWork.cs" />
     <Compile Include="tool\SocketTool.cs" />
     <Compile Include="tool\winsock.cs" />
-    <EmbeddedResource Include="BoardTest.resx">
-      <DependentUpon>BoardTest.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPassword.resx">
+      <DependentUpon>FormPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSearchData.resx">
       <DependentUpon>FormSearchData.cs</DependentUpon>

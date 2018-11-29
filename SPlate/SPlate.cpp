@@ -58,6 +58,7 @@ uintptr_t ThreadSwith = NULL;
 bool bSwitchComplete = false;
 int nframeCount;
 char pBuffer[MAX_PIC_LENTH];
+int nCodeType;
 
 void _stdcall ThreadKeepSwitch()
 {
@@ -411,6 +412,11 @@ SPLATE_API int SP_SetLogLevel(int loglevel)
 {
 	nLogLevel = loglevel;
 	set_log_level(loglevel);
+	return SUCCESS;
+}
+SPLATE_API int SP_SetCodeType(int codeType)
+{
+	nCodeType = codeType;
 	return SUCCESS;
 }
 SPLATE_API int SP_SetSwitchCount(int frameCount)

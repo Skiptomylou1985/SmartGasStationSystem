@@ -22,6 +22,7 @@ const int XML_ABILITY_OUT_LEN = 3 * 1024 * 1024;
 int nAlgStatus = 0;
 int nCurGetIndex = 0;
 int nCurPutIndex = 0;
+int nCodeType = 1; //±àÂë·½Ê½  1:utf-8  2:gbk
 struSingleCarInfoOut carInfoOut[MAX_CAR_COUNT];
 struSingleCarInfoOut tempCarOut;
 struMultiCarInfoOut carOutCache;
@@ -400,6 +401,12 @@ SPLATE_API int SP_SetLogLevel(int loglevel)
 	return SUCCESS;
 }
 
+SPLATE_API int SP_SetCodeType(int codeType)
+{
+	nCodeType = codeType;
+	return SUCCESS;
+}
+
 
 
 SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
@@ -465,10 +472,16 @@ SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 						str = xml.GetData();
 						int len2 = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
 						WideCharToMultiByte(CP_ACP, 0, str, -1, plate, len2, NULL, NULL);
-						//strcpy(carOutCache.license[licIndex].license, &plate[3]);
-						strcpy(carOutCache.license[licIndex].license, &plate[2]);
-						//memcpy(carOutCache.license[licIndex].license, &plate[3], strlen(plate)-3);
-						memcpy(carOutCache.license[licIndex].color, plate, 2);
+						if (nCodeType == 1)
+						{
+							strcpy(carOutCache.license[licIndex].license, &plate[3]);
+							memcpy(carOutCache.license[licIndex].color, plate, 3);
+						} 
+						else
+						{
+							strcpy(carOutCache.license[licIndex].license, &plate[2]);
+							memcpy(carOutCache.license[licIndex].color, plate, 2);
+						}
 						memset(debugInfo, 0, sizeof(debugInfo));
 						strcpy(debugInfo + strlen(debugInfo), "lenth:");
 						_itoa(strlen(plate), debugInfo + strlen(debugInfo), 10);
@@ -497,6 +510,7 @@ SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 						}
 
 					}
+					carOutCache.license[licIndex].nAreaNo = nozzleInfo[index].areas[i].areaNo;
 					carOutCache.nLicenseCount += 1;
 					licIndex += 1;
 				}

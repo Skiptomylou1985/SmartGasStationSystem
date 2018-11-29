@@ -151,6 +151,7 @@ extern "C" SPLATE_API int SP_GetCarInfo(struSingleCarInfoOut *carinfo,int carCou
 extern "C" SPLATE_API int SP_GetAreaCarInfo(struSingleCarInfoOut *carinfo, int areaNo);
 extern "C" SPLATE_API int SP_GetNvrStatus();
 extern "C" SPLATE_API int SP_SetLogLevel(int loglevel);
+extern "C" SPLATE_API int SP_SetCodeType(int codeType);
 //extern "C" SPLATE_API int SP_SetSwitchCount(int frameCount);
 //extern "C" SPLATE_API int SP_Snap(int videoChan, char *lic, unsigned char * picBuffer, int &picLenth);
 //extern "C" SPLATE_API int SP_Capture(int areaNo, struSingleCarInfoOut *carinfo);

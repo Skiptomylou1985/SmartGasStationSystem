@@ -175,4 +175,5 @@ extern "C" SPLATE_API int SP_GetCarInfo(struSingleCarInfoOut *carinfo, int carCo
 extern "C" SPLATE_API int SP_GetAreaCarInfo(struSingleCarInfoOut *carinfo, int areaNo);
 extern "C" SPLATE_API int SP_GetNvrStatus();
 extern "C" SPLATE_API int SP_SetLogLevel(int loglevel);
+extern "C" SPLATE_API int SP_SetCodeType(int codeType);
 extern "C" SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo);

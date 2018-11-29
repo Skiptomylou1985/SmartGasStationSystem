@@ -40,23 +40,15 @@ namespace SPManager
         
         private void FormMain_Load(object sender, EventArgs e)
         {
-            //TODO 临时返回
-            //return;
-
             startProtectProcess();//启动保护进程
             lastMessageTime = DateTime.Now;
-            addListViewHead();
-            Global.softVersion = INIUnit.GetINIValue(Application.StartupPath+"//version.ini", "main", "version");
-            this.Text = "加油站智能信息管理系统SPManager " + Global.softVersion;
             int ret = Init();
-            setRealtimeDGV(dataGridRealtime);
-            toolStationName.Text = "站点名称:"+Global.stationInfo.stationName+"   ";
-            comboLogLevel.Visible = false;
+            InitFormInfo();
             if (ret == 0)
             {
                 SPlate.SP_BeginRecog();
-                showCarList();
-                //timerDataProc.Enabled = true;
+                ShowNozzleCarList();
+                ShowAreaCarList();
                 return;
             }
             if ((ret & 0x01) == 0x01)
@@ -122,41 +114,7 @@ namespace SPManager
             SPlate.SP_SetLogLevel(comboLogLevel.SelectedIndex + 1);
         }
 
-        private void btnInit_Click(object sender, EventArgs e)
-        {
-            int ret = Init();
-            if (ret == 0)
-            {
-                SPlate.SP_BeginRecog();
-                return;
-            }
-                
-            if ((ret & 0x01) == 0x01)
-            {
-                MessageBox.Show("日志启动失败");
-            }
-            if ((ret & 0x02) == 0x02)
-            {
-                MessageBox.Show("数据库连接失败");
-            }
-            if ((ret & 0x04) == 0x04)
-            {
-                MessageBox.Show("参数初始化失败");
-            }
-            if ((ret & 0x08) == 0x08)
-            {
-                MessageBox.Show("算法初始化失败");
-            }
-            if ((ret & 0x10) == 0x10)
-            {
-                MessageBox.Show("设备初始化失败");
-            }
-            if ((ret & 0x20) == 0x20)
-            {
-                MessageBox.Show("网络服务初始化失败");
-            }
-        }
-
+       
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -194,8 +152,8 @@ namespace SPManager
 
         private void timerServiceStaus_Tick(object sender, EventArgs e)
         {
-            this.showMemoryInfo();
-            this.showMatchRatio();
+            this.ShowMemoryInfo();
+            this.ShowMatchRatio();
             SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)WM_HEARTBEAT, 0, 0);
             gcCount++;
             if (gcCount > 60)
@@ -207,7 +165,7 @@ namespace SPManager
              if (statusCount > 3)
             {
                 statusCount = 0;
-                sendStatusToRemote();
+                SendStatusToRemote();
             }
         }
 
@@ -232,13 +190,21 @@ namespace SPManager
 //                 showRTBInfo("显示第" + bas.ToString() + "行测试数据");
 //             }
         }
-        
+
+        int hourcount = 0;
         private void timerDataProc_Tick(object sender, EventArgs e)
         {
-
-            showCarList();
-            //showCarListTest();
-            DateTime dt = DateTime.Now;
+            hourcount++;
+            if (hourcount > 60)
+            {
+                hourcount = 0;
+                QueryHourDataFromDB();
+            }
+            
+            if (Global.bShowStationBoard)
+            {
+                FlushStationBoardRunControls();
+            }
         }
 
         private void btnSwitch_Click(object sender, EventArgs e)
@@ -249,14 +215,18 @@ namespace SPManager
         private void startProtectProcess()
         {
             ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = Application.StartupPath + "//Kill.exe";
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            Process.Start(psi);
+            if (File.Exists(Application.StartupPath + "//SPMonitor.exe"))
+            {
+                psi.FileName = Application.StartupPath + "//SPMonitor.exe";
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                Process.Start(psi);
+            }
+           
         }
         private void btnTest_Click(object sender, EventArgs e)
         {
-            setRealtimeDGV(dataGridRealtime);
+            SetRealtimeDGV(dataGridRealtime);
 
         }
 
@@ -273,8 +243,8 @@ namespace SPManager
         private void btnQuery_Click(object sender, EventArgs e)
         {
             string columns = "id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath";
-            dataGridSearch.DataSource = queryData(columns, true);
-            setSearchDGV(dataGridSearch);
+            dataGridSearch.DataSource = QueryData(columns, true);
+            SetSearchDGV(dataGridSearch);
         }
 
         private void dataGridCar_SelectionChanged(object sender, EventArgs e)
@@ -333,7 +303,7 @@ namespace SPManager
             {
                 String path = folder.SelectedPath + "\\车辆检测数据" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
                 string columns = "id,carnumber,nozzleno,arrivetime,begintime,leavetime,carlogo,subcarlogo";
-                DataTable dt = queryData(columns, false);
+                DataTable dt =QueryData(columns, false);
                 dt.Columns.Add("carbrand", typeof(string));
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -365,14 +335,14 @@ namespace SPManager
 
         private void Island1_MouseHover(object sender, EventArgs e)
         {
-            Island1.BackColor = Color.SeaShell;
+            //Island1.BackColor = Color.SeaShell;
             tip.ShowAlways = true;
             tip.SetToolTip(Island1, "可拖动设置油岛位置,双击设置是否隐藏油岛。");
         }
 
         private void Island1_MouseLeave(object sender, EventArgs e)
         {
-            Island1.BackColor = Color.Transparent;
+            //Island1.BackColor = Color.Transparent;
             tip.ShowAlways = false;
         }
 
@@ -388,22 +358,14 @@ namespace SPManager
 
         private void Island1_DoubleClick(object sender, EventArgs e)
         {
-            FormSet set = new FormSet("Island",false);
-            DialogResult dr = set.ShowDialog();
-            if (dr == DialogResult.OK )
-            {
-                if (!set.bShow)
-                {
-                    Island1.Visible = false;
-                }
-            } 
+            SetSingleControlAttr(Island1, "island","", false);
         }
 
 
 
         private void Island2_DoubleClick(object sender, EventArgs e)
         {
-           
+            SetSingleControlAttr(Island2, "island", "", false);
         }
 
         private void Island2_MouseDown(object sender, MouseEventArgs e)
@@ -413,14 +375,14 @@ namespace SPManager
 
         private void Island2_MouseHover(object sender, EventArgs e)
         {
-            Island2.BackColor = Color.SeaShell;
+           // Island2.BackColor = Color.SeaShell;
             tip.ShowAlways = true;
             tip.SetToolTip(Island2, "可拖动设置油岛位置,双击设置是否隐藏油岛。");
         }
 
         private void Island2_MouseLeave(object sender, EventArgs e)
         {
-            Island2.BackColor = Color.Transparent;
+            //Island2.BackColor = Color.Transparent;
             tip.ShowAlways = false;
         }
 
@@ -437,7 +399,7 @@ namespace SPManager
 
         private void Island3_DoubleClick(object sender, EventArgs e)
         {
-
+            SetSingleControlAttr(Island3, "island", "", false);
         }
 
         private void Island3_MouseDown(object sender, MouseEventArgs e)
@@ -447,14 +409,14 @@ namespace SPManager
 
         private void Island3_MouseHover(object sender, EventArgs e)
         {
-            Island3.BackColor = Color.SeaShell;
+            //Island3.BackColor = Color.SeaShell;
             tip.ShowAlways = true;
             tip.SetToolTip(Island3, "可拖动设置油岛位置,双击设置是否隐藏油岛。");
         }
 
         private void Island3_MouseLeave(object sender, EventArgs e)
         {
-            Island3.BackColor = Color.Transparent;
+            //Island3.BackColor = Color.Transparent;
             tip.ShowAlways = false;
         }
 
@@ -470,7 +432,7 @@ namespace SPManager
 
         private void Island4_DoubleClick(object sender, EventArgs e)
         {
-
+            SetSingleControlAttr(Island4, "island", "", false);
         }
 
         private void Island4_MouseDown(object sender, MouseEventArgs e)
@@ -480,14 +442,14 @@ namespace SPManager
 
         private void Island4_MouseHover(object sender, EventArgs e)
         {
-            Island4.BackColor = Color.SeaShell;
+            //Island4.BackColor = Color.SeaShell;
             tip.ShowAlways = true;
             tip.SetToolTip(Island4, "可拖动设置油岛位置,双击设置是否隐藏油岛。");
         }
 
         private void Island4_MouseLeave(object sender, EventArgs e)
         {
-            Island4.BackColor = Color.Transparent;
+            //Island4.BackColor = Color.Transparent;
             tip.ShowAlways = false;
         }
 
@@ -503,7 +465,7 @@ namespace SPManager
 
         private void Island5_DoubleClick(object sender, EventArgs e)
         {
-
+            SetSingleControlAttr(Island5, "island", "", false);
         }
 
         private void Island5_MouseDown(object sender, MouseEventArgs e)
@@ -513,14 +475,14 @@ namespace SPManager
 
         private void Island5_MouseHover(object sender, EventArgs e)
         {
-            Island5.BackColor = Color.SeaShell;
+            //Island5.BackColor = Color.SeaShell;
             tip.ShowAlways = true;
             tip.SetToolTip(Island5, "可拖动设置油岛位置,双击设置是否隐藏油岛。");
         }
 
         private void Island5_MouseLeave(object sender, EventArgs e)
         {
-            Island5.BackColor = Color.Transparent;
+            //Island5.BackColor = Color.Transparent;
             tip.ShowAlways = false;
         }
 
@@ -536,7 +498,7 @@ namespace SPManager
 
         private void Island6_DoubleClick(object sender, EventArgs e)
         {
-           
+            SetSingleControlAttr(Island6, "island", "", false);
         }
 
         private void Island6_MouseDown(object sender, MouseEventArgs e)
@@ -546,14 +508,14 @@ namespace SPManager
 
         private void Island6_MouseHover(object sender, EventArgs e)
         {
-            Island6.BackColor = Color.SeaShell;
+            //Island6.BackColor = Color.SeaShell;
             tip.ShowAlways = true;
             tip.SetToolTip(Island6, "可拖动设置油岛位置,双击设置是否隐藏油岛。");
         }
 
         private void Island6_MouseLeave(object sender, EventArgs e)
         {
-            Island6.BackColor = Color.Transparent;
+            //Island6.BackColor = Color.Transparent;
             tip.ShowAlways = false;
         }
 
@@ -569,11 +531,898 @@ namespace SPManager
 
         private void btnTest_Click_1(object sender, EventArgs e)
         {
-            //             EnumControls(StationBoard, 1,0);
-            //             Global.mysqlHelper.ExecuteSql("update board_param set linkkind = 'area' where name like '%area%'");
-            //             Global.mysqlHelper.ExecuteSql("update board_param set linkkind = 'nozzle' where name like '%Noz%'");
-            //             Global.mysqlHelper.ExecuteSql("update board_param set linkkind = 'island' where name like '%Island%'");
-            InitBoardControls();
+            QueryHourDataFromDB();
+            //FlushStatisticsBoard();
+            //StationBoardReset();
+            // InitBoardControls();
+
+            // this.StationBoardHorizon.Enabled = false;
+        }
+
+        private void btnSetStaionBoard_Click(object sender, EventArgs e)
+        {
+            
+            if (btnSetStaionBoard.Text == "设置站点")
+            {
+                FormPassword fp = new FormPassword();
+                DialogResult dr = fp.ShowDialog();
+                if (dr == DialogResult.OK && fp.Result)
+                {
+                    StationBoard.Visible = true;
+                    comboStationDirection.Visible = true;
+                    StationBoardHorizon.Visible = true;
+                    StationBoardVertical.Visible = true;
+                    comboStationDirection.SelectedIndex = Global.nStationBoardDirection;
+                    checkShowStationBoard.Visible = true;
+                    checkShowStationBoard.Checked = Global.bShowStationBoard;
+                    Global.bStationBoardInSet = true;
+                    btnSetStaionBoard.Text = "保存设置";
+                    btnReset.Visible = true;
+                }
+               
+            } 
+            else
+            {
+                btnReset.Visible = false;
+                comboStationDirection.Visible = false;
+                checkShowStationBoard.Visible = false;
+                Global.bShowStationBoard = checkShowStationBoard.Checked  ;
+                StationBoard.Visible = Global.bShowStationBoard;
+                Global.bStationBoardInSet = false;
+                Global.nStationBoardDirection = comboStationDirection.SelectedIndex;
+                UpdateStationBoardParamToDB();
+                btnSetStaionBoard.Text = "设置站点";
+            }
+            FlushStationBoard();
+        }
+
+        private void I1_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I1_Noz1);
+        }
+
+        private void I1_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I1_Noz2);
+        }
+
+        private void I1_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I1_Noz3);
+        }
+
+        private void I1_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I1_Noz4);
+        }
+
+        private void I1_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I1_Noz5);
+        }
+
+        private void I1_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I1_Noz6);
+        }
+
+        private void I2_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I2_Noz1);
+        }
+
+        private void I2_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I2_Noz2);
+        }
+
+        private void I2_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I2_Noz3);
+        }
+
+        private void I2_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I2_Noz4);
+        }
+
+        private void I2_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I2_Noz5);
+        }
+
+        private void I2_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I2_Noz6);
+        }
+
+        private void I3_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I3_Noz1);
+        }
+
+        private void I3_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I3_Noz2);
+        }
+
+        private void I3_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I3_Noz3);
+        }
+
+        private void I3_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I3_Noz4);
+        }
+
+        private void I3_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I3_Noz5);
+        }
+
+        private void I3_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I3_Noz6);
+        }
+
+        private void I4_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I4_Noz1);
+        }
+
+        private void I4_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I4_Noz2);
+        }
+
+        private void I4_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I4_Noz3);
+        }
+
+        private void I4_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I4_Noz4);
+        }
+
+        private void I4_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I4_Noz5);
+        }
+
+        private void I4_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I4_Noz6);
+        }
+
+        private void I5_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I5_Noz1);
+        }
+
+        private void I5_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I5_Noz2);
+        }
+
+        private void I5_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I5_Noz3);
+        }
+
+        private void I5_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I5_Noz4);
+        }
+
+        private void I5_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I5_Noz5);
+        }
+
+        private void I5_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I5_Noz6);
+        }
+
+        private void I6_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I6_Noz1);
+        }
+
+        private void I6_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I6_Noz2);
+        }
+
+        private void I6_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I6_Noz3);
+        }
+
+        private void I6_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I6_Noz4);
+        }
+
+        private void I6_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I6_Noz5);
+        }
+
+        private void I6_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(I6_Noz6);
+        }
+
+        private void btnEntrance_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void btnEntrance_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(btnEntrance, e);
+        }
+
+        private void btnEntrance_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void btnStore_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void btnStore_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(btnStore, e);
+        }
+        private void btnStore_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void btnExit_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void btnExit_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(btnExit, e);
+        }
+
+        private void btnExit_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void I1_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I1_Area1);
+        }
+
+        private void I1_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I1_Area2);
+        }
+
+        private void I1_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I1_Area3);
+        }
+
+        private void I1_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I1_Area4);
+
+        }
+
+        private void I2_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I2_Area1);
+        }
+
+        private void I2_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I2_Area2);
+        }
+
+        private void I2_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I2_Area3);
+        }
+
+        private void I2_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I2_Area4);
+        }
+
+        private void I3_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I3_Area1);
+        }
+
+        private void I3_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I3_Area2);
+        }
+
+        private void I3_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I3_Area3);
+        }
+
+        private void I3_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I3_Area4);
+        }
+
+        private void I4_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I4_Area1);
+        }
+
+        private void I4_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I4_Area2);
+        }
+
+        private void I4_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I4_Area3);
+        }
+
+        private void I4_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I4_Area4);
+        }
+
+        private void I5_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I5_Area1);
+        }
+
+        private void I5_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I5_Area2);
+        }
+
+        private void I5_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I5_Area3);
+        }
+
+        private void I5_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I5_Area4);
+        }
+
+        private void I6_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I6_Area1);
+        }
+
+        private void I6_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I6_Area2);
+        }
+
+        private void I6_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I6_Area3);
+        }
+
+        private void I6_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(I6_Area4);
+        }
+
+        private void comboStationDirection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Global.nStationBoardDirection = comboStationDirection.SelectedIndex ;
+            GetSatationBoardParamFromDB();
+            FlushStationBoard();
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            StationBoardReset();
+        }
+
+        private void Ver_Island1_DoubleClick(object sender, EventArgs e)
+        {
+            SetSingleControlAttr(Ver_Island1, "island", "", false);
+        }
+
+        private void Ver_Island2_DoubleClick(object sender, EventArgs e)
+        {
+            SetSingleControlAttr(Ver_Island2, "island", "", false);
+        }
+
+        private void Ver_Island3_DoubleClick(object sender, EventArgs e)
+        {
+            SetSingleControlAttr(Ver_Island3, "island", "", false);
+        }
+
+        private void Ver_Island4_DoubleClick(object sender, EventArgs e)
+        {
+            SetSingleControlAttr(Ver_Island4, "island", "", false);
+        }
+
+        private void Ver_Island5_DoubleClick(object sender, EventArgs e)
+        {
+            SetSingleControlAttr(Ver_Island5, "island", "", false);
+        }
+
+        private void Ver_Island6_DoubleClick(object sender, EventArgs e)
+        {
+            SetSingleControlAttr(Ver_Island6, "island", "", false);
+        }
+
+        private void Ver_Island1_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void Ver_Island2_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void Ver_Island3_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void Ver_Island4_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void Ver_Island5_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void Ver_Island6_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void Ver_Island1_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(Ver_Island1, e);
+        }
+
+        private void Ver_Island2_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(Ver_Island2, e);
+        }
+
+        private void Ver_Island3_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(Ver_Island3, e);
+        }
+
+        private void Ver_Island4_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(Ver_Island4, e);
+        }
+
+        private void Ver_Island5_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(Ver_Island5, e);
+        }
+
+        private void Ver_Island6_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(Ver_Island6, e);
+        }
+
+        private void Ver_Island1_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void Ver_Island2_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void Ver_Island3_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void Ver_Island4_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void Ver_Island5_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void Ver_Island6_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void Ver_I1_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I1_Area1);
+        }
+
+        private void Ver_I1_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I1_Area2);
+        }
+
+        private void Ver_I1_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I1_Area3);
+        }
+
+        private void Ver_I1_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I1_Area4);
+        }
+
+        private void Ver_I2_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I2_Area1);
+        }
+
+        private void Ver_I2_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I2_Area2);
+        }
+
+        private void Ver_I2_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I2_Area3);
+        }
+
+        private void Ver_I2_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I2_Area4);
+        }
+
+        private void Ver_I3_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I3_Area1);
+        }
+
+        private void Ver_I3_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I3_Area2);
+        }
+
+        private void Ver_I3_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I3_Area3);
+        }
+
+        private void Ver_I3_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I3_Area4);
+        }
+
+        private void Ver_I4_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I4_Area1);
+        }
+
+        private void Ver_I4_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I4_Area2);
+        }
+
+        private void Ver_I4_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I4_Area3);
+        }
+
+        private void Ver_I4_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I4_Area4);
+        }
+
+        private void Ver_I5_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I5_Area1);
+        }
+
+        private void Ver_I5_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I5_Area2);
+        }
+
+        private void Ver_I5_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I5_Area3);
+        }
+
+        private void Ver_I5_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I5_Area4);
+        }
+
+        private void Ver_I6_Area1_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I6_Area1);
+        }
+
+        private void Ver_I6_Area2_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I6_Area2);
+        }
+
+        private void Ver_I6_Area3_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I6_Area3);
+        }
+
+        private void Ver_I6_Area4_Click(object sender, EventArgs e)
+        {
+            SetAreaLinkControl(Ver_I6_Area4);
+        }
+
+        private void Ver_I1_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I1_Noz1);
+        }
+
+        private void Ver_I1_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I1_Noz2);
+        }
+
+        private void Ver_I1_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I1_Noz3);
+        }
+
+        private void Ver_I1_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I1_Noz4);
+        }
+
+        private void Ver_I1_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I1_Noz5);
+        }
+
+        private void Ver_I1_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I1_Noz6);
+        }
+
+        private void Ver_I2_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I2_Noz1);
+        }
+
+        private void Ver_I2_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I2_Noz2);
+        }
+
+        private void Ver_I2_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I2_Noz3);
+        }
+
+        private void Ver_I2_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I2_Noz4);
+        }
+
+        private void Ver_I2_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I2_Noz5);
+        }
+
+        private void Ver_I2_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I2_Noz6);
+        }
+
+        private void Ver_I3_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I3_Noz1);
+        }
+
+        private void Ver_I3_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I3_Noz2);
+        }
+
+        private void Ver_I3_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I3_Noz3);
+        }
+
+        private void Ver_I3_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I3_Noz4);
+        }
+
+        private void Ver_I3_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I3_Noz5);
+        }
+
+        private void Ver_I3_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I3_Noz6);
+        }
+
+        private void Ver_I4_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I4_Noz1);
+        }
+
+        private void Ver_I4_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I4_Noz2);
+        }
+
+        private void Ver_I4_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I4_Noz3);
+        }
+
+        private void Ver_I4_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I4_Noz4);
+        }
+
+        private void Ver_I4_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I4_Noz5);
+        }
+
+        private void Ver_I4_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I4_Noz6);
+        }
+
+        private void Ver_I5_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I5_Noz1);
+        }
+
+        private void Ver_I5_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I5_Noz2);
+        }
+
+        private void Ver_I5_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I5_Noz3);
+        }
+
+        private void Ver_I5_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I5_Noz4);
+        }
+
+        private void Ver_I5_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I5_Noz5);
+        }
+
+        private void Ver_I5_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I5_Noz6);
+        }
+
+        private void Ver_I6_Noz1_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I6_Noz1);
+        }
+
+        private void Ver_I6_Noz2_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I6_Noz2);
+        }
+
+        private void Ver_I6_Noz3_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I6_Noz3);
+        }
+
+        private void Ver_I6_Noz4_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I6_Noz4);
+        }
+
+        private void Ver_I6_Noz5_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I6_Noz5);
+        }
+
+        private void Ver_I6_Noz6_Click(object sender, EventArgs e)
+        {
+            SetNozzleLinkControl(Ver_I6_Noz6);
+        }
+
+        private void Ver_btnEntrance_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void Ver_btnStore_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void Ver_btnExit_MouseDown(object sender, MouseEventArgs e)
+        {
+            pt = Cursor.Position;
+        }
+
+        private void Ver_btnEntrance_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(Ver_btnEntrance, e);
+        }
+        private void Ver_btnStore_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(Ver_btnStore, e);
+        }
+
+        private void Ver_btnExit_MouseMove(object sender, MouseEventArgs e)
+        {
+            ControlMove(Ver_btnExit, e);
+        }
+        private void Ver_btnStore_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void Ver_btnEntrance_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void Ver_btnExit_MouseUp(object sender, MouseEventArgs e)
+        {
+            moves = true;
+        }
+
+        private void checkShowStationBoard_CheckedChanged(object sender, EventArgs e)
+        {
+            comboStationDirection.Enabled = checkShowStationBoard.Checked;
+        }
+
+        private void timerClearCarlist_Tick(object sender, EventArgs e)
+        {
+            foreach(ClsCarArrive car in Global.listCarArrive)
+            {
+                if (DateTime.Now.CompareTo(car.arriveTime.AddSeconds(600)) > 0)
+                {
+                    lock(Global.lockObj)
+                    {
+
+                    }
+                    SendCallbackInfo(car.carInfo, 2);
+                    ShowRTBInfo("获取入口车牌：" + car.plate + " 车辆品牌:" + car.carInfo.nCarLogo.ToString()
+                        + " 车辆子品牌:" + car.carInfo.nSubCarLogo.ToString());
+
+                    lock (Global.lockObj)
+                    {
+                        Global.listCarArrive.Remove(car);
+                    }
+                    return;
+                    
+                }
+            }
         }
     }
 }
