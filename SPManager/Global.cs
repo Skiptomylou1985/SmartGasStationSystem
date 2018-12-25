@@ -44,14 +44,20 @@ namespace SPManager
         public static int nMaxCarInSingleArea = 2; //单个识别区最多车牌数
         public static DateTime updateTime;  
         public static int nLogLevel = 3;   //日志级别 
-        public static string socketIP = "0.0.0.0";  //DIT服务IP
-        public static int socketPort = 8870;   //DIT服务端口
-        public static int ditCallBackMode = 1; //DIT车牌回调模式 1:无出入口相机，新出现车牌直接回调， 2:有出入口相机，出口入相机车牌回调
+        public static int ditMode = 2;     //DIT交互模式,1:通过动态库,2,软件直连
+        public static string localDitIP = "0.0.0.0";  //DIT服务IP
+        public static int localDitPort = 8870;   //DIT服务端口
+        public static string DitIP = "127.0.0.1"; //DIT软件IP，发送进出站信息连接IP
+        public static int DitPort = 7890;  //DIT软件端口，发送进出站信息连接端口
+        public static string localTradeIP = "0.0.0.0"; //作为服务端，接收交易信息IP
+        public static int localTradePort = 9100; //作为服务端，接收交易信息端口
+        public static int ditCallBackMode = 2; //DIT车牌回调模式 1:无出入口相机，新出现车牌直接回调， 2:有出入口相机，出口入相机车牌回调
 
         //运行服务
         public static Log LogServer;
         public static MysqlHelper mysqlHelper;
-        public static SocketTool socketTool;
+        public static SocketTool socketDit;
+        public static SocketTool socketTrade;
 
 
         public static ClsStationInfo stationInfo = new ClsStationInfo();
@@ -88,7 +94,13 @@ namespace SPManager
         public static int[] carCount = new int[24];
         public static int[] waitTime = new int[24];
         public static List<ClsCarArrive> listCarArrive;
-        
+        public static PumpInfo []currentPump = new PumpInfo [100];
+
+        public static Hashtable oilInfoHashtable = new Hashtable();
+        public static Hashtable carBrandHashtable = new Hashtable();
+
+
+
 
     }
     

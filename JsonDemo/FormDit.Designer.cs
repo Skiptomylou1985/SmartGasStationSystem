@@ -263,6 +263,7 @@
             this.textSubBrand.Name = "textSubBrand";
             this.textSubBrand.Size = new System.Drawing.Size(86, 21);
             this.textSubBrand.TabIndex = 19;
+            this.textSubBrand.Text = "12";
             // 
             // label8
             // 
@@ -279,6 +280,7 @@
             this.textVehicleBrand.Name = "textVehicleBrand";
             this.textVehicleBrand.Size = new System.Drawing.Size(80, 21);
             this.textVehicleBrand.TabIndex = 17;
+            this.textVehicleBrand.Text = "1";
             // 
             // label7
             // 
@@ -472,7 +474,7 @@
             this.txtServerPort.Name = "txtServerPort";
             this.txtServerPort.Size = new System.Drawing.Size(45, 21);
             this.txtServerPort.TabIndex = 9;
-            this.txtServerPort.Text = "9100";
+            this.txtServerPort.Text = "8870";
             // 
             // btn_open
             // 

@@ -8,6 +8,8 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Net;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace JsonDemo
 {
@@ -133,12 +135,93 @@ namespace JsonDemo
                     int count = cSocket.Receive(buff);
                     if (count > 0)
                     {
-                        string info = Encoding.Default.GetString(buff);
-                        //MessageBox.Show("收到数据：" + info);
-                        PumpInfo pumpInfo = JsonHelper.DeserializeJsonToObject<PumpInfo>(info);
-                        Global.pumpList.Add(pumpInfo);
-                        
+                        if (buff[0] == 0x32 && buff[1] == 0x30 && buff[2] == 0x31 && buff[3] == 0x30 && buff[4] == 0x31) //交易数据
+                        {
+                            int pidlenth = buff[5];
+                            string pid = Encoding.Default.GetString(buff,6, pidlenth);
+                            string info = Encoding.Default.GetString(buff,10+pidlenth,count-pidlenth-10);
+                            JObject obj = JObject.Parse(info);
+                            
+                            Global.showStr = info;
+                            string subinfo = info.Substring(info.IndexOf("[{")+1);
 
+                            string msgid = obj["msgID"].ToString();
+                            byte[] sendbuff = new byte[256];
+                            int offset = 0;
+                            Buffer.BlockCopy(buff, 0, sendbuff,offset , pidlenth + 6);
+                            offset += pidlenth + 6;
+                            sendbuff[offset] = (byte)msgid.Length;
+                            offset += 1;
+                            byte[] msgbuff = Encoding.Default.GetBytes(msgid);
+                            Buffer.BlockCopy(msgbuff, 0, sendbuff, offset, msgbuff.Length);
+                            offset += msgbuff.Length;
+                            sendbuff[offset] = 0x31;
+                            cSocket.Send(sendbuff,offset+1,0);
+                            if (pid == "P91_10007")
+                            {
+                                TradeInfo trade = new TradeInfo();
+                                trade.GasStation_NO = obj["source"].ToString();
+                                trade.REQ_Time = obj["time"].ToString();
+                                trade.MSG_ID = obj["msgID"].ToString();
+                                trade.OilGun_NO = obj["data"][0]["1"].ToString();
+                                trade.OIL_TYPE = obj["data"][0]["2"].ToString();
+                                trade.OIL_Q = double.Parse(obj["data"][0]["3"].ToString());
+                                trade.OIL_AMT = double.Parse(obj["data"][0]["4"].ToString());
+                                trade.OIL_PRC = double.Parse(obj["data"][0]["5"].ToString());
+                                trade.START_TIME = obj["data"][0]["6"].ToString();
+                                trade.END_TIME = obj["data"][0]["7"].ToString();
+                                trade.START_READ = double.Parse(obj["data"][0]["8"].ToString());
+                                trade.END_READ = double.Parse(obj["data"][0]["9"].ToString());
+                                trade.VehicleNo = obj["data"][0]["10"].ToString();
+                                trade.VehicleBrand = obj["data"][0]["11"].ToString();
+                                trade.SubBrand = obj["data"][0]["12"].ToString();
+                                trade.VehicleModel = obj["data"][0]["13"].ToString();
+                                trade.VehicleColor = obj["data"][0]["14"].ToString();
+                                trade.BodyColor = obj["data"][0]["15"].ToString();
+                                Global.tradeList.Add(trade);
+
+
+                            } 
+                            else if(pid == "P91_10003")
+                            {
+                                PayInfo pay = new PayInfo();
+                                pay.GasStation_NO = obj["source"].ToString();
+                                pay.REQ_Time = obj["time"].ToString();
+                                pay.MSG_ID = obj["msgID"].ToString();
+                                pay.TRANS_TYPE = obj["data"][0]["1"].ToString();
+                                pay.TRANS_CODE = obj["data"][0]["2"].ToString();
+                                pay.BAR_CODE = obj["data"][0]["3"].ToString();
+                                pay.TRANS_Q = double.Parse(obj["data"][0]["4"].ToString());
+                                pay.TRANS_PRC = double.Parse(obj["data"][0]["6"].ToString());
+                                pay.TRANS_AMT = double.Parse(obj["data"][0]["5"].ToString());
+                                pay.FINISH_TIME = obj["data"][0]["7"].ToString();
+                                pay.SETTLE_DAY = obj["data"][0]["8"].ToString();
+                                pay.OilGun_NO = obj["data"][0]["9"].ToString();
+                                pay.START_READ = double.Parse(obj["data"][0]["10"].ToString());
+                                pay.END_READ = double.Parse(obj["data"][0]["11"].ToString());
+                                pay.BILL_NUM = obj["data"][0]["12"].ToString();
+                                pay.BILL_ITEM_ID = obj["data"][0]["13"].ToString();
+                                pay.POS_NO = obj["data"][0]["14"].ToString();
+                                pay.StatusType = obj["data"][0]["15"].ToString();
+                                pay.Pumpsrv_ref = obj["data"][0]["16"].ToString();
+                                pay.PAY_MODE = obj["ext_data"][0]["1"].ToString();
+                                pay.PAY_AMT = double.Parse(obj["ext_data"][0]["2"].ToString());
+                                pay.Discount_AMT = double.Parse(obj["ext_data"][0]["3"].ToString());
+                                pay.PAY_CARD = obj["ext_data"][0]["4"].ToString();
+                                Global.payList.Add(pay);
+                            }
+                         }
+                        else 
+                        {
+                             string info = Encoding.Default.GetString(buff);
+                            if (info.IndexOf("PumpFlag") > 0)
+                            {
+                                PumpInfo pumpInfo = JsonHelper.DeserializeJsonToObject<PumpInfo>(info);
+                                Global.pumpList.Add(pumpInfo);
+                            }
+                             
+                        }
+                       
                     }
                     Thread.Sleep(30);
                 }

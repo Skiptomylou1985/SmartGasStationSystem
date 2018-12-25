@@ -14,7 +14,8 @@ namespace JsonDemo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormDit());
+            Application.Run(new FormTrade());
+            //Application.Run(new FormDit());
         }
     }
 }

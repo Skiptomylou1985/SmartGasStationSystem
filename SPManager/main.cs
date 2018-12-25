@@ -76,15 +76,15 @@ namespace SPManager
             {
                 ret += 1 << 2;
             }
-            if (!InitDev())
-            {
-                ret += 1 << 4;
-            }
-            if (!InitAlg())
-            {
-                ret += 1 << 3;
-            }
-            
+             if (!InitDev())
+             {
+                 ret += 1 << 4;
+             }
+             if (!InitAlg())
+             {
+                 ret += 1 << 3;
+             }
+
             if (!InitSocket())
             {
                 ret += 1 << 5;
@@ -144,18 +144,43 @@ namespace SPManager
                         }
                     }
                     nozzle.curStatus = nozzleStatus;
-                    NET_DVR_PLATE_RESULT snapData = new NET_DVR_PLATE_RESULT();
-                    snapData.byPumpID = (byte)nozzleNo;
-                    snapData.byPumpStatus = (byte)nozzleStatus;
-                    snapData.sLicense = new byte[16];
-                    byte[] license = System.Text.Encoding.Default.GetBytes(nozzle.nozzleCar.license);
-                    Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
-                    snapData.byColor = (byte)nozzle.nozzleCar.carColor;
-                    snapData.byPlateColor = (byte)nozzle.nozzleCar.licenseColor;
-                    snapData.byVehicleShape = (byte)nozzle.nozzleCar.carLogo;
-                    snapData.wVehicleLogoRecog = (short)nozzle.nozzleCar.carLogo;
-                    snapData.wVehicleSubLogoRecog = (short)nozzle.nozzleCar.subCarLogo;
-                    SendSnapToDIT(snapData);
+
+                    if (Global.ditMode == 1)
+                    {
+                        NET_DVR_PLATE_RESULT snapData = new NET_DVR_PLATE_RESULT();
+                        snapData.byPumpID = (byte)nozzleNo;
+                        snapData.byPumpStatus = (byte)nozzleStatus;
+                        snapData.sLicense = new byte[16];
+                        byte[] license = System.Text.Encoding.Default.GetBytes(nozzle.nozzleCar.license);
+                        Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
+                        snapData.byColor = (byte)nozzle.nozzleCar.carColor;
+                        snapData.byPlateColor = (byte)nozzle.nozzleCar.licenseColor;
+                        snapData.byVehicleShape = (byte)nozzle.nozzleCar.carLogo;
+                        snapData.wVehicleLogoRecog = (short)nozzle.nozzleCar.carLogo;
+                        snapData.wVehicleSubLogoRecog = (short)nozzle.nozzleCar.subCarLogo;
+                        SendSnapToDIT(snapData);
+                    } 
+                    else if(Global.ditMode == 2)
+                    {
+                        PumpBackInfo backInfo = new PumpBackInfo();
+                        backInfo.VehicleNo = nozzle.nozzleCar.license;
+                        backInfo.VehicleBrand = nozzle.nozzleCar.carLogo.ToString();
+                        backInfo.SubBrand = nozzle.nozzleCar.subCarLogo.ToString();
+                        backInfo.VehicleModel = "0";
+                        backInfo.VehicleColor = nozzle.nozzleCar.carColor.ToString();
+                        backInfo.BodyColor = nozzle.nozzleCar.licenseColor.ToString();
+                        backInfo.MsgID = Global.currentPump[nozzleNo].MsgID;
+                        backInfo.PumpID = Global.currentPump[nozzleNo].PumpID;
+                        backInfo.Time = Global.currentPump[nozzleNo].Time;
+                        string infoJson = JsonHelper.SerializeObject(backInfo);
+                        //byte[] buf = System.Text.Encoding.UTF8.GetBytes(infoJson);
+                        string covert = Encoding.GetEncoding("GBK").GetString(Encoding.Default.GetBytes(infoJson));
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_WithoutCap:DIT直连模式返回信息给DIT：" + covert, (int)EnumLogLevel.DEBUG));
+
+                        Global.socketDit.Send(Encoding.Default.GetBytes(covert));
+
+                    }
+
 
                     DateTime dt = DateTime.Now;
                     switch (nozzleStatus)
@@ -568,14 +593,38 @@ namespace SPManager
             Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 匹配车牌：" + Global.arrayNozzleCar[index].license, (int)EnumLogLevel.DEBUG));
             Global.nozzleList[index].nozzleCar.nozzleNo = nozzleNo;
             Global.nozzleList[index].curStatus = nozzleStatus;
-            byte[] license = System.Text.Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.license);
-            Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
-            snapData.byColor = (byte)Global.nozzleList[index].nozzleCar.carColor;
-            snapData.byPlateColor = (byte)Global.nozzleList[index].nozzleCar.licenseColor;
-            snapData.byVehicleShape = (byte)Global.nozzleList[index].nozzleCar.carLogo;
-            snapData.wVehicleLogoRecog = (short)Global.nozzleList[index].nozzleCar.carLogo;
-            snapData.wVehicleSubLogoRecog = (short)Global.nozzleList[index].nozzleCar.subCarLogo;
-            SendSnapToDIT(snapData);
+            if (Global.ditMode == 1)
+            {
+                byte[] license = System.Text.Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.license);
+                Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
+                snapData.byColor = (byte)Global.nozzleList[index].nozzleCar.carColor;
+                snapData.byPlateColor = (byte)Global.nozzleList[index].nozzleCar.licenseColor;
+                snapData.byVehicleShape = (byte)Global.nozzleList[index].nozzleCar.carLogo;
+                snapData.wVehicleLogoRecog = (short)Global.nozzleList[index].nozzleCar.carLogo;
+                snapData.wVehicleSubLogoRecog = (short)Global.nozzleList[index].nozzleCar.subCarLogo;
+                SendSnapToDIT(snapData);
+            }
+            else if (Global.ditMode == 2)
+            {
+                PumpBackInfo backInfo = new PumpBackInfo();
+                backInfo.VehicleNo = Global.nozzleList[index].nozzleCar.license;
+                backInfo.VehicleBrand = Global.nozzleList[index].nozzleCar.carLogo.ToString();
+                backInfo.SubBrand = Global.nozzleList[index].nozzleCar.subCarLogo.ToString();
+                backInfo.VehicleModel = "0";
+                backInfo.VehicleColor = Global.nozzleList[index].nozzleCar.carColor.ToString();
+                backInfo.BodyColor = Global.nozzleList[index].nozzleCar.licenseColor.ToString();
+                backInfo.MsgID = Global.currentPump[nozzleNo].MsgID;
+                backInfo.PumpID = Global.currentPump[nozzleNo].PumpID;
+                backInfo.Time = Global.currentPump[nozzleNo].Time;
+                string infoJson = JsonHelper.SerializeObject(backInfo);
+                //byte[] buf = System.Text.Encoding.UTF8.GetBytes(infoJson);
+                string covert = Encoding.GetEncoding("GBK").GetString(Encoding.Default.GetBytes(infoJson));
+                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:DIT直连模式返回信息给DIT："+ covert, (int)EnumLogLevel.DEBUG));
+                //Global.socketDit.Send(Encoding.Default.GetBytes(covert));
+                Global.socketDit.Send(Encoding.Default.GetBytes(infoJson));
+
+            }
+            
             DateTime dt = DateTime.Now;
             Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:进入油枪状态判断处理，油枪状态："+ nozzleStatus.ToString(), (int)EnumLogLevel.DEBUG));
 
@@ -730,7 +779,7 @@ namespace SPManager
             sendbuf[data.Length + 5] = (byte)(crc % 256);
             sendbuf[data.Length + 6] = 0xEE;
             sendbuf[data.Length + 7] = 0xEE;
-            Global.socketTool.Send(sendbuf);
+            Global.socketDit.Send(sendbuf);
 
             Global.LogServer.Add(new LogInfo("Run", "Main->SendSnapToDIT: 发送车辆信息到DIT  车牌号:" +
                  System.Text.Encoding.Default.GetString(snapData.sLicense) + "  油枪号：" + snapData.byPumpID.ToString(), (int)EnumLogLevel.RUN));
@@ -817,7 +866,8 @@ namespace SPManager
         private void ExitApp()
         {
             SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)WM_KILLPROCESS, 0, 0);
-            Global.socketTool.Close();
+            Global.socketDit.Close();
+            Global.socketTrade.Close();
             SPlate.SP_Close();
             
             Global.picWork.Stop();
@@ -855,7 +905,7 @@ namespace SPManager
             sendbuf[data.Length + 5] = (byte)(crc % 256);
             sendbuf[data.Length + 6] = 0xEE;
             sendbuf[data.Length + 7] = 0xEE;
-            Global.socketTool.Send(sendbuf);
+            Global.socketDit.Send(sendbuf);
             string license = System.Text.Encoding.Default.GetString(carOut.license);
             string status = "";
             if (InOrOut == 1)
@@ -890,7 +940,7 @@ namespace SPManager
             sendbuf[data.Length + 5] = (byte)(crc % 256);
             sendbuf[data.Length + 6] = 0xEE;
             sendbuf[data.Length + 7] = 0xEE;
-            Global.socketTool.Send(sendbuf);
+            Global.socketDit.Send(sendbuf);
             string status = "";
             if (InOrOut == 1)
                 status = "进站";

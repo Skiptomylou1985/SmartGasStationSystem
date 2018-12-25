@@ -148,11 +148,14 @@ namespace JsonDemo
 
                 PumpBackInfo backInfo = new PumpBackInfo();
                 backInfo.VehicleNo = textVehicleNo.Text;
-                backInfo.VehicleBrand = textVehicleBrand.Text;
-                backInfo.SubBrand = textSubBrand.Text;
-                backInfo.VehicleModel = comboVehicleModel.Text;
-                backInfo.VehicleColor = comboVehicleColor.Text;
-                backInfo.BodyColor = comboBodyColor.Text;
+                backInfo.VehicleBrand = "0";
+                backInfo.SubBrand = "0";
+                backInfo.VehicleModel = comboVehicleModel.SelectedIndex.ToString();
+                backInfo.VehicleColor = comboVehicleColor.SelectedIndex.ToString();
+                backInfo.BodyColor = comboBodyColor.SelectedIndex.ToString();
+                backInfo.MsgID = pumpInfo.MsgID;
+                backInfo.PumpID = pumpInfo.PumpID;
+                backInfo.Time = pumpInfo.Time;
                 string infoJson = JsonHelper.SerializeObject(backInfo);
                 //byte[] buf = System.Text.Encoding.UTF8.GetBytes(infoJson);
                 string covert = Encoding.GetEncoding("GBK").GetString(Encoding.Default.GetBytes(infoJson));

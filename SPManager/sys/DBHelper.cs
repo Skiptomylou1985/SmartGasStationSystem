@@ -47,6 +47,7 @@ namespace SPManager
             DbConnString = @"server=" + this.LocalDB.ip + ";user id=" + this.LocalDB.username +
                                    ";password=" + this.LocalDB.password + ";database=" + this.LocalDB.dbname;
             this.DBConn = new MySqlConnection(DbConnString);
+            
             try
             {
                 this.DBConn.Open();

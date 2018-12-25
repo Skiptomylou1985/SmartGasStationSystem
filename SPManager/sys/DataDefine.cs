@@ -105,20 +105,56 @@ namespace SPManager
             set { _matchFlag = value; }
         }
         private int _matchFlag = 0;
-       
+
+        public double volume
+        {
+            get { return _volume; }
+            set { _volume = value; }
+        }
+        private double _volume = 0;
+
+        public double realAmount
+        {
+            get { return _realamnout; }
+            set { _realamnout = value; }
+        }
+        private double _realamnout = 0;
+
+        public string tradeSn
+        {
+            get { return _tradeSn; }
+            set { _tradeSn = value; }
+        }
+        private string _tradeSn = "";
+
+        public string msgId
+        {
+            get { return _msgId; }
+            set { _msgId = value; }
+        }
+        private string _msgId = "";
+
+        public double nozzleVolume
+        {
+            get { return _nozzleVolume; }
+            set { _nozzleVolume = value; }
+        }
+        private double _nozzleVolume = 0;
+
         public string toSaveSqlString()
         {
             _picPath = "";
-            String sqlString = "INSERT into carlog (carnumber,carnumcolor,cartype,carlogo,subcarlogo,carcolor,arrivetime,leavetime,nozzleno,picpath,begintime,endtime,oiltype)" +
-        "VALUES('{0}', {1}, {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, '{9}', '{10}', '{11}',{12}) ";
-            return String.Format(sqlString, _license, _licenseColor.ToString(), _type.ToString(), _carLogo.ToString(), _subCarLogo.ToString(), _carColor.ToString(), _arriveTime, _leaveTime, _nozzleNo.ToString(), _picPath, _beginTime, _endTime, _oilType);
+            String sqlString = "INSERT into carlog (carnumber,carnumcolor,cartype,carlogo,subcarlogo,carcolor,arrivetime,leavetime,nozzleno,picpath,begintime,endtime,oiltype,volume,realamount)" +
+        "VALUES('{0}', {1}, {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, '{9}', '{10}', '{11}',{12},{13},{14}) ";
+            return String.Format(sqlString, _license, _licenseColor.ToString(), _type.ToString(), _carLogo.ToString(), _subCarLogo.ToString(), _carColor.ToString(), _arriveTime, _leaveTime,
+                _nozzleNo.ToString(), _picPath, _beginTime, _endTime, _oilType, _volume, _realamnout);
         }
     }
     //油枪信息类
     public class ClsNozzle
     {
         //关联的主识别区
-        public List<int> linkedMainAreaList = new List<int>(); 
+        public List<int> linkedMainAreaList = new List<int>();
         //关联的副识别区，油岛另外一侧 
         public List<int> linkedSubAreaList = new List<int>();
         //关联的油岛号
@@ -366,7 +402,7 @@ namespace SPManager
         }
         private int _streamType = 0;
         //public List<int> locationNoList = new List<int>();
-       // public List<int> videoNoList = new List<int>();
+        // public List<int> videoNoList = new List<int>();
         public List<int> nozzleNoList = new List<int>();
         public List<int> areaNoList = new List<int>();
         public List<ClsCarInfo> carList = new List<ClsCarInfo>();
@@ -377,7 +413,7 @@ namespace SPManager
     public class ClsGasIsland
     {
         //油岛ID
-        public int id 
+        public int id
         {
             get { return _id; }
             set { _id = value; }
@@ -508,11 +544,12 @@ namespace SPManager
         public bool bRecogIsRun;
         public bool bMoniterIsRun;
         public bool bAutoUpdate;
-        public bool bSocketIsRun;
+        public bool bSocketDitIsRun;
+        public bool bSocketTradeIsRun;
     }
     public class ClsCarArrive
     {
-        public ClsCarArrive(string plate,struCarInfoOut car,DateTime time)
+        public ClsCarArrive(string plate, struCarInfoOut car, DateTime time)
         {
             this.plate = plate;
             this.carInfo = car;
@@ -521,5 +558,140 @@ namespace SPManager
         public string plate;
         public struCarInfoOut carInfo;
         public DateTime arriveTime;
+    }
+
+    public class TradeInfo
+    {
+        public string GasStation_NO { set; get; }
+        public string REQ_Time { set; get; }
+        public string MSG_ID { set; get; }
+        public string OilGun_NO { set; get; }
+        public string OIL_TYPE { set; get; }
+        public double OIL_Q { set; get; }
+        public double OIL_AMT { set; get; }
+        public double OIL_PRC { set; get; }
+        public string START_TIME { set; get; }
+        public string END_TIME { set; get; }
+        public double START_READ { set; get; }
+        public double END_READ { set; get; }
+        public string VehicleNo { set; get; }
+        public string VehicleBrandCode { set; get; }
+        public string SubBrandCode { set; get; }
+        public string VehicleModel { set; get; }
+        public string VehicleColor { set; get; }
+        public string BodyColor { set; get; }
+
+        public string CarBrand { set; get; }
+        public string SubBrand { set; get; }
+        public string OilName { set; get; }
+        public string OilCode { set; get; }
+        public string OilClass { set; get; }
+
+
+        public string toSaveSqlString()
+        {
+            String sqlString = "INSERT into tradelog (nozzleno,meterialcode,volume,realamount,price,starttime,endtime,startread,endread," +
+                "carnumber,carbrand,subbrand,cartype,carcolor,carnumcolor,realcarbrand,realsubbrand,oilname,oilcode,oilclass)" +
+       "VALUES({0}, '{1}', {2}, {3}, {4}, '{5}', '{6}', {7}, {8}, '{9}', {10}, {11},{12},{13},{14},'{15}', '{16}','{17}','{18}','{19}') ";
+            return String.Format(sqlString, OilGun_NO, OIL_TYPE, OIL_Q.ToString(), OIL_AMT.ToString(), OIL_PRC.ToString(), START_TIME, END_TIME, START_READ.ToString(),
+                END_READ.ToString(), VehicleNo, VehicleBrandCode, SubBrandCode, VehicleModel, VehicleColor, BodyColor, CarBrand, SubBrand, OilName, OilCode, OilClass);
+        }
+
+    }
+    public class OrderInfo
+    {
+        public string GasStation_NO { set; get; }
+        public string REQ_Time { set; get; }
+        public string MSG_ID { set; get; }
+        public string TRANS_TYPE { set; get; }
+        public string TRANS_CODE { set; get; }
+        public string BAR_CODE { set; get; }
+        public double TRANS_Q { set; get; }
+        public double TRANS_AMT { set; get; }
+        public double TRANS_PRC { set; get; }
+        public string FINISH_TIME { set; get; }
+        public string SETTLE_DAY { set; get; }
+        public string OilGun_NO { set; get; }
+        public double START_READ { set; get; }
+        public double END_READ { set; get; }
+        public string BILL_NUM { set; get; }
+        public string BILL_ITEM_ID { set; get; }
+        public string POS_NO { set; get; }
+        public string StatusType { set; get; }
+        public string Pumpsrv_ref { set; get; }
+        public int TRADE_ID { set; get; }
+        public string toSaveSqlString()
+        {
+            String sqlString = "INSERT into orderlog (transtype,transcode,meterialcode,volume,realamount,price,paytime,settledate,nozzleno," +
+                "startread,endread,billno,billitemid,posno,statustype,paycode,tradeid)" +
+       "VALUES('{0}','{1}','{2}', {3}, {4}, {5}, '{6}', '{7}', {8}, {9}, {10}, {11},{12},'{13}','{14}','{15}',{16}) ";
+            return String.Format(sqlString, TRANS_TYPE, TRANS_CODE, BAR_CODE, TRANS_Q.ToString(), TRANS_AMT.ToString(), TRANS_PRC.ToString(),
+                FINISH_TIME, SETTLE_DAY, OilGun_NO.ToString(), START_READ.ToString(), END_READ.ToString(), BILL_NUM.ToString(),
+                BILL_ITEM_ID.ToString(), POS_NO, StatusType, Pumpsrv_ref, TRADE_ID.ToString());
+        }
+
+    }
+
+    public class PayInfo
+    {
+        public string BILL_NUM { set; get; }
+        public string PAY_MODE { set; get; }
+        public double PAY_AMT { set; get; }
+        public double Discount_AMT { set; get; }
+        public string PAY_CARD { set; get; }
+
+        public int TRADE_ID { set; get; }
+        public string toSaveSqlString()
+        {
+            String sqlString = "INSERT into paylog (billno,paymode,payamount,discount,paycard,tradeid)" +
+       "VALUES('{0}','{1}',{2},{3},'{4}',{5}) ";
+            return String.Format(sqlString, BILL_NUM.ToString(), PAY_MODE, PAY_AMT.ToString(), Discount_AMT.ToString(), PAY_CARD, TRADE_ID.ToString());
+        }
+    }
+
+    public class PumpInfo
+    {
+        public string PumpID { set; get; }
+
+        public string PumpFlag { set; get; }
+
+        public string GradeID { set; get; }
+
+        public string Volume { set; get; }
+
+        public string Value { set; get; }
+
+        public string Time { set; get; }
+        public string MsgID { set; get; }
+    }
+    public class PumpBackInfo
+    {
+        public string VehicleNo { set; get; }
+        public string VehicleBrand { set; get; }
+        public string SubBrand { set; get; }
+        public string VehicleModel { set; get; }
+        public string VehicleColor { set; get; }
+        public string BodyColor { set; get; }
+        public string PumpID { set; get; }
+        public string Time { set; get; }
+        public string MsgID { set; get; }
+    }
+
+    public class OilInfo
+    {
+        public int id { set; get; }
+        public string MeterialCode { set; get; }
+        public string OilName { set; get; }
+        public string OilCode { set; get; }
+        public string OilClass { set; get; }
+    }
+
+    public class CarBrandInfo
+    {
+        public int id { set; get; }
+        public string CarCode { set; get; }
+        public string SubCarCode { set; get; }
+        public string CarBrand { set; get; }
+        public string SubCarBrand { set; get; }
     }
 }

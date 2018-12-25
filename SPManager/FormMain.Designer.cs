@@ -3287,7 +3287,7 @@
             this.tabPage2.Controls.Add(this.tableLayoutPanel3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(1292, 856);
+            this.tabPage2.Size = new System.Drawing.Size(1292, 848);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "车辆查询";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -3310,7 +3310,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1292, 856);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1292, 848);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // panel5
@@ -3539,7 +3539,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1292, 691);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1292, 683);
             this.tableLayoutPanel4.TabIndex = 2;
             // 
             // groupBox3
@@ -3548,7 +3548,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(795, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(494, 685);
+            this.groupBox3.Size = new System.Drawing.Size(494, 677);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "车辆详情";
@@ -3575,7 +3575,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(3, 17);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(488, 665);
+            this.panel6.Size = new System.Drawing.Size(488, 657);
             this.panel6.TabIndex = 0;
             // 
             // lblBeginTime
@@ -3790,7 +3790,7 @@
             this.dataGridSearch.Location = new System.Drawing.Point(3, 3);
             this.dataGridSearch.Name = "dataGridSearch";
             this.dataGridSearch.RowTemplate.Height = 23;
-            this.dataGridSearch.Size = new System.Drawing.Size(786, 685);
+            this.dataGridSearch.Size = new System.Drawing.Size(786, 677);
             this.dataGridSearch.TabIndex = 1;
             this.dataGridSearch.SelectionChanged += new System.EventHandler(this.dataGridCar_SelectionChanged);
             // 
@@ -3841,7 +3841,7 @@
             this.tabPage3.Controls.Add(this.tableLayoutPanel5);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1292, 856);
+            this.tabPage3.Size = new System.Drawing.Size(1292, 848);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "运行日志";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -3859,7 +3859,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1292, 856);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1292, 848);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // RTBLog
@@ -3867,7 +3867,7 @@
             this.RTBLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RTBLog.Location = new System.Drawing.Point(3, 3);
             this.RTBLog.Name = "RTBLog";
-            this.RTBLog.Size = new System.Drawing.Size(786, 850);
+            this.RTBLog.Size = new System.Drawing.Size(786, 842);
             this.RTBLog.TabIndex = 1;
             this.RTBLog.Text = "";
             // 
@@ -3892,7 +3892,7 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(500, 856);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(500, 848);
             this.tableLayoutPanel6.TabIndex = 2;
             // 
             // panel12
@@ -3911,7 +3911,7 @@
             this.panel11.Location = new System.Drawing.Point(0, 75);
             this.panel11.Margin = new System.Windows.Forms.Padding(0);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(500, 375);
+            this.panel11.Size = new System.Drawing.Size(500, 371);
             this.panel11.TabIndex = 0;
             // 
             // listViewCache
@@ -3921,7 +3921,7 @@
             this.listViewCache.GridLines = true;
             this.listViewCache.Location = new System.Drawing.Point(0, 0);
             this.listViewCache.Name = "listViewCache";
-            this.listViewCache.Size = new System.Drawing.Size(500, 375);
+            this.listViewCache.Size = new System.Drawing.Size(500, 371);
             this.listViewCache.TabIndex = 2;
             this.listViewCache.UseCompatibleStateImageBehavior = false;
             this.listViewCache.View = System.Windows.Forms.View.Details;
@@ -3952,7 +3952,7 @@
             this.panel14.BackColor = System.Drawing.Color.PapayaWhip;
             this.panel14.Controls.Add(this.label22);
             this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel14.Location = new System.Drawing.Point(0, 450);
+            this.panel14.Location = new System.Drawing.Point(0, 446);
             this.panel14.Margin = new System.Windows.Forms.Padding(0);
             this.panel14.Name = "panel14";
             this.panel14.Size = new System.Drawing.Size(500, 30);
@@ -3972,10 +3972,10 @@
             // 
             this.panel15.Controls.Add(this.listViewArea);
             this.panel15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel15.Location = new System.Drawing.Point(0, 480);
+            this.panel15.Location = new System.Drawing.Point(0, 476);
             this.panel15.Margin = new System.Windows.Forms.Padding(0);
             this.panel15.Name = "panel15";
-            this.panel15.Size = new System.Drawing.Size(500, 376);
+            this.panel15.Size = new System.Drawing.Size(500, 372);
             this.panel15.TabIndex = 4;
             // 
             // listViewArea
@@ -3985,7 +3985,7 @@
             this.listViewArea.GridLines = true;
             this.listViewArea.Location = new System.Drawing.Point(0, 0);
             this.listViewArea.Name = "listViewArea";
-            this.listViewArea.Size = new System.Drawing.Size(500, 376);
+            this.listViewArea.Size = new System.Drawing.Size(500, 372);
             this.listViewArea.TabIndex = 4;
             this.listViewArea.UseCompatibleStateImageBehavior = false;
             this.listViewArea.View = System.Windows.Forms.View.Details;
@@ -4054,7 +4054,7 @@
             this.tabPage4.Controls.Add(this.tableLayoutPanel1);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1292, 856);
+            this.tabPage4.Size = new System.Drawing.Size(1292, 848);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "统计信息";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -4071,17 +4071,17 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1292, 856);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1292, 848);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.groupBox2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 428);
+            this.panel2.Location = new System.Drawing.Point(0, 424);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1292, 428);
+            this.panel2.Size = new System.Drawing.Size(1292, 424);
             this.panel2.TabIndex = 20;
             // 
             // groupBox2
@@ -4090,7 +4090,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1292, 428);
+            this.groupBox2.Size = new System.Drawing.Size(1292, 424);
             this.groupBox2.TabIndex = 39;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "检测数据";
@@ -4102,7 +4102,7 @@
             this.dataGridRealtime.Location = new System.Drawing.Point(3, 17);
             this.dataGridRealtime.Name = "dataGridRealtime";
             this.dataGridRealtime.RowTemplate.Height = 23;
-            this.dataGridRealtime.Size = new System.Drawing.Size(1286, 408);
+            this.dataGridRealtime.Size = new System.Drawing.Size(1286, 404);
             this.dataGridRealtime.TabIndex = 0;
             // 
             // panel50
@@ -4111,7 +4111,7 @@
             this.panel50.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel50.Location = new System.Drawing.Point(3, 3);
             this.panel50.Name = "panel50";
-            this.panel50.Size = new System.Drawing.Size(1286, 422);
+            this.panel50.Size = new System.Drawing.Size(1286, 418);
             this.panel50.TabIndex = 21;
             // 
             // chartStatistics
@@ -4143,7 +4143,7 @@
             series2.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
             this.chartStatistics.Series.Add(series1);
             this.chartStatistics.Series.Add(series2);
-            this.chartStatistics.Size = new System.Drawing.Size(1286, 422);
+            this.chartStatistics.Size = new System.Drawing.Size(1286, 418);
             this.chartStatistics.TabIndex = 20;
             this.chartStatistics.Text = "chart1";
             // 

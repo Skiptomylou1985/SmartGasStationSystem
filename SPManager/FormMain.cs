@@ -40,6 +40,7 @@ namespace SPManager
         
         private void FormMain_Load(object sender, EventArgs e)
         {
+            //TODO 临时关闭保护线程
             startProtectProcess();//启动保护进程
             lastMessageTime = DateTime.Now;
             int ret = Init();

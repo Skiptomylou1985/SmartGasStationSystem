@@ -60,6 +60,12 @@
     <Compile Include="FormDit.Designer.cs">
       <DependentUpon>FormDit.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormTrade.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTrade.Designer.cs">
+      <DependentUpon>FormTrade.cs</DependentUpon>
+    </Compile>
     <Compile Include="JsonHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,11 +73,15 @@
     <Compile Include="Response.cs" />
     <Compile Include="SocketTool.cs" />
     <Compile Include="StationInfo.cs" />
+    <Compile Include="TradeInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDit.resx">
       <DependentUpon>FormDit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTrade.resx">
+      <DependentUpon>FormTrade.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -9,6 +9,9 @@ namespace JsonDemo
     public static class Global
     {
         public static List<PumpInfo> pumpList = new List<PumpInfo>();
+        public static List<TradeInfo> tradeList = new List<TradeInfo>();
+        public static List<PayInfo> payList = new List<PayInfo>();
+        public static string showStr = "";
     }
     public class PumpInfo
     {
@@ -23,6 +26,7 @@ namespace JsonDemo
         public string Value { set; get; }
 
         public string Time { set; get; }
+        public string MsgID { set; get; }
     }
     public class PumpBackInfo
     {
@@ -32,6 +36,9 @@ namespace JsonDemo
         public string VehicleModel { set; get; }
         public string VehicleColor { set; get; }
         public string BodyColor { set; get; }
+        public string PumpID { set; get; }
+        public string Time { set; get; }
+        public string MsgID { set; get; }
     }
 
     public class VehicelInfo

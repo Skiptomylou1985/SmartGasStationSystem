@@ -51,6 +51,7 @@ namespace SPManager
         {
             GetMainParam();
             GetCarLogoParam();
+            GetOilParam();
             GetVideoHostParam();
             GetVideoChanParam();
             GetNozzleParam();
@@ -107,10 +108,22 @@ namespace SPManager
                         Global.nVideoSource = int.Parse(paramValue);
                     else if (paramName == "defaultprovince")
                         Global.clsNvrInfo.loginName = paramValue;
-                    else if (paramName == "socketip")
-                        Global.socketIP = paramValue;
-                    else if (paramName == "socketport")
-                        Global.socketPort = int.Parse(paramValue);
+                    else if (paramName == "ditcallbackmode")
+                        Global.ditCallBackMode = int.Parse(paramValue);
+                    else if (paramName == "ditmode")
+                        Global.ditMode = int.Parse(paramValue);
+                    else if (paramName == "localditip")
+                        Global.localDitIP = paramValue;
+                    else if (paramName == "localditport")
+                        Global.localDitPort = int.Parse(paramValue);
+                    else if (paramName == "ditip")
+                        Global.DitIP = paramValue;
+                    else if (paramName == "ditport")
+                        Global.DitPort = int.Parse(paramValue);
+                    else if (paramName == "localtradeip")
+                        Global.localTradeIP = paramValue;
+                    else if (paramName == "localtradeport")
+                        Global.localTradePort = int.Parse(paramValue);
                     else if (paramName == "matchmode")
                         Global.nMatchMode = int.Parse(paramValue);
                     else if (paramName == "picpath")
@@ -150,10 +163,41 @@ namespace SPManager
             {
                 string key = dr["carcode"].ToString() + "-" + dr["subcarcode"].ToString();
                 string value = dr["subcarlogo"].ToString();
+                CarBrandInfo info = new CarBrandInfo();
+                info.id = int.Parse(dr["id"].ToString());
+                info.CarBrand = dr["carlogo"].ToString();
+                info.SubCarBrand = dr["subcarlogo"].ToString();
                 Global.carLogoHashtable.Add(key, value);
+                Global.carBrandHashtable.Add(key, info);
             }
             return true;
         }
+
+        private bool GetOilParam()
+        {
+            string sql = "select * from meterial";
+            DataTable dt = Global.mysqlHelper.GetDataTable(sql);
+
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                Global.LogServer.Add(new LogInfo("Error", "Main->InitParam->GetOilParam table meterial is null", (int)EnumLogLevel.ERROR));
+                return false;
+            }
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                OilInfo info = new OilInfo();
+                info.id = int.Parse(dr["id"].ToString());
+                info.MeterialCode = dr["meterialCode"].ToString();
+                info.OilName = dr["oilname"].ToString();
+                info.OilCode = dr["oilcode"].ToString();
+                info.OilClass = dr["oilclass"].ToString();
+                Global.oilInfoHashtable.Add(info.MeterialCode, info);
+            }
+            return true;
+        }
+
+
 
         private void GetVideoHostParam()
         {
@@ -386,10 +430,12 @@ namespace SPManager
 
         private bool InitSocket()
         {
-            Global.socketTool = new SocketTool(Global.socketIP, Global.socketPort);
-            Global.clsServiceStatus.bSocketIsRun = Global.socketTool.Run();
-            Global.LogServer.Add(new LogInfo("Debug", "Main->InitSocket 初始化网络服务完成，网络服务状态 "+Global.clsServiceStatus.bSocketIsRun.ToString(), (int)EnumLogLevel.DEBUG));
-            return Global.clsServiceStatus.bSocketIsRun;
+            Global.socketDit = new SocketTool(Global.localDitIP, Global.localDitPort);
+            Global.clsServiceStatus.bSocketDitIsRun = Global.socketDit.Run();
+            Global.socketTrade = new SocketTool(Global.localTradeIP, Global.localTradePort);
+            Global.clsServiceStatus.bSocketTradeIsRun = Global.socketTrade.Run();
+            Global.LogServer.Add(new LogInfo("Debug", "Main->InitSocket 初始化网络服务完成，网络服务状态 "+Global.clsServiceStatus.bSocketDitIsRun.ToString(), (int)EnumLogLevel.DEBUG));
+            return Global.clsServiceStatus.bSocketDitIsRun;
         }
 
         private bool InitDev()
