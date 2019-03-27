@@ -57,4 +57,31 @@ namespace JsonDemo
         public int TRADE_ID { set; get; }
 
     }
+    public class UpLoadTradeInfo
+    {
+        public int id { set; get; }
+        public string stationCode { set; get; }
+        public string stationName { set; get; }
+        public string meterialCode { set; get; }
+        public int nozzleNo { set; get; }
+        public double volume { set; get; }
+        public double realAmount { set; get; }
+        public double price { set; get; }
+        public DateTime startTime { set; get; }
+        public DateTime endTime { set; get; }
+        public double startRead { set; get; }
+        public double endRead { set; get; }
+        public string carNumber { set; get; }
+        public int carBrand { set; get; }
+        public int subBrand { set; get; }
+        public int carType { set; get; }
+        public int carColor { set; get; }
+        public int carNumColor { set; get; }
+        public string realCarBrand { set; get; }
+        public string realSubBrand { set; get; }
+        public string oilName { set; get; }
+        public string oilCode { set; get; }
+        public string oilClass { set; get; }
+
+    }
 }

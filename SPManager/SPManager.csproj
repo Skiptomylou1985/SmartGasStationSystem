@@ -115,6 +115,7 @@
     <Compile Include="sys\SystemUnit.cs" />
     <Compile Include="tool\PictureWork.cs" />
     <Compile Include="tool\SocketTool.cs" />
+    <Compile Include="tool\Upload.cs" />
     <Compile Include="tool\winsock.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

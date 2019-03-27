@@ -259,13 +259,19 @@ namespace SPManager
                                 {
                                     Global.LogServer.Add(new LogInfo("Debug", "SocketTool->存储加油交易信息: " + trade.toSaveSqlString(), (int)EnumLogLevel.DEBUG));
                                     int id = Global.mysqlHelper.ExecuteSqlGetId(trade.toSaveSqlString());
-                                    Global.mysqlHelper.ExecuteSql("update tradelog a ,carbrand b set a.realcarbrand = b.carlogo, a.realsubbrand = b.subcarlogo where a.carbrand = b.carcode and a.subbrand = b.subcarcode and a.id = "+id.ToString());
+
+                                    if ((trade.BodyColor == "1" && trade.OilClass == "柴油") ||
+                                        (trade.BodyColor == "0" && trade.OilClass == "汽油"))
+                                    {
+                                        Global.mysqlHelper.ExecuteSql("update tradelog a ,carbrand b set a.realcarbrand = b.carlogo, a.realsubbrand = b.subcarlogo where a.carbrand = b.carcode and a.subbrand = b.subcarcode and a.id = " + id.ToString());
+                                    }
+                                    
                                 }
                                 else
                                 {
                                     Global.LogServer.Add(new LogInfo("Debug", "SocketTool->存储加油交易信息,该条数据已存在 " , (int)EnumLogLevel.DEBUG)); }
                                 
-                                }
+                                } 
                                 else if (pid == "P91_10003")
                                 {
                                     foreach(var suborder in obj["data"])
@@ -361,6 +367,7 @@ namespace SPManager
                 }
                 catch (System.Exception ex)
                 {
+                   // Global.LogServer.Add(new LogInfo("Error", "SocketTool->ReceiveMasssage ：" + ex.ToString(), (int)EnumLogLevel.ERROR));
 
                 }
 

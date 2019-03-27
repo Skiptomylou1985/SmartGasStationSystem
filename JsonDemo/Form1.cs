@@ -17,6 +17,7 @@ namespace JsonDemo
         private bool isConnected = false;
         private byte[] buff = new byte[1024];
         const byte Cmd_Status = 0x01;
+        MysqlHelper mysqlHelper;
         public Form1()
         {
             InitializeComponent();
@@ -136,6 +137,88 @@ namespace JsonDemo
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            ClsCarInfo car = new ClsCarInfo();
+            car.license = "abc";
+            car.StartCounter = 12.1;
+            car.Price = 1.1;
+            car.volume = 1.2;
+            car.EndCounter = 13.1;
+            //MessageBox.Show(car.toSaveSqlString());
+            
+            mysqlHelper.ExecuteSql(car.toSaveSqlString());
+            return;
+
+            Upload load = new Upload();
+            UpLoadTradeInfo info = new UpLoadTradeInfo();
+            string sql = "select * from tradelog where upload = 0 order by id desc limit 1";
+            System.Data.DataTable dt = mysqlHelper.GetDataTable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                info.id = int.Parse(dt.Rows[0]["id"].ToString());
+                info.carBrand = int.Parse(dt.Rows[0]["carbrand"].ToString());
+                info.carColor = int.Parse(dt.Rows[0]["carcolor"].ToString());
+                info.carNumColor = int.Parse(dt.Rows[0]["carnumcolor"].ToString());
+                info.carType = int.Parse(dt.Rows[0]["cartype"].ToString());
+                info.carNumber = dt.Rows[0]["carnumber"].ToString();
+                info.carBrand = int.Parse(dt.Rows[0]["carbrand"].ToString());
+                info.stationName = "测试站";
+                info.stationCode = "X001";
+                info.nozzleNo = int.Parse(dt.Rows[0]["nozzleno"].ToString());
+                info.oilClass = dt.Rows[0]["oilclass"].ToString();
+                info.meterialCode = dt.Rows[0]["meterialcode"].ToString();
+                info.oilCode = dt.Rows[0]["oilcode"].ToString();
+                info.oilName = dt.Rows[0]["oilname"].ToString();
+                info.price = double.Parse(dt.Rows[0]["price"].ToString()); ;
+                info.realAmount = double.Parse(dt.Rows[0]["realamount"].ToString());
+                info.realCarBrand = dt.Rows[0]["realcarbrand"].ToString();
+                info.realSubBrand = dt.Rows[0]["realsubbrand"].ToString();
+                info.startRead = double.Parse(dt.Rows[0]["startread"].ToString());
+                info.endRead = double.Parse(dt.Rows[0]["endread"].ToString());
+                info.startTime = DateTime.Parse(dt.Rows[0]["starttime"].ToString());
+
+                System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)); // 当地时区
+                long timeStamp = (long)(info.startTime - startTime).TotalSeconds; // 相差秒数
+                info.endTime = DateTime.Parse(dt.Rows[0]["endtime"].ToString());
+            }
+
+
+
+            //             info.id = 1;
+            //             info.stationname = "测试站";
+            //             info.stationcode = "X001";
+            //             info.nozzleno = 2;
+            //             info.oilclass = "汽油";
+            //             info.meterialcode = "300876";
+            //             info.oilcode = "92#";
+            //             info.oilname = "92号汽油";
+            //             info.price = 8.1;
+            //             info.realamount = 69.8;
+            //             info.realcarbrand = "丰田";
+            //             info.realsubbrand = "皇冠";
+            //             info.startread = 4123.2;
+            //             info.endread = 4182.1;
+            //             info.starttime = "2018-01-01 12:34:52";
+            //             info.endtime = "2018-01-01 12:36:52";
+
+            load.DoUpload(info, "http://47.95.13.182:8080/fulin/business/oilstation/add/trade");
+            //load.DoUpload(info, "http://47.95.13.182:8080/fulin/business/worktrade/add");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DBInfo DBinfo = new DBInfo();
+            DBinfo.ip = "47.95.13.182";
+            DBinfo.dbname = "gsims";
+            DBinfo.password = "root";
+            DBinfo.username = "root";
+            DBinfo.port = 3306;
+            DBinfo.type = "mysql";
+            mysqlHelper = new MysqlHelper(DBinfo);
         }
     }
 }

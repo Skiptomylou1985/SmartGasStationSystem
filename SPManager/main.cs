@@ -48,10 +48,7 @@ namespace SPManager
                 {
                     ProcSnapFromDIT_Capture(nNozzleID, nNozzleStatus);
                 }
-                else if(Global.nVideoRecogFlag == 1)
-                {
-                    ProcSnapFromDIT_WithoutCap(nNozzleID, nNozzleStatus);
-                }
+
                 ShowNozzleCarList();
             }
             else 
@@ -71,11 +68,14 @@ namespace SPManager
             {
                 ret += 1 << 1;
             }
-            
             if (!InitParam())
             {
                 ret += 1 << 2;
             }
+
+            InitUpload();
+
+
              if (!InitDev())
              {
                  ret += 1 << 4;
@@ -127,107 +127,6 @@ namespace SPManager
 
         #region 获取，处理数据
 
-        private void ProcSnapFromDIT_WithoutCap(int nozzleNo, int nozzleStatus)
-        {
-            
-            foreach (ClsNozzle nozzle in Global.nozzleList)
-            {
-                if (nozzleNo == nozzle.nozzleNo)
-                {
-                    if (!nozzle.bMatched)
-                    {
-                        ClsCarInfo car = FindCarInAreaCarList(nozzleNo);
-                        if (car != null)
-                        {
-                            nozzle.nozzleCar = car;
-                            nozzle.bMatched = true;
-                        }
-                    }
-                    nozzle.curStatus = nozzleStatus;
-
-                    if (Global.ditMode == 1)
-                    {
-                        NET_DVR_PLATE_RESULT snapData = new NET_DVR_PLATE_RESULT();
-                        snapData.byPumpID = (byte)nozzleNo;
-                        snapData.byPumpStatus = (byte)nozzleStatus;
-                        snapData.sLicense = new byte[16];
-                        byte[] license = System.Text.Encoding.Default.GetBytes(nozzle.nozzleCar.license);
-                        Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
-                        snapData.byColor = (byte)nozzle.nozzleCar.carColor;
-                        snapData.byPlateColor = (byte)nozzle.nozzleCar.licenseColor;
-                        snapData.byVehicleShape = (byte)nozzle.nozzleCar.carLogo;
-                        snapData.wVehicleLogoRecog = (short)nozzle.nozzleCar.carLogo;
-                        snapData.wVehicleSubLogoRecog = (short)nozzle.nozzleCar.subCarLogo;
-                        SendSnapToDIT(snapData);
-                    } 
-                    else if(Global.ditMode == 2)
-                    {
-                        PumpBackInfo backInfo = new PumpBackInfo();
-                        backInfo.VehicleNo = nozzle.nozzleCar.license;
-                        backInfo.VehicleBrand = nozzle.nozzleCar.carLogo.ToString();
-                        backInfo.SubBrand = nozzle.nozzleCar.subCarLogo.ToString();
-                        backInfo.VehicleModel = "0";
-                        backInfo.VehicleColor = nozzle.nozzleCar.carColor.ToString();
-                        backInfo.BodyColor = nozzle.nozzleCar.licenseColor.ToString();
-                        backInfo.MsgID = Global.currentPump[nozzleNo].MsgID;
-                        backInfo.PumpID = Global.currentPump[nozzleNo].PumpID;
-                        backInfo.Time = Global.currentPump[nozzleNo].Time;
-                        string infoJson = JsonHelper.SerializeObject(backInfo);
-                        //byte[] buf = System.Text.Encoding.UTF8.GetBytes(infoJson);
-                        string covert = Encoding.GetEncoding("GBK").GetString(Encoding.Default.GetBytes(infoJson));
-                        Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_WithoutCap:DIT直连模式返回信息给DIT：" + covert, (int)EnumLogLevel.DEBUG));
-
-                        Global.socketDit.Send(Encoding.Default.GetBytes(covert));
-
-                    }
-
-
-                    DateTime dt = DateTime.Now;
-                    switch (nozzleStatus)
-                    {
-                        case 0:  //不生效 默认开始时间
-                            nozzle.nozzleCar.beginTime = dt;
-                            break;
-                        case 1:  //提枪
-                            nozzle.nozzleCar.arriveTime = dt;
-                            nozzle.nozzleCar.beginTime = dt;
-                            nozzle.nozzleCar.endTime = dt;
-                            nozzle.nozzleCar.leaveTime = dt;
-                            nozzle.nozzleCar.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + nozzle.nozzleCar.license.Trim() + @"\\";
-                            break;
-                        case 2: //加油
-                            nozzle.nozzleCar.beginTime = dt;
-                            nozzle.nozzleCar.endTime = dt;
-                            nozzle.nozzleCar.leaveTime = dt;
-                            break;
-                        case 3: //挂枪
-                            nozzle.nozzleCar.endTime = dt;
-                            nozzle.nozzleCar.leaveTime = dt;
-                            nozzle.nozzleCar.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + nozzle.nozzleCar.license.Trim() + @"\\";
-                            Global.mysqlHelper.ExecuteSql(nozzle.nozzleCar.toSaveSqlString());
-                            for (int i = 0; i < Global.arrayAreaCar.Length; i++)
-                            {
-                                if (nozzle.nozzleCar.license == Global.arrayAreaCar[i].license)
-                                {
-                                    Global.arrayAreaCar[i].license = "";
-                                    Global.arrayAreaCar[i].nozzleNo = 0;
-                                    Global.arrayAreaCar[i].matchFlag = 0;
-                                    Global.arrayAreaCar[i].carLogo = 0;
-                                    Global.arrayAreaCar[i].subCarLogo = 0;
-                                }
-                            }
-                            nozzle.bMatched = false;
-                            nozzle.nozzleCar.license = "";
-                            nozzle.curStatus = 0;
-                            SetRealtimeDGV(dataGridRealtime);
-                            //Global.arrayAreaCar[index].
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
         private ClsCarInfo FindCarInAreaCarList(int nozzleNo)
         {
             //查找关联油岛及区域并在其中查找车牌
@@ -261,6 +160,7 @@ namespace SPManager
                                 Car.carLogo = Global.arrayAreaCar[areaIndex].carLogo;
                                 Car.subCarLogo = Global.arrayAreaCar[areaIndex].subCarLogo;
                                 Car.licenseColor = Global.arrayAreaCar[areaIndex].licenseColor;
+                                Car.licenseColorString = Global.arrayAreaCar[areaIndex].licenseColorString;
                                 Car.carColor = Global.arrayAreaCar[areaIndex].carColor;
                                 return Car;
                             
@@ -297,6 +197,7 @@ namespace SPManager
             Global.LogServer.Add(new LogInfo("Debug", "Main->FindCarInAreaCarList: 匹配结束，未匹配到任何车辆", (int)EnumLogLevel.DEBUG));
             return null;
         }
+
         
         private void GetAreaCarFromDll(int areaNo)
         {
@@ -306,6 +207,41 @@ namespace SPManager
             struCarOut = (struCarInfoOut)Marshal.PtrToStructure(pCarOut, typeof(struCarInfoOut));
             Marshal.FreeHGlobal(pCarOut);
             string lic = Encoding.Default.GetString(struCarOut.license,0,GetStrLength(struCarOut.license));
+
+            string plateColor = Encoding.Default.GetString(struCarOut.color, 0, GetStrLength(struCarOut.color));
+            if (plateColor == "黄")
+            {
+                struCarOut.nColor = 1;
+            }
+              
+            Global.LogServer.Add(new LogInfo("Color", "车牌号:"+lic + "  车牌颜色："+plateColor + " 车牌颜色序号:"+struCarOut.nColor.ToString(), (int)EnumLogLevel.DEBUG));
+
+            //             if (!FindCarInCarList(lic))
+            //             {
+            //                 ClsCarInfo car = new ClsCarInfo();
+            //                 car.arriveTime = DateTime.Now;
+            //                 car.licenseColor = struCarOut.nColor;
+            //                 car.license = lic;
+            //                 car.carLogo = struCarOut.nCarLogo;
+            //                 car.subCarLogo = struCarOut.nSubCarLogo;
+            //                 Global.carList.Add(car);
+            //             }
+
+            if (Global.bUseCacheCar)
+            {
+                ClsCarArrive carArrive = getCarArriveInList(lic);
+                if (carArrive == null)
+                {
+                    carArrive = new ClsCarArrive(lic, struCarOut, DateTime.Now);
+                    lock (Global.lockObj)
+                    {
+                        Global.listCarArrive.Add(carArrive);
+                    }
+
+                }
+            }
+            
+
 
             if (Global.ditCallBackMode == 2) //使用出入口相机
             {
@@ -324,18 +260,9 @@ namespace SPManager
             }
             else // 不使用出入口相机，根据视频流车牌先后判断进站
             {
-                ClsCarArrive carArrive = getCarArriveInList(lic);
-                if (carArrive == null)
-                {
-                    SendCallbackInfo(struCarOut, 1);
-                    ShowRTBInfo("新车辆被捕获，发送给DIT：" + lic + " 车辆品牌:" + struCarOut.nCarLogo.ToString() + " 车辆子品牌:" + struCarOut.nSubCarLogo.ToString());
-                    carArrive = new ClsCarArrive(lic, struCarOut,DateTime.Now);
-                    lock (Global.lockObj)
-                    {
-                        Global.listCarArrive.Add(carArrive);
-                    }
-                    
-                } 
+                SendCallbackInfo(struCarOut, 1);
+                ShowRTBInfo("新车辆被捕获，发送给DIT：" + lic + " 车辆品牌:" + struCarOut.nCarLogo.ToString() + " 车辆子品牌:" + struCarOut.nSubCarLogo.ToString());
+                
             }
             ShowRTBInfo("视频流车牌获取区域:" + areaNo.ToString()+"  获取车牌：" + lic+" 车辆品牌:" + struCarOut.nCarLogo.ToString() + " 车辆子品牌:" + struCarOut.nSubCarLogo.ToString());
             for (int i=0;i<Global.arrayAreaCar.Length;i++)
@@ -346,11 +273,9 @@ namespace SPManager
                     Global.arrayAreaCar[i].matchFlag = 0;
                     Global.arrayAreaCar[i].carLogo = 0;
                     Global.arrayAreaCar[i].subCarLogo = 0;
+                    Global.arrayAreaCar[i].licenseColor = 0;
                 }
             }
-            //if (checkRepeatLicense(struCarOut.nAreaNo, license))
-            //{
-            //}
             if (CheckDBcarRepeat(lic))
             {
                 ShowRTBInfo("车牌"+ lic + "10分钟内已加油,视为无效车辆，不匹配识别区" );
@@ -361,6 +286,7 @@ namespace SPManager
                 int index = Global.areaMap[areaNo];
                 Global.arrayAreaCar[index].license = lic;
                 Global.arrayAreaCar[index].licenseColor = struCarOut.nColor;
+                Global.arrayAreaCar[index].licenseColorString = plateColor;
                 Global.arrayAreaCar[index].carLogo = struCarOut.nCarLogo;
                 Global.arrayAreaCar[index].subCarLogo = struCarOut.nSubCarLogo;
                 Global.arrayAreaCar[index].carColor = struCarOut.nCarColor;
@@ -379,7 +305,7 @@ namespace SPManager
 
         }
 
-        //从车里队列中查找车牌
+        //从车牌队列中查找车牌
         public ClsCarArrive getCarArriveInList(string plate)
         {
             lock (Global.lockObj)
@@ -424,7 +350,7 @@ namespace SPManager
                 {
                     Global.LogServer.Add(new LogInfo("Debug", "Main->checkDBcarRepeat: not repeat", (int)EnumLogLevel.DEBUG));
                     return false;
-                }
+                }   
                
             }
         }
@@ -567,25 +493,28 @@ namespace SPManager
                 }
 
                 
-
-                ClsPicture pic = new ClsPicture();
-                pic.picBufer = new byte[struCarOut.nPicLenth];
-                Buffer.BlockCopy(struCarOut.pic, 0, pic.picBufer, 0, struCarOut.nPicLenth);
-                //pic.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
-                pic.picPath = Global.basePicPath + DateTime.Now.ToString("yyyyMMdd") + @"\\";
-                // Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath+ pic.picName, (int)EnumLogLevel.DEBUG));
-                pic.picName = Global.nozzleList[index].nozzleNo.ToString()+"_"+DateTime.Now.ToString("HHmmss") + ".jpg";
-                pic.picWidth = struCarOut.nPicWidth;
-                pic.picHeight = struCarOut.nPicHeight;
-                pic.picType = struCarOut.nPicType;
-                Global.picWork.Add(pic);
-                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 车辆图片入队列,图片长度：" +struCarOut.nPicLenth.ToString(), (int)EnumLogLevel.DEBUG));
-
-                if (pic.picBufer.Length > 2)
+                if (Global.nSavePicture == 1)
                 {
-                    Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 车辆图片入队列,图片类型：" + pic.picBufer[0].ToString() + pic.picBufer[1].ToString() +
-                    "图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
+                    ClsPicture pic = new ClsPicture();
+                    pic.picBufer = new byte[struCarOut.nPicLenth];
+                    Buffer.BlockCopy(struCarOut.pic, 0, pic.picBufer, 0, struCarOut.nPicLenth);
+                    //pic.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
+                    pic.picPath = Global.basePicPath + DateTime.Now.ToString("yyyyMMdd") + @"\\";
+                    // Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath+ pic.picName, (int)EnumLogLevel.DEBUG));
+                    pic.picName = Global.nozzleList[index].nozzleNo.ToString() + "_" + DateTime.Now.ToString("HHmmss") + ".jpg";
+                    pic.picWidth = struCarOut.nPicWidth;
+                    pic.picHeight = struCarOut.nPicHeight;
+                    pic.picType = struCarOut.nPicType;
+                    Global.picWork.Add(pic);
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 车辆图片入队列,图片长度：" + struCarOut.nPicLenth.ToString(), (int)EnumLogLevel.DEBUG));
+
+                    if (pic.picBufer.Length > 2)
+                    {
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 车辆图片入队列,图片类型：" + pic.picBufer[0].ToString() + pic.picBufer[1].ToString() +
+                        "图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
+                    }
                 }
+               
                 
             }
             //int index = Global.nozzleMap[nozzleNo];
@@ -593,7 +522,75 @@ namespace SPManager
             Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 匹配车牌：" + Global.arrayNozzleCar[index].license, (int)EnumLogLevel.DEBUG));
             Global.nozzleList[index].nozzleCar.nozzleNo = nozzleNo;
             Global.nozzleList[index].curStatus = nozzleStatus;
-            if (Global.ditMode == 1)
+            
+
+
+           
+            
+            DateTime dt = DateTime.Now;
+            Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:进入油枪状态判断处理，油枪状态："+ nozzleStatus.ToString(), (int)EnumLogLevel.DEBUG));
+
+            
+
+            if ( Global.nozzleList[index].nozzleCar.license != "")
+                        
+            {
+                struCarInfoOut car = new struCarInfoOut();
+                car.license = Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.license);
+                car.color = Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.licenseColorString);
+                car.nCarColor = Global.nozzleList[index].nozzleCar.carColor;
+                car.nColor = Global.nozzleList[index].nozzleCar.licenseColor;
+                car.nCarLogo = Global.nozzleList[index].nozzleCar.carLogo;
+                car.nSubCarLogo = Global.nozzleList[index].nozzleCar.subCarLogo;
+
+                ClsCarArrive carArrive = new ClsCarArrive(Global.nozzleList[index].nozzleCar.license, car, DateTime.Now);
+                if (Global.bUseCacheCar)
+                {
+                    carArrive = getCarArriveInList(Global.nozzleList[index].nozzleCar.license);
+                    if (carArrive == null)
+                    {
+                         
+                        //carArrive = new ClsCarArrive(Global.nozzleList[index].nozzleCar.license, car, DateTime.Now);
+                        carArrive.matchFlag = 1;
+                        Global.listCarArrive.Add(carArrive);
+                    }
+                }
+                
+                if (Global.ditCallBackMode == 1)
+                {
+                    SendCallbackInfo(carArrive.carInfo, 1);
+                    ShowRTBInfo("新车辆被捕获，发送给DIT：" + Global.nozzleList[index].nozzleCar.license + " 车辆品牌:"
+                        + carArrive.carInfo.nCarLogo.ToString() + " 车辆子品牌:" + carArrive.carInfo.nSubCarLogo.ToString());
+                }
+            }
+
+
+            //未找到车牌，从车牌缓存队列中抽取车牌,目前未考虑油品号对应问题
+            if (Global.bUseCacheCar && nozzleStatus == 3 && Global.nozzleList[index].nozzleCar.license == "")
+            {
+                
+                foreach (ClsCarArrive car in Global.listCarArrive)
+                {
+                    if (car.matchFlag == 0 )
+                    {
+                        Global.nozzleList[index].nozzleCar.license = System.Text.Encoding.Default.GetString(car.carInfo.license, 0, GetStrLength(car.carInfo.license));
+                        Global.nozzleList[index].nozzleCar.licenseColorString = Encoding.Default.GetString(car.carInfo.color, 0, GetStrLength(car.carInfo.color));
+                        Global.nozzleList[index].nozzleCar.licenseColor = car.carInfo.nColor;
+                        Global.nozzleList[index].nozzleCar.carColor = car.carInfo.nCarColor;
+                        Global.nozzleList[index].nozzleCar.carLogo = car.carInfo.nCarLogo;
+                        Global.nozzleList[index].nozzleCar.subCarLogo = car.carInfo.nSubCarLogo;
+                        car.matchFlag = 1;
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:DIT状态3，从缓存车辆列表中获取未匹配的车牌：" + Global.nozzleList[index].nozzleCar.license +
+                    "  车牌获取时间:" + car.arriveTime.ToString("yyyy-MM-dd HH:mm:ss")+
+                    "  当前队列长度:" + Global.listCarArrive.Count.ToString(), (int)EnumLogLevel.DEBUG));
+                        break;
+                    }
+                }
+                
+
+
+            }
+            if (Global.ditMode == 1) //动态库模式
             {
                 byte[] license = System.Text.Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.license);
                 Buffer.BlockCopy(license, 0, snapData.sLicense, 0, license.Length);
@@ -604,7 +601,7 @@ namespace SPManager
                 snapData.wVehicleSubLogoRecog = (short)Global.nozzleList[index].nozzleCar.subCarLogo;
                 SendSnapToDIT(snapData);
             }
-            else if (Global.ditMode == 2)
+            else if (Global.ditMode == 2) //TCP直连模式
             {
                 PumpBackInfo backInfo = new PumpBackInfo();
                 backInfo.VehicleNo = Global.nozzleList[index].nozzleCar.license;
@@ -617,62 +614,53 @@ namespace SPManager
                 backInfo.PumpID = Global.currentPump[nozzleNo].PumpID;
                 backInfo.Time = Global.currentPump[nozzleNo].Time;
                 string infoJson = JsonHelper.SerializeObject(backInfo);
-                //byte[] buf = System.Text.Encoding.UTF8.GetBytes(infoJson);
                 string covert = Encoding.GetEncoding("GBK").GetString(Encoding.Default.GetBytes(infoJson));
-                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:DIT直连模式返回信息给DIT："+ covert, (int)EnumLogLevel.DEBUG));
-                //Global.socketDit.Send(Encoding.Default.GetBytes(covert));
+                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:DIT直连模式返回信息给DIT：" + covert, (int)EnumLogLevel.DEBUG));
                 Global.socketDit.Send(Encoding.Default.GetBytes(infoJson));
 
             }
-            
-            DateTime dt = DateTime.Now;
-            Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:进入油枪状态判断处理，油枪状态："+ nozzleStatus.ToString(), (int)EnumLogLevel.DEBUG));
 
-            if (Global.ditCallBackMode == 1 && Global.nozzleList[index].nozzleCar.license != "")
-                        
-            {
-                ClsCarArrive carArrive = getCarArriveInList(Global.nozzleList[index].nozzleCar.license);
-                if (carArrive == null)
-                {
-                    struCarInfoOut car = new struCarInfoOut();
-                    car.license = Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.license);
-                    car.nCarColor = Global.nozzleList[index].nozzleCar.carColor;
-                    car.nColor = Global.nozzleList[index].nozzleCar.carColor;
-                    car.nCarLogo = Global.nozzleList[index].nozzleCar.carLogo;
-                    car.nSubCarLogo = Global.nozzleList[index].nozzleCar.subCarLogo;
-
-                    SendCallbackInfo(car, 1);
-                    ShowRTBInfo("新车辆被捕获，发送给DIT：" + Global.nozzleList[index].nozzleCar.license + " 车辆品牌:" 
-                        + car.nCarLogo.ToString() + " 车辆子品牌:" + car.nSubCarLogo.ToString());
-                    carArrive = new ClsCarArrive(Global.nozzleList[index].nozzleCar.license, car, DateTime.Now);
-                    Global.listCarArrive.Add(carArrive);
-                }
-            }
             switch (nozzleStatus)
             {
                 case 0:  //不生效 默认开始时间
                     Global.nozzleList[index].nozzleCar.beginTime = dt;
                     break;
                 case 1:  //提枪
-                    Global.nozzleList[index].nozzleCar.arriveTime = dt;
-                    Global.nozzleList[index].nozzleCar.beginTime = dt;
-                    Global.nozzleList[index].nozzleCar.endTime = dt;
-                    Global.nozzleList[index].nozzleCar.leaveTime = dt;
+                    Global.nozzleList[index].nozzleCar.arriveTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
+                    Global.nozzleList[index].nozzleCar.beginTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
+                    Global.nozzleList[index].nozzleCar.endTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
+                    Global.nozzleList[index].nozzleCar.leaveTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
                     Global.nozzleList[index].nozzleCar.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.nozzleList[index].nozzleCar.license + @"\\";
                     //if(Global.nMatchMode == 1 && Global.nozzleList[index].nozzleCar.license != "")
                     //    SendCallbackInfo(Global.nozzleList[index].nozzleCar, 1);
                     UpdateStationBoardAreaControlStatus(Global.nozzleList[index].nozzleCar.areaNo, Global.nozzleList[index].nozzleCar.license,Color.Red);
                     break;
                 case 2: //加油
-                    Global.nozzleList[index].nozzleCar.beginTime = dt;
-                    Global.nozzleList[index].nozzleCar.endTime = dt;
-                    Global.nozzleList[index].nozzleCar.leaveTime = dt;
+                    Global.nozzleList[index].nozzleCar.beginTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
+                    Global.nozzleList[index].nozzleCar.endTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
+                    Global.nozzleList[index].nozzleCar.leaveTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
                     UpdateStationBoardAreaControlStatus(Global.nozzleList[index].nozzleCar.areaNo, Global.nozzleList[index].nozzleCar.license, Color.Red);
                     break;
                 case 3: //挂枪
                     Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:进入挂枪处理" , (int)EnumLogLevel.DEBUG));
-                    Global.nozzleList[index].nozzleCar.endTime = dt;
-                    Global.nozzleList[index].nozzleCar.leaveTime = dt;
+//                     Global.LogServer.Add(new LogInfo("Test", "交易详情:Volome：" + Global.currentPump[nozzleNo].Volume +
+//                                 "  realAmount:" + Global.currentPump[nozzleNo].Value + " StartCounter:" + Global.currentPump[nozzleNo].StartCounter +
+//                                 " EndCounter:" + Global.currentPump[nozzleNo].EndCounter, (int)EnumLogLevel.DEBUG));
+//                     
+                    Global.nozzleList[index].nozzleCar.volume = double.Parse(Global.currentPump[nozzleNo].Volume);
+                    Global.nozzleList[index].nozzleCar.realAmount = double.Parse(Global.currentPump[nozzleNo].Value);
+                    Global.nozzleList[index].nozzleCar.MeterialCode = Global.currentPump[nozzleNo].GradeID;
+                    if (Global.nozzleList[index].nozzleCar.MeterialCode == "300863" && Global.nozzleList[index].nozzleCar.licenseColorString != "黄")
+                    {
+                       
+                    }
+
+
+                    Global.nozzleList[index].nozzleCar.StartCounter = double.Parse(Global.currentPump[nozzleNo].StartCounter);
+                    Global.nozzleList[index].nozzleCar.EndCounter = double.Parse(Global.currentPump[nozzleNo].EndCounter);
+                    Global.nozzleList[index].nozzleCar.endTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
+                    Global.nozzleList[index].nozzleCar.leaveTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
+                    Global.currentPump[nozzleNo] = new PumpInfo();
                     Global.nozzleList[index].nozzleCar.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
                     Global.mysqlHelper.ExecuteSql(Global.nozzleList[index].nozzleCar.toSaveSqlString());
                     Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:数据存储执行完毕,SQL:"+ Global.nozzleList[index].nozzleCar.toSaveSqlString(), (int)EnumLogLevel.DEBUG));
@@ -683,7 +671,17 @@ namespace SPManager
                     Global.nozzleList[index].nozzleCar.matchFlag = 0;
                     Global.nozzleList[index].nozzleCar.carLogo = 0;
                     Global.nozzleList[index].nozzleCar.subCarLogo = 0;
-                    SetRealtimeDGV(dataGridRealtime);
+                    Global.nozzleList[index].nozzleCar.carColor = 0;
+                    Global.nozzleList[index].nozzleCar.licenseColor = 0;
+                    if (Global.nShowMode == 1)
+                    {
+                        SetRealtimeDGV_carlog(dataGridRealtime);
+                    } 
+                    else
+                    {
+                        SetRealtimeDGV_tradelog(dataGridRealtime);
+                    }
+                    
                     UpdateStationBoardAreaControlStatus(Global.nozzleList[index].nozzleCar.areaNo, Global.nozzleList[index].nozzleCar.license, Color.LightGreen);
                     break;
                 default:
@@ -736,7 +734,7 @@ namespace SPManager
                     car.license = System.Text.Encoding.Default.GetString(struCarInfo.license[index].license, 0, GetStrLength(struCarInfo.license[index].license));
                 }
 
-                
+                car.licenseColorString = Encoding.Default.GetString(struCarInfo.license[index].color, 0, GetStrLength(struCarInfo.license[index].color));
                 car.licenseColor = struCarInfo.license[index].nColor;
                 car.carColor = struCarInfo.license[index].nCarColor;
                 car.carLogo = struCarInfo.license[index].nCarLogo;
@@ -805,61 +803,58 @@ namespace SPManager
 
         private void ShowMatchRatio()
         {
-            int match = 0;
             try
             {
-                string sqlString = "select max(id) as id from carlog";
+                string sqlString = "select count(case when DATE_FORMAT(endtime,'%Y-%m') = DATE_FORMAT(NOW(),'%Y-%m') THEN id else null end)  monthTotal ," +
+                            "count(case when DATE_FORMAT(endtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') THEN id else null end) dayTotal ," +
+       "count(case when DATE_FORMAT(endtime, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m') and LENGTH(carnumber) > 2 THEN id else null end)  monthMatch ," +
+       "count(case when DATE_FORMAT(endtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') and LENGTH(carnumber) > 2 THEN id else null end)  dayMatch from ";
+                if (Global.nShowMode == 1)
+                {
+                    sqlString += "carlog";
+                }else if (Global.nShowMode == 2)
+                {
+                    sqlString += "tradelog";
+                }
+                
                 DataTable dt = Global.mysqlHelper.GetDataTable(sqlString);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    Global.nTotalCount = int.Parse(dt.Rows[0]["id"].ToString());
+                    Global.nMonthTotal = int.Parse(dt.Rows[0]["monthTotal"].ToString());
+                    Global.nMonthMatch = int.Parse(dt.Rows[0]["monthMatch"].ToString());
+                    if (Global.nMonthTotal > 0)
+                    {
+                        Global.nMonthRatio = 100 * Global.nMonthMatch / Global.nMonthTotal;
+
+                        //Global.nMonthRatio = Global.nMonthRatio % 5 + 80;
+                        
+
+                    }
+                    Global.nTodayCount = int.Parse(dt.Rows[0]["dayTotal"].ToString());
+                    Global.nTodayMatch = int.Parse(dt.Rows[0]["dayMatch"].ToString());
+                    if (Global.nTodayCount > 0)
+                    {
+                        Global.nTodayRatio = 100 * Global.nTodayMatch / Global.nTodayCount;
+                       // Global.nTodayRatio = Global.nTodayRatio % 5 + 80;
+                        
+
+                    }
+
+
                 }
-
-
-                sqlString = "select count(*) as matchcount from carlog where LENGTH(carnumber) > 5";
-                dt = Global.mysqlHelper.GetDataTable(sqlString);
-                int totalmatch = 0;
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    totalmatch = int.Parse(dt.Rows[0]["matchcount"].ToString());
-                }
-
-
-                if (Global.nTotalCount > 0)
-                {
-                    Global.nTotalRatio = (totalmatch * 100) / Global.nTotalCount;
-                }
-
-
-                sqlString = "select count(*) as total from carlog where leavetime > '" + DateTime.Now.ToString("yyyy-MM-dd ") + "00:00:00'";
-                dt = Global.mysqlHelper.GetDataTable(sqlString);
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    Global.nCurrentCount = int.Parse(dt.Rows[0]["total"].ToString());
-                }
-
-                sqlString = "select count(*) as matchcount from carlog where LENGTH(carnumber) > 5 and leavetime > '" + DateTime.Now.ToString("yyyy-MM-dd ") + "00:00:00'";
-                dt = Global.mysqlHelper.GetDataTable(sqlString);
                 
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    match = int.Parse(dt.Rows[0]["matchcount"].ToString());
-                }
-                if (Global.nCurrentCount > 0)
-                {
-                    Global.nCurrentRatio = (match * 100) / Global.nCurrentCount;
-                }
+
             }
             catch (System.Exception ex)
             {
             	
             }
 
-            lblTotalCount.Text = Global.nTotalCount.ToString();
-            lblCurCount.Text = Global.nCurrentCount.ToString();
-            lblCurRatio.Text = Global.nCurrentRatio.ToString() + "%";
-//             toolMatchPoint.Text = "当天车辆总数:" + Global.nCurrentCount.ToString() + "   当天匹配数:" + match.ToString() + "   当天匹配率:" + Global.nCurrenrRatio.ToString()+"%"
-//                                     + "   历史车辆总数:" + Global.nTotalCount.ToString() + "   总匹配率:" + Global.nTotalRatio.ToString()+"%";
+            lblTotalCount.Text = Global.nMonthTotal.ToString();
+            lblCurCount.Text = Global.nTodayCount.ToString();
+            lblCurRatio.Text = Global.nTodayRatio.ToString() + "%";
+            //             toolMatchPoint.Text = "当天车辆总数:" + Global.nCurrentCount.ToString() + "   当天匹配数:" + match.ToString() + "   当天匹配率:" + Global.nCurrenrRatio.ToString()+"%"
+            //                                     + "   历史车辆总数:" + Global.nTotalCount.ToString() + "   总匹配率:" + Global.nTotalRatio.ToString()+"%";
 
         }
 
@@ -997,9 +992,10 @@ namespace SPManager
             }
             return lenth;
         }
-        public void SetRealtimeDGV(DataGridView dgv)
+        public void SetRealtimeDGV_carlog(DataGridView dgv)
         {
-            string sql = "select id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath from carlog order by id desc limit 0,100";
+            //TODO 临时只取有车牌数据
+            string sql = "select id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath from carlog where length(carnumber) > 1 order by id desc limit 0,100";
             DataTable dt = Global.mysqlHelper.GetDataTable(sql);
             if (dt == null || dt.Rows.Count <1)
             {
@@ -1030,6 +1026,41 @@ namespace SPManager
             }
         }
 
+        public void SetRealtimeDGV_tradelog(DataGridView dgv)
+        {
+            //TODO 临时只取有车牌数据
+            string sql = "SELECT DISTINCT(carnumber) AS carnumber,nozzleno,oilname,starttime,endtime,volume,realamount ,realcarbrand,realsubbrand " + 
+                " FROM tradelog WHERE LENGTH(carnumber) > 1 ORDER BY id DESC LIMIT 0, 100";
+            DataTable dt = Global.mysqlHelper.GetDataTable(sql);
+            if (dt == null || dt.Rows.Count < 1)
+            {
+                return;
+            }
+            dgv.DataSource = dt;
+
+            dgv.Columns[0].HeaderText = "车牌号";
+            dgv.Columns[1].HeaderText = "油枪号";
+            dgv.Columns[2].HeaderText = "油品名称";
+            dgv.Columns[2].Visible = false;
+            dgv.Columns[3].HeaderText = "加油时间";
+            dgv.Columns[4].HeaderText = "结束时间";
+            dgv.Columns[5].HeaderText = "加油量";
+            dgv.Columns[6].HeaderText = "加油金额";
+            dgv.Columns[7].HeaderText = "车辆品牌";
+            dgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //dgv.AllowUserToAddRows = false;
+            //dgv.AllowUserToResizeRows = false;
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            foreach (DataGridViewColumn item in dgv.Columns)
+            {
+                item.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                item.ReadOnly = true;
+            }
+        }
+
+
         private void SendStatusToRemote()
         {
             try
@@ -1045,10 +1076,10 @@ namespace SPManager
                 info.StationCode = Global.stationInfo.stationCode;
                 info.IP = Global.stationInfo.stationIP;
                 info.Status = Global.nStatus;
-                info.CurrentRatio = Global.nCurrentRatio;
-                info.TotalRatio = Global.nTotalRatio;
-                info.CurrentCount = Global.nCurrentCount;
-                info.TotalCount = Global.nTotalCount;
+                info.CurrentRatio = Global.nTodayRatio;
+                info.TotalRatio = Global.nMonthRatio;
+                info.CurrentCount = Global.nTodayCount;
+                info.TotalCount = Global.nMonthTotal;
                 info.SoftVersion = Global.softVersion;
                 string json = JsonHelper.SerializeObject(info);
                 byte[] data = System.Text.Encoding.UTF8.GetBytes(json);
@@ -1065,7 +1096,7 @@ namespace SPManager
             }
 
         }
-        public DataTable QueryData(string columns, bool limit)
+        public DataTable QueryData_carlog(string columns, bool limit)
         {
             string arriveBegin = dateArriveBegin.Value.ToString("yyyy-MM-dd") + timeArriveBegin.Value.ToString(" HH:mm:ss");
             string arriveEnd = dateArriveEnd.Value.ToString("yyyy-MM-dd") + timeArriveEnd.Value.ToString(" HH:mm:ss");
@@ -1086,13 +1117,15 @@ namespace SPManager
             }
             if (checkBoxLeaveTime.Checked)
             {
-                sbQuery.Append(" and (leavetime between '" + leaveBegin + "' and '" + leaveEnd + "')");
+                sbQuery.Append(" and (endtime between '" + leaveBegin + "' and '" + leaveEnd + "')");
             }
             if (comboNozzle.SelectedIndex > 0)
             {
                 sbQuery.Append(" and nozzleno = " + comboNozzle.Text);
             }
-            sbQuery.Append(" order by leavetime desc");
+            //TODO 临时添加只差匹配车牌
+            sbQuery.Append(" and length(carnumber) > 1 ");
+            sbQuery.Append(" order by endtime desc");
             if (limit)
             {
                 sbQuery.Append("  limit 0,500");
@@ -1100,7 +1133,44 @@ namespace SPManager
             return Global.mysqlHelper.GetDataTable(sbQuery.ToString());
 
         }
-        public void SetSearchDGV(DataGridView dgv)
+        public DataTable QueryData_tradelog(string columns, bool limit)
+        {
+            string arriveBegin = dateArriveBegin.Value.ToString("yyyy-MM-dd") + timeArriveBegin.Value.ToString(" HH:mm:ss");
+            string arriveEnd = dateArriveEnd.Value.ToString("yyyy-MM-dd") + timeArriveEnd.Value.ToString(" HH:mm:ss");
+            string leaveBegin = dateLeaveBegin.Value.ToString("yyyy-MM-dd") + timeLeaveBegin.Value.ToString(" HH:mm:ss");
+            string leaveEnd = dateLeaveEnd.Value.ToString("yyyy-MM-dd") + timeLeaveEnd.Value.ToString(" HH:mm:ss");
+            StringBuilder sbQuery = new StringBuilder();
+            sbQuery.Append("select ");
+            sbQuery.Append(columns);
+            sbQuery.Append(" from tradelog");
+            sbQuery.Append(" where 1 = 1");
+            if (textLicense.Text.Trim().Length > 0)
+            {
+                sbQuery.Append(" and carnumber like '%" + textLicense.Text.Trim() + "%'");
+            }
+            if (checkBoxArriveTime.Checked)
+            {
+                sbQuery.Append(" and (starttime between '" + arriveBegin + "' and '" + arriveEnd + "')");
+            }
+            if (checkBoxLeaveTime.Checked)
+            {
+                sbQuery.Append(" and (endtime between '" + leaveBegin + "' and '" + leaveEnd + "')");
+            }
+            if (comboNozzle.SelectedIndex > 0)
+            {
+                sbQuery.Append(" and nozzleno = " + comboNozzle.Text);
+            }
+            //TODO 临时添加只差匹配车牌
+            sbQuery.Append(" and length(carnumber) > 1 ");
+            sbQuery.Append(" order by endtime desc");
+            if (limit)
+            {
+                sbQuery.Append("  limit 0,500");
+            }
+            return Global.mysqlHelper.GetDataTable(sbQuery.ToString());
+
+        }
+        public void SetSearchDGV_carlog(DataGridView dgv)
         {
 
             dgv.Columns[0].HeaderText = "序号";
@@ -1123,25 +1193,46 @@ namespace SPManager
                 item.ReadOnly = true;
             }
         }
-        private void FlushSearchDataDetailBoard()
+
+        public void SetSearchDGV_tradelog(DataGridView dgv)
         {
-            lblLicense.Text = "";
-            lblNozzleNo.Text = "";
-            lblOilType.Text = "";
-            lblArriveTime.Text = "";
-            lblLeaveTime.Text = "";
-            lblCarLogo.Text = "";
-            pictureBoxArrive.Image = null;
-            pictureBoxLeave.Image = null;
-            pictureBoxPump.Image = null;
+
+            dgv.Columns[0].HeaderText = "车牌号";
+            dgv.Columns[1].HeaderText = "油枪号";
+            dgv.Columns[2].HeaderText = "油品名称";
+            dgv.Columns[2].Visible = false;
+            dgv.Columns[3].HeaderText = "加油时间";
+            dgv.Columns[4].HeaderText = "结束时间";
+            dgv.Columns[5].HeaderText = "加油量";
+            dgv.Columns[6].HeaderText = "加油金额";
+            dgv.Columns[7].HeaderText = "车辆品牌";
+            dgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //dgv.AllowUserToAddRows = false;
+            //dgv.AllowUserToResizeRows = false;
+            foreach (DataGridViewColumn item in dgv.Columns)
+            {
+                item.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                item.ReadOnly = true;
+            }
         }
+
+
 
         private void InitFormInfo()
         {
             Global.softVersion = INIUnit.GetINIValue(Application.StartupPath + "//version.ini", "main", "version");
             this.Text = "加油站智能信息管理系统SPManager " + Global.softVersion;
             AddListViewHead();
-            SetRealtimeDGV(dataGridRealtime);
+            if (Global.nShowMode == 1 )
+            {
+                SetRealtimeDGV_carlog(dataGridRealtime);
+            } 
+            else
+            {
+                SetRealtimeDGV_tradelog(dataGridRealtime);
+            }
+           
 
             this.StationBoard.Visible = Global.bShowStationBoard;
             comboStationDirection.Visible = false;
@@ -1195,7 +1286,7 @@ namespace SPManager
             for (int i = 0; i < 24; i++)
             {
                 chartStatistics.Series[0].Points.AddXY(i.ToString() + ":00", Global.carCount[i]);
-                chartStatistics.Series[1].Points.AddXY(i.ToString() + ":00", ran.Next(0, 300));
+                //chartStatistics.Series[1].Points.AddXY(i.ToString() + ":00", ran.Next(0, 300));
 
             }
 

@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Sockets;
+using SPManager.tool;
 
 namespace SPManager
 {
@@ -33,11 +34,15 @@ namespace SPManager
         }
         private bool InitPicWork()
         {
+            
             try
             {
-                Global.picWork = new PictureWork();
-                Global.picWork.Run();
-                Global.LogServer.Add(new LogInfo("Debug", "main->InitPicWork done ", (int)EnumLogLevel.DEBUG));
+                if (Global.nSavePicture == 1)
+                {
+                    Global.picWork = new PictureWork();
+                    Global.picWork.Run();
+                    Global.LogServer.Add(new LogInfo("Debug", "main->InitPicWork done ", (int)EnumLogLevel.DEBUG));
+                }
             }
             catch (Exception ex)
             {
@@ -59,6 +64,20 @@ namespace SPManager
             GetEntryAndExit();
             GetSatationBoardParamFromDB();
             return true;
+        }
+
+        private void InitUpload()
+        {
+            Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload ", (int)EnumLogLevel.DEBUG));
+
+            if (Global.isUpload%2 == 1)
+            {
+                
+                Global.uploadTrade = new Upload(Global.upLoadUrl, "trade");
+                Global.uploadTrade.Run();
+                Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload tradelog upload begin ", (int)EnumLogLevel.DEBUG));
+
+            }
         }
 
         private bool GetMainParam()
@@ -134,6 +153,13 @@ namespace SPManager
                         Global.nStationBoardDirection = int.Parse(paramValue);
                     else if (paramName == "runpwd")
                         Global.password = paramValue;
+                    else if (paramName == "uploadurl")
+                        Global.upLoadUrl = paramValue;
+                    else if (paramName == "upload")
+                        Global.isUpload = int.Parse(paramValue);
+                    else if(paramName == "savepicture")
+                        Global.nSavePicture = int.Parse(paramValue);
+
 
                 }
 
@@ -401,8 +427,7 @@ namespace SPManager
         {
             if (Global.ditCallBackMode == 1)
             {
-                Global.listCarArrive = new List<ClsCarArrive>();
-                timerClearCarlist.Enabled = true;
+                
             } 
             else
             {

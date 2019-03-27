@@ -44,6 +44,12 @@ namespace SPManager
             startProtectProcess();//启动保护进程
             lastMessageTime = DateTime.Now;
             int ret = Init();
+            if (Global.bUseCacheCar)
+            {
+                Global.listCarArrive = new List<ClsCarArrive>();
+                timerClearCarlist.Enabled = true;
+            }
+            
             InitFormInfo();
             if (ret == 0)
             {
@@ -225,16 +231,8 @@ namespace SPManager
             }
            
         }
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            SetRealtimeDGV(dataGridRealtime);
 
-        }
 
-        private void btnOpenMain_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void statusSystem_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -243,9 +241,20 @@ namespace SPManager
 
         private void btnQuery_Click(object sender, EventArgs e)
         {
-            string columns = "id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath";
-            dataGridSearch.DataSource = QueryData(columns, true);
-            SetSearchDGV(dataGridSearch);
+            if (Global.nShowMode == 1)
+            {
+                string columns = "id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath";
+                dataGridSearch.DataSource = QueryData_carlog(columns, true);
+                SetSearchDGV_carlog(dataGridSearch);
+            } 
+            else
+            {
+                string columns = "carnumber,nozzleno,oilname,starttime,endtime, volume ,realamount,realcarbrand,realsubbrand";
+                dataGridSearch.DataSource = QueryData_tradelog(columns, true);
+                SetSearchDGV_tradelog(dataGridSearch);
+            }
+
+            
         }
 
         private void dataGridCar_SelectionChanged(object sender, EventArgs e)
@@ -257,13 +266,29 @@ namespace SPManager
                 return;
             try
             {
-                lblLicense.Text = dataGridSearch.Rows[cur].Cells["carnumber"].Value.ToString();
-                lblNozzleNo.Text = dataGridSearch.Rows[cur].Cells["nozzleno"].Value.ToString();
-                lblOilType.Text = dataGridSearch.Rows[cur].Cells["oiltype"].Value.ToString();
-                lblArriveTime.Text = dataGridSearch.Rows[cur].Cells["arrivetime"].Value.ToString();
-                lblLeaveTime.Text = dataGridSearch.Rows[cur].Cells["leavetime"].Value.ToString();
-                lblCarLogo.Text = dataGridSearch.Rows[cur].Cells["carlogo"].Value.ToString();
-                string picPath = dataGridSearch.Rows[cur].Cells["picpath"].Value.ToString();
+                if (Global.nShowMode == 1 )
+                {
+                    lblLicense.Text = dataGridSearch.Rows[cur].Cells["carnumber"].Value.ToString();
+                    lblNozzleNo.Text = dataGridSearch.Rows[cur].Cells["nozzleno"].Value.ToString();
+                    lblOilType.Text = dataGridSearch.Rows[cur].Cells["oiltype"].Value.ToString();
+                    lblArriveTime.Text = dataGridSearch.Rows[cur].Cells["arrivetime"].Value.ToString();
+                    lblEndTime.Text = dataGridSearch.Rows[cur].Cells["leavetime"].Value.ToString();
+                    lblCarLogo.Text = dataGridSearch.Rows[cur].Cells["carlogo"].Value.ToString();
+                    string picPath = dataGridSearch.Rows[cur].Cells["picpath"].Value.ToString();
+                } 
+                else
+                {
+                    lblLicense.Text = dataGridSearch.Rows[cur].Cells["carnumber"].Value.ToString();
+                    lblNozzleNo.Text = dataGridSearch.Rows[cur].Cells["nozzleno"].Value.ToString();
+                    lblOilType.Text = dataGridSearch.Rows[cur].Cells["oilname"].Value.ToString();
+                    lblArriveTime.Text = dataGridSearch.Rows[cur].Cells["starttime"].Value.ToString();
+                    lblEndTime.Text = dataGridSearch.Rows[cur].Cells["endtime"].Value.ToString();
+                    lblCarLogo.Text = dataGridSearch.Rows[cur].Cells["realcarbrand"].Value.ToString();
+                    lblVolume.Text = dataGridSearch.Rows[cur].Cells["volume"].Value.ToString();
+                    lblRealamount.Text = dataGridSearch.Rows[cur].Cells["realamount"].Value.ToString();
+                    //string picPath = dataGridSearch.Rows[cur].Cells["picpath"].Value.ToString();
+                }
+                
                 
 //                 if (File.Exists(picPath))
 //                 {
@@ -304,7 +329,7 @@ namespace SPManager
             {
                 String path = folder.SelectedPath + "\\车辆检测数据" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
                 string columns = "id,carnumber,nozzleno,arrivetime,begintime,leavetime,carlogo,subcarlogo";
-                DataTable dt =QueryData(columns, false);
+                DataTable dt =QueryData_carlog(columns, false);
                 dt.Columns.Add("carbrand", typeof(string));
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -1406,7 +1431,7 @@ namespace SPManager
         {
             foreach(ClsCarArrive car in Global.listCarArrive)
             {
-                if (DateTime.Now.CompareTo(car.arriveTime.AddSeconds(600)) > 0)
+                if (DateTime.Now.CompareTo(car.arriveTime.AddSeconds(1200)) > 0)
                 {
                     lock(Global.lockObj)
                     {
@@ -1424,6 +1449,11 @@ namespace SPManager
                     
                 }
             }
+        }
+
+        private void checkBoxArriveTime_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

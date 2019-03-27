@@ -21,6 +21,8 @@ namespace SPManager
             set { _licenseColor = value; }
         }
         private int _licenseColor = 1;
+
+        public string licenseColorString;
         public int type
         {
             get { return _type; }
@@ -141,13 +143,43 @@ namespace SPManager
         }
         private double _nozzleVolume = 0;
 
+        public double StartCounter
+        {
+            get { return _StartCounter; }
+            set { _StartCounter = value; }
+        }
+        private double _StartCounter = 0;
+
+        public double EndCounter
+        {
+            get { return _EndCounter; }
+            set { _EndCounter = value; }
+        }
+        private double _EndCounter = 0;
+
+        public double Price
+        {
+            get { return _Price; }
+            set { _Price = value; }
+        }
+        private double _Price = 0;
+
+        public string MeterialCode
+        {
+            get { return _MeterialCode; }
+            set { _MeterialCode = value; }
+        }
+        private string _MeterialCode = "";
+
+
         public string toSaveSqlString()
         {
             _picPath = "";
-            String sqlString = "INSERT into carlog (carnumber,carnumcolor,cartype,carlogo,subcarlogo,carcolor,arrivetime,leavetime,nozzleno,picpath,begintime,endtime,oiltype,volume,realamount)" +
-        "VALUES('{0}', {1}, {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, '{9}', '{10}', '{11}',{12},{13},{14}) ";
+            String sqlString = "INSERT into carlog (carnumber,carnumcolor,cartype,carlogo,subcarlogo,carcolor,arrivetime,leavetime,nozzleno,picpath,begintime,endtime,oiltype,volume,realamount,startread,endread,oilprice,meterialcode)" +
+        "VALUES('{0}', {1}, {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, '{9}', '{10}', '{11}',{12},{13},{14},{15},{16},{17},'{18}') ";
             return String.Format(sqlString, _license, _licenseColor.ToString(), _type.ToString(), _carLogo.ToString(), _subCarLogo.ToString(), _carColor.ToString(), _arriveTime, _leaveTime,
-                _nozzleNo.ToString(), _picPath, _beginTime, _endTime, _oilType, _volume, _realamnout);
+                _nozzleNo.ToString(), _picPath, _beginTime, _endTime, _oilType.ToString(),
+                _volume.ToString(), _realamnout.ToString(), _StartCounter.ToString(), _EndCounter.ToString(),_Price.ToString(),MeterialCode);
         }
     }
     //油枪信息类
@@ -558,6 +590,7 @@ namespace SPManager
         public string plate;
         public struCarInfoOut carInfo;
         public DateTime arriveTime;
+        public int matchFlag = 0; // 0未匹配，1已匹配，默认未匹配
     }
 
     public class TradeInfo
@@ -596,6 +629,34 @@ namespace SPManager
             return String.Format(sqlString, OilGun_NO, OIL_TYPE, OIL_Q.ToString(), OIL_AMT.ToString(), OIL_PRC.ToString(), START_TIME, END_TIME, START_READ.ToString(),
                 END_READ.ToString(), VehicleNo, VehicleBrandCode, SubBrandCode, VehicleModel, VehicleColor, BodyColor, CarBrand, SubBrand, OilName, OilCode, OilClass);
         }
+
+    }
+
+    public class UpLoadTradeInfo
+    {
+        public int id { set; get; }
+        public string stationCode { set; get; }
+        public string stationName { set; get; }
+        public string meterialCode { set; get; }
+        public int nozzleNo { set; get; }
+        public double volume { set; get; }
+        public double realAmount { set; get; }
+        public double price { set; get; }
+        public string startTime { set; get; }
+        public string endTime { set; get; }
+        public double startRead { set; get; }
+        public double endRead { set; get; }
+        public string carNumber { set; get; }
+        public int carBrand { set; get; }
+        public int subBrand { set; get; }
+        public int carType { set; get; }
+        public int carColor { set; get; }
+        public int carNumColor { set; get; }
+        public string realCarBrand { set; get; }
+        public string realSubBrand { set; get; }
+        public string oilName { set; get; }
+        public string oilCode { set; get; }
+        public string oilClass { set; get; }
 
     }
     public class OrderInfo
@@ -663,6 +724,8 @@ namespace SPManager
 
         public string Time { set; get; }
         public string MsgID { set; get; }
+        public string StartCounter { set; get; }
+        public string EndCounter { set; get; }
     }
     public class PumpBackInfo
     {

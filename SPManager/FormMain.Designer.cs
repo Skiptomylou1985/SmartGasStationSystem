@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.timerServiceStaus = new System.Windows.Forms.Timer(this.components);
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -293,7 +293,7 @@
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.lblBeginTime = new System.Windows.Forms.Label();
+            this.lblEndTime = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -309,7 +309,6 @@
             this.label13 = new System.Windows.Forms.Label();
             this.lblNozzleNo = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.lblLeaveTime = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lblArriveTime = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -350,6 +349,10 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
             this.timerClearCarlist = new System.Windows.Forms.Timer(this.components);
+            this.lblVolume = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.lblRealamount = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.StationBoard.SuspendLayout();
@@ -3209,7 +3212,7 @@
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(106, 21);
             this.label25.TabIndex = 36;
-            this.label25.Text = "历史进站总量";
+            this.label25.Text = "本月进站总量";
             // 
             // panel20
             // 
@@ -3400,6 +3403,7 @@
             this.btnExport.TabIndex = 20;
             this.btnExport.Text = "导  出";
             this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Visible = false;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // btnQuery
@@ -3419,7 +3423,7 @@
             this.checkBoxLeaveTime.Name = "checkBoxLeaveTime";
             this.checkBoxLeaveTime.Size = new System.Drawing.Size(84, 16);
             this.checkBoxLeaveTime.TabIndex = 18;
-            this.checkBoxLeaveTime.Text = "出站时间：";
+            this.checkBoxLeaveTime.Text = "加油时间：";
             this.checkBoxLeaveTime.UseVisualStyleBackColor = true;
             // 
             // checkBoxArriveTime
@@ -3431,6 +3435,7 @@
             this.checkBoxArriveTime.TabIndex = 17;
             this.checkBoxArriveTime.Text = "进站时间：";
             this.checkBoxArriveTime.UseVisualStyleBackColor = true;
+            this.checkBoxArriveTime.CheckedChanged += new System.EventHandler(this.checkBoxArriveTime_CheckedChanged);
             // 
             // timeLeaveEnd
             // 
@@ -3556,7 +3561,11 @@
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.Transparent;
-            this.panel6.Controls.Add(this.lblBeginTime);
+            this.panel6.Controls.Add(this.lblVolume);
+            this.panel6.Controls.Add(this.label32);
+            this.panel6.Controls.Add(this.lblRealamount);
+            this.panel6.Controls.Add(this.label34);
+            this.panel6.Controls.Add(this.lblEndTime);
             this.panel6.Controls.Add(this.label17);
             this.panel6.Controls.Add(this.tabControl2);
             this.panel6.Controls.Add(this.tabControl3);
@@ -3566,7 +3575,6 @@
             this.panel6.Controls.Add(this.label13);
             this.panel6.Controls.Add(this.lblNozzleNo);
             this.panel6.Controls.Add(this.label9);
-            this.panel6.Controls.Add(this.lblLeaveTime);
             this.panel6.Controls.Add(this.label7);
             this.panel6.Controls.Add(this.lblArriveTime);
             this.panel6.Controls.Add(this.label8);
@@ -3578,18 +3586,19 @@
             this.panel6.Size = new System.Drawing.Size(488, 657);
             this.panel6.TabIndex = 0;
             // 
-            // lblBeginTime
+            // lblEndTime
             // 
-            this.lblBeginTime.AutoSize = true;
-            this.lblBeginTime.Location = new System.Drawing.Point(241, 38);
-            this.lblBeginTime.Name = "lblBeginTime";
-            this.lblBeginTime.Size = new System.Drawing.Size(0, 12);
-            this.lblBeginTime.TabIndex = 17;
+            this.lblEndTime.AutoSize = true;
+            this.lblEndTime.Location = new System.Drawing.Point(300, 38);
+            this.lblEndTime.Name = "lblEndTime";
+            this.lblEndTime.Size = new System.Drawing.Size(29, 12);
+            this.lblEndTime.TabIndex = 17;
+            this.lblEndTime.Text = "未知";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(172, 38);
+            this.label17.Location = new System.Drawing.Point(231, 38);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(65, 12);
             this.label17.TabIndex = 16;
@@ -3680,7 +3689,7 @@
             // lblOilType
             // 
             this.lblOilType.AutoSize = true;
-            this.lblOilType.Location = new System.Drawing.Point(81, 63);
+            this.lblOilType.Location = new System.Drawing.Point(82, 61);
             this.lblOilType.Name = "lblOilType";
             this.lblOilType.Size = new System.Drawing.Size(29, 12);
             this.lblOilType.TabIndex = 11;
@@ -3689,7 +3698,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 63);
+            this.label11.Location = new System.Drawing.Point(13, 61);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(65, 12);
             this.label11.TabIndex = 10;
@@ -3698,7 +3707,7 @@
             // lblCarLogo
             // 
             this.lblCarLogo.AutoSize = true;
-            this.lblCarLogo.Location = new System.Drawing.Point(81, 84);
+            this.lblCarLogo.Location = new System.Drawing.Point(300, 61);
             this.lblCarLogo.Name = "lblCarLogo";
             this.lblCarLogo.Size = new System.Drawing.Size(29, 12);
             this.lblCarLogo.TabIndex = 9;
@@ -3707,7 +3716,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(12, 84);
+            this.label13.Location = new System.Drawing.Point(231, 61);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(65, 12);
             this.label13.TabIndex = 8;
@@ -3731,35 +3740,27 @@
             this.label9.TabIndex = 6;
             this.label9.Text = "油枪号：";
             // 
-            // lblLeaveTime
-            // 
-            this.lblLeaveTime.AutoSize = true;
-            this.lblLeaveTime.Location = new System.Drawing.Point(241, 63);
-            this.lblLeaveTime.Name = "lblLeaveTime";
-            this.lblLeaveTime.Size = new System.Drawing.Size(0, 12);
-            this.lblLeaveTime.TabIndex = 5;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(172, 63);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(65, 12);
+            this.label7.Size = new System.Drawing.Size(0, 12);
             this.label7.TabIndex = 4;
-            this.label7.Text = "出站时间：";
             // 
             // lblArriveTime
             // 
             this.lblArriveTime.AutoSize = true;
-            this.lblArriveTime.Location = new System.Drawing.Point(243, 16);
+            this.lblArriveTime.Location = new System.Drawing.Point(300, 16);
             this.lblArriveTime.Name = "lblArriveTime";
-            this.lblArriveTime.Size = new System.Drawing.Size(0, 12);
+            this.lblArriveTime.Size = new System.Drawing.Size(29, 12);
             this.lblArriveTime.TabIndex = 3;
+            this.lblArriveTime.Text = "未知";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(172, 16);
+            this.label8.Location = new System.Drawing.Point(230, 16);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(65, 12);
             this.label8.TabIndex = 2;
@@ -4117,32 +4118,32 @@
             // chartStatistics
             // 
             this.chartStatistics.BackColor = System.Drawing.Color.Transparent;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisY.MajorGrid.Enabled = false;
-            chartArea1.AxisY2.MajorGrid.Enabled = false;
-            chartArea1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            chartArea1.Name = "ChartArea1";
-            this.chartStatistics.ChartAreas.Add(chartArea1);
+            chartArea4.AxisX.MajorGrid.Enabled = false;
+            chartArea4.AxisY.MajorGrid.Enabled = false;
+            chartArea4.AxisY2.MajorGrid.Enabled = false;
+            chartArea4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            chartArea4.Name = "ChartArea1";
+            this.chartStatistics.ChartAreas.Add(chartArea4);
             this.chartStatistics.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chartStatistics.Legends.Add(legend1);
+            legend4.Name = "Legend1";
+            this.chartStatistics.Legends.Add(legend4);
             this.chartStatistics.Location = new System.Drawing.Point(0, 0);
             this.chartStatistics.Name = "chartStatistics";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.IsValueShownAsLabel = true;
-            series1.LabelToolTip = "\"时间:#VALX 值#VALY\"";
-            series1.Legend = "Legend1";
-            series1.Name = "进站车辆";
-            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series2.LabelToolTip = "\"时间:#VALX 值#VALY\"";
-            series2.Legend = "Legend1";
-            series2.Name = "平均等待时长";
-            series2.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
-            this.chartStatistics.Series.Add(series1);
-            this.chartStatistics.Series.Add(series2);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.IsValueShownAsLabel = true;
+            series7.LabelToolTip = "\"时间:#VALX 值#VALY\"";
+            series7.Legend = "Legend1";
+            series7.Name = "进站车辆";
+            series7.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series8.LabelToolTip = "\"时间:#VALX 值#VALY\"";
+            series8.Legend = "Legend1";
+            series8.Name = "平均等待时长";
+            series8.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            this.chartStatistics.Series.Add(series7);
+            this.chartStatistics.Series.Add(series8);
             this.chartStatistics.Size = new System.Drawing.Size(1286, 418);
             this.chartStatistics.TabIndex = 20;
             this.chartStatistics.Text = "chart1";
@@ -4180,6 +4181,42 @@
             // 
             this.timerClearCarlist.Interval = 10000;
             this.timerClearCarlist.Tick += new System.EventHandler(this.timerClearCarlist_Tick);
+            // 
+            // lblVolume
+            // 
+            this.lblVolume.AutoSize = true;
+            this.lblVolume.Location = new System.Drawing.Point(82, 84);
+            this.lblVolume.Name = "lblVolume";
+            this.lblVolume.Size = new System.Drawing.Size(29, 12);
+            this.lblVolume.TabIndex = 25;
+            this.lblVolume.Text = "未知";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(25, 84);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(53, 12);
+            this.label32.TabIndex = 24;
+            this.label32.Text = "加油量：";
+            // 
+            // lblRealamount
+            // 
+            this.lblRealamount.AutoSize = true;
+            this.lblRealamount.Location = new System.Drawing.Point(301, 82);
+            this.lblRealamount.Name = "lblRealamount";
+            this.lblRealamount.Size = new System.Drawing.Size(29, 12);
+            this.lblRealamount.TabIndex = 23;
+            this.lblRealamount.Text = "未知";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(232, 82);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(65, 12);
+            this.label34.TabIndex = 22;
+            this.label34.Text = "消费金额：";
             // 
             // FormMain
             // 
@@ -4380,13 +4417,12 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label lblNozzleNo;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label lblLeaveTime;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblArriveTime;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lblLicense;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label lblBeginTime;
+        private System.Windows.Forms.Label lblEndTime;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Label label12;
@@ -4627,6 +4663,10 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chartStatistics;
         private System.Windows.Forms.CheckBox checkShowStationBoard;
         private System.Windows.Forms.Timer timerClearCarlist;
+        private System.Windows.Forms.Label lblVolume;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label lblRealamount;
+        private System.Windows.Forms.Label label34;
     }
 }
 

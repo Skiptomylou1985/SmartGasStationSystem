@@ -67,6 +67,8 @@ namespace SPManager
         }
         public void SavePic(ClsPicture pic)
         {
+            //TODO 不存储图片
+            return;
             string path = pic.picPath;
             //Global.LogServer.Add(new LogInfo("Debug", "PictureWork->SavePic picpath:" + path, (int)EnumLogLevel.DEBUG));
             //Regex.Replace(path, @"\", "\\");
