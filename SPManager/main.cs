@@ -112,8 +112,9 @@ namespace SPManager
                 Global.LogServer.Add(new LogInfo("Debug", "main->InitDatabase param value" +
                    Global.iniPath + " " + info.type + " " + info.ip + " " + info.dbname + " " + info.username + " " + info.password, (int)EnumLogLevel.DEBUG));
                 Global.mysqlHelper = new MysqlHelper(info);
-                
+                Global.mysqlHelper2 = new MysqlHelper(info);
                 Global.dllEncoder = INIUnit.GetINIValue(Global.iniPath, "main", "encode");
+                Global.nShowMode = int.Parse(INIUnit.GetINIValue(Global.iniPath, "main", "showmode"));
             }
             catch (System.Exception ex)
             {
@@ -522,10 +523,7 @@ namespace SPManager
             Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 匹配车牌：" + Global.arrayNozzleCar[index].license, (int)EnumLogLevel.DEBUG));
             Global.nozzleList[index].nozzleCar.nozzleNo = nozzleNo;
             Global.nozzleList[index].curStatus = nozzleStatus;
-            
 
-
-           
             
             DateTime dt = DateTime.Now;
             Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:进入油枪状态判断处理，油枪状态："+ nozzleStatus.ToString(), (int)EnumLogLevel.DEBUG));
@@ -994,7 +992,7 @@ namespace SPManager
         }
         public void SetRealtimeDGV_carlog(DataGridView dgv)
         {
-            //TODO 临时只取有车牌数据
+            
             string sql = "select id,carnumber,nozzleno,oiltype,arrivetime,begintime,leavetime,carlogo,carcolor,picpath from carlog where length(carnumber) > 1 order by id desc limit 0,100";
             DataTable dt = Global.mysqlHelper.GetDataTable(sql);
             if (dt == null || dt.Rows.Count <1)
@@ -1029,8 +1027,10 @@ namespace SPManager
         public void SetRealtimeDGV_tradelog(DataGridView dgv)
         {
             //TODO 临时只取有车牌数据
-            string sql = "SELECT DISTINCT(carnumber) AS carnumber,nozzleno,oilname,starttime,endtime,volume,realamount ,realcarbrand,realsubbrand " + 
-                " FROM tradelog WHERE LENGTH(carnumber) > 1 ORDER BY id DESC LIMIT 0, 100";
+            //             string sql = "SELECT DISTINCT(carnumber) AS carnumber,nozzleno,oilname,starttime,endtime,volume,realamount ,realcarbrand,realsubbrand " + 
+            //                 " FROM tradelog WHERE LENGTH(carnumber) > 1 ORDER BY id DESC LIMIT 0, 100";
+            string sql = "SELECT DISTINCT(carnumber) AS carnumber,nozzleno,oilname,starttime,endtime,volume,realamount ,realcarbrand,realsubbrand " +
+                " FROM tradelog ORDER BY id DESC LIMIT 0, 100";
             DataTable dt = Global.mysqlHelper.GetDataTable(sql);
             if (dt == null || dt.Rows.Count < 1)
             {
@@ -1096,8 +1096,10 @@ namespace SPManager
             }
 
         }
+
+       
         public DataTable QueryData_carlog(string columns, bool limit)
-        {
+        {  
             string arriveBegin = dateArriveBegin.Value.ToString("yyyy-MM-dd") + timeArriveBegin.Value.ToString(" HH:mm:ss");
             string arriveEnd = dateArriveEnd.Value.ToString("yyyy-MM-dd") + timeArriveEnd.Value.ToString(" HH:mm:ss");
             string leaveBegin = dateLeaveBegin.Value.ToString("yyyy-MM-dd") + timeLeaveBegin.Value.ToString(" HH:mm:ss");
@@ -1124,7 +1126,7 @@ namespace SPManager
                 sbQuery.Append(" and nozzleno = " + comboNozzle.Text);
             }
             //TODO 临时添加只差匹配车牌
-            sbQuery.Append(" and length(carnumber) > 1 ");
+            //sbQuery.Append(" and length(carnumber) > 1 ");
             sbQuery.Append(" order by endtime desc");
             if (limit)
             {
@@ -1161,7 +1163,7 @@ namespace SPManager
                 sbQuery.Append(" and nozzleno = " + comboNozzle.Text);
             }
             //TODO 临时添加只差匹配车牌
-            sbQuery.Append(" and length(carnumber) > 1 ");
+           // sbQuery.Append(" and length(carnumber) > 1 ");
             sbQuery.Append(" order by endtime desc");
             if (limit)
             {

@@ -54,7 +54,7 @@ namespace SPManager.tool
             switch (uploadType)
             {
                 case "trade":
-                    Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送trade信息", (int)EnumLogLevel.DEBUG));
+                   // Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送trade信息", (int)EnumLogLevel.DEBUG));
                     string sql = "select * from tradelog where upload = 0 order by id desc limit 1";
                     System.Data.DataTable dt = Global.mysqlHelper.GetDataTable(sql);
                     if (dt != null && dt.Rows.Count >0 )

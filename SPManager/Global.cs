@@ -64,6 +64,7 @@ namespace SPManager
         //运行服务
         public static Log LogServer;
         public static MysqlHelper mysqlHelper;
+        public static MysqlHelper mysqlHelper2;
         public static SocketTool socketDit;
         public static SocketTool socketTrade;
         public static Upload uploadTrade;

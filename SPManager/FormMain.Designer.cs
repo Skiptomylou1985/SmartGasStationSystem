@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.timerServiceStaus = new System.Windows.Forms.Timer(this.components);
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -293,6 +293,10 @@
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.lblVolume = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.lblRealamount = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             this.lblEndTime = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -349,10 +353,6 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
             this.timerClearCarlist = new System.Windows.Forms.Timer(this.components);
-            this.lblVolume = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.lblRealamount = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.StationBoard.SuspendLayout();
@@ -3586,6 +3586,42 @@
             this.panel6.Size = new System.Drawing.Size(488, 657);
             this.panel6.TabIndex = 0;
             // 
+            // lblVolume
+            // 
+            this.lblVolume.AutoSize = true;
+            this.lblVolume.Location = new System.Drawing.Point(82, 84);
+            this.lblVolume.Name = "lblVolume";
+            this.lblVolume.Size = new System.Drawing.Size(29, 12);
+            this.lblVolume.TabIndex = 25;
+            this.lblVolume.Text = "未知";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(25, 84);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(53, 12);
+            this.label32.TabIndex = 24;
+            this.label32.Text = "加油量：";
+            // 
+            // lblRealamount
+            // 
+            this.lblRealamount.AutoSize = true;
+            this.lblRealamount.Location = new System.Drawing.Point(301, 82);
+            this.lblRealamount.Name = "lblRealamount";
+            this.lblRealamount.Size = new System.Drawing.Size(29, 12);
+            this.lblRealamount.TabIndex = 23;
+            this.lblRealamount.Text = "未知";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(232, 82);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(65, 12);
+            this.label34.TabIndex = 22;
+            this.label34.Text = "消费金额：";
+            // 
             // lblEndTime
             // 
             this.lblEndTime.AutoSize = true;
@@ -4118,32 +4154,32 @@
             // chartStatistics
             // 
             this.chartStatistics.BackColor = System.Drawing.Color.Transparent;
-            chartArea4.AxisX.MajorGrid.Enabled = false;
-            chartArea4.AxisY.MajorGrid.Enabled = false;
-            chartArea4.AxisY2.MajorGrid.Enabled = false;
-            chartArea4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            chartArea4.Name = "ChartArea1";
-            this.chartStatistics.ChartAreas.Add(chartArea4);
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisY.MajorGrid.Enabled = false;
+            chartArea1.AxisY2.MajorGrid.Enabled = false;
+            chartArea1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            chartArea1.Name = "ChartArea1";
+            this.chartStatistics.ChartAreas.Add(chartArea1);
             this.chartStatistics.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend4.Name = "Legend1";
-            this.chartStatistics.Legends.Add(legend4);
+            legend1.Name = "Legend1";
+            this.chartStatistics.Legends.Add(legend1);
             this.chartStatistics.Location = new System.Drawing.Point(0, 0);
             this.chartStatistics.Name = "chartStatistics";
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series7.IsValueShownAsLabel = true;
-            series7.LabelToolTip = "\"时间:#VALX 值#VALY\"";
-            series7.Legend = "Legend1";
-            series7.Name = "进站车辆";
-            series7.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series8.ChartArea = "ChartArea1";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series8.LabelToolTip = "\"时间:#VALX 值#VALY\"";
-            series8.Legend = "Legend1";
-            series8.Name = "平均等待时长";
-            series8.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
-            this.chartStatistics.Series.Add(series7);
-            this.chartStatistics.Series.Add(series8);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.IsValueShownAsLabel = true;
+            series1.LabelToolTip = "\"时间:#VALX 值#VALY\"";
+            series1.Legend = "Legend1";
+            series1.Name = "进站车辆";
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.LabelToolTip = "\"时间:#VALX 值#VALY\"";
+            series2.Legend = "Legend1";
+            series2.Name = "平均等待时长";
+            series2.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            this.chartStatistics.Series.Add(series1);
+            this.chartStatistics.Series.Add(series2);
             this.chartStatistics.Size = new System.Drawing.Size(1286, 418);
             this.chartStatistics.TabIndex = 20;
             this.chartStatistics.Text = "chart1";
@@ -4182,42 +4218,6 @@
             this.timerClearCarlist.Interval = 10000;
             this.timerClearCarlist.Tick += new System.EventHandler(this.timerClearCarlist_Tick);
             // 
-            // lblVolume
-            // 
-            this.lblVolume.AutoSize = true;
-            this.lblVolume.Location = new System.Drawing.Point(82, 84);
-            this.lblVolume.Name = "lblVolume";
-            this.lblVolume.Size = new System.Drawing.Size(29, 12);
-            this.lblVolume.TabIndex = 25;
-            this.lblVolume.Text = "未知";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(25, 84);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(53, 12);
-            this.label32.TabIndex = 24;
-            this.label32.Text = "加油量：";
-            // 
-            // lblRealamount
-            // 
-            this.lblRealamount.AutoSize = true;
-            this.lblRealamount.Location = new System.Drawing.Point(301, 82);
-            this.lblRealamount.Name = "lblRealamount";
-            this.lblRealamount.Size = new System.Drawing.Size(29, 12);
-            this.lblRealamount.TabIndex = 23;
-            this.lblRealamount.Text = "未知";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(232, 82);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(65, 12);
-            this.label34.TabIndex = 22;
-            this.label34.Text = "消费金额：";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -4227,7 +4227,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "加油站智能信息管理系统SPManager V2.0.1.8123";
+            this.Text = "t";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Load += new System.EventHandler(this.FormMain_Load);
