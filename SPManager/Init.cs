@@ -77,6 +77,16 @@ namespace SPManager
                 Global.uploadTrade.Run();
                 Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload tradelog upload begin ", (int)EnumLogLevel.DEBUG));
 
+                // 上传orderLog
+                Global.uploadOrder = new Upload(Global.upLoadUrl, "orderlog");
+                Global.uploadOrder.Run();
+                Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload orderlog upload begin ", (int)EnumLogLevel.DEBUG));
+
+                // 上传payLog
+                Global.uploadPayment = new Upload(Global.upLoadUrl, "paylog");
+                Global.uploadPayment.Run();
+                Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload paylog upload begin ", (int)EnumLogLevel.DEBUG));
+
             }
         }
 

@@ -91,6 +91,102 @@ namespace SPManager.tool
                         }
                     }
                     break;
+                case "orderlog":
+                    string sqlOrder = "select * from orderlog where upload = 0 order by id desc limit 1";
+                    System.Data.DataTable dtOrder = Global.mysqlHelper.GetDataTable(sqlOrder);
+                    if (null != dtOrder && dtOrder.Rows.Count > 0)
+                    {
+                        UploadOrderInfo orderInfo = new UploadOrderInfo();
+                        orderInfo.id = int.Parse(dtOrder.Rows[0]["id"].ToString());
+                        orderInfo.transType = dtOrder.Rows[0]["transtype"].ToString();
+                        orderInfo.transCode = dtOrder.Rows[0]["transcode"].ToString();
+                        orderInfo.meterialCode = dtOrder.Rows[0]["meterialcode"].ToString();
+                        orderInfo.volume = double.Parse(dtOrder.Rows[0]["volume"].ToString());
+                        orderInfo.realAmount = double.Parse(dtOrder.Rows[0]["realamount"].ToString());
+                        orderInfo.price = double.Parse(dtOrder.Rows[0]["price"].ToString());
+                        orderInfo.payTime = dtOrder.Rows[0]["paytime"].ToString();
+                        orderInfo.settleDate = dtOrder.Rows[0]["settledate"].ToString();
+                        orderInfo.nozzleNo = int.Parse(dtOrder.Rows[0]["nozzleno"].ToString());
+                        orderInfo.startRead = double.Parse(dtOrder.Rows[0]["startread"].ToString());
+                        orderInfo.endRead = double.Parse(dtOrder.Rows[0]["endread"].ToString());
+                        orderInfo.billNo = int.Parse(dtOrder.Rows[0]["billno"].ToString());
+                        orderInfo.billItemId = int.Parse(dtOrder.Rows[0]["billitemid"].ToString());
+                        orderInfo.posNo = dtOrder.Rows[0]["posno"].ToString();
+                        orderInfo.statusType = dtOrder.Rows[0]["statustype"].ToString();
+                        orderInfo.payCode = dtOrder.Rows[0]["paycode"].ToString();
+                        orderInfo.tradeId = int.Parse(dtOrder.Rows[0]["tradeid"].ToString());
+                        orderInfo.stationCode = Global.stationInfo.stationCode;
+                        orderInfo.stationName = Global.stationInfo.stationName;
+
+                        Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送order信息内容 " + JsonHelper.SerializeObject(orderInfo), (int)EnumLogLevel.DEBUG));
+                        if (doUpload(orderInfo, url))
+                        {
+                            Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送order信息成功", (int)EnumLogLevel.DEBUG));
+                            Global.mysqlHelper.ExecuteSql("update orderlog set upload = 1 where id =  " + orderInfo.id);
+                        }
+                    }
+                    break;
+                case "paylog":
+                    string sqlPayment = "select * from paylog where upload = 0 order by id desc limit 1";
+                    System.Data.DataTable dtPayment = Global.mysqlHelper.GetDataTable(sqlPayment);
+                    if (null != dtPayment && dtPayment.Rows.Count > 0)
+                    {
+                        UploadPayInfo payInfo = new UploadPayInfo();
+
+                        payInfo.id = int.Parse(dtPayment.Rows[0]["id"].ToString());
+                        payInfo.billNo = int.Parse(dtPayment.Rows[0]["billno"].ToString());
+                        payInfo.payMode = dtPayment.Rows[0]["paymode"].ToString();
+                        payInfo.payAmount = double.Parse(dtPayment.Rows[0]["payamount"].ToString());
+                        payInfo.discount = double.Parse(dtPayment.Rows[0]["discount"].ToString());
+                        payInfo.payCard = dtPayment.Rows[0]["paycard"].ToString();
+                        payInfo.tradeId = int.Parse(dtPayment.Rows[0]["tradeid"].ToString());
+                        payInfo.stationCode = Global.stationInfo.stationCode;
+                        payInfo.stationName = Global.stationInfo.stationName;
+                        Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送payment信息内容 " + JsonHelper.SerializeObject(payInfo), (int)EnumLogLevel.DEBUG));
+                        if (doUpload(payInfo, url))
+                        {
+                            Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送payment信息成功", (int)EnumLogLevel.DEBUG));
+                            Global.mysqlHelper.ExecuteSql("update paylog set upload = 1 where id =  " + payInfo.id);
+                        }
+                    }
+                    break;
+                case "carlog":
+                    //string sqlCar = "select * from carlog where upload = 0 order by id desc limit 1";
+                    //System.Data.DataTable dtCar = Global.mysqlHelper.GetDataTable(sqlCar);
+                    //if (null != dtCar && dtCar.Rows.Count > 0)
+                    //{
+                    //    UploadCarInfo carInfo = new UploadCarInfo();
+                    //    carInfo.id = int.Parse(dtCar.Rows[0]["id"].ToString());
+                    //    carInfo.carNumber = dtCar.Rows[0]["carnumber"].ToString();
+                    //    carInfo.carNumColor = int.Parse(dtCar.Rows[0]["carnumcolor"].ToString());
+                    //    carInfo.carType = int.Parse(dtCar.Rows[0]["cartype"].ToString());
+                    //    carInfo.carLogo = int.Parse(dtCar.Rows[0]["carlogo"].ToString());
+                    //    carInfo.subCarLogo = int.Parse(dtCar.Rows[0]["subcarlogo"].ToString());
+                    //    carInfo.carColor = int.Parse(dtCar.Rows[0]["carcolor"].ToString());
+                    //    carInfo.arriveTime = dtCar.Rows[0]["arrivetime"].ToString();
+                    //    carInfo.leaveTime = dtCar.Rows[0]["leavetime"].ToString();
+                    //    carInfo.nozzleNo = int.Parse(dtCar.Rows[0]["nozzleno"].ToString());
+                    //    carInfo.picPath = dtCar.Rows[0]["picpath"].ToString();
+                    //    carInfo.beginTime = dtCar.Rows[0]["begintime"].ToString();
+                    //    carInfo.endTime = dtCar.Rows[0]["endtime"].ToString();
+                    //    carInfo.oilType = int.Parse(dtCar.Rows[0]["oiltype"].ToString());
+                    //    carInfo.volume = double.Parse(dtCar.Rows[0]["volume"].ToString());
+                    //    carInfo.realAmount = double.Parse(dtCar.Rows[0]["realamount"].ToString());
+                    //    carInfo.tradeSn = dtCar.Rows[0]["tradesn"].ToString();
+                    //    carInfo.startRead = double.Parse(dtCar.Rows[0]["startread"].ToString());
+                    //    carInfo.endRead = double.Parse(dtCar.Rows[0]["endread"].ToString());
+                    //    carInfo.meterialCode = dtCar.Rows[0]["meterialcode"].ToString();
+                    //    carInfo.oilPrice = double.Parse(dtCar.Rows[0]["oilprice"].ToString());
+                    //    carInfo.stationCode = Global.stationInfo.stationCode;
+                    //    carInfo.stationName = Global.stationInfo.stationName;
+                    //    Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送car信息内容 " + JsonHelper.SerializeObject(carInfo), (int)EnumLogLevel.DEBUG));
+                    //    if (doUpload(carInfo, url))
+                    //    {
+                    //        Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送car信息成功", (int)EnumLogLevel.DEBUG));
+                    //        Global.mysqlHelper.ExecuteSql("update carlog set upload = 1 where id =  " + carInfo.id);
+                    //    }
+                    //}
+                    break;
             }
 
         }

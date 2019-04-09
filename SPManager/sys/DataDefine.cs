@@ -182,6 +182,64 @@ namespace SPManager
                 _volume.ToString(), _realamnout.ToString(), _StartCounter.ToString(), _EndCounter.ToString(),_Price.ToString(),MeterialCode);
         }
     }
+
+    public class UploadCarInfo
+    {
+        public int id { get; set; }
+
+        public string carNumber { get; set; }
+        
+        public int carNumColor { get; set; }
+
+        public int carType { get; set; }
+
+        public int carLogo { get; set; }
+
+        public int subCarLogo { get; set; }
+
+        public int carColor { get; set; }
+
+        public string arriveTime { get; set; }
+
+        public string leaveTime { get; set; }
+        
+        public int nozzleNo { get; set; }
+
+        public int areaNo { get; set; }
+
+        public string picPath { get; set; }
+
+        public string beginTime { get; set; }
+
+        public string endTime { get; set; }
+
+        public int oilType { get; set; }
+
+        public int matchFlag { get; set; }
+
+        public double volume { get; set; }
+
+        public double realAmount { get; set; }
+
+        public string tradeSn { get; set; }
+
+        public string msgId { get; set; }
+
+        public double nozzleVolume { get; set; }
+
+        public double startRead { get; set; }
+
+        public double endRead { get; set; }
+
+        public double oilPrice { get; set; }
+
+        public string meterialCode {get; set;}
+
+        public string stationCode { get; set; }
+
+        public string stationName { get; set; }
+    }
+
     //油枪信息类
     public class ClsNozzle
     {
@@ -690,7 +748,31 @@ namespace SPManager
                 FINISH_TIME, SETTLE_DAY, OilGun_NO.ToString(), START_READ.ToString(), END_READ.ToString(), BILL_NUM.ToString(),
                 BILL_ITEM_ID.ToString(), POS_NO, StatusType, Pumpsrv_ref, TRADE_ID.ToString());
         }
+    }
 
+    public class UploadOrderInfo
+    {
+        public int id { set; get; }
+        public string transType { set; get; }
+        public string transCode { set; get; }
+        public string meterialCode { set; get; }
+        public double volume { set; get; }
+        public double realAmount { set; get; }
+        public double price { set; get; }
+        public string payTime { set; get; }
+        public string settleDate { set; get; }
+        public int nozzleNo { set; get; }
+        public double startRead { set; get; }
+        public double endRead { set; get; }
+        public int billNo { set; get; }
+        public int billItemId { set; get; }
+        public string posNo { set; get; }
+        public string statusType { set; get; }
+        public string payCode { set; get; }
+        public int tradeId { set; get; }
+        public int upload { set; get; }
+        public string stationCode { set; get; }
+        public string stationName { set; get; }
     }
 
     public class PayInfo
@@ -708,6 +790,21 @@ namespace SPManager
        "VALUES('{0}','{1}',{2},{3},'{4}',{5}) ";
             return String.Format(sqlString, BILL_NUM.ToString(), PAY_MODE, PAY_AMT.ToString(), Discount_AMT.ToString(), PAY_CARD, TRADE_ID.ToString());
         }
+    }
+
+    public class UploadPayInfo
+    {
+        public int id { set; get; }
+        public int billNo { set; get; }
+        public string payMode { set; get; }
+        public double payAmount { set; get; }
+        public double discount { set; get; }
+        public string payCard { set; get; }
+        public int tradeId { set; get; }
+
+        public int upload { set; get; }
+        public string stationCode { set; get; }
+        public string stationName { set; get; }
     }
 
     public class PumpInfo
