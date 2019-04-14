@@ -458,13 +458,13 @@ namespace SPManager
                 Marshal.FreeHGlobal(pCarOut);
 
                 ClsCarInfo car = MatchCar(struCarOut, nozzleNo);
+                //ClsCarInfo car = MatchCar2(struCarOut, nozzleNo);
                 if (car != null) //抓拍匹配到车辆
                 {
                     
                     ShowRTBInfo("油枪号：" + nozzleNo.ToString() + " 匹配抓拍车牌:" + car.license +" 车辆品牌:"+car.carLogo.ToString() + " 车辆子品牌:"+ car.subCarLogo.ToString());
                     Global.nozzleList[index].nozzleCar = car;
                     Global.nozzleList[index].nozzleCar.matchFlag = nozzleStatus;
-
                     
                 }
                 else if (Global.nVideoRecogFlag == 1) //如开启了视频识别，从视频识别结果中查找车牌
@@ -744,6 +744,128 @@ namespace SPManager
                 return null;
             
 
+        }
+
+        private ClsCarInfo MatchCar2(struCarInfoOut_V2 struCarInfo, int nozzleNo)
+        {
+            ClsCarInfo car = new ClsCarInfo();
+            int index = 0;
+            List<struLicense> indexList = new List<struLicense>();
+            for (int i = 0; i < struCarInfo.nLicenseCount; i++)
+            {
+                string license;
+                if (Global.dllEncoder == "utf8")
+                {
+                    license = System.Text.Encoding.UTF8.GetString(struCarInfo.license[i].license, 0, GetStrLength(struCarInfo.license[i].license));
+                }
+                else
+                {
+                    license = System.Text.Encoding.Default.GetString(struCarInfo.license[i].license, 0, GetStrLength(struCarInfo.license[i].license));
+                }
+
+                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 车牌号：" +
+                    license + " 置信度：" + struCarInfo.license[i].nConfidence.ToString() + " 识别区：" +
+                    struCarInfo.license[i].nAreaNo.ToString(), (int)EnumLogLevel.DEBUG));
+                if (LicenseIsMatched(license, nozzleNo) > 0)
+                    continue;
+                if (CheckDBcarRepeat(license))
+                    continue;
+                // 查找置信度最高的
+                if (struCarInfo.license[i].nConfidence > 75)
+                {
+                    indexList.Add(struCarInfo.license[i]);
+                }
+            }
+            if (indexList.Count == 1)
+            {
+                if (Global.dllEncoder == "utf8")
+                {
+                    car.license = System.Text.Encoding.UTF8.GetString(indexList[0].license, 0, GetStrLength(indexList[0].license));
+                }
+                else
+                {
+                    car.license = System.Text.Encoding.Default.GetString(indexList[0].license, 0, GetStrLength(indexList[0].license));
+                }
+
+                car.licenseColorString = Encoding.Default.GetString(indexList[0].color, 0, GetStrLength(indexList[0].color));
+                car.licenseColor = indexList[0].nColor;
+                car.carColor = indexList[0].nCarColor;
+                car.carLogo = indexList[0].nCarLogo;
+                car.subCarLogo = indexList[0].nSubCarLogo;
+                car.areaNo = indexList[0].nAreaNo;
+                return car;
+            }
+            else if (indexList.Count > 1)
+            {
+                indexList.Sort((sl1, sl2) => sl1.nAreaNo.CompareTo(sl2.nAreaNo));
+                // TODO 如果识别区1的车辆正在加油 或者 已经加过油 则匹配识别区2  
+                // 判断正在加油的车辆
+                foreach (ListViewItem lvi in listViewCache.Items)
+                {
+                    string carNum = lvi.SubItems[0].ToString();
+                    if (indexList[0].license.ToString() == carNum)
+                    {
+                        if (Global.dllEncoder == "utf8")
+                        {
+                            car.license = System.Text.Encoding.UTF8.GetString(indexList[1].license, 0, GetStrLength(indexList[1].license));
+                        }
+                        else
+                        {
+                            car.license = System.Text.Encoding.Default.GetString(indexList[1].license, 0, GetStrLength(indexList[1].license));
+                        }
+
+                        car.licenseColorString = Encoding.Default.GetString(indexList[1].color, 0, GetStrLength(indexList[1].color));
+                        car.licenseColor = indexList[1].nColor;
+                        car.carColor = indexList[1].nCarColor;
+                        car.carLogo = indexList[1].nCarLogo;
+                        car.subCarLogo = indexList[1].nSubCarLogo;
+                        car.areaNo = indexList[1].nAreaNo;
+                        return car;
+                    }
+                }
+                // 判断 是否已经加过油 的车辆
+                string sqlString = "select count(1) as count from tradelog t where t.carnumber = '" + indexList[0].license.ToString() + "' and t.starttime > DATE_ADD(NOW(), INTERVAL -10 MINUTE)";
+                DataTable dt = Global.mysqlHelper.GetDataTable(sqlString);
+                string count = dt.Rows[0]["count"].ToString();
+                if (count != "0")
+                {
+                    if (Global.dllEncoder == "utf8")
+                    {
+                        car.license = System.Text.Encoding.UTF8.GetString(indexList[1].license, 0, GetStrLength(indexList[1].license));
+                    }
+                    else
+                    {
+                        car.license = System.Text.Encoding.Default.GetString(indexList[1].license, 0, GetStrLength(indexList[1].license));
+                    }
+                    car.licenseColorString = Encoding.Default.GetString(indexList[1].color, 0, GetStrLength(indexList[1].color));
+                    car.licenseColor = indexList[1].nColor;
+                    car.carColor = indexList[1].nCarColor;
+                    car.carLogo = indexList[1].nCarLogo;
+                    car.subCarLogo = indexList[1].nSubCarLogo;
+                    car.areaNo = indexList[1].nAreaNo;
+                    return car;
+                }
+
+                if (Global.dllEncoder == "utf8")
+                {
+                    car.license = System.Text.Encoding.UTF8.GetString(indexList[0].license, 0, GetStrLength(indexList[0].license));
+                }
+                else
+                {
+                    car.license = System.Text.Encoding.Default.GetString(indexList[0].license, 0, GetStrLength(indexList[0].license));
+                }
+
+                car.licenseColorString = Encoding.Default.GetString(indexList[0].color, 0, GetStrLength(indexList[0].color));
+                car.licenseColor = indexList[0].nColor;
+                car.carColor = indexList[0].nCarColor;
+                car.carLogo = indexList[0].nCarLogo;
+                car.subCarLogo = indexList[0].nSubCarLogo;
+                car.areaNo = indexList[0].nAreaNo;
+                return car;
+            }
+
+            return null;
+        
         }
         private int LicenseIsMatched(string license,int exceptNozzleNo)
         {

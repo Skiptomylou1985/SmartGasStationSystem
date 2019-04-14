@@ -5,3 +5,6 @@ ipch
 *.log
 log
 *.txt
+.vs/SmartGasStationSystem/v15/
+SPManager/SPManager.csproj
+SPManager/FormMain.resx
