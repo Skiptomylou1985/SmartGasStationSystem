@@ -59,6 +59,8 @@ namespace SPManager
         public static int isUpload =0; //是否开启数据上传 0x0000  pay,order,car,trade
         public static string upLoadUrl = ""; //数据上传地址
         public static bool bUseCacheCar = false;
+        public static string socketOLEDIP = "192.168.23.201";  //DIT服务IP
+        public static int socketOLEDPort = 5000;   //DIT服务端口
 
 
         //运行服务
@@ -68,10 +70,18 @@ namespace SPManager
         public static MysqlHelper mysqlHelper3;
         public static SocketTool socketDit;
         public static SocketTool socketTrade;
+        public static SocketToolClient socketToolOLED;
         public static Upload uploadTrade;
         public static Upload uploadOrder;
         public static Upload uploadPayment;
 
+        public static Dictionary<int, bool> nozzleAreaRealtimeCaptureMap = new Dictionary<int, bool>() {
+            {1, false},
+            {2, false},
+            {3, false},
+            {4, false},
+            {5, false},
+            {6, false} };
 
         public static ClsStationInfo stationInfo = new ClsStationInfo();
         public static ClsNVRInfo clsNvrInfo = new ClsNVRInfo();

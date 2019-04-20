@@ -23,6 +23,8 @@ namespace SPManager
         static uint WM_AREACAR = RegisterWindowMessage("AREACAR");
         static uint WM_KILLPROCESS = RegisterWindowMessage("KILLPROCESS");
         static uint WM_HEARTBEAT = RegisterWindowMessage("HEARTBEAT");
+        static uint WM_PARKCAR_ENTER = RegisterWindowMessage("PARKCARENTER");
+        static uint WM_PARKCAR_LEAVE = RegisterWindowMessage("PARKCARLEAVE");
         DateTime lastMessageTime = DateTime.Now;
         protected override void DefWndProc(ref Message m)
         {
@@ -51,7 +53,39 @@ namespace SPManager
 
                 ShowNozzleCarList();
             }
-            else 
+            else if (m.Msg == Convert.ToInt32(WM_PARKCAR_ENTER))
+            {
+                int chanIndex = (int)m.WParam;
+                int parkingNo = (int)m.LParam;
+                for (int i=0; i<Global.areaList.Count; i++)
+                {
+                    if (Global.areaList[i].videoChannel == (chanIndex-1) && Global.areaList[i].videoLaneNo == parkingNo)
+                    {
+                        int areaNo = Global.areaList[i].id;
+                        timelyUpdateOLED(1, areaNo, "1");
+                        Global.LogServer.Add(new LogInfo("OLED", "Main->DefWndProc: 大屏显示车辆进入, 通道: " + chanIndex + " 车位编号：" + parkingNo + " 识别区: " + areaNo, 
+                            (int)EnumLogLevel.DEBUG));
+                        break;
+                    }
+                }
+            }
+            else if (m.Msg == Convert.ToInt32(WM_PARKCAR_LEAVE))
+            {
+                int chanIndex = (int)m.WParam;
+                int parkingNo = (int)m.LParam;
+                for (int i = 0; i < Global.areaList.Count; i++)
+                {
+                    if (Global.areaList[i].videoChannel == (chanIndex - 1) && Global.areaList[i].videoLaneNo == parkingNo)
+                    {
+                        int areaNo = Global.areaList[i].id;
+                        timelyUpdateOLED(0, areaNo, "1");
+                        Global.LogServer.Add(new LogInfo("OLED", "Main->DefWndProc: 大屏显示车辆离开, 通道: " + chanIndex + " 车位编号：" + parkingNo + " 识别区: " + areaNo, 
+                            (int)EnumLogLevel.DEBUG));
+                        break;
+                    }
+                }
+            }
+            else
             {
                 base.DefWndProc(ref m);
             }
@@ -749,7 +783,6 @@ namespace SPManager
         private ClsCarInfo MatchCar2(struCarInfoOut_V2 struCarInfo, int nozzleNo)
         {
             ClsCarInfo car = new ClsCarInfo();
-            int index = 0;
             List<struLicense> indexList = new List<struLicense>();
             for (int i = 0; i < struCarInfo.nLicenseCount; i++)
             {
@@ -983,6 +1016,7 @@ namespace SPManager
             SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)WM_KILLPROCESS, 0, 0);
             Global.socketDit.Close();
             Global.socketTrade.Close();
+            Global.socketToolOLED.Close();
             SPlate.SP_Close();
             
             Global.picWork.Stop();
@@ -1415,6 +1449,125 @@ namespace SPManager
             }
 
         }
+
+        #region 大屏 下发文件
+        private void sendFileOLED(string sendFileName)
+        {
+            try
+            {
+                #region
+                string path = System.Environment.CurrentDirectory + "\\images\\" + sendFileName;
+
+                byte[] filename = Encoding.UTF8.GetBytes(path);
+                byte[] fileNameData = new byte[filename.Length + 2];
+                int onePackLength = 65535;
+                fileNameData[0] = (byte)(onePackLength);
+                fileNameData[1] = (byte)(onePackLength >> 8);
+                Array.Copy(filename, 0, fileNameData, 2, filename.Length);
+
+                Global.socketToolOLED.SendTcpData(0x11, fileNameData);
+                #endregion
+
+                #region
+                FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+                byte[] buffer = new byte[onePackLength + 2];
+                int readBytes = 0;
+                int _nextSendFileContentBlockIndex = 1;
+
+                do
+                {
+                    #region 发送文件
+                    int startReadPos = (_nextSendFileContentBlockIndex - 1) * onePackLength;
+                    fs.Seek(startReadPos, SeekOrigin.Begin);
+                    readBytes = fs.Read(buffer, 2, onePackLength);
+                    int num = _nextSendFileContentBlockIndex;
+                    buffer[0] = (byte)num;
+                    buffer[1] = (byte)(num >> 8);
+                    byte[] data = new byte[readBytes + 2];
+                    Array.Copy(buffer, 0, data, 0, readBytes + 2);
+
+                    Global.socketToolOLED.SendTcpData(0x13, data);
+
+                    #endregion
+                } while (readBytes == onePackLength);
+                fs.Close();
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("发送消息出错:" + ex.Message);
+            }
+
+        }
+        #endregion
+
+        #region 大屏 指定播放文件
+        private void sendStartOLED(string playListIndex)
+        {
+            byte[] data = new byte[1];
+            data[0] = (byte)Convert.ToInt32(playListIndex);
+            Global.socketToolOLED.SendTcpData(0x1B, data);
+        }
+        #endregion
+
+        #region 大屏 实时局部更新
+        private void timelyUpdateOLED(int timelyUpdateOperType, int updateRegionIndex, string itemN)
+        {
+
+            string tag = "HCar.jpg";
+            string x = "102", width = "86", height = "57";
+            string y = "3", y6 = "3", y5 = "66", y4 = "131", y3 = "195", y2 = "259", y1 = "323";
+
+            if (updateRegionIndex == 1)
+            {
+                y = y1;
+            }
+            else if (updateRegionIndex == 2)
+            {
+                y = y2;
+            }
+            else if (updateRegionIndex == 3)
+            {
+                y = y3;
+            }
+            else if (updateRegionIndex == 4)
+            {
+                y = y4;
+            }
+            else if (updateRegionIndex == 5)
+            {
+                y = y5;
+            }
+            else if (updateRegionIndex == 6)
+            {
+                y = y6;
+            }
+
+            byte[] data1 = new byte[2];
+            data1[0] = (byte)timelyUpdateOperType; /// 实时更新操作类型
+            data1[1] = (byte)updateRegionIndex;    /// 更新区域索引
+            //string updateContent = "[item{0}]\r\nparam=200,1,1,1,0,5,1,0,1\r\ntxt1={1},{2},3,2020,1,000000,0,{3},{4},{5},1\r\ntxtparam1=0,0";
+            string updateContent = "[item{0}]\r\nparam=3000,1,1,1,0,5,1,0,1\r\nimg1={1},{2},{3},1,{4},{5}\r\nimgparam1=3000";
+            updateContent = string.Format(updateContent,
+                                          itemN,
+                                          x,
+                                          y,
+                                          tag,
+                                          width,
+                                          height
+                                         );
+
+            //string info = "RealtimeCapture->DefWndProc: 识别区 : "+ updateRegionIndex + " , 开始更新： " + updateContent;
+            //ShowRTBInfo(info);
+
+            byte[] data2 = Encoding.UTF8.GetBytes(updateContent);
+            byte[] data = new byte[data1.Length + data2.Length];
+            Array.Copy(data1, 0, data, 0, data1.Length);
+            Array.Copy(data2, 0, data, data1.Length, data2.Length);
+            Global.socketToolOLED.SendTcpData(0x88, data);
+        }
+        #endregion
 
     }
 

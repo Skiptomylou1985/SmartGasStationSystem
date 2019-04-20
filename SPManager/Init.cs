@@ -314,6 +314,7 @@ namespace SPManager
 
         private bool GetAreaParam()
         {
+            //string queryString = "select a.vchno,a.chanindex,a.vchAttr,b.id,b.x1,b.x2,b.y1,b.y2,b.vchid,b.vchlane from vch a right join analysisarea b on a.id = b.vchid ";
             string queryString = "select a.vchno,a.vchAttr,b.id,b.x1,b.x2,b.y1,b.y2,b.vchid,b.vchlane from vch a right join analysisarea b on a.id = b.vchid ";
             try
             {
@@ -344,6 +345,7 @@ namespace SPManager
                     area.videoChannel = int.Parse(dr["vchno"].ToString());
                     area.areaFlag = int.Parse(dr["vchAttr"].ToString());
                     area.videoLaneNo = int.Parse(dr["vchlane"].ToString());
+                    //area.chanIndex = int.Parse(dr["chanindex"].ToString());
                     Global.areaList.Add(area);
                     int index = Global.areaList.IndexOf(area);
                     Global.areaMap.Add(area.id, index);
@@ -469,6 +471,9 @@ namespace SPManager
             Global.clsServiceStatus.bSocketDitIsRun = Global.socketDit.Run();
             Global.socketTrade = new SocketTool(Global.localTradeIP, Global.localTradePort);
             Global.clsServiceStatus.bSocketTradeIsRun = Global.socketTrade.Run();
+            Global.socketToolOLED = new SocketToolClient(Global.socketOLEDIP, Global.socketOLEDPort);
+            Global.socketToolOLED.Run();
+
             Global.LogServer.Add(new LogInfo("Debug", "Main->InitSocket 初始化网络服务完成，网络服务状态 "+Global.clsServiceStatus.bSocketDitIsRun.ToString(), (int)EnumLogLevel.DEBUG));
             return Global.clsServiceStatus.bSocketDitIsRun;
         }

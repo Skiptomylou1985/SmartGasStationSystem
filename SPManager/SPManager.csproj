@@ -46,9 +46,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\Debug\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=8.0.15.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\MySQL\MySQL Connector Net 6.9.9\Assemblies\v4.5\MySql.Data.dll</HintPath>
+      <HintPath>..\..\Debug\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -115,6 +115,7 @@
     <Compile Include="sys\SystemUnit.cs" />
     <Compile Include="tool\PictureWork.cs" />
     <Compile Include="tool\SocketTool.cs" />
+    <Compile Include="tool\SocketToolClient.cs" />
     <Compile Include="tool\Upload.cs" />
     <Compile Include="tool\winsock.cs" />
     <EmbeddedResource Include="FormMain.resx">

@@ -191,6 +191,7 @@ namespace ParamSet
                                         ClsVideoChannel videoChan = new ClsVideoChannel();
                                         videoChan.ip = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].struIP.sIpV4);
                                         videoChan.channelNo = i;
+                                        //videoChan.chanIndex = nvr.config.dwStartDChan + i;
                                         videoChan.loginName = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].sUserName);
                                         videoChan.password = System.Text.Encoding.Default.GetString(nvr.config.struIPDevInfo[i].sPassword);
                                         videoChan.port = nvr.config.struIPDevInfo[i].wDVRPort;

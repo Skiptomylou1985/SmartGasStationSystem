@@ -308,6 +308,12 @@ namespace ParamSet
         }
         private int _channelNo = 101;
 
+        public int chanIndex
+        {
+            get { return _chanIndex; }
+            set { _chanIndex = value; }
+        }
+        private int _chanIndex = 33;
         public string ip
         {
             get { return _ip; }
@@ -365,6 +371,9 @@ namespace ParamSet
             string str = "insert into vch (parentid,vchtype,vchname,vchno,vchip,vchport,loginname,loginpwd,vchAttr,streamType) values("+
                            parentID.ToString()+","+videoType.ToString()+",'"+videoName+"',"+channelNo.ToString()+",'"+
                            ip+"',"+port.ToString()+ ",'"+loginName+"','"+password+"','"+videoAttr+"',"+streamType.ToString()+")";
+            //string str = "insert into vch (parentid,vchtype,vchname,vchno,chanindex,vchip,vchport,loginname,loginpwd,vchAttr,streamType) values(" +
+            //               parentID.ToString()+","+videoType.ToString()+",'"+videoName+"',"+channelNo.ToString()+",'"+ chanIndex + "," +
+            //               ip +"',"+port.ToString()+ ",'"+loginName+"','"+password+"','"+videoAttr+"',"+streamType.ToString()+")";
             return str;
         }
     }

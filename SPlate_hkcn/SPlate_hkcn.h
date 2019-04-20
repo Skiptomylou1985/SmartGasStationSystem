@@ -39,6 +39,8 @@
 int WM_CARDATA = ::RegisterWindowMessageA("CARDATA");
 int WM_VIDEOCAR = ::RegisterWindowMessageA("VIDEOCAR");
 int WM_AREACAR = ::RegisterWindowMessageA("AREACAR");
+int WM_PARKCAR_LEAVE = ::RegisterWindowMessageA("PARKCARLEAVE");
+int WM_PARKCAR_ENTER = ::RegisterWindowMessageA("PARKCARENTER");
 
 typedef struct TH_RECT
 {

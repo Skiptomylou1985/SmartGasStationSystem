@@ -14,6 +14,7 @@ NET_DVR_USER_LOGIN_INFO loginInfo_hkcn;
 NET_DVR_DEVICEINFO_V40 deviceInfo_hkcn;
 NET_ITS_PLATE_RESULT struItsPlateResult;
 //TH_PlateIDCfg th_PlateIDCfg_bak;
+NET_ITS_PARK_VEHICLE struItsParkVehicle;
 int nCarNum;
 LONG nPort = -1;
 const int XML_ABILITY_OUT_LEN = 3 * 1024 * 1024;
@@ -59,6 +60,7 @@ void CALLBACK PlateDataCallBack(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *
 // 	_itoa(lCommand, debugInfo + strlen(debugInfo), 10);
 // 	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 	int areaNo = -1;
+	int parkingNum = -1;
 	switch (lCommand)
 	{
 	case COMM_UPLOAD_PLATE_RESULT:
@@ -128,9 +130,103 @@ void CALLBACK PlateDataCallBack(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *
 		areaCar[areaNo - 1].nPicWidth = 1920;
 		PostMessage(HWND_BROADCAST, WM_AREACAR, areaNo, struItsPlateResult.byChanIndex);
 		break;
+	case COMM_ITS_PARK_VEHICLE:
+		memset(&struItsParkVehicle, 0, sizeof(struItsParkVehicle));
+		memcpy(&struItsParkVehicle, pAlarmInfo, sizeof(struItsParkVehicle));
+
+		memset(debugInfo, 0, sizeof(debugInfo));
+		strcpy(debugInfo + strlen(debugInfo), " COMM_ITS_PARK_VEHICLE 识别通道:");
+		_itoa(struItsParkVehicle.dwChanIndex, debugInfo + strlen(debugInfo), 10);
+		strcpy(debugInfo + strlen(debugInfo), " 车位编号:");
+		memcpy(debugInfo + strlen(debugInfo), struItsParkVehicle.byParkingNo, sizeof(struItsParkVehicle.byParkingNo));
+
+		// 通道编号 struItsParkVehicle.dwChanIndex
+		areaNo = (int)struItsParkVehicle.dwChanIndex;
+		// 车位编号
+		//parkingNum = (int)struItsParkVehicle.byParkingNo[7] - 0x30;
+		for (int i=0;i<16;i++) 
+		{
+			if (struItsParkVehicle.byParkingNo[i] == 0x2D)
+			{
+				parkingNum = (int)struItsParkVehicle.byParkingNo[i+1] - 0x30;
+				break;
+			}
+		}
+		
+		
+		/*{
+			strcpy(debugInfo + strlen(debugInfo), " 车位编号 byte:");
+			string *hexstr = new string();
+			for (int i = 0; i < 16; i++)
+			{
+				char hex1;
+				char hex2;
+				int value = parkingNo[i];
+				int v1 = value / 16;
+				int v2 = value % 16;
+
+				if (v1 >= 0 && v1 <= 9)
+					hex1 = (char)(48 + v1);
+				else
+					hex1 = (char)(55 + v1);
+
+
+				if (v2 >= 0 && v2 <= 9)
+					hex2 = (char)(48 + v2);
+				else
+					hex2 = (char)(55 + v2);
+
+				*hexstr = *hexstr + hex1 + hex2;
+			}
+			
+			memcpy(debugInfo + strlen(debugInfo), hexstr, sizeof(*hexstr));
+		}*/
+
+		// 车位车辆状态：0- 无车，1- 有车
+		if (struItsParkVehicle.byLocationStatus == 0x00) 
+		{
+			strcpy(debugInfo + strlen(debugInfo), " 车辆离开:");
+			PostMessage(HWND_BROADCAST, WM_PARKCAR_LEAVE, areaNo, parkingNum);
+		}
+		else 
+		{
+			strcpy(debugInfo + strlen(debugInfo), " 车辆进入:");
+			PostMessage(HWND_BROADCAST, WM_PARKCAR_ENTER, areaNo, parkingNum);
+		}
+		memcpy(debugInfo + strlen(debugInfo), struItsParkVehicle.struPlateInfo.sLicense, strlen(struItsParkVehicle.struPlateInfo.sLicense));
+		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+
+		break;
 	default:
 		break;
 	}
+}
+
+SPLATE_API string* byteToHexStr(unsigned char byte_arr[], int arr_len)
+{
+	string*  hexstr = new string();
+	for (int i = 0; i < arr_len; i++)
+	{
+		char hex1;
+		char hex2;
+		int value = byte_arr[i];
+		int v1 = value / 16;
+		int v2 = value % 16;
+
+		if (v1 >= 0 && v1 <= 9)
+			hex1 = (char)(48 + v1);
+		else
+			hex1 = (char)(55 + v1);
+
+
+		if (v2 >= 0 && v2 <= 9)
+			hex2 = (char)(48 + v2);
+		else
+			hex2 = (char)(55 + v2);
+
+		*hexstr = *hexstr + hex1 + hex2;
+	}
+	return hexstr;
 }
 
 SPLATE_API int SP_InitRunParam(BYTE *pChan, int areaCount)
@@ -242,8 +338,25 @@ SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPass
 		strcpy(debugInfo + strlen(debugInfo), "NET_DVR_GetLastError:");
 		_itoa(ret, debugInfo + strlen(debugInfo), 10);
 	}
-
 	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+
+	// 报警(车辆)监听
+	write_log_file("Debug.txt", MAX_FILE_SIZE, "报警(车辆)监听", strlen("报警(车辆)监听"), 3);
+	ret = NET_DVR_StartListen_V30("192.168.23.253", 7200, (MSGCallBack)PlateDataCallBack, nullptr);
+	
+	memset(debugInfo, 0, sizeof(debugInfo));
+	strcpy(debugInfo + strlen(debugInfo), "NET_DVR_StartListen_V30:");
+	_itoa(ret, debugInfo + strlen(debugInfo), 10);
+	if (ret != 0)
+	{
+		ret = NET_DVR_GetLastError();
+		memset(debugInfo, 0, sizeof(debugInfo));
+		strcpy(debugInfo + strlen(debugInfo), "NET_DVR_GetLastError:");
+		_itoa(ret, debugInfo + strlen(debugInfo), 10);
+	}
+	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+
+
 	return SUCCESS;
 }
 SPLATE_API int SP_GetNvrCfg(BYTE *nvrCfg, int &lenth)

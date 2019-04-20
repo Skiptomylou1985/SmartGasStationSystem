@@ -353,6 +353,12 @@ namespace SPManager
             set { _videoChannel = value; }
         }
         private int _videoChannel = 0;
+        public int chanIndex
+        {
+            get { return _chanIndex; }
+            set { _chanIndex = value; }
+        }
+        private int _chanIndex = 33;
         public int videoLaneNo
         {
             get { return _videoLaneNo; }

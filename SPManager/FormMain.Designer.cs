@@ -515,7 +515,7 @@
             // 
             this.btnExit.BackColor = System.Drawing.Color.Aqua;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExit.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnExit.Location = new System.Drawing.Point(796, 479);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(132, 40);
@@ -530,7 +530,7 @@
             // 
             this.btnEntrance.BackColor = System.Drawing.Color.Aqua;
             this.btnEntrance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEntrance.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnEntrance.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnEntrance.Location = new System.Drawing.Point(242, 484);
             this.btnEntrance.Name = "btnEntrance";
             this.btnEntrance.Size = new System.Drawing.Size(132, 40);
@@ -545,7 +545,7 @@
             // 
             this.btnStore.BackColor = System.Drawing.Color.Orange;
             this.btnStore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStore.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnStore.Location = new System.Drawing.Point(500, 479);
             this.btnStore.Name = "btnStore";
             this.btnStore.Size = new System.Drawing.Size(187, 40);
@@ -2569,7 +2569,7 @@
             // 
             this.Ver_btnExit.BackColor = System.Drawing.Color.Aqua;
             this.Ver_btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Ver_btnExit.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Ver_btnExit.Location = new System.Drawing.Point(863, 491);
             this.Ver_btnExit.Name = "Ver_btnExit";
             this.Ver_btnExit.Size = new System.Drawing.Size(132, 40);
@@ -2584,7 +2584,7 @@
             // 
             this.Ver_btnEntrance.BackColor = System.Drawing.Color.Aqua;
             this.Ver_btnEntrance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Ver_btnEntrance.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_btnEntrance.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Ver_btnEntrance.Location = new System.Drawing.Point(333, 491);
             this.Ver_btnEntrance.Name = "Ver_btnEntrance";
             this.Ver_btnEntrance.Size = new System.Drawing.Size(132, 40);
@@ -2599,7 +2599,7 @@
             // 
             this.Ver_btnStore.BackColor = System.Drawing.Color.Orange;
             this.Ver_btnStore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Ver_btnStore.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_btnStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Ver_btnStore.Location = new System.Drawing.Point(571, 491);
             this.Ver_btnStore.Name = "Ver_btnStore";
             this.Ver_btnStore.Size = new System.Drawing.Size(187, 40);
