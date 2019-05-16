@@ -1456,5 +1456,10 @@ namespace SPManager
         {
 
         }
+
+        private void timerOLEDHeart_Tick(object sender, EventArgs e)
+        {
+            sendHeartOLED();
+        }
     }
 }

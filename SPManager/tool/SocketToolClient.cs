@@ -478,7 +478,8 @@ namespace SPManager.tool
                 {
                     case (byte)0x00:
                         #region 心跳
-
+                        string heartInfo = Encoding.UTF8.GetString(decryptedData, 0, decryptedData.Length);
+                        Global.LogServer.Add(new LogInfo("OLED", "Main->ReceiveMasssage: 大屏心跳检测 : " + heartInfo, (int)EnumLogLevel.DEBUG));
                         #endregion
                         break;
                     case (byte)0x1C:

@@ -138,20 +138,22 @@ void CALLBACK PlateDataCallBack(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *
 		strcpy(debugInfo + strlen(debugInfo), " COMM_ITS_PARK_VEHICLE 识别通道:");
 		_itoa(struItsParkVehicle.dwChanIndex, debugInfo + strlen(debugInfo), 10);
 		strcpy(debugInfo + strlen(debugInfo), " 车位编号:");
-		memcpy(debugInfo + strlen(debugInfo), struItsParkVehicle.byParkingNo, sizeof(struItsParkVehicle.byParkingNo));
+		//memcpy(debugInfo + strlen(debugInfo), struItsParkVehicle.byParkingNo, sizeof(struItsParkVehicle.byParkingNo));
+		_itoa(struItsParkVehicle.bylogicalLaneNum, debugInfo + strlen(debugInfo), 10);
 
 		// 通道编号 struItsParkVehicle.dwChanIndex
 		areaNo = (int)struItsParkVehicle.dwChanIndex;
 		// 车位编号
 		//parkingNum = (int)struItsParkVehicle.byParkingNo[7] - 0x30;
-		for (int i=0;i<16;i++) 
+		/*for (int i=0;i<16;i++) 
 		{
 			if (struItsParkVehicle.byParkingNo[i] == 0x2D)
 			{
 				parkingNum = (int)struItsParkVehicle.byParkingNo[i+1] - 0x30;
 				break;
 			}
-		}
+		}*/
+		parkingNum = (int)struItsParkVehicle.bylogicalLaneNum;
 		
 		
 		/*{
@@ -342,7 +344,8 @@ SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPass
 
 	// 报警(车辆)监听
 	write_log_file("Debug.txt", MAX_FILE_SIZE, "报警(车辆)监听", strlen("报警(车辆)监听"), 3);
-	ret = NET_DVR_StartListen_V30("192.168.23.253", 7200, (MSGCallBack)PlateDataCallBack, nullptr);
+	//ret = NET_DVR_StartListen_V30("192.168.23.202", 7200, (MSGCallBack)PlateDataCallBack, nullptr);
+	ret = NET_DVR_StartListen_V30(NULL, 7200, (MSGCallBack)PlateDataCallBack, nullptr);
 	
 	memset(debugInfo, 0, sizeof(debugInfo));
 	strcpy(debugInfo + strlen(debugInfo), "NET_DVR_StartListen_V30:");

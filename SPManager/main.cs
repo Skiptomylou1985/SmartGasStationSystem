@@ -59,7 +59,7 @@ namespace SPManager
                 int parkingNo = (int)m.LParam;
                 for (int i=0; i<Global.areaList.Count; i++)
                 {
-                    if (Global.areaList[i].videoChannel == (chanIndex-1) && Global.areaList[i].videoLaneNo == parkingNo)
+                    if (Global.areaList[i].videoChannel == (chanIndex-1) && Global.areaList[i].videoLaneNo == (parkingNo+1))
                     {
                         int areaNo = Global.areaList[i].id;
                         timelyUpdateOLED(1, areaNo, "1");
@@ -75,7 +75,7 @@ namespace SPManager
                 int parkingNo = (int)m.LParam;
                 for (int i = 0; i < Global.areaList.Count; i++)
                 {
-                    if (Global.areaList[i].videoChannel == (chanIndex - 1) && Global.areaList[i].videoLaneNo == parkingNo)
+                    if (Global.areaList[i].videoChannel == (chanIndex - 1) && Global.areaList[i].videoLaneNo == (parkingNo+1))
                     {
                         int areaNo = Global.areaList[i].id;
                         timelyUpdateOLED(0, areaNo, "1");
@@ -1450,6 +1450,14 @@ namespace SPManager
 
         }
 
+        #region 大屏 心跳检测
+        private void sendHeartOLED()
+        {
+            byte[] data = null;
+            Global.socketToolOLED.SendTcpData(0x00, data);
+        }
+        #endregion
+
         #region 大屏 下发文件
         private void sendFileOLED(string sendFileName)
         {
@@ -1516,8 +1524,10 @@ namespace SPManager
         {
 
             string tag = "HCar.jpg";
-            string x = "102", width = "86", height = "57";
-            string y = "3", y6 = "3", y5 = "66", y4 = "131", y3 = "195", y2 = "259", y1 = "323";
+            //string x = "102", width = "86", height = "57";
+            //string y = "3", y6 = "3", y5 = "66", y4 = "131", y3 = "195", y2 = "259", y1 = "323";
+            string x = "53", width = "135", height = "60";
+            string y = "5", y6 = "5", y5 = "64", y4 = "131", y3 = "190", y2 = "257", y1 = "316";
 
             if (updateRegionIndex == 1)
             {

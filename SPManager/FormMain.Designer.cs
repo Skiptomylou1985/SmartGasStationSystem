@@ -353,6 +353,7 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
             this.timerClearCarlist = new System.Windows.Forms.Timer(this.components);
+            this.timerOLEDHeart = new System.Windows.Forms.Timer(this.components);
             this.tabPage1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.StationBoard.SuspendLayout();
@@ -4218,6 +4219,12 @@
             this.timerClearCarlist.Interval = 10000;
             this.timerClearCarlist.Tick += new System.EventHandler(this.timerClearCarlist_Tick);
             // 
+            // timerOLEDHeart
+            // 
+            this.timerOLEDHeart.Enabled = true;
+            this.timerOLEDHeart.Interval = 1000;
+            this.timerOLEDHeart.Tick += new System.EventHandler(this.timerOLEDHeart_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -4667,6 +4674,7 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label lblRealamount;
         private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Timer timerOLEDHeart;
     }
 }
 
