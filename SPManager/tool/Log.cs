@@ -76,7 +76,10 @@ namespace SPManager
                 if (queue.GetQueueCount() > 0)
                 {
                     LogInfo info = queue.Get();
-                    WriteLog(info.moduleName, "", info.msg,info.logTime);
+                    if (null != info)
+                    {
+                        WriteLog(info.moduleName, "", info.msg, info.logTime);
+                    }
                 }
                 else
                     Thread.Sleep(100);

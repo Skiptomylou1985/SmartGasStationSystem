@@ -42,10 +42,16 @@ namespace SPManager.tool
         {
             while(isRun)
             {
-
                 doUpload();
-                Thread.Sleep(500);
-           
+                if (uploadType.Equals("heartbeat"))
+                {   
+                    Thread.Sleep(300000);
+                }
+                else
+                {
+                    Thread.Sleep(500);
+                }
+                
             }
         }
 
@@ -187,6 +193,44 @@ namespace SPManager.tool
                     //    }
                     //}
                     break;
+                case "heartbeat":
+                    UploadHeartbeatInfo heartbeatInfo = new UploadHeartbeatInfo();
+                    heartbeatInfo.stationCode = Global.stationInfo.stationCode;
+                    heartbeatInfo.stationName = Global.stationInfo.stationName;
+                    heartbeatInfo.heartbeatTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    Global.LogServer.Add(new LogInfo("Debug", 
+                        "Upload-> doUpload：发送heartbeat信息内容 -> " + JsonHelper.SerializeObject(heartbeatInfo), 
+                        (int)EnumLogLevel.DEBUG));
+                    if (doUpload(heartbeatInfo, url))
+                    {
+                        Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送heartbeat信息成功", (int)EnumLogLevel.DEBUG));
+                    }
+                    break;
+                case "carrecord":
+                    string sqlCarRecord = "select * from carrecordlog where upload = 0 order by id desc limit 1";
+                    System.Data.DataTable dtCarRecord = Global.mysqlHelper.GetDataTable(sqlCarRecord);
+                    if (dtCarRecord != null && dtCarRecord.Rows.Count > 0)
+                    {
+                        UploadCarRecordInfo carRecordInfo = new UploadCarRecordInfo();
+                        carRecordInfo.stationCode = Global.stationInfo.stationCode;
+                        carRecordInfo.stationName = Global.stationInfo.stationName;
+                        carRecordInfo.carNumber = dtCarRecord.Rows[0]["carnumber"].ToString();
+                        carRecordInfo.carNumColor = dtCarRecord.Rows[0]["carnumcolor"].ToString();
+                        carRecordInfo.carLogo = dtCarRecord.Rows[0]["carlogo"].ToString();
+                        carRecordInfo.subCarLogo = dtCarRecord.Rows[0]["subcarlogo"].ToString();
+                        carRecordInfo.carColor = dtCarRecord.Rows[0]["carcolor"].ToString();
+                        carRecordInfo.arriveTime = dtCarRecord.Rows[0]["arrivetime"].ToString();
+
+                        if (doUpload(carRecordInfo, url))
+                        {
+                            Global.LogServer.Add(new LogInfo("Debug", "Upload-> doUpload：发送rarrecordlog信息成功", (int)EnumLogLevel.DEBUG));
+                            Global.mysqlHelper.ExecuteSql("update carrecordlog set upload = 1 where id =  " + dtCarRecord.Rows[0]["id"].ToString());
+                        }
+                    }
+                    break;
+                default:
+                    break;
             }
 
         }
@@ -208,7 +252,7 @@ namespace SPManager.tool
                 //发送请求
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
-                request.ContentType = "application/json;charset=UTF-8";
+                request.ContentType = "text/plain;charset=UTF-8";
                 var byteData = Encoding.UTF8.GetBytes(jsonParam);
                 var length = byteData.Length;
                 request.ContentLength = length;
@@ -227,7 +271,7 @@ namespace SPManager.tool
             }
             catch (System.Exception ex)
             {
-                //Global.LogServer.Add(new LogInfo("Error", "Upload:doUpload :url"+url+" json:"+ jsonParam+"  " + ex.Message, (int)EnumLogLevel.ERROR));
+                Global.LogServer.Add(new LogInfo("Error", "Upload:doUpload :url -> "+url+" json -> "+ jsonParam+"  " + ex.Message, (int)EnumLogLevel.ERROR));
                 return false;
             }
             return true;

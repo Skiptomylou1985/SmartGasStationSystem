@@ -807,6 +807,47 @@ namespace SPManager
         public string stationName { set; get; }
     }
 
+    public class UploadHeartbeatInfo
+    {
+        public string stationCode { set; get; }
+        public string stationName { set; get; }
+        public string heartbeatTime { set; get; }
+    }
+
+    public class CarRecordInfo
+    {
+        public int id { set; get; }
+        public string stationCode { set; get; }
+        public string stationName { set; get; }
+        public string carNumber { set; get; }
+        public string carNumColor { set; get; }
+        public string carLogo { set; get; }
+        public string subCarLogo { set; get; }
+        public string carColor { set; get; }
+        public DateTime arriveTime { set; get; }
+        public int upload { set; get; }
+
+        public string toSaveSqlString()
+        {
+            String sqlString = "INSERT INTO rarrecordlog (stationcode, stationname, carnumber, carnumcolor, carlogo, subcarlogo, carcolor, arrivetime, upload) " +
+            "VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', now(), 0) ";
+            return String.Format(sqlString, stationCode.ToString(), stationName.ToString(), carNumber.ToString(), carNumColor.ToString(), carLogo.ToString(),
+                subCarLogo.ToString(), carColor.ToString());
+        }
+    }
+
+    public class UploadCarRecordInfo
+    {
+        public string stationCode { set; get; }
+        public string stationName { set; get; }
+        public string carNumber { set; get; }
+        public string carNumColor { set; get; }
+        public string carLogo { set; get; }
+        public string subCarLogo { set; get; }
+        public string carColor { set; get; }
+        public string arriveTime { set; get; }
+    }
+
     public class PumpInfo
     {
         public string PumpID { set; get; }

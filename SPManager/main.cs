@@ -34,6 +34,7 @@ namespace SPManager
                 Global.LogServer.Add(new LogInfo("Debug", info, (int)EnumLogLevel.DEBUG));
                 ShowRTBInfo(info);
                 GetAreaCarFromDll(areaNo);
+                CarRecodeDataPersistence();
                 ShowAreaCarList();
             }
             else if (m.Msg == Convert.ToInt32(Global.WM_CARSNAP))
@@ -453,6 +454,8 @@ namespace SPManager
                 SPlate.SP_Capture(nozzleNo, pCarOut);
                 struCarInfoOut_V2 struCarOut;
                 struCarOut = (struCarInfoOut_V2)Marshal.PtrToStructure(pCarOut, typeof(struCarInfoOut_V2));
+                Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 結束抓拍", (int)EnumLogLevel.DEBUG));
+
                 Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 识别车牌数量：" + struCarOut.nLicenseCount.ToString(), (int)EnumLogLevel.DEBUG));
                 ShowRTBInfo("油枪号：" + nozzleNo.ToString()+" 抓拍完成，识别车牌数量：" + struCarOut.nLicenseCount.ToString());
                 Marshal.FreeHGlobal(pCarOut);
@@ -1080,6 +1083,43 @@ namespace SPManager
             
         }
 
+        private void CarRecodeDataPersistence()
+        {
+            string sqlString = "SELECT * FROM carrecordlog WHERE carnumber = {0} AND arrivetime > DATE_ADD(NOW(),INTERVAL -30 MINUTE)";
+            for (int i = 0; i < Global.arrayAreaCar.Length; i++)
+            {
+                CarRecordInfo carRecordInfo = new CarRecordInfo();
+                string carlogoKey = Global.arrayAreaCar[i].carLogo.ToString() + "-" + Global.arrayAreaCar[i].subCarLogo.ToString();
+                string carlogo = "未知";
+                if (Global.carLogoHashtable.Contains(carlogoKey))
+                {
+                    carlogo = (string)Global.carLogoHashtable[carlogoKey];
+                }
+                carRecordInfo.stationCode = Global.stationInfo.stationCode;
+                carRecordInfo.stationName = Global.stationInfo.stationName;
+                carRecordInfo.carNumber = Global.arrayAreaCar[i].license;
+                carRecordInfo.carLogo = carlogo;
+
+                if (!string.IsNullOrEmpty(Global.arrayAreaCar[i].license))
+                {
+                    DataTable dt = Global.mysqlHelper.GetDataTable(String.Format(sqlString, Global.arrayAreaCar[i].license));
+                    if (dt == null || dt.Rows.Count < 1)
+                    {
+                        String saveSqlString = "INSERT INTO carrecordlog (stationcode, stationname, carnumber, carnumcolor, carlogo, subcarlogo, carcolor, arrivetime, upload) " +
+                                            "VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', now(), 0) ";
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_aaa:数据存储执行完毕,SQL:"
+                            + String.Format(saveSqlString, Global.stationInfo.stationCode, Global.stationInfo.stationName, Global.arrayAreaCar[i].license, null, carlogo, "", ""),
+                            (int)EnumLogLevel.DEBUG));
+
+                        Global.mysqlHelper.ExecuteSql(String.Format(saveSqlString, Global.stationInfo.stationCode, Global.stationInfo.stationName, Global.arrayAreaCar[i].license, null, carlogo, "", ""));
+                    }
+                }
+                
+                
+            }
+            
+        }
+
         private void ShowRTBInfo(string infoString)
         {
             
@@ -1416,6 +1456,11 @@ namespace SPManager
 
         }
 
+        public void uploadHeartBeat()
+        {
+            // Global.uploadHeartBeat = new tool.Upload(Global.upLoadUrl, "heartbeat");
+            // Global.uploadHeartBeat.Run();
+        }
     }
 
 }

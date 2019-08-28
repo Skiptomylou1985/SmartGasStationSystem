@@ -91,12 +91,29 @@ void CALLBACK PlateDataCallBack(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *
 		_itoa(struItsPlateResult.struVehicleInfo.byVehicleSubLogoRecog, debugInfo + strlen(debugInfo), 10);
 		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 		
+		memset(debugInfo, 0, sizeof(debugInfo));
+		strcpy(debugInfo + strlen(debugInfo), "匹配识别区 -->> nVideoChanCount:");
+		_itoa(nVideoChanCount, debugInfo + strlen(debugInfo), 10);
+		write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
+
 		for (int i=0;i<nVideoChanCount;i++)
 		{
+			memset(debugInfo, 0, sizeof(debugInfo));
+			strcpy(debugInfo + strlen(debugInfo), "匹配识别区 -->> nChanNo:");
+			_itoa(videoInfo[i].nChanNo, debugInfo + strlen(debugInfo), 10);
+			strcpy(debugInfo + strlen(debugInfo), "， byChanIndex:");
+			_itoa(struItsPlateResult.byChanIndex, debugInfo + strlen(debugInfo), 10);
+			write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 			if (videoInfo[i].nChanNo == struItsPlateResult.byChanIndex)
 			{
 				for (int j=0;j<videoInfo[i].nAreaCount;j++)
 				{
+					memset(debugInfo, 0, sizeof(debugInfo));
+					strcpy(debugInfo + strlen(debugInfo), "匹配识别区 -->> videoLaneNo:");
+					_itoa(videoInfo[i].areas[j].videoLaneNo, debugInfo + strlen(debugInfo), 10);
+					strcpy(debugInfo + strlen(debugInfo), "， byDriveChan:");
+					_itoa(struItsPlateResult.byDriveChan, debugInfo + strlen(debugInfo), 10);
+					write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 					if (videoInfo[i].areas[j].videoLaneNo == struItsPlateResult.byDriveChan)
 					{
 						areaNo = videoInfo[i].areas[j].areaNo;
@@ -179,6 +196,11 @@ SPLATE_API int SP_InitRunParam_Nozzle(unsigned char *pNozzleInfo, int nozzleCoun
 }
 SPLATE_API int SP_InitRunParam_Video(unsigned char *pVideoInfo, int videoCount)
 {
+	memset(debugInfo, 0, sizeof(debugInfo));
+	strcpy(debugInfo, "SP_InitRunParam_Video  ");
+	strcpy(debugInfo + strlen(debugInfo), "videoCount：");
+	_itoa(videoCount, debugInfo + strlen(debugInfo), 10);
+	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 	if (videoCount > MAX_VIDEO_CHANNEL_COUNT)
 	{
 		return INVALID_VIDEO_COUNT;
@@ -189,11 +211,6 @@ SPLATE_API int SP_InitRunParam_Video(unsigned char *pVideoInfo, int videoCount)
 	{
 		videoInfo[i].nChanNo += nDefaultStratChan;
 	}
-	memset(debugInfo, 0, sizeof(debugInfo));
-	strcpy(debugInfo, "SP_InitRunParam_Video  ");
-	strcpy(debugInfo + strlen(debugInfo), "videoCount：");
-	_itoa(videoCount, debugInfo + strlen(debugInfo), 10);
-	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 	return SUCCESS;
 }
 SPLATE_API int SP_InitNVR(char *IpAddress, LONG nPort, char *sAdmin, char *sPassword)
@@ -411,6 +428,9 @@ SPLATE_API int SP_SetCodeType(int codeType)
 
 SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 {
+	memset(debugInfo, 0, sizeof(debugInfo));
+	strcpy(debugInfo, "SP_Capture Start");
+	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 	int index = -1;
 	for (int i = 0; i < nNozzleCount; i++)
 	{
@@ -518,7 +538,9 @@ SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo)
 			}
 		}
 	}
-
+	memset(debugInfo, 0, sizeof(debugInfo));
+	strcpy(debugInfo, "SP_Capture End");
+	write_log_file("Debug.txt", MAX_FILE_SIZE, debugInfo, strlen(debugInfo), 3);
 	memcpy(carInfo, &carOutCache, sizeof(carOutCache));
 	return 0;
 }

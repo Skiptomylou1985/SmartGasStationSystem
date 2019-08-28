@@ -71,6 +71,9 @@ namespace SPManager
         public static Upload uploadTrade;
         public static Upload uploadOrder;
         public static Upload uploadPayment;
+        public static Upload uploadCar;
+        public static Upload uploadCarRecord;
+        public static Upload uploadHeartBeat;
 
 
         public static ClsStationInfo stationInfo = new ClsStationInfo();
@@ -111,12 +114,7 @@ namespace SPManager
 
         public static Hashtable oilInfoHashtable = new Hashtable();
         public static Hashtable carBrandHashtable = new Hashtable();
-
         
-
-
-
-
     }
-    
+
 }

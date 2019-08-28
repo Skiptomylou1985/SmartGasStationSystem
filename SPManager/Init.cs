@@ -87,6 +87,16 @@ namespace SPManager
                 Global.uploadPayment.Run();
                 Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload paylog upload begin ", (int)EnumLogLevel.DEBUG));
 
+                // 上传carRecord
+                Global.uploadCarRecord = new Upload(Global.upLoadUrl, "carrecord");
+                Global.uploadCarRecord.Run();
+                Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload carrecordlog upload begin ", (int)EnumLogLevel.DEBUG));
+
+                // 上传HeartBeat
+                Global.uploadHeartBeat = new Upload(Global.upLoadUrl, "heartbeat");
+                Global.uploadHeartBeat.Run();
+                Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload HeartBeat upload begin ", (int)EnumLogLevel.DEBUG));
+
             }
         }
 
@@ -276,6 +286,7 @@ namespace SPManager
                     Global.LogServer.Add(new LogInfo("Error", "Main->GetVideoChanParam 从数据库表【vch】获取视频通道为空", (int)EnumLogLevel.ERROR));
                     return false;
                 }
+                Global.LogServer.Add(new LogInfo("Debug", "Main->GetVideoChanParam 【vch】视频通道数：" + dt3.Rows.Count.ToString(), (int)EnumLogLevel.DEBUG));
                 foreach (DataRow dr3 in dt3.Rows)
                 {
                     ClsVideoChannel videoChan = new ClsVideoChannel();
@@ -298,7 +309,7 @@ namespace SPManager
                     }
                     Global.videoChanList.Add(videoChan);
                 }
-
+                Global.LogServer.Add(new LogInfo("Debug", "Main->GetVideoChanParam Global.videoChanList 视频通道数：" + Global.videoChanList.Count.ToString(), (int)EnumLogLevel.DEBUG));
             }
             catch (System.Exception ex)
             {
@@ -306,10 +317,7 @@ namespace SPManager
                 return false;
             }
             return true;
-
-
-
-
+            
         }
 
         private bool GetAreaParam()
@@ -492,6 +500,7 @@ namespace SPManager
                 {
                     SetNozzleParamToDll();
                 }
+                Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->Global.nVideoRecogFlag ：" + Global.nVideoRecogFlag, (int)EnumLogLevel.DEBUG));
                 if (Global.nVideoRecogFlag == 1)
                 {
                     SetVideoChanParamToDll();
@@ -505,6 +514,7 @@ namespace SPManager
 
         private void SetNozzleParamToDll()
         {
+            Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->SetNozzleParamToDll 油枪参数传入动态库 Start", (int)EnumLogLevel.DEBUG));
             int structLenth = Marshal.SizeOf(typeof(struNozzleRecog));
             struNozzleRecog[] nozzleRecog = new struNozzleRecog[Global.nozzleList.Count];
             byte[] ipp = new byte[10000];
@@ -548,11 +558,13 @@ namespace SPManager
                 offset += structLenth;
             }
             SPlate.SP_InitRunParam_Nozzle(ipp, Global.nozzleList.Count);
-            Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->SetNozzleParamToDll 油枪参数传入动态库完成，油枪数：" + Global.nozzleList.Count.ToString(), (int)EnumLogLevel.DEBUG));
+            Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->SetNozzleParamToDll 油枪参数传入动态库 End，油枪数：" 
+                + Global.nozzleList.Count.ToString(), (int)EnumLogLevel.DEBUG));
 
         }
         private void SetVideoChanParamToDll()
         {
+            Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->SetVideoParamToDll 视频通道参数传入动态库 Start", (int)EnumLogLevel.DEBUG));
             int structLenth = Marshal.SizeOf(typeof(struVideoChan));
             //IntPtr ip = Marshal.AllocHGlobal(Global.nozzleList.Count* structLenth);
             struVideoChan[] videoChan = new struVideoChan[Global.videoChanList.Count];
@@ -564,6 +576,8 @@ namespace SPManager
                 videoChan[i].areaCount = Global.videoChanList[i].areaNoList.Count;
                 videoChan[i].videoType = Global.videoChanList[i].videoType;
                 videoChan[i].areas = new struArea[8];
+                Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->SetVideoParamToDll -> videoChanList ："
+                    + "channelNo：" + Global.videoChanList[i].channelNo.ToString(), (int)EnumLogLevel.DEBUG));
                 for (int j = 0; j < videoChan[i].areaCount; j++)
                 {
 
@@ -577,15 +591,19 @@ namespace SPManager
                         videoChan[i].areas[j].bottom = (int)(Global.areaList[index].bottom * Global.nDefaultHeight);
                         videoChan[i].areas[j].videoChanNo = videoChan[i].chanNo;
                         videoChan[i].areas[j].videoLaneNo = Global.areaList[index].videoLaneNo;
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->SetVideoParamToDll -> videoChanList ："
+                            + "channelNo：areaNoId：" + Global.areaList[index].id, (int)EnumLogLevel.DEBUG));
                     }
 
                 }
+                
                 byte[] byVideo = SystemUnit.StrutsToBytesArray(videoChan[i]);
                 Buffer.BlockCopy(byVideo, 0, ipp, offset, structLenth);
                 offset += structLenth;
             }
             SPlate.SP_InitRunParam_Video(ipp, Global.videoChanList.Count);
-            Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->SetVideoParamToDll 视频通道参数传入动态库完成，油枪数：" + Global.videoChanList.Count.ToString(), (int)EnumLogLevel.DEBUG));
+            Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->SetVideoParamToDll 视频通道参数传入动态库 End，通道数：" 
+                + Global.videoChanList.Count.ToString(), (int)EnumLogLevel.DEBUG));
 
         }
 

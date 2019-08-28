@@ -671,7 +671,13 @@
             "29",
             "30",
             "31",
-            "32"});
+            "32",
+            "33",
+            "34",
+            "35",
+            "36",
+            "37",
+            "38"});
             this.hk_comboNoz.Location = new System.Drawing.Point(53, 27);
             this.hk_comboNoz.Name = "hk_comboNoz";
             this.hk_comboNoz.Size = new System.Drawing.Size(75, 20);
