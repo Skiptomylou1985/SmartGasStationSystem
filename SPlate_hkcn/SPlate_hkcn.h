@@ -131,6 +131,7 @@ typedef struct
 	int nPicLenth;
 	struLicense license[8];
 	char pic[MAX_PIC_LENTH];
+	char picName[256];
 } struMultiCarInfoOut;
 
 
@@ -158,6 +159,10 @@ typedef struct tagVideoChanInfo
 }struVideoInfo;
 
 
+char *get_boundary(char *mfd);
+char* mutipart_form_data(char *mfd, char *boundary, char **type, char **content, int mfdSize, int& contentLen, int& offsetLen);
+char* memstr(char* full_data, int full_data_len, char* substr);
+
 extern "C" SPLATE_API int SP_InitRunParam(BYTE *pChan, int areaCount);
 extern "C" SPLATE_API int SP_InitRunParam_Nozzle(unsigned char *pNozzleInfo, int nozzleCount);
 extern "C" SPLATE_API int SP_InitRunParam_Video(unsigned char *pVideoInfo, int videoCount);
@@ -177,3 +182,4 @@ extern "C" SPLATE_API int SP_GetNvrStatus();
 extern "C" SPLATE_API int SP_SetLogLevel(int loglevel);
 extern "C" SPLATE_API int SP_SetCodeType(int codeType);
 extern "C" SPLATE_API int SP_Capture(int nozzleNo, struMultiCarInfoOut *carInfo);
+extern "C" SPLATE_API int SP_InitStationInfo(int savePicture, char *stationCode, char *picFilePath);

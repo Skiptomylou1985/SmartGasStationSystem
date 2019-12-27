@@ -34,7 +34,7 @@ namespace SPManager
                 Global.LogServer.Add(new LogInfo("Debug", info, (int)EnumLogLevel.DEBUG));
                 ShowRTBInfo(info);
                 GetAreaCarFromDll(areaNo);
-                CarRecodeDataPersistence();
+                CarRecodeDataPersistence(areaNo);
                 ShowAreaCarList();
             }
             else if (m.Msg == Convert.ToInt32(Global.WM_CARSNAP))
@@ -51,6 +51,10 @@ namespace SPManager
                 }
 
                 ShowNozzleCarList();
+            }
+            else if (m.Msg == Convert.ToInt32(Global.WM_RESTARTAPP))
+            {
+                AppRestart();
             }
             else 
             {
@@ -94,6 +98,8 @@ namespace SPManager
             {
                 ret += 1 << 6;
             }
+
+            InitFtpServer();
             return ret;
         }
 
@@ -114,6 +120,11 @@ namespace SPManager
                    Global.iniPath + " " + info.type + " " + info.ip + " " + info.dbname + " " + info.username + " " + info.password, (int)EnumLogLevel.DEBUG));
                 Global.mysqlHelper = new MysqlHelper(info);
                 Global.mysqlHelper2 = new MysqlHelper(info);
+                Global.mysqlHelperTradelog = new MysqlHelper(info);
+                Global.mysqlHelperCarlog = new MysqlHelper(info);
+                Global.mysqlHelperPaylog = new MysqlHelper(info);
+                Global.mysqlHelperOrderlog = new MysqlHelper(info);
+                Global.mysqlHelperCarRecordlog = new MysqlHelper(info);
                 Global.dllEncoder = INIUnit.GetINIValue(Global.iniPath, "main", "encode");
                 Global.nShowMode = int.Parse(INIUnit.GetINIValue(Global.iniPath, "main", "showmode"));
             }
@@ -215,7 +226,10 @@ namespace SPManager
             {
                 struCarOut.nColor = 1;
             }
-              
+            if (Global.nIsCarNumberRemedy == 1 && !String.IsNullOrEmpty(lic) && lic.Length > 3 && lic.Length < 10)
+            {
+                Global.listCarArriveNoMatching.Add(lic);
+            }  
             Global.LogServer.Add(new LogInfo("Color", "车牌号:"+lic + "  车牌颜色："+plateColor + " 车牌颜色序号:"+struCarOut.nColor.ToString(), (int)EnumLogLevel.DEBUG));
 
             //             if (!FindCarInCarList(lic))
@@ -459,7 +473,7 @@ namespace SPManager
                 Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 识别车牌数量：" + struCarOut.nLicenseCount.ToString(), (int)EnumLogLevel.DEBUG));
                 ShowRTBInfo("油枪号：" + nozzleNo.ToString()+" 抓拍完成，识别车牌数量：" + struCarOut.nLicenseCount.ToString());
                 Marshal.FreeHGlobal(pCarOut);
-
+                
                 ClsCarInfo car = MatchCar(struCarOut, nozzleNo);
                 //ClsCarInfo car = MatchCar2(struCarOut, nozzleNo);
                 if (car != null) //抓拍匹配到车辆
@@ -500,26 +514,42 @@ namespace SPManager
                 if (Global.nSavePicture == 1)
                 {
                     ClsPicture pic = new ClsPicture();
-                    pic.picBufer = new byte[struCarOut.nPicLenth];
-                    Buffer.BlockCopy(struCarOut.pic, 0, pic.picBufer, 0, struCarOut.nPicLenth);
-                    //pic.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
-                    pic.picPath = Global.basePicPath + DateTime.Now.ToString("yyyyMMdd") + @"\\";
-                    // Global.LogServer.Add(new LogInfo("Debug", "Main->GetCarFromDll: 车辆图片入队列,图片路径：" + pic.picPath+ pic.picName, (int)EnumLogLevel.DEBUG));
-                    pic.picName = Global.nozzleList[index].nozzleNo.ToString() + "_" + DateTime.Now.ToString("HHmmss") + ".jpg";
-                    pic.picWidth = struCarOut.nPicWidth;
-                    pic.picHeight = struCarOut.nPicHeight;
-                    pic.picType = struCarOut.nPicType;
-                    Global.picWork.Add(pic);
-                    Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 车辆图片入队列,图片长度：" + struCarOut.nPicLenth.ToString(), (int)EnumLogLevel.DEBUG));
-
-                    if (pic.picBufer.Length > 2)
+                    string nSavePictureTimePath = string.Format("{0:yyyyMMdd}", DateTime.Now);
+                    pic.picPath = Global.basePicPath + nSavePictureTimePath + "\\";
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: Start车辆图片上传方法：" + Global.basePicPath, (int)EnumLogLevel.DEBUG));
+                    if (null != struCarOut.picName)
                     {
-                        Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 车辆图片入队列,图片类型：" + pic.picBufer[0].ToString() + pic.picBufer[1].ToString() +
-                        "图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
+                        if (Global.dllEncoder == "utf8")
+                        {
+                            pic.picName = System.Text.Encoding.UTF8.GetString(struCarOut.picName, 0, GetStrLength(struCarOut.picName));
+                        }
+                        else
+                        {
+                            pic.picName = System.Text.Encoding.Default.GetString(struCarOut.picName, 0, GetStrLength(struCarOut.picName));
+                        }
                     }
+                    // pic.picWidth = struCarOut.nPicWidth;
+                    // pic.picHeight = struCarOut.nPicHeight;
+                    // pic.picType = struCarOut.nPicType;
+                    // Global.picWork.Add(pic);
+                    // Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: 车辆图片入队列,图片长度：" + struCarOut.nPicLenth.ToString(), (int)EnumLogLevel.DEBUG));
+                    if (null != struCarOut.picName)
+                    {
+                        if (null != Global.ftpHelper)
+                        {
+                            // 上传图片
+                            bool isOk = ftpUpload(pic.picPath, pic.picName);
+                            if (isOk)
+                            {
+                                // 删除本地图片
+                                Global.ftpHelper.DeleteLocationFile(pic.picPath + pic.picName);
+                            }
+                        }
+
+                        Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture: End车辆图片上传方法, " + "图片路径：" + pic.picPath + pic.picName, (int)EnumLogLevel.DEBUG));
+                    }
+                    Global.nozzleList[index].nozzleCar.picPath = pic.picName;
                 }
-               
-                
             }
             //int index = Global.nozzleMap[nozzleNo];
             
@@ -538,7 +568,15 @@ namespace SPManager
             {
                 struCarInfoOut car = new struCarInfoOut();
                 car.license = Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.license);
-                car.color = Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.licenseColorString);
+                if (!string.IsNullOrEmpty(Global.nozzleList[index].nozzleCar.licenseColorString))
+                {
+                    car.color = Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.licenseColorString);
+                }
+                else
+                {
+                    car.color = null;
+                }
+                
                 car.nCarColor = Global.nozzleList[index].nozzleCar.carColor;
                 car.nColor = Global.nozzleList[index].nozzleCar.licenseColor;
                 car.nCarLogo = Global.nozzleList[index].nozzleCar.carLogo;
@@ -587,10 +625,26 @@ namespace SPManager
                         break;
                     }
                 }
-                
-
-
             }
+            // 车牌补偿
+            if (Global.nIsCarNumberRemedy == 1)
+            {
+                if (!String.IsNullOrEmpty(Global.nozzleList[index].nozzleCar.license))
+                {
+                    Global.listCarArriveNoMatching.Remove(Global.nozzleList[index].nozzleCar.license);
+                }
+                if (nozzleStatus == 3)
+                {
+                    if (String.IsNullOrEmpty(Global.nozzleList[index].nozzleCar.license) && Global.listCarArriveNoMatching.Count > 0)
+                    {
+                        Global.nozzleList[index].nozzleCar.license = Global.listCarArriveNoMatching[0];
+                        Global.listCarArriveNoMatching.RemoveAt(0);
+                    }
+                    Global.listCarArriveNoMatching.Remove(Global.nozzleList[index].nozzleCar.license);
+                }
+            }
+            
+
             if (Global.ditMode == 1) //动态库模式
             {
                 byte[] license = System.Text.Encoding.Default.GetBytes(Global.nozzleList[index].nozzleCar.license);
@@ -631,7 +685,10 @@ namespace SPManager
                     Global.nozzleList[index].nozzleCar.beginTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
                     Global.nozzleList[index].nozzleCar.endTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
                     Global.nozzleList[index].nozzleCar.leaveTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
-                    Global.nozzleList[index].nozzleCar.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.nozzleList[index].nozzleCar.license + @"\\";
+                    if (!String.IsNullOrEmpty(Global.nozzleList[index].nozzleCar.picPath))
+                    {
+                        
+                    }
                     //if(Global.nMatchMode == 1 && Global.nozzleList[index].nozzleCar.license != "")
                     //    SendCallbackInfo(Global.nozzleList[index].nozzleCar, 1);
                     UpdateStationBoardAreaControlStatus(Global.nozzleList[index].nozzleCar.areaNo, Global.nozzleList[index].nozzleCar.license,Color.Red);
@@ -662,8 +719,12 @@ namespace SPManager
                     Global.nozzleList[index].nozzleCar.endTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
                     Global.nozzleList[index].nozzleCar.leaveTime = DateTime.Parse(Global.currentPump[nozzleNo].Time);
                     Global.currentPump[nozzleNo] = new PumpInfo();
-                    Global.nozzleList[index].nozzleCar.picPath = Global.basePicPath + dt.ToString("yyyyMMdd") + @"\\" + Global.arrayNozzleCar[index].license.Trim() + @"\\";
-                    Global.mysqlHelper.ExecuteSql(Global.nozzleList[index].nozzleCar.toSaveSqlString());
+                    if (!String.IsNullOrEmpty(Global.nozzleList[index].nozzleCar.picPath))
+                    {
+                        
+                    }
+
+                    Global.mysqlHelperCarlog.ExecuteSql(Global.nozzleList[index].nozzleCar.toSaveSqlString());
                     Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:数据存储执行完毕,SQL:"+ Global.nozzleList[index].nozzleCar.toSaveSqlString(), (int)EnumLogLevel.DEBUG));
                     if (Global.nMatchMode == 1 && Global.nozzleList[index].nozzleCar.license != "")
                         SendCallbackInfo(Global.nozzleList[index].nozzleCar, 2);
@@ -958,9 +1019,15 @@ namespace SPManager
                     if (Global.nTodayCount > 0)
                     {
                         Global.nTodayRatio = 100 * Global.nTodayMatch / Global.nTodayCount;
-                       // Global.nTodayRatio = Global.nTodayRatio % 5 + 80;
-                        
-
+                        // Global.nTodayRatio = Global.nTodayRatio % 5 + 80;
+                        //if (Global.nTodayRatio  >= 60 && Global.nTodayRatio < 70)
+                        //{
+                        //    Global.nTodayRatio += 18;
+                        //}
+                        //if (Global.nTodayRatio >= 70 && Global.nTodayRatio < 80)
+                        //{
+                        //    Global.nTodayRatio += 8;
+                        //}
                     }
 
 
@@ -1037,8 +1104,16 @@ namespace SPManager
 
             NET_ITS_PLATE_RESULT callBackInfo = new NET_ITS_PLATE_RESULT();
             callBackInfo.sLicense = new byte[16];
-            byte[] lic = System.Text.Encoding.Default.GetBytes(carOut.license);
-            Buffer.BlockCopy(lic, 0, callBackInfo.sLicense, 0, lic.Length);
+            byte[] lic = null;
+            if (!string.IsNullOrEmpty(carOut.license))
+            {
+                lic = System.Text.Encoding.Default.GetBytes(carOut.license);
+            }
+            if (null != lic)
+            {
+                Buffer.BlockCopy(lic, 0, callBackInfo.sLicense, 0, lic.Length);
+            }
+            
             callBackInfo.byColor = (byte)carOut.carColor;
             callBackInfo.byPlateColor = (byte)carOut.licenseColor;
             callBackInfo.wVehicleLogoRecog = (short)carOut.carLogo;
@@ -1083,41 +1158,45 @@ namespace SPManager
             
         }
 
-        private void CarRecodeDataPersistence()
+        private void CarRecodeDataPersistence(int areaNo)
         {
-            string sqlString = "SELECT * FROM carrecordlog WHERE carnumber = {0} AND arrivetime > DATE_ADD(NOW(),INTERVAL -30 MINUTE)";
-            for (int i = 0; i < Global.arrayAreaCar.Length; i++)
+            if (Global.areaMap.ContainsKey(areaNo))
             {
-                CarRecordInfo carRecordInfo = new CarRecordInfo();
-                string carlogoKey = Global.arrayAreaCar[i].carLogo.ToString() + "-" + Global.arrayAreaCar[i].subCarLogo.ToString();
-                string carlogo = "未知";
-                if (Global.carLogoHashtable.Contains(carlogoKey))
+                int index = Global.areaMap[areaNo];
+                if (string.IsNullOrEmpty(Global.arrayAreaCar[index].license))
                 {
-                    carlogo = (string)Global.carLogoHashtable[carlogoKey];
+                    return;
                 }
-                carRecordInfo.stationCode = Global.stationInfo.stationCode;
-                carRecordInfo.stationName = Global.stationInfo.stationName;
-                carRecordInfo.carNumber = Global.arrayAreaCar[i].license;
-                carRecordInfo.carLogo = carlogo;
+                string sqlString = "SELECT * FROM carrecordlog WHERE carnumber = '{0}' AND arrivetime > DATE_ADD(NOW(),INTERVAL -30 MINUTE)";
 
-                if (!string.IsNullOrEmpty(Global.arrayAreaCar[i].license))
+                if (!string.IsNullOrEmpty(Global.arrayAreaCar[index].license))
                 {
-                    DataTable dt = Global.mysqlHelper.GetDataTable(String.Format(sqlString, Global.arrayAreaCar[i].license));
-                    if (dt == null || dt.Rows.Count < 1)
+                    DataTable dt = Global.mysqlHelper.GetDataTable(String.Format(sqlString, Global.arrayAreaCar[index].license));
+                    if (dt == null || dt.Rows.Count == 0)
                     {
-                        String saveSqlString = "INSERT INTO carrecordlog (stationcode, stationname, carnumber, carnumcolor, carlogo, subcarlogo, carcolor, arrivetime, upload) " +
+                        string carlogoKey = Global.arrayAreaCar[index].carLogo.ToString() + "-" + Global.arrayAreaCar[index].subCarLogo.ToString();
+                        string carlogo = "未知";
+                        if (Global.carLogoHashtable.Contains(carlogoKey))
+                        {
+                            carlogo = (string)Global.carLogoHashtable[carlogoKey];
+                        }
+                        DataTable dtAgain = Global.mysqlHelper.GetDataTable(String.Format(sqlString, Global.arrayAreaCar[index].license));
+                        if (dtAgain == null || dtAgain.Rows.Count == 0)
+                        {
+                            String saveSqlString = "INSERT INTO carrecordlog (stationcode, stationname, carnumber, carnumcolor, carlogo, subcarlogo, carcolor, arrivetime, upload) " +
                                             "VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', now(), 0) ";
-                        Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture_aaa:数据存储执行完毕,SQL:"
-                            + String.Format(saveSqlString, Global.stationInfo.stationCode, Global.stationInfo.stationName, Global.arrayAreaCar[i].license, null, carlogo, "", ""),
-                            (int)EnumLogLevel.DEBUG));
 
-                        Global.mysqlHelper.ExecuteSql(String.Format(saveSqlString, Global.stationInfo.stationCode, Global.stationInfo.stationName, Global.arrayAreaCar[i].license, null, carlogo, "", ""));
+                            Global.mysqlHelper.ExecuteSql(String.Format(saveSqlString, Global.stationInfo.stationCode,
+                                Global.stationInfo.stationName, Global.arrayAreaCar[index].license, null, carlogo, "", ""));
+
+                            Global.LogServer.Add(new LogInfo("Debug", "Main->ProcSnapFromDIT_Capture:视频流车辆数据存储执行完毕,SQL:"
+                                + String.Format(saveSqlString, Global.stationInfo.stationCode, Global.stationInfo.stationName,
+                                Global.arrayAreaCar[index].license, null, carlogo, "", ""),
+                                (int)EnumLogLevel.DEBUG));
+                        }
                     }
                 }
-                
-                
             }
-            
         }
 
         private void ShowRTBInfo(string infoString)
@@ -1460,6 +1539,37 @@ namespace SPManager
         {
             // Global.uploadHeartBeat = new tool.Upload(Global.upLoadUrl, "heartbeat");
             // Global.uploadHeartBeat.Run();
+        }
+
+        public bool ftpUpload(string filePath, string fileName)
+        {
+            bool isOk = false;
+            if (File.Exists(filePath + fileName))
+            {
+                Global.ftpHelper.RelatePath = string.Format("/{0}", fileName);
+                Global.ftpHelper.UpLoad(filePath + fileName, out isOk);
+                if (isOk)
+                {
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->ftpUpload: 文件上传成功 --> 图片名称：" + filePath + fileName, (int)EnumLogLevel.DEBUG));
+                }
+                else
+                {
+                    Global.LogServer.Add(new LogInfo("Debug", "Main->ftpUpload: 文件上传失败 --> 图片名称：" + filePath + fileName, (int)EnumLogLevel.DEBUG));
+                }
+            }
+            return isOk;
+        }
+
+        public void AppRestart()
+        {
+            //Application.Exit();
+            //System.Diagnostics.Process.Start(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            
+            // 任务管理器中的进程仍有
+            Application.ExitThread(); 
+            Application.Restart();
+
+            //Process.GetCurrentProcess().Kill();
         }
     }
 

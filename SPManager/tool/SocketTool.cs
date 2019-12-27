@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Diagnostics;
 
 namespace SPManager
 {
@@ -194,6 +195,18 @@ namespace SPManager
                     int count = cSocket.Receive(buff);
                     if (count > 0)
                     {
+                        if (buff[0] == 0xAA && buff[1] == 0xAA && buff[2] == 0xAA && buff[3] == 1)
+                        {
+                            if (buff[4] == 1)
+                            {
+                                Global.LogServer.Add(new LogInfo("Debug", "SocketTool->ReceiveMasssage 重启服务 Start", (int)EnumLogLevel.DEBUG));
+                                
+                                SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)Global.WM_RESTARTAPP, 0, 0);
+                                
+                            }
+                            return;
+                        }
+
                         if (buff[0] == 0x32 && buff[1] == 0x30 && buff[2] == 0x31 && buff[3] == 0x30 && buff[4] == 0x31) //交易数据
                         {
                             int pidlenth = buff[5];
@@ -240,73 +253,95 @@ namespace SPManager
                             {
                                 try
                                 {
-                                //Global.LogServer.Add(new LogInfo("tradelog", "step:1", (int)EnumLogLevel.DEBUG));
-                                TradeInfo trade = new TradeInfo();
-                                trade.GasStation_NO = obj["source"].ToString();
-                                trade.REQ_Time = obj["time"].ToString();
-                                trade.MSG_ID = obj["msgID"].ToString();
-                                //Global.LogServer.Add(new LogInfo("tradelog", "step:2", (int)EnumLogLevel.DEBUG));
-                                trade.OilGun_NO = obj["data"][0]["1"].ToString();
-                                trade.OIL_TYPE = obj["data"][0]["2"].ToString();
-                                //Global.LogServer.Add(new LogInfo("tradelog", "step:3", (int)EnumLogLevel.DEBUG));
-                                if (Global.oilInfoHashtable.Contains(trade.OIL_TYPE))
-                                {
-                                    OilInfo oil = (OilInfo)Global.oilInfoHashtable[trade.OIL_TYPE];
-                                    trade.OilName = oil.OilName;
-                                    trade.OilCode = oil.OilCode;
-                                    trade.OilClass = oil.OilClass;
-                                }
-                                //Global.LogServer.Add(new LogInfo("tradelog", "step:4", (int)EnumLogLevel.DEBUG));
-                                trade.OIL_Q = double.Parse(obj["data"][0]["3"].ToString());
-                                trade.OIL_AMT = double.Parse(obj["data"][0]["4"].ToString());
-                                trade.OIL_PRC = double.Parse(obj["data"][0]["5"].ToString());
-                                trade.START_TIME = obj["data"][0]["6"].ToString();
-                                trade.END_TIME = obj["data"][0]["7"].ToString();
-                                trade.START_READ = double.Parse(obj["data"][0]["8"].ToString());
-                                trade.END_READ = double.Parse(obj["data"][0]["9"].ToString());
-                                //Global.LogServer.Add(new LogInfo("tradelog", "step:5", (int)EnumLogLevel.DEBUG));
-                                trade.VehicleNo = obj["data"][0]["10"].ToString();
-                                trade.VehicleBrandCode = obj["data"][0]["11"].ToString();
-                                trade.SubBrandCode = obj["data"][0]["12"].ToString();
-                                //Global.LogServer.Add(new LogInfo("tradelog", "step:6", (int)EnumLogLevel.DEBUG));
-                                //if (Global.carBrandHashtable.Contains(trade.VehicleBrandCode+"-"+trade.SubBrandCode))
-                                //                                     {
-                                //                                        CarBrandInfo car = (CarBrandInfo)Global.carLogoHashtable[trade.VehicleBrandCode + "-" + trade.SubBrandCode];
-                                //                                         trade.CarBrand = car.CarBrand;
-                                //                                         trade.SubBrand = car.SubCarBrand;
-                                //                                     }
-                                trade.VehicleModel = obj["data"][0]["13"].ToString();
-                                trade.VehicleColor = obj["data"][0]["14"].ToString();
-                                trade.BodyColor = obj["data"][0]["15"].ToString();
-                                Global.LogServer.Add(new LogInfo("tradelog", "SocketTool->存储加油交易信息: " + trade.toSaveSqlString(), (int)EnumLogLevel.DEBUG));
-                                int id = Global.mysqlHelper2.ExecuteSqlGetId(trade.toSaveSqlString());
-                                    
-                                if ((trade.BodyColor == "1" && trade.OilClass == "柴油") ||
-                                    (trade.BodyColor == "0" && trade.OilClass == "汽油"))
-                                {
-                                    Global.mysqlHelper2.ExecuteSql("update tradelog a ,carbrand b set a.realcarbrand = b.carlogo, a.realsubbrand = b.subcarlogo where a.carbrand = b.carcode and a.subbrand = b.subcarcode and a.id = " + id.ToString());
-                                }
-                                // Global.LogServer.Add(new LogInfo("tradelog", "step:7", (int)EnumLogLevel.DEBUG));
-                                /*
-                                string sql = "select count(*) from tradelog where startread = " +
-                                trade.START_READ + " and endread = " + trade.END_READ;
-                                DataTable dt = Global.mysqlHelper2.GetDataTable(sql);
-                                if (int.Parse(dt.Rows[0][0].ToString()) == 0)
-                                {
+                                    //Global.LogServer.Add(new LogInfo("tradelog", "step:1", (int)EnumLogLevel.DEBUG));
+                                    TradeInfo trade = new TradeInfo();
+                                    trade.GasStation_NO = obj["source"].ToString();
+                                    trade.REQ_Time = obj["time"].ToString();
+                                    trade.MSG_ID = obj["msgID"].ToString();
+                                    //Global.LogServer.Add(new LogInfo("tradelog", "step:2", (int)EnumLogLevel.DEBUG));
+                                    trade.OilGun_NO = obj["data"][0]["1"].ToString();
+                                    trade.OIL_TYPE = obj["data"][0]["2"].ToString();
+                                    //Global.LogServer.Add(new LogInfo("tradelog", "step:3", (int)EnumLogLevel.DEBUG));
+                                    if (Global.oilInfoHashtable.Contains(trade.OIL_TYPE))
+                                    {
+                                        OilInfo oil = (OilInfo)Global.oilInfoHashtable[trade.OIL_TYPE];
+                                        trade.OilName = oil.OilName;
+                                        trade.OilCode = oil.OilCode;
+                                        trade.OilClass = oil.OilClass;
+                                    }
+                                    //Global.LogServer.Add(new LogInfo("tradelog", "step:4", (int)EnumLogLevel.DEBUG));
+                                    trade.OIL_Q = double.Parse(obj["data"][0]["3"].ToString());
+                                    trade.OIL_AMT = double.Parse(obj["data"][0]["4"].ToString());
+                                    trade.OIL_PRC = double.Parse(obj["data"][0]["5"].ToString());
+                                    trade.START_TIME = obj["data"][0]["6"].ToString();
+                                    trade.END_TIME = obj["data"][0]["7"].ToString();
+                                    trade.START_READ = double.Parse(obj["data"][0]["8"].ToString());
+                                    trade.END_READ = double.Parse(obj["data"][0]["9"].ToString());
+                                    //Global.LogServer.Add(new LogInfo("tradelog", "step:5", (int)EnumLogLevel.DEBUG));
+                                    trade.VehicleNo = obj["data"][0]["10"].ToString();
+                                    trade.VehicleBrandCode = obj["data"][0]["11"].ToString();
+                                    trade.SubBrandCode = obj["data"][0]["12"].ToString();
+                                    //Global.LogServer.Add(new LogInfo("tradelog", "step:6", (int)EnumLogLevel.DEBUG));
+                                    //if (Global.carBrandHashtable.Contains(trade.VehicleBrandCode+"-"+trade.SubBrandCode))
+                                    //                                     {
+                                    //                                        CarBrandInfo car = (CarBrandInfo)Global.carLogoHashtable[trade.VehicleBrandCode + "-" + trade.SubBrandCode];
+                                    //                                         trade.CarBrand = car.CarBrand;
+                                    //                                         trade.SubBrand = car.SubCarBrand;
+                                    //                                     }
+                                    trade.VehicleModel = obj["data"][0]["13"].ToString();
+                                    trade.VehicleColor = obj["data"][0]["14"].ToString();
+                                    trade.BodyColor = obj["data"][0]["15"].ToString();
+
+                                    string sqlStringGetUniqueCar = "select * FROM carlog WHERE nozzleno = {0} AND startread = {1} AND endread = {2}";
+                                    DataTable dtCarlog = Global.mysqlHelper2.GetDataTable(String.Format(sqlStringGetUniqueCar, trade.OilGun_NO, trade.START_READ, trade.END_READ));
+                                    if (null != dtCarlog && dtCarlog.Rows.Count > 0)
+                                    {
+                                        trade.PicPath = dtCarlog.Rows[0]["picpath"].ToString();
+                                    }
+
                                     Global.LogServer.Add(new LogInfo("tradelog", "SocketTool->存储加油交易信息: " + trade.toSaveSqlString(), (int)EnumLogLevel.DEBUG));
-                                    int id = Global.mysqlHelper2.ExecuteSqlGetId(trade.toSaveSqlString());
-                                    step = "8";
+                                    string sqlStringGetUniqueTrade = "select * FROM tradelog WHERE nozzleno = {0} AND startread = {1} AND endread = {2}";
+                                    DataTable dt = Global.mysqlHelper2.GetDataTable(String.Format(sqlStringGetUniqueTrade, trade.OilGun_NO, trade.START_READ, trade.END_READ));
+                                    int id = 0;
+                                    if (dt == null || dt.Rows.Count == 0)
+                                    {
+                                        id = Global.mysqlHelper2.ExecuteSqlGetId(trade.toSaveSqlString());
+                                    }
+                                    else
+                                    {
+                                        foreach (DataRow dr in dt.Rows)
+                                        {
+                                            id = int.Parse(dr["id"].ToString());
+                                            break;
+                                        }
+                                    }
+                                    
                                     if ((trade.BodyColor == "1" && trade.OilClass == "柴油") ||
                                         (trade.BodyColor == "0" && trade.OilClass == "汽油"))
                                     {
                                         Global.mysqlHelper2.ExecuteSql("update tradelog a ,carbrand b set a.realcarbrand = b.carlogo, a.realsubbrand = b.subcarlogo where a.carbrand = b.carcode and a.subbrand = b.subcarcode and a.id = " + id.ToString());
                                     }
-                                    step = "9";
-                                }
-                                else
-                                {
-                                    Global.LogServer.Add(new LogInfo("tradelog", "SocketTool->存储加油交易信息,该条数据已存在 ", (int)EnumLogLevel.DEBUG));
-                                }*/
+                                    // Global.LogServer.Add(new LogInfo("tradelog", "step:7", (int)EnumLogLevel.DEBUG));
+                                    /*
+                                    string sql = "select count(*) from tradelog where startread = " +
+                                    trade.START_READ + " and endread = " + trade.END_READ;
+                                    DataTable dt = Global.mysqlHelper2.GetDataTable(sql);
+                                    if (int.Parse(dt.Rows[0][0].ToString()) == 0)
+                                    {
+                                        Global.LogServer.Add(new LogInfo("tradelog", "SocketTool->存储加油交易信息: " + trade.toSaveSqlString(), (int)EnumLogLevel.DEBUG));
+                                        int id = Global.mysqlHelper2.ExecuteSqlGetId(trade.toSaveSqlString());
+                                        step = "8";
+                                        if ((trade.BodyColor == "1" && trade.OilClass == "柴油") ||
+                                            (trade.BodyColor == "0" && trade.OilClass == "汽油"))
+                                        {
+                                            Global.mysqlHelper2.ExecuteSql("update tradelog a ,carbrand b set a.realcarbrand = b.carlogo, a.realsubbrand = b.subcarlogo where a.carbrand = b.carcode and a.subbrand = b.subcarcode and a.id = " + id.ToString());
+                                        }
+                                        step = "9";
+                                    }
+                                    else
+                                    {
+                                        Global.LogServer.Add(new LogInfo("tradelog", "SocketTool->存储加油交易信息,该条数据已存在 ", (int)EnumLogLevel.DEBUG));
+                                    }*/
                                 }
                                 catch (System.Exception ex)
                                 {
@@ -400,6 +435,7 @@ namespace SPManager
                                 SystemUnit.PostMessage(SystemUnit.HWND_BROADCAST, (int)Global.WM_CARSNAP, int.Parse(pumpInfo.PumpID), int.Parse(pumpInfo.PumpFlag));
                             }
                         }
+                        
                         
                     }
                     Thread.Sleep(30);

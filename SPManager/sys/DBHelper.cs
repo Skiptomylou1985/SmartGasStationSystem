@@ -28,6 +28,7 @@ namespace SPManager
         public MysqlHelper(DBInfo dbinfo)
         {
             this.LocalDB = dbinfo;
+
             ConnectDB();
         }
 
@@ -54,7 +55,7 @@ namespace SPManager
             }
             catch (Exception ex)
             {
-                Global.LogServer.Add(new LogInfo("Error", "DBUnit:ConnectDB 连接数据库失败，错误信息：" + ex.Message,(int)EnumLogLevel.ERROR));
+                Global.LogServer.Add(new LogInfo("Error", "DBUnit:ConnectDB 连接数据库失败, 错误信息：" + ex.Message,(int)EnumLogLevel.ERROR));
                 return false;
             }
             return true;

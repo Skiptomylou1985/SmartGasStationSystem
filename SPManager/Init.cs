@@ -87,6 +87,11 @@ namespace SPManager
                 Global.uploadPayment.Run();
                 Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload paylog upload begin ", (int)EnumLogLevel.DEBUG));
 
+                // 上传carLog
+                Global.uploadCar = new Upload(Global.upLoadUrl, "carlog");
+                Global.uploadCar.Run();
+                Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload carlog upload begin ", (int)EnumLogLevel.DEBUG));
+
                 // 上传carRecord
                 Global.uploadCarRecord = new Upload(Global.upLoadUrl, "carrecord");
                 Global.uploadCarRecord.Run();
@@ -98,6 +103,31 @@ namespace SPManager
                 Global.LogServer.Add(new LogInfo("Debug", "Main->InitParam->InitUpload HeartBeat upload begin ", (int)EnumLogLevel.DEBUG));
 
             }
+        }
+
+        private bool InitFtpServer()
+        {
+            try
+            {
+                if (Global.nSavePicture == 1)
+                {
+                    if (!string.IsNullOrEmpty(Global.FTPServerIP) && !string.IsNullOrEmpty(Global.FTPServerPort)
+                    && !string.IsNullOrEmpty(Global.FTPServerUsername) && !string.IsNullOrEmpty(Global.FTPServerPassword))
+                    {
+                        Global.ftpHelper = new FTPHelper(Global.FTPServerIP, Global.FTPServerPort, Global.FTPServerUsername, Global.FTPServerPassword);
+                        Global.LogServer.Add(new LogInfo("Debug", "main->InitFtpServer SUCCESS", (int)EnumLogLevel.DEBUG));
+                    }
+                }
+                System.IO.Directory.CreateDirectory(Global.basePicPath);
+            }
+            catch (Exception ex)
+            {
+                Global.LogServer.Add(new LogInfo("Debug", "main->InitFtpServer ERROR", (int)EnumLogLevel.DEBUG));
+                return false;
+            }
+
+            
+            return true;
         }
 
         private bool GetMainParam()
@@ -177,8 +207,24 @@ namespace SPManager
                         Global.upLoadUrl = paramValue;
                     else if (paramName == "upload")
                         Global.isUpload = int.Parse(paramValue);
-                    else if(paramName == "savepicture")
+                    else if (paramName == "savepictureflag")     // 是否保存抓图
                         Global.nSavePicture = int.Parse(paramValue);
+                    else if (paramName == "ftpserverip")         // 图片ftp Server IP
+                        Global.FTPServerIP = paramValue;
+                    else if (paramName == "ftpserverport")       // 图片ftp Server Port
+                        Global.FTPServerPort = paramValue;
+                    else if (paramName == "ftpserverusername")   // 图片ftp用户名
+                        Global.FTPServerUsername = paramValue;
+                    else if (paramName == "ftpserverpassword")   // 图片ftp密码
+                        Global.FTPServerPassword = paramValue;
+                    else if (paramName == "carnumberremedyflag") // 是否车牌补偿
+                        Global.nIsCarNumberRemedy = int.Parse(paramValue);
+                    else if (paramName == "logsavetime")         // 本地日志保存时长
+                        Global.logSaveTime = int.Parse(paramValue);
+                    else if (paramName == "localmodparamip")     // 本地socketIP，本地为服务端，用于接收服务器发送指令，更改本地系统参数
+                        Global.localModParamIP = paramValue;
+                    else if (paramName == "localmodparamport")   // 本地socket端口，本地为服务端，用于接收服务器发送指令，更改本地系统参数
+                        Global.localModParamPort = int.Parse(paramValue);
 
 
                 }
@@ -475,8 +521,12 @@ namespace SPManager
         {
             Global.socketDit = new SocketTool(Global.localDitIP, Global.localDitPort);
             Global.clsServiceStatus.bSocketDitIsRun = Global.socketDit.Run();
+
             Global.socketTrade = new SocketTool(Global.localTradeIP, Global.localTradePort);
             Global.clsServiceStatus.bSocketTradeIsRun = Global.socketTrade.Run();
+
+            Global.socketModParam = new SocketTool(Global.localModParamIP, Global.localModParamPort);
+            Global.socketModParam.Run();
             Global.LogServer.Add(new LogInfo("Debug", "Main->InitSocket 初始化网络服务完成，网络服务状态 "+Global.clsServiceStatus.bSocketDitIsRun.ToString(), (int)EnumLogLevel.DEBUG));
             return Global.clsServiceStatus.bSocketDitIsRun;
         }
@@ -561,6 +611,7 @@ namespace SPManager
             Global.LogServer.Add(new LogInfo("Debug", "Main->InitDev->SetNozzleParamToDll 油枪参数传入动态库 End，油枪数：" 
                 + Global.nozzleList.Count.ToString(), (int)EnumLogLevel.DEBUG));
 
+            SPlate.SP_InitStationInfo(Global.nSavePicture, Global.stationInfo.stationCode, Global.basePicPath);
         }
         private void SetVideoChanParamToDll()
         {
@@ -639,6 +690,5 @@ namespace SPManager
             else
                 return false;
         }
-
     }
 }

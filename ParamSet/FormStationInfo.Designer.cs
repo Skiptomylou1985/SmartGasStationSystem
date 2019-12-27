@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textPicPath = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.comboLogLevel = new System.Windows.Forms.ComboBox();
@@ -44,6 +45,18 @@
             this.comboAuthType = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textFTPServerPwd = new System.Windows.Forms.TextBox();
+            this.textFTPServerUsername = new System.Windows.Forms.TextBox();
+            this.textFTPServerPort = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textFTPServerIP = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.comboSavePic = new System.Windows.Forms.ComboBox();
+            this.comboCarNumRemedy = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.comboVideoRecogType = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -51,27 +64,32 @@
             this.label4 = new System.Windows.Forms.Label();
             this.comboCapture = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // textPicPath
             // 
-            this.textPicPath.Location = new System.Drawing.Point(107, 109);
+            this.textPicPath.Location = new System.Drawing.Point(110, 203);
             this.textPicPath.Name = "textPicPath";
             this.textPicPath.Size = new System.Drawing.Size(178, 21);
             this.textPicPath.TabIndex = 31;
             this.textPicPath.Text = "1000";
             this.textPicPath.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textPicPath_MouseClick);
+            this.textPicPath.TextChanged += new System.EventHandler(this.textPicPath_TextChanged);
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(18, 112);
+            this.label13.Location = new System.Drawing.Point(22, 206);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(89, 12);
             this.label13.TabIndex = 30;
             this.label13.Text = "图片存储路径：";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
             // 
             // comboLogLevel
             // 
@@ -82,15 +100,15 @@
             "正常",
             "调试",
             "全部"});
-            this.comboLogLevel.Location = new System.Drawing.Point(280, 71);
+            this.comboLogLevel.Location = new System.Drawing.Point(108, 65);
             this.comboLogLevel.Name = "comboLogLevel";
-            this.comboLogLevel.Size = new System.Drawing.Size(95, 20);
+            this.comboLogLevel.Size = new System.Drawing.Size(86, 20);
             this.comboLogLevel.TabIndex = 29;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(209, 75);
+            this.label12.Location = new System.Drawing.Point(41, 69);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(65, 12);
             this.label12.TabIndex = 28;
@@ -121,7 +139,7 @@
             // 
             // textStationCode
             // 
-            this.textStationCode.Location = new System.Drawing.Point(107, 66);
+            this.textStationCode.Location = new System.Drawing.Point(306, 30);
             this.textStationCode.Name = "textStationCode";
             this.textStationCode.Size = new System.Drawing.Size(86, 21);
             this.textStationCode.TabIndex = 25;
@@ -138,7 +156,7 @@
             // 
             // textStationName
             // 
-            this.textStationName.Location = new System.Drawing.Point(107, 29);
+            this.textStationName.Location = new System.Drawing.Point(108, 29);
             this.textStationName.Name = "textStationName";
             this.textStationName.Size = new System.Drawing.Size(86, 21);
             this.textStationName.TabIndex = 23;
@@ -157,16 +175,16 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(42, 71);
+            this.label1.Location = new System.Drawing.Point(215, 35);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.Size = new System.Drawing.Size(89, 12);
             this.label1.TabIndex = 34;
-            this.label1.Text = "站点编号：";
+            this.label1.Text = "站 点 编 号 ：";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(42, 33);
+            this.label9.Location = new System.Drawing.Point(41, 33);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(65, 12);
             this.label9.TabIndex = 32;
@@ -174,7 +192,7 @@
             // 
             // btnSet
             // 
-            this.btnSet.Location = new System.Drawing.Point(302, 107);
+            this.btnSet.Location = new System.Drawing.Point(318, 201);
             this.btnSet.Name = "btnSet";
             this.btnSet.Size = new System.Drawing.Size(73, 23);
             this.btnSet.TabIndex = 35;
@@ -205,6 +223,18 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textFTPServerPwd);
+            this.groupBox1.Controls.Add(this.textFTPServerUsername);
+            this.groupBox1.Controls.Add(this.textFTPServerPort);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.label15);
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.textFTPServerIP);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.comboSavePic);
+            this.groupBox1.Controls.Add(this.comboCarNumRemedy);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.textPicPath);
             this.groupBox1.Controls.Add(this.textStationName);
             this.groupBox1.Controls.Add(this.textStationCode);
@@ -216,10 +246,116 @@
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(441, 161);
+            this.groupBox1.Size = new System.Drawing.Size(441, 246);
             this.groupBox1.TabIndex = 39;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "站点参数";
+            // 
+            // textFTPServerPwd
+            // 
+            this.textFTPServerPwd.Location = new System.Drawing.Point(291, 164);
+            this.textFTPServerPwd.Name = "textFTPServerPwd";
+            this.textFTPServerPwd.Size = new System.Drawing.Size(100, 21);
+            this.textFTPServerPwd.TabIndex = 48;
+            // 
+            // textFTPServerUsername
+            // 
+            this.textFTPServerUsername.Location = new System.Drawing.Point(108, 164);
+            this.textFTPServerUsername.Name = "textFTPServerUsername";
+            this.textFTPServerUsername.Size = new System.Drawing.Size(100, 21);
+            this.textFTPServerUsername.TabIndex = 47;
+            // 
+            // textFTPServerPort
+            // 
+            this.textFTPServerPort.Location = new System.Drawing.Point(291, 134);
+            this.textFTPServerPort.Name = "textFTPServerPort";
+            this.textFTPServerPort.Size = new System.Drawing.Size(100, 21);
+            this.textFTPServerPort.TabIndex = 46;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(229, 168);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(65, 12);
+            this.label16.TabIndex = 45;
+            this.label16.Text = "FTP 密码：";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(33, 168);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(77, 12);
+            this.label15.TabIndex = 44;
+            this.label15.Text = "FTP 用户名：";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(229, 137);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(65, 12);
+            this.label14.TabIndex = 43;
+            this.label14.Text = "FTP 端口：";
+            // 
+            // textFTPServerIP
+            // 
+            this.textFTPServerIP.Location = new System.Drawing.Point(108, 134);
+            this.textFTPServerIP.Name = "textFTPServerIP";
+            this.textFTPServerIP.Size = new System.Drawing.Size(100, 21);
+            this.textFTPServerIP.TabIndex = 42;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(26, 137);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(83, 12);
+            this.label8.TabIndex = 41;
+            this.label8.Text = "图片FTP地址：";
+            // 
+            // comboSavePic
+            // 
+            this.comboSavePic.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboSavePic.FormattingEnabled = true;
+            this.comboSavePic.Items.AddRange(new object[] {
+            "否",
+            "是"});
+            this.comboSavePic.Location = new System.Drawing.Point(109, 100);
+            this.comboSavePic.Name = "comboSavePic";
+            this.comboSavePic.Size = new System.Drawing.Size(86, 20);
+            this.comboSavePic.TabIndex = 40;
+            // 
+            // comboCarNumRemedy
+            // 
+            this.comboCarNumRemedy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboCarNumRemedy.FormattingEnabled = true;
+            this.comboCarNumRemedy.Items.AddRange(new object[] {
+            "否",
+            "是"});
+            this.comboCarNumRemedy.Location = new System.Drawing.Point(306, 69);
+            this.comboCarNumRemedy.Name = "comboCarNumRemedy";
+            this.comboCarNumRemedy.Size = new System.Drawing.Size(86, 20);
+            this.comboCarNumRemedy.TabIndex = 39;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(215, 69);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(89, 12);
+            this.label7.TabIndex = 38;
+            this.label7.Text = "是否车牌补偿：";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(18, 103);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(89, 12);
+            this.label6.TabIndex = 36;
+            this.label6.Text = "是否保存抓图：";
             // 
             // groupBox2
             // 
@@ -234,7 +370,7 @@
             this.groupBox2.Controls.Add(this.btnSetRecogInfo);
             this.groupBox2.Controls.Add(this.comboAuthType);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(12, 179);
+            this.groupBox2.Location = new System.Drawing.Point(12, 264);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(441, 153);
             this.groupBox2.TabIndex = 40;
@@ -310,7 +446,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 344);
+            this.ClientSize = new System.Drawing.Size(461, 440);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label10);
@@ -324,6 +460,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -354,5 +491,19 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboCapture;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox comboSavePic;
+        private System.Windows.Forms.ComboBox comboCarNumRemedy;
+        private System.Windows.Forms.TextBox textFTPServerPwd;
+        private System.Windows.Forms.TextBox textFTPServerUsername;
+        private System.Windows.Forms.TextBox textFTPServerPort;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textFTPServerIP;
+        private System.Windows.Forms.Label label8;
     }
 }

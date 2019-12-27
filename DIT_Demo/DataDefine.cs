@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Runtime.InteropServices;
-namespace SPManager
+
+namespace DIT_Demo
 {
+    class DataDefine
+    {
+    }
     //车辆信息类
     public class ClsCarInfo
     {
@@ -174,16 +177,12 @@ namespace SPManager
 
         public string toSaveSqlString()
         {
-            
-            if (String.IsNullOrEmpty(_picPath))
-            {
-                _picPath = "";
-            }
+            _picPath = "";
             String sqlString = "INSERT into carlog (carnumber,carnumcolor,cartype,carlogo,subcarlogo,carcolor,arrivetime,leavetime,nozzleno,picpath,begintime,endtime,oiltype,volume,realamount,startread,endread,oilprice,meterialcode)" +
         "VALUES('{0}', {1}, {2}, {3}, {4}, {5}, '{6}', '{7}', {8}, '{9}', '{10}', '{11}',{12},{13},{14},{15},{16},{17},'{18}') ";
             return String.Format(sqlString, _license, _licenseColor.ToString(), _type.ToString(), _carLogo.ToString(), _subCarLogo.ToString(), _carColor.ToString(), _arriveTime, _leaveTime,
                 _nozzleNo.ToString(), _picPath, _beginTime, _endTime, _oilType.ToString(),
-                _volume.ToString(), _realamnout.ToString(), _StartCounter.ToString(), _EndCounter.ToString(),_Price.ToString(),MeterialCode);
+                _volume.ToString(), _realamnout.ToString(), _StartCounter.ToString(), _EndCounter.ToString(), _Price.ToString(), MeterialCode);
         }
     }
 
@@ -192,7 +191,7 @@ namespace SPManager
         public int id { get; set; }
 
         public string carNumber { get; set; }
-        
+
         public int carNumColor { get; set; }
 
         public int carType { get; set; }
@@ -206,7 +205,7 @@ namespace SPManager
         public string arriveTime { get; set; }
 
         public string leaveTime { get; set; }
-        
+
         public int nozzleNo { get; set; }
 
         public int areaNo { get; set; }
@@ -237,7 +236,7 @@ namespace SPManager
 
         public double oilPrice { get; set; }
 
-        public string meterialCode {get; set;}
+        public string meterialCode { get; set; }
 
         public string stationCode { get; set; }
 
@@ -357,6 +356,12 @@ namespace SPManager
             set { _videoChannel = value; }
         }
         private int _videoChannel = 0;
+        public int chanIndex
+        {
+            get { return _chanIndex; }
+            set { _chanIndex = value; }
+        }
+        private int _chanIndex = 33;
         public int videoLaneNo
         {
             get { return _videoLaneNo; }
@@ -533,69 +538,7 @@ namespace SPManager
         public List<int> areaNoList = new List<int>();
         public List<int> nozzleNoList = new List<int>();
     }
-    public class ClsNVRInfo
-    {
-        public NET_DVR_IPPARACFG_V40 config = new NET_DVR_IPPARACFG_V40();
-        public List<ClsVideoChannel> videoList = new List<ClsVideoChannel>();
-        public int id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
-        private int _id;
-        public string ip
-        {
-            get { return _ip; }
-            set { _ip = value; }
-        }
-        private string _ip = "10.225.142.28";
-
-        public int port
-        {
-            get { return _port; }
-            set { _port = value; }
-        }
-        private int _port = 8000;
-
-        public string loginName
-        {
-            get { return _loginName; }
-            set { _loginName = value; }
-        }
-        private string _loginName = "admin";
-        public string password
-        {
-            get { return _password; }
-            set { _password = value; }
-        }
-        private string _password = "12345";
-        public int channelCount
-        {
-            get { return _channelCount; }
-            set { _channelCount = value; }
-        }
-        private int _channelCount = 16;
-        public string nvrType
-        {
-            get { return _nvrType; }
-            set { _nvrType = value; }
-        }
-        private string _nvrType = "8208";
-        public string nvrName
-        {
-            get { return _nvrName; }
-            set { _nvrName = value; }
-        }
-        private string _nvrName = "";
-
-        public int startChan
-        {
-            get { return _startChan; }
-            set { _startChan = value; }
-        }
-        private int _startChan = 33;
-    }
-
+   
     public class ClsPicture
     {
         public string picPath
@@ -641,20 +584,7 @@ namespace SPManager
         public bool bSocketDitIsRun;
         public bool bSocketTradeIsRun;
     }
-    public class ClsCarArrive
-    {
-        public ClsCarArrive(string plate, struCarInfoOut car, DateTime time)
-        {
-            this.plate = plate;
-            this.carInfo = car;
-            this.arriveTime = time;
-        }
-        public string plate;
-        public struCarInfoOut carInfo;
-        public DateTime arriveTime;
-        public int matchFlag = 0; // 0未匹配，1已匹配，默认未匹配
-    }
-
+    
     public class TradeInfo
     {
         public string GasStation_NO { set; get; }
@@ -681,17 +611,15 @@ namespace SPManager
         public string OilName { set; get; }
         public string OilCode { set; get; }
         public string OilClass { set; get; }
-        public string PicPath { set; get; }
 
 
         public string toSaveSqlString()
         {
             String sqlString = "INSERT into tradelog (nozzleno,meterialcode,volume,realamount,price,starttime,endtime,startread,endread," +
-                "carnumber,carbrand,subbrand,cartype,carcolor,carnumcolor,realcarbrand,realsubbrand,oilname,oilcode,oilclass, picpath)" +
-       "VALUES({0}, '{1}', {2}, {3}, {4}, '{5}', '{6}', {7}, {8}, '{9}', {10}, {11},{12},{13},{14},'{15}', '{16}','{17}','{18}','{19}', '{20}') " +
-       "ON DUPLICATE KEY UPDATE carnumber = VALUES(carnumber)";
+                "carnumber,carbrand,subbrand,cartype,carcolor,carnumcolor,realcarbrand,realsubbrand,oilname,oilcode,oilclass)" +
+       "VALUES({0}, '{1}', {2}, {3}, {4}, '{5}', '{6}', {7}, {8}, '{9}', {10}, {11},{12},{13},{14},'{15}', '{16}','{17}','{18}','{19}') ";
             return String.Format(sqlString, OilGun_NO, OIL_TYPE, OIL_Q.ToString(), OIL_AMT.ToString(), OIL_PRC.ToString(), START_TIME, END_TIME, START_READ.ToString(),
-                END_READ.ToString(), VehicleNo, VehicleBrandCode, SubBrandCode, VehicleModel, VehicleColor, BodyColor, CarBrand, SubBrand, OilName, OilCode, OilClass, PicPath);
+                END_READ.ToString(), VehicleNo, VehicleBrandCode, SubBrandCode, VehicleModel, VehicleColor, BodyColor, CarBrand, SubBrand, OilName, OilCode, OilClass);
         }
 
     }
@@ -721,7 +649,6 @@ namespace SPManager
         public string oilName { set; get; }
         public string oilCode { set; get; }
         public string oilClass { set; get; }
-        public string picPath { set; get; }
 
     }
     public class OrderInfo
@@ -812,47 +739,6 @@ namespace SPManager
         public int upload { set; get; }
         public string stationCode { set; get; }
         public string stationName { set; get; }
-    }
-
-    public class UploadHeartbeatInfo
-    {
-        public string stationCode { set; get; }
-        public string stationName { set; get; }
-        public string heartbeatTime { set; get; }
-    }
-
-    public class CarRecordInfo
-    {
-        public int id { set; get; }
-        public string stationCode { set; get; }
-        public string stationName { set; get; }
-        public string carNumber { set; get; }
-        public string carNumColor { set; get; }
-        public string carLogo { set; get; }
-        public string subCarLogo { set; get; }
-        public string carColor { set; get; }
-        public DateTime arriveTime { set; get; }
-        public int upload { set; get; }
-
-        public string toSaveSqlString()
-        {
-            String sqlString = "INSERT INTO rarrecordlog (stationcode, stationname, carnumber, carnumcolor, carlogo, subcarlogo, carcolor, arrivetime, upload) " +
-            "VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', now(), 0) ";
-            return String.Format(sqlString, stationCode.ToString(), stationName.ToString(), carNumber.ToString(), carNumColor.ToString(), carLogo.ToString(),
-                subCarLogo.ToString(), carColor.ToString());
-        }
-    }
-
-    public class UploadCarRecordInfo
-    {
-        public string stationCode { set; get; }
-        public string stationName { set; get; }
-        public string carNumber { set; get; }
-        public string carNumColor { set; get; }
-        public string carLogo { set; get; }
-        public string subCarLogo { set; get; }
-        public string carColor { set; get; }
-        public string arriveTime { set; get; }
     }
 
     public class PumpInfo

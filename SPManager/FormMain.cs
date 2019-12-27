@@ -49,7 +49,7 @@ namespace SPManager
                 Global.listCarArrive = new List<ClsCarArrive>();
                 timerClearCarlist.Enabled = true;
             }
-            
+
             InitFormInfo();
             if (ret == 0)
             {
@@ -1455,5 +1455,27 @@ namespace SPManager
         {
 
         }
+
+        private void timerDickListener_Tick(object sender, EventArgs e)
+        {
+            if (Global.nSavePicture == 1)
+            {
+                if (null != Global.ftpHelper)
+                {
+                    ClsPicture pic = new ClsPicture();
+                    string nSavePictureTimePath = string.Format("{0:yyyyMMdd}", DateTime.Now.AddDays(-1));   
+                    FTPHelper.DeleteDir(Global.basePicPath + nSavePictureTimePath + "\\");
+                }
+            }
+            string appPath = Application.ExecutablePath;
+            string appLogTimePath = string.Format("\\log\\{0:yyyy-MM-dd}\\", DateTime.Now.AddDays(-Global.logSaveTime));
+            FTPHelper.DeleteDir(appPath + appLogTimePath);
+        }
+
+        private void timerClearCarListNoMatching_Tick(object sender, EventArgs e)
+        {
+            Global.listCarArriveNoMatching.Clear();
+        }
+        
     }
 }

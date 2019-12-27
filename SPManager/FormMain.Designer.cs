@@ -353,6 +353,8 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerDataProc = new System.Windows.Forms.Timer(this.components);
             this.timerClearCarlist = new System.Windows.Forms.Timer(this.components);
+            this.timerDickListener = new System.Windows.Forms.Timer(this.components);
+            this.timerClearCarListNoMatching = new System.Windows.Forms.Timer(this.components);
             this.tabPage1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.StationBoard.SuspendLayout();
@@ -515,7 +517,7 @@
             // 
             this.btnExit.BackColor = System.Drawing.Color.Aqua;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExit.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnExit.Location = new System.Drawing.Point(796, 479);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(132, 40);
@@ -530,7 +532,7 @@
             // 
             this.btnEntrance.BackColor = System.Drawing.Color.Aqua;
             this.btnEntrance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEntrance.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnEntrance.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnEntrance.Location = new System.Drawing.Point(242, 484);
             this.btnEntrance.Name = "btnEntrance";
             this.btnEntrance.Size = new System.Drawing.Size(132, 40);
@@ -545,7 +547,7 @@
             // 
             this.btnStore.BackColor = System.Drawing.Color.Orange;
             this.btnStore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStore.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnStore.Location = new System.Drawing.Point(500, 479);
             this.btnStore.Name = "btnStore";
             this.btnStore.Size = new System.Drawing.Size(187, 40);
@@ -2569,7 +2571,7 @@
             // 
             this.Ver_btnExit.BackColor = System.Drawing.Color.Aqua;
             this.Ver_btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Ver_btnExit.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Ver_btnExit.Location = new System.Drawing.Point(863, 491);
             this.Ver_btnExit.Name = "Ver_btnExit";
             this.Ver_btnExit.Size = new System.Drawing.Size(132, 40);
@@ -2584,7 +2586,7 @@
             // 
             this.Ver_btnEntrance.BackColor = System.Drawing.Color.Aqua;
             this.Ver_btnEntrance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Ver_btnEntrance.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_btnEntrance.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Ver_btnEntrance.Location = new System.Drawing.Point(333, 491);
             this.Ver_btnEntrance.Name = "Ver_btnEntrance";
             this.Ver_btnEntrance.Size = new System.Drawing.Size(132, 40);
@@ -2599,7 +2601,7 @@
             // 
             this.Ver_btnStore.BackColor = System.Drawing.Color.Orange;
             this.Ver_btnStore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Ver_btnStore.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Ver_btnStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Ver_btnStore.Location = new System.Drawing.Point(571, 491);
             this.Ver_btnStore.Name = "Ver_btnStore";
             this.Ver_btnStore.Size = new System.Drawing.Size(187, 40);
@@ -3048,7 +3050,7 @@
             this.lblCurRatio.Name = "lblCurRatio";
             this.lblCurRatio.Size = new System.Drawing.Size(139, 38);
             this.lblCurRatio.TabIndex = 40;
-            this.lblCurRatio.Text = "%";
+            this.lblCurRatio.Text = "7";
             this.lblCurRatio.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel30
@@ -3956,6 +3958,7 @@
             this.listViewCache.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewCache.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.listViewCache.GridLines = true;
+            this.listViewCache.HideSelection = false;
             this.listViewCache.Location = new System.Drawing.Point(0, 0);
             this.listViewCache.Name = "listViewCache";
             this.listViewCache.Size = new System.Drawing.Size(500, 371);
@@ -4020,6 +4023,7 @@
             this.listViewArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewArea.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.listViewArea.GridLines = true;
+            this.listViewArea.HideSelection = false;
             this.listViewArea.Location = new System.Drawing.Point(0, 0);
             this.listViewArea.Name = "listViewArea";
             this.listViewArea.Size = new System.Drawing.Size(500, 372);
@@ -4217,6 +4221,18 @@
             // 
             this.timerClearCarlist.Interval = 10000;
             this.timerClearCarlist.Tick += new System.EventHandler(this.timerClearCarlist_Tick);
+            // 
+            // timerDickListener
+            // 
+            this.timerDickListener.Enabled = true;
+            this.timerDickListener.Interval = 85800000;
+            this.timerDickListener.Tick += new System.EventHandler(this.timerDickListener_Tick);
+            // 
+            // timerClearCarListNoMatching
+            // 
+            this.timerClearCarListNoMatching.Enabled = true;
+            this.timerClearCarListNoMatching.Interval = 600000;
+            this.timerClearCarListNoMatching.Tick += new System.EventHandler(this.timerClearCarListNoMatching_Tick);
             // 
             // FormMain
             // 
@@ -4667,6 +4683,8 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label lblRealamount;
         private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Timer timerDickListener;
+        private System.Windows.Forms.Timer timerClearCarListNoMatching;
     }
 }
 

@@ -239,13 +239,13 @@ namespace ParamSet
             get { return _stationCode; }
             set { _stationCode = value; }
         }
-        private string _stationCode = "";
+        private string _stationCode = "10000";
         public string stationName
         {
             get { return _stationName; }
             set { _stationName = value; }
         }
-        private string _stationName = "";
+        private string _stationName = "测试站";
         public string province
         {
             get { return _province; }

@@ -13,6 +13,8 @@ namespace ParamSet
         public static Log LogServer;
         public static int nLogLevel = 3;
         public static string iniPath ="config.ini";
+        public static int nCarNumberRemedyFlag = 0; // 是否车牌补偿 0 - 否
+        public static int nSavePicFlag = 0; // 是否保存抓拍图片 0 - 否
         public static string basePicPath = "D:\\images\\";
         public static int nAuthType = 0;  //算法授权模式 0本地授权 1 网络授权
         public static int nCaptureFlag = 1; //
@@ -38,7 +40,13 @@ namespace ParamSet
         public static bool bVideoInShow = false;
         public static int nCurStatus = 0;   //0显示 1 添加 2修改 
         public static ClsVideoChannel clsCurVideo = null;
-        
+
+        // FTP图片服务器
+        public static string FTPServerIP = ""; 
+        public static string FTPServerPort = "";
+        public static string FTPServerUsername = "";
+        public static string FTPServerPassword = "";
+
     }
     
 }

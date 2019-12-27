@@ -15,6 +15,7 @@ namespace SPManager
         [DllImport("user32.dll")]
         static extern uint RegisterWindowMessage(string lpString);
         public static uint WM_CARSNAP = RegisterWindowMessage("CARSNAP");    //抓拍
+        public static uint WM_RESTARTAPP = RegisterWindowMessage("RESTARTAPP");
 
         //基础信息参数
         public static string softVersion;  //软件版本
@@ -55,10 +56,19 @@ namespace SPManager
         public static int DitPort = 7890;  //DIT软件端口，发送进出站信息连接端口
         public static string localTradeIP = "0.0.0.0"; //作为服务端，接收交易信息IP
         public static int localTradePort = 9100; //作为服务端，接收交易信息端口
+        public static string localModParamIP = "0.0.0.0"; //作为服务端，用于接收服务器发送指令，更改本地系统参数
+        public static int localModParamPort = 10000; //作为服务端，用于接收服务器发送指令，更改本地系统参数
         public static int ditCallBackMode = 2; //DIT车牌回调模式 1:无出入口相机，新出现车牌直接回调， 2:有出入口相机，出口入相机车牌回调
         public static int isUpload =0; //是否开启数据上传 0x0000  pay,order,car,trade
         public static string upLoadUrl = ""; //数据上传地址
         public static bool bUseCacheCar = false;
+        public static int logSaveTime = 30;  // 日志保存时长
+
+        // FTP图片服务器
+        public static string FTPServerIP = "10.205.47.67"; // 10.205.47.67
+        public static string FTPServerPort = "21";
+        public static string FTPServerUsername = "ftpserver";
+        public static string FTPServerPassword = "ftpserver";
 
 
         //运行服务
@@ -66,8 +76,14 @@ namespace SPManager
         public static MysqlHelper mysqlHelper;
         public static MysqlHelper mysqlHelper2;
         public static MysqlHelper mysqlHelper3;
+        public static MysqlHelper mysqlHelperTradelog;
+        public static MysqlHelper mysqlHelperCarlog;
+        public static MysqlHelper mysqlHelperPaylog;
+        public static MysqlHelper mysqlHelperOrderlog;
+        public static MysqlHelper mysqlHelperCarRecordlog;
         public static SocketTool socketDit;
         public static SocketTool socketTrade;
+        public static SocketTool socketModParam;
         public static Upload uploadTrade;
         public static Upload uploadOrder;
         public static Upload uploadPayment;
@@ -88,6 +104,8 @@ namespace SPManager
         public static List<string> exitLicenseList = new List<string>();
         // public static QueueManager<ClsPicture> picQueue = new QueueManager<ClsPicture>();
         public static int nSavePicture = 0;  //0不存图片，1存图片
+        
+        public static int nIsCarNumberRemedy = 0;  //0 不执行车牌补偿逻辑，1 车牌补偿
         public static PictureWork picWork;
         public static int nDefaultWidth = 1920;
         public static int nDefaultHeight = 1080;
@@ -110,11 +128,13 @@ namespace SPManager
         public static int[] carCount = new int[24];
         public static int[] waitTime = new int[24];
         public static List<ClsCarArrive> listCarArrive;
+        public static List<string> listCarArriveNoMatching = new List<string>();
         public static PumpInfo []currentPump = new PumpInfo [100];
 
         public static Hashtable oilInfoHashtable = new Hashtable();
         public static Hashtable carBrandHashtable = new Hashtable();
-        
+
+        public static FTPHelper ftpHelper = null;
     }
 
 }

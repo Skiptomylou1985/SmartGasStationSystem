@@ -100,6 +100,8 @@ namespace SPManager
         public struLicense[] license;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10 * 1024 * 1024)]
         public byte[] pic;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+        public byte[] picName;
 
     }
 

@@ -221,10 +221,11 @@ namespace SPManager
         public static extern int SP_SetCodeType(int codeType);
         [DllImport("SPlate.dll")]
         public static extern int SP_Capture(int nozzleNo, IntPtr carinfo);
-       // [DllImport("SPlate.dll")]
-       // public static extern int SP_Capture_V2(int nozzleNo, IntPtr carinfo);
+        // [DllImport("SPlate.dll")]
+        // public static extern int SP_Capture_V2(int nozzleNo, IntPtr carinfo);
+        [DllImport("SPlate.dll")]
+        public static extern int SP_InitStationInfo(int savePicture, string stationCode, string picFilePath);
 
-       
 
     }
 }

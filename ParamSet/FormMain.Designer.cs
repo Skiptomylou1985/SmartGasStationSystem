@@ -186,7 +186,7 @@
             this.textDBName.Name = "textDBName";
             this.textDBName.Size = new System.Drawing.Size(71, 21);
             this.textDBName.TabIndex = 10;
-            this.textDBName.Text = "ynss";
+            this.textDBName.Text = "gsims";
             // 
             // label5
             // 

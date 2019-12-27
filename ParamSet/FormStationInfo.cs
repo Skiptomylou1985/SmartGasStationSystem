@@ -38,8 +38,24 @@ namespace ParamSet
            
             Global.nLogLevel = comboLogLevel.SelectedIndex + 1;
             updateParam("loglevel", Global.nLogLevel.ToString());
+
+            Global.nSavePicFlag = comboSavePic.SelectedIndex;
+            updateParam("savepictureflag", Global.nSavePicFlag.ToString());
             Global.basePicPath = textPicPath.Text.Trim();
             updateParam("picpath", Global.basePicPath);
+            
+            Global.FTPServerIP = textFTPServerIP.Text.Trim();
+            updateParam("ftpserverip", Global.FTPServerIP);
+            Global.FTPServerPort = textFTPServerPort.Text.Trim();
+            updateParam("ftpserverport", Global.FTPServerPort);
+            Global.FTPServerUsername = textFTPServerUsername.Text.Trim();
+            updateParam("ftpserverusername", Global.FTPServerUsername);
+            Global.FTPServerPassword = textFTPServerPwd.Text.Trim();
+            updateParam("ftpserverpassword", Global.FTPServerPassword);
+
+            Global.nCarNumberRemedyFlag = comboCarNumRemedy.SelectedIndex;
+            updateParam("carnumberremedyflag", Global.nCarNumberRemedyFlag.ToString());
+
 
             MessageBox.Show("设置成功!");
             this.Close();
@@ -57,7 +73,14 @@ namespace ParamSet
             textStationCode.Text = Global.stationInfo.stationCode;
             comboMatchMode.SelectedIndex = Global.nMatchMode - 1;
             comboLogLevel.SelectedIndex = Global.nLogLevel - 1;
+            comboSavePic.SelectedIndex = Global.nSavePicFlag;
+            comboCarNumRemedy.SelectedIndex = Global.nCarNumberRemedyFlag;
             textPicPath.Text = Global.basePicPath;
+            textFTPServerIP.Text = Global.FTPServerIP;
+            textFTPServerPort.Text = Global.FTPServerPort;
+            textFTPServerUsername.Text = Global.FTPServerUsername;
+            textFTPServerPwd.Text = Global.FTPServerPassword;
+
             comboAuthType.SelectedIndex = Global.nAuthType;
             comboCapture.SelectedIndex = Global.nCaptureFlag;
             comboVideoRecog.SelectedIndex = Global.nVideoRecogFlag;
@@ -110,6 +133,16 @@ namespace ParamSet
             MessageBox.Show("设置识别参数成功！");
             // Global.nVideoSource = ;  //0海康 1大华 2科达
             // updateParam("videosource", Global.nVideoSource.ToString());
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textPicPath_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
